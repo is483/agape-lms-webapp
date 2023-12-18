@@ -22,6 +22,16 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': ['error', { 'devDependencies': true }],
     'no-absolute-path': 'off',
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+   ]
   },
-  extends: ['airbnb', 'airbnb/hooks'],
+  extends: ['airbnb', 'airbnb/hooks' , 'airbnb-typescript'],
 }
