@@ -26,12 +26,13 @@ module.exports = {
       "error",
       "ignorePackages",
       {
+        "": "never",
         "js": "never",
         "jsx": "never",
         "ts": "never",
-        "tsx": "never"
+        "tsx": "never",
       }
    ]
   },
-  extends: ['airbnb', 'airbnb/hooks' , 'airbnb-typescript'],
+  extends: ['airbnb', 'airbnb/hooks'],
 }
