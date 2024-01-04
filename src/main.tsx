@@ -7,6 +7,7 @@ import App from './app'
 import './index.css'
 import store from './app/store'
 import theme from './theme'
+import 'material-symbols/outlined.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
