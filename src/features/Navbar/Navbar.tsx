@@ -24,6 +24,7 @@ function Navbar(props: Props) {
 
   return (
     <Box
+      background="white"
       width="280px"
       height="100%"
       position="fixed"
@@ -43,6 +44,9 @@ function Navbar(props: Props) {
             <Text fontWeight="bold" marginLeft="1rem">{title}</Text>
             {links.map(({ name, iconName, path }) => {
               const isPath = path === pathname.toLowerCase()
+              const color = {
+                ...(!isPath && { color: 'secondary.500' }),
+              }
               return (
                 <Button
                   width="full"
@@ -54,8 +58,8 @@ function Navbar(props: Props) {
                   colorScheme={isPath ? 'red' : ''}
                   onClick={() => handleNavClick(path)}
                 >
-                  <Icon name={iconName} fontWeight="200" />
-                  <Text>{name}</Text>
+                  <Icon name={iconName} fontWeight="200" {...color} />
+                  <Text {...color}>{name}</Text>
                 </Button>
               )
             })}
