@@ -13,7 +13,7 @@ const initialState: AppState = {
   auth: {
     token: null,
     isLoggedIn: false,
-    role: null,
+    role: 'Admin',
   },
 }
 

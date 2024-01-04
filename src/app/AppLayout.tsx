@@ -7,7 +7,7 @@ function AppLayout() {
   const { role } = useAppSelector(getAuth)
   return (
     <Box>
-      <Navbar role={role} />
+      {role && <Navbar role={role} />}
       {role === 'Admin' && (
         <>
         </>
