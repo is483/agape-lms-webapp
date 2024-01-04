@@ -31,17 +31,17 @@ function Navbar(props: Props) {
       display="flex"
       alignItems="center"
       flexDirection="column"
-      gap="1rem"
+      gap="2rem"
       padding="2rem"
     >
       <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="200px" height="200px" marginTop="2.5rem" />
-      <Text fontSize="2xl" fontWeight="700" wordBreak="break-all">
+      <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
         Name Placeholder
       </Text>
-      <Box display="flex" gap="1rem" flexDirection="column" width="100%">
+      <Box display="flex" gap="2rem" flexDirection="column" width="100%">
         {navbarLinks.map(({ title, links }) => (
-          <Box display="flex" gap="0.5rem" flexDirection="column">
-            <Text fontWeight="bold" marginLeft="1rem">{title}</Text>
+          <Box key={title} display="flex" gap="0.5rem" flexDirection="column">
+            <Text fontWeight="bold" marginLeft="1rem" fontSize="xs" textTransform="uppercase">{title}</Text>
             {links.map(({ name, iconName, path }) => {
               const isPath = path === pathname.toLowerCase()
               const color = {
@@ -49,6 +49,7 @@ function Navbar(props: Props) {
               }
               return (
                 <Button
+                  key={name}
                   width="full"
                   fontWeight="400"
                   display="flex"
@@ -59,7 +60,7 @@ function Navbar(props: Props) {
                   onClick={() => handleNavClick(path)}
                 >
                   <Icon name={iconName} fontWeight="200" {...color} />
-                  <Text {...color}>{name}</Text>
+                  <Text fontSize="sm" {...color}>{name}</Text>
                 </Button>
               )
             })}
