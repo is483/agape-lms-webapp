@@ -1,9 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Role } from '../types'
 
-const initialState = {
+interface AppState {
+  auth: {
+    token: string | null,
+    isLoggedIn: boolean,
+    role: Role | null,
+  }
+}
+
+const initialState: AppState = {
   auth: {
     token: null,
     isLoggedIn: false,
+    role: null,
   },
 }
 

@@ -4,11 +4,13 @@ import { useAppSelector } from '../hooks'
 import getAuth from './redux/selectors'
 import { Login } from '../features/Login'
 import { Register } from '../features/Register'
+import AppLayout from './AppLayout'
 
 function App() {
-  const auth = useAppSelector(getAuth)
+  const { isLoggedIn } = useAppSelector(getAuth)
 
-  if (!auth.isLoggedIn) {
+  // TODO: Remove false condition when login implemented
+  if (false && !isLoggedIn) {
     return (
       <Box>
         <Routes>
@@ -20,11 +22,7 @@ function App() {
     )
   }
 
-  return (
-    <Box>
-      Main
-    </Box>
-  )
+  return <AppLayout />
 }
 
 export default App
