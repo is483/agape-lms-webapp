@@ -3,6 +3,7 @@ import paths from '../../paths'
 
 export interface NavbarLinks {
   name: string
+  mobileName?: string
   iconName: string
   path: string
 }
@@ -19,6 +20,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
       links: [
         {
           name: 'Mentoring Journeys',
+          mobileName: 'Journeys',
           iconName: 'conversion_path',
           path: paths.MentoringJourney,
         },
@@ -44,6 +46,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
       links: [
         {
           name: 'My Profile',
+          mobileName: 'Profile',
           iconName: 'account_circle',
           path: paths.Profile,
         },
@@ -56,6 +59,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
       links: [
         {
           name: 'Mentoring Journeys',
+          mobileName: 'Journeys',
           iconName: 'conversion_path',
           path: paths.MentoringJourney,
         },
@@ -66,6 +70,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         },
         {
           name: 'Assigned Mentees',
+          mobileName: 'Mentees',
           iconName: 'group',
           path: paths.AssignedMentees,
         },
@@ -81,6 +86,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
       links: [
         {
           name: 'My Profile',
+          mobileName: 'Profile',
           iconName: 'account_circle',
           path: paths.Profile,
         },
@@ -108,6 +114,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         },
         {
           name: 'Mentor Profile',
+          mobileName: 'Mentor',
           iconName: 'person',
           path: paths.MentorProfile,
         },
@@ -118,6 +125,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
       links: [
         {
           name: 'My Profile',
+          mobileName: 'Profile',
           iconName: 'account_circle',
           path: paths.Profile,
         },
