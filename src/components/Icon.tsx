@@ -4,9 +4,13 @@ interface Props {
   name: string
 }
 
-function Icon({ name, ...rest }: Props & BoxProps) {
+const defaultIconStyles = {
+  fontWeight: '300',
+}
+
+function Icon({ name, ...props }: Props & BoxProps) {
   return (
-    <Box className="material-symbols-outlined" {...rest}>
+    <Box className="material-symbols-outlined" {...defaultIconStyles} {...props}>
       {name}
     </Box>
   )
