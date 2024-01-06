@@ -7,13 +7,26 @@ import agapeLogo from '../../assets/agape_logo.png'
 import loginIllustration from '../../assets/login_illustration.png'
 import { Icon, Link } from '../../components'
 import paths from '../../paths'
+import { useLoginMutation } from '../../app/services/auth/apiAuthSlice'
+import { LoginRequest } from '../../app/services/auth/types'
 
 function Login() {
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const [login] = useLoginMutation()
 
   const handleLogin = () => {
+    if (!emailRef.current || !passwordRef.current) return
 
+    const email = emailRef.current.value
+    const password = passwordRef.current.value
+
+    const loginRequest: LoginRequest = {
+      email,
+      password,
+    }
+
+    login(loginRequest)
   }
 
   return (
