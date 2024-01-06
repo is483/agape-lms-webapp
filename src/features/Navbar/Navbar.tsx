@@ -7,6 +7,7 @@ import { Role } from '../../app/types'
 import { NavbarLinkSection, NavbarLinks, navbarLinksRecord } from './constants'
 import { Icon } from '../../components'
 import useBreakpoint from '../../hooks/useBreakpoint'
+import agapeLogo from '../../assets/agape_logo.png'
 
 interface Props {
   role: Role
@@ -31,6 +32,7 @@ function Navbar(props: Props) {
       navbarLinks={navbarLinks}
       handleNavClick={handleNavClick}
       pathname={pathname}
+      role={role}
     />
   )
 }
@@ -39,9 +41,12 @@ interface NavbarProps {
   navbarLinks: NavbarLinkSection[]
   handleNavClick: (path: string) => void
   pathname: string
+  role: Role
 }
 
-function DesktopSideNavbar({ navbarLinks, handleNavClick, pathname }: NavbarProps) {
+function DesktopSideNavbar({
+  navbarLinks, handleNavClick, pathname, role,
+}: NavbarProps) {
   return (
     <Box
       background="white"
@@ -54,10 +59,17 @@ function DesktopSideNavbar({ navbarLinks, handleNavClick, pathname }: NavbarProp
       gap="2rem"
       padding="2rem"
     >
-      <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="200px" height="200px" marginTop="2.5rem" />
-      <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
-        Name Placeholder
-      </Text>
+      {/* TODO: Get user image + full name */}
+      {role === 'Admin'
+        ? <Image src={agapeLogo} maxWidth="100%" marginTop="2.5rem" />
+        : (
+          <>
+            <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="200px" height="200px" marginTop="2.5rem" />
+            <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
+              Name Placeholder
+            </Text>
+          </>
+        )}
       <Box display="flex" gap="2rem" flexDirection="column" width="100%">
         {navbarLinks.map(({ title, links }) => (
           <Box key={title} display="flex" gap="0.5rem" flexDirection="column">
