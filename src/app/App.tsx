@@ -5,6 +5,7 @@ import getAuth from './redux/selectors'
 import { Login } from '../features/Login'
 import { Register } from '../features/Register'
 import AppLayout from './AppLayout'
+import paths from '../paths'
 
 function App() {
   const { isLoggedIn } = useAppSelector(getAuth)
@@ -15,8 +16,8 @@ function App() {
       <Box>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path={paths.Login} element={<Login />} />
+          <Route path={paths.Register} element={<Register />} />
         </Routes>
       </Box>
     )
