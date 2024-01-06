@@ -2,7 +2,7 @@ import {
   Box, Button, Image, Text,
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import { Role } from '../../app/types'
 import { NavbarLinkSection, NavbarLinks, navbarLinksRecord } from './constants'
 import { Icon } from '../../components'
@@ -44,66 +44,64 @@ interface NavbarProps {
   role: Role
 }
 
-function DesktopSideNavbar({
+const DesktopSideNavbar = memo(({
   navbarLinks, handleNavClick, pathname, role,
-}: NavbarProps) {
-  return (
-    <Box
-      background="white"
-      width="280px"
-      height="100%"
-      position="fixed"
-      display="flex"
-      alignItems="center"
-      flexDirection="column"
-      gap="2rem"
-      padding="2rem"
-    >
-      {/* TODO: Get user image + full name */}
-      {role === 'Admin'
-        ? <Image src={agapeLogo} maxWidth="100%" marginTop="2.5rem" />
-        : (
-          <>
-            <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="200px" height="200px" marginTop="2.5rem" />
-            <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
-              Name Placeholder
-            </Text>
-          </>
-        )}
-      <Box display="flex" gap="2rem" flexDirection="column" width="100%">
-        {navbarLinks.map(({ title, links }) => (
-          <Box key={title} display="flex" gap="0.5rem" flexDirection="column">
-            <Text fontWeight="bold" marginLeft="1rem" fontSize="xs" textTransform="uppercase">{title}</Text>
-            {links.map(({ name, iconName, path }) => {
-              const isPath = path === pathname.toLowerCase()
-              const color = {
-                ...(!isPath && { color: 'secondary.500' }),
-              }
-              return (
-                <Button
-                  key={name}
-                  width="full"
-                  fontWeight="400"
-                  display="flex"
-                  gap="0.5rem"
-                  justifyContent="start"
-                  variant={isPath ? 'solid' : 'ghost'}
-                  colorScheme={isPath ? 'red' : ''}
-                  onClick={() => handleNavClick(path)}
-                >
-                  <Icon name={iconName} fontWeight="200" {...color} />
-                  <Text fontSize="sm" {...color}>{name}</Text>
-                </Button>
-              )
-            })}
-          </Box>
-        ))}
-      </Box>
+}: NavbarProps) => (
+  <Box
+    background="white"
+    width="280px"
+    height="100%"
+    position="fixed"
+    display="flex"
+    alignItems="center"
+    flexDirection="column"
+    gap="2rem"
+    padding="2rem"
+  >
+    {/* TODO: Get user image + full name */}
+    {role === 'Admin'
+      ? <Image src={agapeLogo} maxWidth="100%" marginTop="2.5rem" />
+      : (
+        <>
+          <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="200px" height="200px" marginTop="2.5rem" />
+          <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
+            Name Placeholder
+          </Text>
+        </>
+      )}
+    <Box display="flex" gap="2rem" flexDirection="column" width="100%">
+      {navbarLinks.map(({ title, links }) => (
+        <Box key={title} display="flex" gap="0.5rem" flexDirection="column">
+          <Text fontWeight="bold" marginLeft="1rem" fontSize="xs" textTransform="uppercase">{title}</Text>
+          {links.map(({ name, iconName, path }) => {
+            const isPath = path === pathname.toLowerCase()
+            const color = {
+              ...(!isPath && { color: 'secondary.500' }),
+            }
+            return (
+              <Button
+                key={name}
+                width="full"
+                fontWeight="400"
+                display="flex"
+                gap="0.5rem"
+                justifyContent="start"
+                variant={isPath ? 'solid' : 'ghost'}
+                colorScheme={isPath ? 'red' : ''}
+                onClick={() => handleNavClick(path)}
+              >
+                <Icon name={iconName} fontWeight="200" {...color} />
+                <Text fontSize="sm" {...color}>{name}</Text>
+              </Button>
+            )
+          })}
+        </Box>
+      ))}
     </Box>
-  )
-}
+  </Box>
+))
 
-function MobileNavbar({ navbarLinks, handleNavClick, pathname }: NavbarProps) {
+const MobileNavbar = memo(({ navbarLinks, handleNavClick, pathname }: NavbarProps) => {
   const flattenLinks: NavbarLinks[] = ([] as NavbarLinks[]).concat(
     ...navbarLinks.map(({ links }) => links),
   )
@@ -149,6 +147,6 @@ function MobileNavbar({ navbarLinks, handleNavClick, pathname }: NavbarProps) {
       })}
     </Box>
   )
-}
+})
 
 export default Navbar

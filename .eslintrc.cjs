@@ -10,11 +10,11 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint'],
   rules: {
-    'no-use-before-define': ["error", { "functions": false }],
+    'no-use-before-define': ['error', { 'functions': false, 'variables': false }],
     'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': 'off',
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
@@ -27,15 +27,15 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': ['error', { 'devDependencies': true }],
     'no-absolute-path': 'off',
-    "import/extensions": [
-      "error",
-      "ignorePackages",
+    'import/extensions': [
+      'error',
+      'ignorePackages',
       {
-        "": "never",
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never",
+        '': 'never',
+        'js': 'never',
+        'jsx': 'never',
+        'ts': 'never',
+        'tsx': 'never',
       }
     ]
   },

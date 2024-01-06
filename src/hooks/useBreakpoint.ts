@@ -7,7 +7,11 @@ function useBreakpoint(breakpoint: 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl', u
   const currentBreakpoint = useBreakpointChakra({ ssr: false })
 
   return useMemo(() => {
-    // Workaround for @chakra-ui/react/useBreakpoint returning undefined first render
+    /*
+      Workaround for @chakra-ui/react/useBreakpoint re-rendering twice
+      with first render returning undefined
+      Issue: https://github.com/chakra-ui/chakra-ui/issues/6401
+    */
     if (!currentBreakpoint) return true
 
     const breakpointIndex = breakpoints.indexOf(breakpoint)
