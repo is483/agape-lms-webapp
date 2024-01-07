@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Role } from '../types'
 
-interface AppState {
+export interface AppState {
   auth: {
     token: string | null,
     isLoggedIn: boolean,
