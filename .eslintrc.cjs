@@ -27,6 +27,12 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': ['error', { 'devDependencies': true }],
     'no-absolute-path': 'off',
+    'no-param-reassign': ['error', {
+      props: true,
+      ignorePropertyModificationsFor: [
+        'state',
+      ]
+    }],
     'import/extensions': [
       'error',
       'ignorePackages',

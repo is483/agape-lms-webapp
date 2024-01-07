@@ -11,7 +11,8 @@ function App() {
   const { isLoggedIn } = useAppSelector(getAuth)
 
   // TODO: Remove false condition when login implemented
-  if (false && !isLoggedIn) {
+  // false &&
+  if (!isLoggedIn) {
     return (
       <Box>
         <Routes>
