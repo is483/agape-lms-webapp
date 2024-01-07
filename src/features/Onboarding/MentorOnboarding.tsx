@@ -1,9 +1,12 @@
 import {
   Box,
+  Button,
   Flex,
+  Hide,
   useSteps,
 } from '@chakra-ui/react'
-import OnboardingStepper from './component/Introduction/Stepper'
+import OnboardingStepper from './component/Stepper'
+import PersonalInformation from './component/PersonalInformation/PersonalInformation'
 
 const steps = [
   { title: 'Personal Information' },
@@ -25,27 +28,41 @@ function MentorOnboarding() {
     setActiveStep(index)
   }
 
-  // const handleBack = () => {
-  //   if (activeStep > 1) {
-  //     setActiveStep(activeStep - 1)
-  //   }
-  // }
+  const handleBack = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1)
+    }
+  }
+  const handleNext = () => {
+    if (activeStep < 6) {
+      setActiveStep(activeStep + 1)
+    }
+  }
 
   return (
     <Flex>
       <Box>
-        <OnboardingStepper activeStep={activeStep} handleActiveStep={handleActiveStep} />
+        <Hide below="md">
+          <OnboardingStepper activeStep={activeStep} handleActiveStep={handleActiveStep} />
+        </Hide>
       </Box>
 
-      <Box flex="1">
+      <Box flex="1" margin="8" marginLeft="20">
         <Box>
-          {activeStep === 0 && <>1</>}
+          {activeStep === 0 && <PersonalInformation />}
           {activeStep === 1 && <>2</>}
           {activeStep === 2 && <>3</>}
-
         </Box>
+        <Flex justifyContent="end" gap="4">
+          <Button onClick={handleBack}>Back</Button>
+          {activeStep === 6 && (
+            <Button colorScheme="red">Finish</Button>
+          )}
+          {activeStep !== 6 && (
+            <Button colorScheme="red" onClick={handleNext}>Next</Button>
+          )}
+        </Flex>
       </Box>
-
     </Flex>
 
   )
