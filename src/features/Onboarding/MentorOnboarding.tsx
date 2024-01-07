@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Hide,
   useSteps,
@@ -33,12 +32,12 @@ function MentorOnboarding() {
       setActiveStep(activeStep - 1)
     }
   }
+
   const handleNext = () => {
     if (activeStep < 6) {
       setActiveStep(activeStep + 1)
     }
   }
-
   return (
     <Flex>
       <Box>
@@ -49,19 +48,15 @@ function MentorOnboarding() {
 
       <Box flex="1" margin="8" marginLeft="20">
         <Box>
-          {activeStep === 0 && <PersonalInformation />}
+          {activeStep === 0 && (
+            <PersonalInformation
+              handleBack={handleBack}
+              handleNext={handleNext}
+            />
+          )}
           {activeStep === 1 && <>2</>}
           {activeStep === 2 && <>3</>}
         </Box>
-        <Flex justifyContent="end" gap="4">
-          <Button onClick={handleBack}>Back</Button>
-          {activeStep === 6 && (
-            <Button colorScheme="red">Finish</Button>
-          )}
-          {activeStep !== 6 && (
-            <Button colorScheme="red" onClick={handleNext}>Next</Button>
-          )}
-        </Flex>
       </Box>
     </Flex>
 

@@ -1,11 +1,17 @@
 import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
-  Select, NumberInputField, NumberInput, Flex, Circle,
+  Select, NumberInputField, NumberInput, Flex, Circle, Button,
 } from '@chakra-ui/react'
 import React from 'react'
 import { Icon } from '../../../../components'
 
-function PersonalInformation() {
+interface Props {
+  handleBack: () => void
+  handleNext: () => void
+}
+
+function PersonalInformation(props: Props) {
+  const { handleBack, handleNext } = props
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
   const [dateOfBirth, setDateOfBirth] = React.useState('')
@@ -23,6 +29,11 @@ function PersonalInformation() {
   const handleDateOfBirth = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dateOfBirth = e.target.value
     setDateOfBirth(dateOfBirth)
+  }
+
+  const handleSave = () => {
+    // TODO: include api call to save changes
+    handleNext()
   }
 
   return (
@@ -96,8 +107,11 @@ function PersonalInformation() {
             </NumberInput>
           </FormControl>
         </Box>
-
       </SimpleGrid>
+      <Flex justifyContent="end" gap="4">
+        <Button onClick={handleBack}>Back</Button>
+        <Button colorScheme="red" onClick={handleSave}>Next</Button>
+      </Flex>
 
     </Box>
   )
