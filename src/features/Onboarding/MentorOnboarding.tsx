@@ -6,6 +6,7 @@ import {
 } from '@chakra-ui/react'
 import OnboardingStepper from './component/Stepper'
 import PersonalInformation from './component/PersonalInformation/PersonalInformation'
+import ProfessionalExperience from './component/ProfessionalExperience/ProfessionalExperience'
 
 const steps = [
   { title: 'Personal Information' },
@@ -19,7 +20,7 @@ const steps = [
 
 function MentorOnboarding() {
   const { activeStep, setActiveStep } = useSteps({
-    index: 0,
+    index: 1,
     count: steps.length,
   })
 
@@ -54,7 +55,12 @@ function MentorOnboarding() {
               handleNext={handleNext}
             />
           )}
-          {activeStep === 1 && <>2</>}
+          {activeStep === 1 && (
+            <ProfessionalExperience
+              handleBack={handleBack}
+              handleNext={handleNext}
+            />
+          )}
           {activeStep === 2 && <>3</>}
         </Box>
       </Box>

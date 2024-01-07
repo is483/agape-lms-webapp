@@ -2,7 +2,7 @@ import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
   Select, NumberInputField, NumberInput, Flex, Circle, Button,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Icon } from '../../../../components'
 
 interface Props {
@@ -12,11 +12,11 @@ interface Props {
 
 function PersonalInformation(props: Props) {
   const { handleBack, handleNext } = props
-  const [firstName, setFirstName] = React.useState('')
-  const [lastName, setLastName] = React.useState('')
-  const [dateOfBirth, setDateOfBirth] = React.useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
 
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const firstName = e.target.value
     setFirstName(firstName)
   }
