@@ -9,13 +9,16 @@ import { Icon, Link } from '../../components'
 import paths from '../../paths'
 import { useLoginMutation } from '../../app/services/auth/apiAuthSlice'
 import { LoginRequest } from '../../app/services/auth/types'
+import { useAppDispatch } from '../../hooks'
+import { setToken } from '../../app/redux/appSlice'
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const dispatch = useAppDispatch()
   const [login] = useLoginMutation()
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) return
 
     const email = emailRef.current.value
@@ -26,7 +29,8 @@ function Login() {
       password,
     }
 
-    login(loginRequest)
+    const { token } = await login(loginRequest).unwrap()
+    dispatch(setToken(token))
   }
 
   return (

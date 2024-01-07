@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Role } from '../types'
 
 interface AppState {
@@ -20,7 +20,12 @@ const initialState: AppState = {
 export const appSlice = createSlice({
   name: 'app',
   initialState,
-  reducers: {},
+  reducers: {
+    setToken: (state: AppState, action: PayloadAction<string>) => {
+      state.auth.token = action.payload
+    },
+  },
 })
 
+export const { setToken } = appSlice.actions
 export default appSlice.reducer
