@@ -2,6 +2,11 @@ const paths = {
   Login: '/login',
   Register: '/register',
 
+  Onboarding: {
+    Introduction: '/onboarding/introduction',
+    Mentor: '/onboarding/mentor',
+  },
+
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',
   Milestones: '/milestones',

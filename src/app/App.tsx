@@ -12,7 +12,7 @@ function App() {
 
   // TODO: Remove false condition when login implemented
   // false &&
-  if (!isLoggedIn) {
+  if (false && !isLoggedIn) {
     return (
       <Box>
         <Routes>
