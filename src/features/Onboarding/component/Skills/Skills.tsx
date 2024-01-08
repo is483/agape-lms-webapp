@@ -10,10 +10,10 @@ interface Props {
   handleBack: () => void
   handleNext: () => void
 }
-
 function Skills(props: Props) {
   const { handleBack, handleNext } = props
   const { role } = useAppSelector(getAuth)
+  const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
   const [skills, setSkills] = useState<string[]>([''])
   const handleSave = () => {
     // TODO: include api call to save changes
@@ -52,10 +52,9 @@ function Skills(props: Props) {
         <Flex alignItems="center" marginBottom="5" gap={4}>
           <FormControl>
             <Select placeholder="Select option" onChange={(e) => handleSkillsChange(e, index)} value={skill}>
-              <option value="skill1">Effective Communication</option>
-              <option value="skill2">Teamwork</option>
-              <option value="skill3">Negotiation</option>
-              <option value="skill4">Emotional Intelligence</option>
+              {skillOptions.map((skillOption) => (
+                <option value={skillOption}>{skillOption}</option>
+              ))}
             </Select>
           </FormControl>
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
