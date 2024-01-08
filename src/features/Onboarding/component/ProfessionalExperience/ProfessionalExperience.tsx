@@ -65,10 +65,10 @@ function ProfessionalExperience(props: Props) {
 
   return (
     <Box>
-      {role === 'Mentor' && (
+      <Text fontSize="2xl" fontWeight="600"> Professional Experience </Text>
+      <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight some of your previous job experiences </Text>
+      {role === 'Mentee' && (
         <Box>
-          <Text fontSize="2xl" fontWeight="600"> Professional Experience </Text>
-          <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight some of your previous job experiences </Text>
           <FormControl>
             <FormLabel>Career Aspirations</FormLabel>
             <Select placeholder="Select option" onChange={(e) => handleCareerAspirationsChange(e)} value={careerAspiration}>
