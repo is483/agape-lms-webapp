@@ -27,7 +27,7 @@ const ControlledSelect = forwardRef<HTMLSelectElement, Props>(({
 
   const InputComponent = (
     <Select ref={ref} placeholder="Select option" {...errorStyleProps} {...selectProps}>
-      {options.map((option) => <option value={option}>{option}</option>)}
+      {options.map((option) => <option key={option} value={option}>{option}</option>)}
     </Select>
   )
 
