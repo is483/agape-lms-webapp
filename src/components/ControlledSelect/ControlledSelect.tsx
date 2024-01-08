@@ -16,10 +16,11 @@ interface Props {
   boxProps?: BoxProps
   options: string[]
   selectProps?: SelectProps
+  label?: string
 }
 
 const ControlledSelect = forwardRef<HTMLSelectElement, Props>(({
-  error, iconProps, boxProps, options = [], selectProps,
+  error, iconProps, boxProps, options = [], selectProps, label,
 }, ref) => {
   const errorStyleProps = {
     ...(error && { borderColor: 'red.600', borderWidth: '2px' }),
@@ -30,12 +31,13 @@ const ControlledSelect = forwardRef<HTMLSelectElement, Props>(({
       {options.map((option) => <option key={option} value={option}>{option}</option>)}
     </Select>
   )
-
   const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>
+  const LabelComponent = <Text textTransform="uppercase" fontWeight="bold" fontSize="xs" position="absolute" top="-5">{label}</Text>
 
   if (!iconProps) {
     return (
-      <Box {...boxProps}>
+      <Box position="relative" {...boxProps}>
+        {LabelComponent}
         {InputComponent}
         {!!error && ErrorComponent}
       </Box>
@@ -43,8 +45,9 @@ const ControlledSelect = forwardRef<HTMLSelectElement, Props>(({
   }
 
   return (
-    <Box {...boxProps}>
+    <Box position="relative" {...boxProps}>
       <InputGroup>
+        {LabelComponent}
         <InputLeftElement pointerEvents="none">
           <Icon {...iconProps} />
         </InputLeftElement>
@@ -59,6 +62,7 @@ ControlledSelect.defaultProps = {
   boxProps: {},
   iconProps: undefined,
   selectProps: undefined,
+  label: undefined,
 }
 
 export default ControlledSelect

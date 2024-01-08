@@ -14,10 +14,11 @@ interface Props {
   placeholder: string
   boxProps?: BoxProps
   inputProps?: InputProps
+  label?: string
 }
 
 const ControlledTextInput = forwardRef<HTMLInputElement, Props>(({
-  error, type, placeholder, iconProps, boxProps, inputProps,
+  error, type, placeholder, iconProps, boxProps, inputProps, label,
 }, ref) => {
   const errorStyleProps = {
     ...(error && { borderColor: 'red.600', borderWidth: '2px' }),
@@ -32,12 +33,13 @@ const ControlledTextInput = forwardRef<HTMLInputElement, Props>(({
       {...inputProps}
     />
   )
-
   const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>
+  const LabelComponent = <Text textTransform="uppercase" fontWeight="bold" fontSize="xs" position="absolute" top="-5">{label}</Text>
 
   if (!iconProps) {
     return (
-      <Box {...boxProps}>
+      <Box position="relative" {...boxProps}>
+        {LabelComponent}
         {InputComponent}
         {!!error && ErrorComponent}
       </Box>
@@ -45,7 +47,8 @@ const ControlledTextInput = forwardRef<HTMLInputElement, Props>(({
   }
 
   return (
-    <Box {...boxProps}>
+    <Box position="relative" {...boxProps}>
+      {LabelComponent}
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <Icon {...iconProps} />
@@ -61,6 +64,7 @@ ControlledTextInput.defaultProps = {
   boxProps: {},
   iconProps: undefined,
   inputProps: {},
+  label: undefined,
 }
 
 export default ControlledTextInput
