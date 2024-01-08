@@ -45,12 +45,12 @@ function Skills(props: Props) {
       <Text color="secondary.500" marginTop="1" marginBottom="8">
         {role === 'Mentor' ? 'Share with us what you are good at!' : 'Highlight what are some skills you\'d like to learn'}
       </Text>
-      <Text marginBottom="3" fontWeight="600">
-        {role === 'Mentor' ? 'Skills' : 'Skills you\'d like to acquire'}
+      <Text marginBottom="3">
+        {role === 'Mentor' ? 'Skills (Select up to 5 options)' : 'Skills you\'d like to acquire (Select up to 5 options)'}
       </Text>
       {skills.map((skill, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <FormControl>
+          <FormControl isRequired>
             <Select placeholder="Select option" onChange={(e) => handleSkillsChange(e, index)} value={skill}>
               {skillOptions.map((skillOption) => (
                 <option value={skillOption}>{skillOption}</option>

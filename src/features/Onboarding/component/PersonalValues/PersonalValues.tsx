@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, FormControl, Select, Text,
+  Box, Button, Flex, FormControl, FormLabel, Select, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { Icon } from '../../../../components'
@@ -46,6 +46,7 @@ function PersonalValues(props: Props) {
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Personal Values </Text>
       <Text color="secondary.500" marginTop="1" marginBottom="8"> Share about your core principles and beliefs </Text>
+      <FormLabel>Personal Values (Select up to 5 options)</FormLabel>
       {values.map((value, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
           <FormControl>

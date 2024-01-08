@@ -59,7 +59,7 @@ function MentoringStyle(props: Props) {
       <Text color="secondary.500" marginTop="1" marginBottom="8">{role === 'Mentor' ? 'Define your approach to guidance and support' : 'Outline your learning preferences and expectations'} </Text>
       <Box marginBottom="8">
         <FormControl isRequired>
-          <FormLabel fontWeight="600">Preferred Communication</FormLabel>
+          <FormLabel >Preferred Communication</FormLabel>
           <Select placeholder="Select option">
             <option value="physical"> Physical </option>
             <option value="online"> Online </option>
@@ -68,7 +68,7 @@ function MentoringStyle(props: Props) {
       </Box>
       <Box marginBottom="8">
         <FormControl isRequired>
-          <FormLabel fontWeight="600">Preferred Days of Meeting</FormLabel>
+          <FormLabel >Preferred Days of Meeting</FormLabel>
           <CheckboxGroup onChange={handleCheckboxChange} value={meetingDays}>
             <SimpleGrid columns={[1, null, 3]} spacingY={5}>
               <Checkbox value="Monday">Monday</Checkbox>
@@ -96,7 +96,7 @@ function MentoringStyle(props: Props) {
       )}
       {role === 'Mentor' && (
         <Box>
-          <FormLabel fontWeight="600">Preferred Mentoring Approach (Select up to 3 options)</FormLabel>
+          <FormLabel>Preferred Mentoring Approach (Select up to 3 options)</FormLabel>
           {mentoringApproaches.map((mentoringApproach, index) => (
             <Flex marginBottom="5" gap={4} alignItems="center">
               <FormControl isRequired>

@@ -66,7 +66,7 @@ function ProfessionalExperience(props: Props) {
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Professional Experience </Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight some of your previous job experiences </Text>
+      <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight up to 5 of your previous job experiences! </Text>
       {role === 'Mentee' && (
         <Box>
           <FormControl>

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Box, Button, Flex, FormControl, Select, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormLabel, Select, Text } from '@chakra-ui/react'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { Icon } from '../../../../components'
@@ -47,7 +47,8 @@ function Challenges(props: Props) {
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Challenges/Lessons</Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8"> Reflect on Obstacles Overcome and Wisdom Gained</Text>
+      <Text color="secondary.500" marginTop="1" marginBottom="8"> Reflect on obstacles overcome and wisdom gained</Text>
+      <FormLabel>Challenges/Lessons (Select up to 5 options)</FormLabel>
       {
         challenges.map((challenge, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>

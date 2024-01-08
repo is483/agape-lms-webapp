@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, FormControl, Select, Text,
+  Box, Button, Flex, FormControl, FormLabel, Select, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { Icon } from '../../../../components'
@@ -40,7 +40,8 @@ function Interests(props: Props) {
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Interests</Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight Your Passions and Hobbies</Text>
+      <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight your passions and hobbies</Text>
+      <FormLabel>Interests and Hobbies (Select up to 5 options)</FormLabel>
       {
         interests.map((interest, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>
