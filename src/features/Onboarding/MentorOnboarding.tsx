@@ -7,6 +7,7 @@ import {
 import OnboardingStepper from './component/Stepper'
 import PersonalInformation from './component/PersonalInformation/PersonalInformation'
 import ProfessionalExperience from './component/ProfessionalExperience/ProfessionalExperience'
+import Skills from './component/Skills/Skills'
 
 const steps = [
   { title: 'Personal Information' },
@@ -20,7 +21,7 @@ const steps = [
 
 function MentorOnboarding() {
   const { activeStep, setActiveStep } = useSteps({
-    index: 1,
+    index: 2,
     count: steps.length,
   })
 
@@ -41,7 +42,7 @@ function MentorOnboarding() {
   }
   return (
     <Flex>
-      <Box>
+      <Box margin="8">
         <Hide below="md">
           <OnboardingStepper activeStep={activeStep} handleActiveStep={handleActiveStep} />
         </Hide>
@@ -61,7 +62,12 @@ function MentorOnboarding() {
               handleNext={handleNext}
             />
           )}
-          {activeStep === 2 && <>3</>}
+          {activeStep === 2 && (
+            <Skills
+              handleBack={handleBack}
+              handleNext={handleNext}
+            />
+          )}
         </Box>
       </Box>
     </Flex>

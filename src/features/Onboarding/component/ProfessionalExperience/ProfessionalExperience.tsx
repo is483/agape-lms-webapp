@@ -1,9 +1,11 @@
 import {
   Box, Button, Flex, FormControl,
-  FormLabel, Input, SimpleGrid, Text,
+  FormLabel, Input, Select, SimpleGrid, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { Icon } from '../../../../components'
+import getAuth from '../../../../app/redux/selectors'
+import { useAppSelector } from '../../../../hooks'
 
 interface Props {
   handleBack: () => void
@@ -27,9 +29,14 @@ const defaultWorkExperiences: WorkExperience[] = [{ ...defaultWorkExperience }]
 function ProfessionalExperience(props: Props) {
   const { handleBack, handleNext } = props
   const [workExperiences, setWorkExperiences] = useState(defaultWorkExperiences)
+  const [careerAspiration, setCareerAspiration] = useState('')
+  const { role } = useAppSelector(getAuth)
   const handleSave = () => {
     // TODO: include api call to save changes
     handleNext()
+  }
+  const handleCareerAspirationsChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCareerAspiration(e.target.value)
   }
   const handleAddWorkExperience = () => {
     setWorkExperiences((prevWorkExperiences) => [
@@ -58,6 +65,20 @@ function ProfessionalExperience(props: Props) {
 
   return (
     <Box>
+      {role === 'Mentor' && (
+        <Box>
+          <Text fontSize="2xl" fontWeight="600"> Professional Experience </Text>
+          <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight some of your previous job experiences </Text>
+          <FormControl>
+            <FormLabel>Career Aspirations</FormLabel>
+            <Select placeholder="Select option" onChange={(e) => handleCareerAspirationsChange(e)} value={careerAspiration}>
+              <option value="job1">IT Technician</option>
+              <option value="job2">Video Producer</option>
+              <option value="job3">Content Creator</option>
+            </Select>
+          </FormControl>
+        </Box>
+      )}
       {workExperiences.map((workExperience, index) => {
         const { jobTitle, company, description } = workExperience
         return (
