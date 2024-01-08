@@ -55,24 +55,24 @@ const DesktopSideNavbar = memo(({
     display="flex"
     alignItems="center"
     flexDirection="column"
-    gap="2rem"
-    padding="2rem"
+    gap="5"
+    padding="8"
   >
     {/* TODO: Get user image + full name */}
     {role === 'Admin'
-      ? <Image src={agapeLogo} maxWidth="100%" marginTop="2.5rem" />
+      ? <Image src={agapeLogo} maxWidth="100%" />
       : (
         <>
-          <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="200px" height="200px" marginTop="2.5rem" />
+          <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="140px" height="140px" />
           <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
             Name Placeholder
           </Text>
         </>
       )}
-    <Box display="flex" gap="2rem" flexDirection="column" width="100%">
+    <Box display="flex" gap="6" flexDirection="column" width="100%">
       {navbarLinks.map(({ title, links }) => (
-        <Box key={title} display="flex" gap="0.5rem" flexDirection="column">
-          <Text fontWeight="bold" marginLeft="1rem" fontSize="xs" textTransform="uppercase">{title}</Text>
+        <Box key={title} display="flex" gap="2" flexDirection="column">
+          <Text fontWeight="bold" marginLeft="5" fontSize="xs" textTransform="uppercase">{title}</Text>
           {links.map(({ name, iconName, path }) => {
             const isPath = path === pathname.toLowerCase()
             const color = {
@@ -84,7 +84,7 @@ const DesktopSideNavbar = memo(({
                 width="full"
                 fontWeight="400"
                 display="flex"
-                gap="0.5rem"
+                gap="2"
                 justifyContent="start"
                 variant={isPath ? 'solid' : 'ghost'}
                 colorScheme={isPath ? 'red' : ''}
