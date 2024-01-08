@@ -1,4 +1,6 @@
-import { Box, Button, Flex, FormControl, Select, Text } from '@chakra-ui/react'
+import {
+  Box, Button, Flex, FormControl, Select, Text,
+} from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { Icon } from '../../../../components'
 
