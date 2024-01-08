@@ -61,9 +61,12 @@ function Skills(props: Props) {
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
         </Flex>
       ))}
-      <Box marginY="5">
-        <Button size="sm" onClick={handleAddSkills}> + Add Skills</Button>
-      </Box>
+      {skills.length < 5 && (
+        <Box marginY="5">
+          <Button size="sm" onClick={handleAddSkills}> + Add Skills</Button>
+        </Box>
+      )}
+
       <Flex justifyContent="end" gap="4">
         <Button onClick={handleBack}>Back</Button>
         <Button colorScheme="red" onClick={handleSave}>Next</Button>
