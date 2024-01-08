@@ -11,6 +11,7 @@ import Skills from './component/Skills/Skills'
 import PersonalValues from './component/PersonalValues/PersonalValues'
 import Challenges from './component/Challenges/Challenges'
 import Interests from './component/Interests/Interests'
+import MentoringStyle from './component/MentoringStyle/MentoringStyle'
 
 const steps = [
   { title: 'Personal Information' },
@@ -24,7 +25,7 @@ const steps = [
 
 function MentorOnboarding() {
   const { activeStep, setActiveStep } = useSteps({
-    index: 6,
+    index: 4,
     count: steps.length,
   })
 
@@ -73,6 +74,12 @@ function MentorOnboarding() {
           )}
           {activeStep === 3 && (
             <PersonalValues
+              handleBack={handleBack}
+              handleNext={handleNext}
+            />
+          )}
+          {activeStep === 4 && (
+            <MentoringStyle
               handleBack={handleBack}
               handleNext={handleNext}
             />
