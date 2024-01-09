@@ -34,7 +34,7 @@ function Login() {
   }
 
   return (
-    <Container maxWidth="container.xl" minHeight="100vh" justifyContent="center" display="flex" flexDirection="column">
+    <Container maxWidth="container.xl" minHeight="100vh" justifyContent="center" display="flex" flexDirection="column" paddingY="8">
       <Flex>
         <Flex flex="1" justifyContent="center">
           <Box flex="1" flexDirection="column" maxW="480px">

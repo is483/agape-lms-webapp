@@ -1,0 +1,3 @@
+.chakra-input__left-element + .chakra-select__wrapper > .chakra-select {
+    padding-left: 40px!important;
+}
