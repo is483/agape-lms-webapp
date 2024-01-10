@@ -80,9 +80,13 @@ function Register() {
       password,
     }
 
-    const { token } = await register(registerRequest).unwrap()
-    dispatch(setToken(token))
-    // TODO: route to onboarding page
+    try {
+      const { token } = await register(registerRequest).unwrap()
+      dispatch(setToken(token))
+      // TODO: route to onboarding page
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (

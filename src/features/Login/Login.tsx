@@ -29,9 +29,13 @@ function Login() {
       password,
     }
 
-    const { token } = await login(loginRequest).unwrap()
-    dispatch(setToken(token))
-    // TODO: route to onboarding page
+    try {
+      const { token } = await login(loginRequest).unwrap()
+      dispatch(setToken(token))
+      // TODO: route to onboarding page
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
