@@ -7,7 +7,7 @@ import agapeLogo from '../../assets/agape_logo.png'
 import loginIllustration from '../../assets/login_illustration.png'
 import { Link, ControlledSelect, ControlledTextInput } from '../../components'
 import paths from '../../paths'
-import { isValidEmail } from './utils'
+import { isValidEmail, jsonDeepEqualityCheck } from './utils'
 import { useRegisterMutation } from '../../app/services/auth/apiAuthSlice'
 import { RegisterRequest } from '../../app/services/auth/types'
 import { Role } from '../../app/types'
@@ -71,7 +71,7 @@ function Register() {
     }
     setErrors(errors)
 
-    if (JSON.stringify(errors) !== JSON.stringify(defaultErrors)) return
+    if (jsonDeepEqualityCheck(errors, defaultErrors)) return
 
     // TODO: Add api call
     const registerRequest: RegisterRequest = {

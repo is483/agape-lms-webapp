@@ -10,6 +10,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint'],
   rules: {
+    'function-paren-newline': 'off',
     'no-use-before-define': ['error', { 'functions': false, 'variables': false }],
     'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': 'off',
