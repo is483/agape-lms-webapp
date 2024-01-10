@@ -16,7 +16,7 @@ function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const dispatch = useAppDispatch()
-  const [login] = useLoginMutation()
+  const [login, { isLoading }] = useLoginMutation()
 
   const handleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) return
@@ -65,7 +65,7 @@ function Login() {
             <Flex justifyContent="end" mt="1">
               <Link fontWeight="500" color="red.600" to={paths.Login}>Forgot Password?</Link>
             </Flex>
-            <Button onClick={handleLogin} w="100%" colorScheme="red" mt="16">Login</Button>
+            <Button isLoading={isLoading} onClick={handleLogin} w="100%" colorScheme="red" mt="16">Login</Button>
             <Flex justifyContent="center" mt="12">
               <Text>
                 New here?&nbsp;

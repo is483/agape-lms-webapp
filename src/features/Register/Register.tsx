@@ -32,7 +32,7 @@ const roleOptions: Role[] = ['Mentor', 'Mentee'] as const
 
 function Register() {
   const dispatch = useAppDispatch()
-  const [register] = useRegisterMutation()
+  const [register, { isLoading }] = useRegisterMutation()
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const roleRef = useRef<HTMLSelectElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
@@ -105,7 +105,7 @@ function Register() {
               <ControlledTextInput ref={passwordRef} error={errors.password} type="password" placeholder="Password" iconProps={{ name: 'lock' }} />
               <ControlledTextInput ref={confirmPasswordRef} error={errors.confirmPassword} type="password" placeholder="Confirm Password" iconProps={{ name: 'lock' }} />
             </Stack>
-            <Button onClick={handleRegister} w="100%" colorScheme="red" mt="16">Create Account</Button>
+            <Button isLoading={isLoading} onClick={handleRegister} w="100%" colorScheme="red" mt="16">Create Account</Button>
             <Flex justifyContent="center" mt="12">
               <Text>
                 Already have an account?&nbsp;
