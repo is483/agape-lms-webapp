@@ -16,3 +16,7 @@ export interface RegisterRequest {
 }
 
 export interface RegisterResponse extends LoginResponse { }
+
+export interface ForgetPasswordRequest {
+  email: string
+}

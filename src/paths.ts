@@ -1,6 +1,7 @@
 const paths = {
   Login: '/login',
   Register: '/register',
+  ForgetPassword: '/forget-password',
 
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',
