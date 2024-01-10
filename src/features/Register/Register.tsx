@@ -8,6 +8,11 @@ import loginIllustration from '../../assets/login_illustration.png'
 import { Link, ControlledSelect, ControlledTextInput } from '../../components'
 import paths from '../../paths'
 import { validateEmail } from './utils'
+import { useRegisterMutation } from '../../app/services/auth/apiAuthSlice'
+import { RegisterRequest } from '../../app/services/auth/types'
+import { Role } from '../../app/types'
+import { useAppDispatch } from '../../hooks'
+import { setToken } from '../../app/redux/appSlice'
 
 interface Errors {
   role: string
@@ -23,9 +28,11 @@ const defaultErrors: Errors = {
   confirmPassword: '',
 }
 
-const roleOptions = ['Mentor', 'Mentee']
+const roleOptions: Role[] = ['Mentor', 'Mentee'] as const
 
 function Register() {
+  const dispatch = useAppDispatch()
+  const [register] = useRegisterMutation()
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const roleRef = useRef<HTMLSelectElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
@@ -67,6 +74,15 @@ function Register() {
     if (JSON.stringify(errors) !== JSON.stringify(defaultErrors)) return
 
     // TODO: Add api call
+    const registerRequest: RegisterRequest = {
+      role: role as Role,
+      email,
+      password,
+    }
+
+    const { token } = await register(registerRequest).unwrap()
+    dispatch(setToken(token))
+    // TODO: route to onboarding page
   }
 
   return (

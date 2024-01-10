@@ -31,6 +31,7 @@ function Login() {
 
     const { token } = await login(loginRequest).unwrap()
     dispatch(setToken(token))
+    // TODO: route to onboarding page
   }
 
   return (
