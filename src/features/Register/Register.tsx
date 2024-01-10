@@ -7,7 +7,7 @@ import agapeLogo from '../../assets/agape_logo.png'
 import loginIllustration from '../../assets/login_illustration.png'
 import { Link, ControlledSelect, ControlledTextInput } from '../../components'
 import paths from '../../paths'
-import { validateEmail } from './utils'
+import { isValidEmail } from './utils'
 import { useRegisterMutation } from '../../app/services/auth/apiAuthSlice'
 import { RegisterRequest } from '../../app/services/auth/types'
 import { Role } from '../../app/types'
@@ -66,7 +66,7 @@ function Register() {
     if (password !== confirmPassword) {
       errors.confirmPassword = 'Passwords do not match'
     }
-    if (!validateEmail(email)) {
+    if (!isValidEmail(email)) {
       errors.email = 'Please enter a valid email'
     }
     setErrors(errors)
