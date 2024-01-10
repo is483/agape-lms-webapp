@@ -1,5 +1,7 @@
 import { apiSlice } from '../apiSlice'
-import { LoginRequest, LoginResponse } from './types'
+import {
+  LoginRequest, LoginResponse, RegisterRequest, RegisterResponse,
+} from './types'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -11,8 +13,15 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         invalidateTags: ['User'],
       }),
     }),
+    register: build.mutation<RegisterResponse, RegisterRequest>({
+      query: (credentials) => ({
+        url: 'register',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLoginMutation } = apiAuthSlice
+export const { useLoginMutation, useRegisterMutation } = apiAuthSlice
