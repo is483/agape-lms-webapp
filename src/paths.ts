@@ -2,6 +2,7 @@ const paths = {
   Login: '/login',
   Register: '/register',
   ForgetPassword: '/forget-password',
+  ResetPassword: '/reset-password',
 
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',

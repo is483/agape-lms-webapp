@@ -1,7 +1,7 @@
 import { apiSlice } from '../apiSlice'
 import {
-  ForgetPasswordRequest,
-  LoginRequest, LoginResponse, RegisterRequest, RegisterResponse,
+  ForgetPasswordRequest, LoginRequest, LoginResponse, RegisterRequest,
+  RegisterResponse, ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
@@ -28,8 +28,25 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         body: payload,
       }),
     }),
+    resetPassword: build.mutation<any, ResetPasswordRequest>({
+      query: (payload) => ({
+        url: 'reset-password',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
+    verifyResetToken: build.mutation<VerifyResetTokenResponse, VerifyResetTokenRequest>({
+      query: (payload) => ({
+        url: 'verify-reset-token',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLoginMutation, useRegisterMutation, useForgetPasswordMutation } = apiAuthSlice
+export const {
+  useLoginMutation, useRegisterMutation, useForgetPasswordMutation, useResetPasswordMutation,
+  useVerifyResetTokenMutation,
+} = apiAuthSlice

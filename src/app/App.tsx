@@ -7,6 +7,7 @@ import { Register } from '../features/Register'
 import AppLayout from './AppLayout'
 import paths from '../paths'
 import { ForgetPassword } from '../features/ForgetPassword'
+import { ResetPassword } from '../features/ResetPassword'
 
 function App() {
   const { isLoggedIn } = useAppSelector(getAuth)
@@ -21,6 +22,7 @@ function App() {
           <Route path={paths.Login} element={<Login />} />
           <Route path={paths.Register} element={<Register />} />
           <Route path={paths.ForgetPassword} element={<ForgetPassword />} />
+          <Route path={paths.ResetPassword} element={<ResetPassword />} />
         </Routes>
       </Box>
     )
