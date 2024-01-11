@@ -20,3 +20,17 @@ export interface RegisterResponse extends LoginResponse { }
 export interface ForgetPasswordRequest {
   email: string
 }
+
+export interface ResetPasswordRequest {
+  password: string
+}
+
+export interface VerifyResetTokenRequest {
+  token: string
+}
+
+export interface VerifyResetTokenResponse {
+  successful: boolean
+  error: string
+  fullName: string
+}
