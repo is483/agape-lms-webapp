@@ -106,7 +106,11 @@ function ResetPassword() {
             </Box>
             <Text fontSize="2xl" fontWeight="bold" mb="1">Change Password</Text>
             <Text mb="10">
-              Welcome back <Text color="red.700" fontWeight="600" display="inline">{fullName}</Text>! Enter your new password below
+              {
+                !!fullName
+                && <Box as="span" display="inline" marginRight="1">Welcome back <Text as="span" color="red.700" fontWeight="600" display="inline">{fullName}</Text>!</Box>
+              }
+              Enter your new password below
             </Text>
             <Stack gap="6">
               <ControlledTextInput ref={passwordRef} error={errors.password} type="password" placeholder="Password" iconProps={{ name: 'lock' }} />
