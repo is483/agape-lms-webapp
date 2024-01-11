@@ -9,7 +9,7 @@ import store from './app/store'
 import theme from './theme'
 import 'material-symbols/outlined.css'
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   // match everything with "*"
   // keep routing within App
   { path: '*', element: <App /> },
