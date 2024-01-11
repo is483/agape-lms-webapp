@@ -1,5 +1,6 @@
 import { apiSlice } from '../apiSlice'
 import {
+  ForgetPasswordRequest,
   LoginRequest, LoginResponse, RegisterRequest, RegisterResponse,
 } from './types'
 
@@ -20,8 +21,15 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    forgetPassword: build.mutation<any, ForgetPasswordRequest>({
+      query: (payload) => ({
+        url: 'forget-password',
+        method: 'POST',
+        body: payload,
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLoginMutation, useRegisterMutation } = apiAuthSlice
+export const { useLoginMutation, useRegisterMutation, useForgetPasswordMutation } = apiAuthSlice

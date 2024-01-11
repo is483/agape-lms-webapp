@@ -63,7 +63,7 @@ function Login() {
               </InputGroup>
             </Stack>
             <Flex justifyContent="end" mt="1">
-              <Link fontWeight="500" color="red.600" to={paths.Login}>Forgot Password?</Link>
+              <Link fontWeight="500" color="red.600" to={paths.ForgetPassword}>Forgot Password?</Link>
             </Flex>
             <Button isLoading={isLoading} onClick={handleLogin} w="100%" colorScheme="red" mt="16">Login</Button>
             <Flex justifyContent="center" mt="12">
