@@ -1,8 +1,9 @@
 import {
   Box, Button, Container, Flex, Hide, Image,
-  Stack, Text,
+  Stack, Text, useToast,
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import agapeLogo from '../../assets/agape_logo.png'
 import loginIllustration from '../../assets/login_illustration.png'
 import { Link, ControlledSelect, ControlledTextInput } from '../../components'
@@ -11,8 +12,6 @@ import { isValidEmail, jsonDeepEqualityCheck } from './utils'
 import { useRegisterMutation } from '../../app/services/auth/apiAuthSlice'
 import { RegisterRequest } from '../../app/services/auth/types'
 import { Role } from '../../app/types'
-import { useAppDispatch } from '../../hooks'
-import { setToken } from '../../app/redux/appSlice'
 
 interface Errors {
   role: string
@@ -31,7 +30,8 @@ const defaultErrors: Errors = {
 const roleOptions: Role[] = ['Mentor', 'Mentee'] as const
 
 function Register() {
-  const dispatch = useAppDispatch()
+  const toast = useToast()
+  const navigate = useNavigate()
   const [register, { isLoading }] = useRegisterMutation()
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const roleRef = useRef<HTMLSelectElement>(null)
@@ -73,17 +73,22 @@ function Register() {
 
     if (jsonDeepEqualityCheck(errors, defaultErrors)) return
 
-    // TODO: Add api call
-    const registerRequest: RegisterRequest = {
-      role: role as Role,
-      email,
-      password,
-    }
-
     try {
-      const { token } = await register(registerRequest).unwrap()
-      dispatch(setToken(token))
-      // TODO: route to onboarding page
+      const registerRequest: RegisterRequest = {
+        role: role as Role,
+        email,
+        password,
+      }
+      await register(registerRequest).unwrap()
+      toast({
+        title: 'Register Successful',
+        description: 'You may proceed to login with your new credentials.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      navigate(paths.Login)
     } catch (e) {
       console.error(e)
     }

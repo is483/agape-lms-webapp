@@ -1,7 +1,7 @@
 import { apiSlice } from '../apiSlice'
 import {
   ForgetPasswordRequest, LoginRequest, LoginResponse, RegisterRequest,
-  RegisterResponse, ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
+  ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from './utils'
 
@@ -16,7 +16,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    register: build.mutation<RegisterResponse, RegisterRequest>({
+    register: build.mutation<null, RegisterRequest>({
       query: (credentials) => ({
         url: 'register',
         method: 'POST',
