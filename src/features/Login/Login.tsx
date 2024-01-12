@@ -9,13 +9,10 @@ import { Icon, Link } from '../../components'
 import paths from '../../paths'
 import { useLoginMutation } from '../../app/services/auth/apiAuthSlice'
 import { LoginRequest } from '../../app/services/auth/types'
-import { useAppDispatch } from '../../hooks'
-import { setToken } from '../../app/redux/appSlice'
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-  const dispatch = useAppDispatch()
   const [login, { isLoading }] = useLoginMutation()
 
   const handleLogin = async () => {
@@ -30,9 +27,7 @@ function Login() {
     }
 
     try {
-      const { token } = await login(loginRequest).unwrap()
-      dispatch(setToken(token))
-      // TODO: route to onboarding page
+      await login(loginRequest)
     } catch (e) {
       console.error(e)
     }
