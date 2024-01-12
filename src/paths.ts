@@ -3,6 +3,7 @@ const paths = {
   Register: '/register',
   ForgetPassword: '/forget-password',
   ResetPassword: '/reset-password',
+  SessionExpired: '/session-expired',
 
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',

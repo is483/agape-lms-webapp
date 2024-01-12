@@ -33,10 +33,10 @@ export const handleFetchError = (
 ) => {
   if (status === 403) {
     dispatch(setToken(null))
-    router.navigate(paths.Login)
+    router.navigate(paths.SessionExpired)
   } else {
     toast({
-      title: 'An error occurred.',
+      title: 'Error',
       description: 'An unexpected error has occured. Please try again later.',
       status: 'error',
       duration: 9000,
