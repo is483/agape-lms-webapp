@@ -3,32 +3,65 @@ import {
   Select, NumberInputField, NumberInput, Flex, Circle, Button,
 } from '@chakra-ui/react'
 import React, { ChangeEvent, useState } from 'react'
-import { Icon } from '../../../../components'
+import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
 }
 
+interface Errors {
+  firstName: string
+  lastName: string
+  dateOfBirth: string
+  gender: string
+  phoneNumber: string
+}
+
+const defaultErrors: Errors = {
+  firstName: 'No first name included',
+  lastName: 'No last name included',
+  dateOfBirth: 'No date of birth selected',
+  gender: 'No gender selected',
+  phoneNumber: 'No phone number included'
+
+}
+
+const genderOptions = ['Male', 'Female']
+
+
 function PersonalInformation(props: Props) {
   const { handleBack, handleNext } = props
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
+  const [gender, setGender] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const firstName = e.target.value
     setFirstName(firstName)
   }
 
-  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLastNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const lastName = e.target.value
     setLastName(lastName)
   }
 
-  const handleDateOfBirth = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateOfBirth = (e: ChangeEvent<HTMLInputElement>) => {
     const dateOfBirth = e.target.value
     setDateOfBirth(dateOfBirth)
+  }
+
+  const handleGenderChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const gender = e.target.value
+    setGender(gender)
+  }
+
+  const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const phoneNumber = e.target.value
+    setPhoneNumber(phoneNumber)
   }
 
   const handleSave = () => {
@@ -55,57 +88,23 @@ function PersonalInformation(props: Props) {
           </FormControl>
         </Box>
       </Flex>
-      <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="4">
+      <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
         <Box>
-          <FormControl isRequired>
-            <FormLabel>First Name</FormLabel>
-            <Input
-              placeholder="First name"
-              value={firstName}
-              onChange={handleFirstNameChange}
-            />
-          </FormControl>
+          <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type={'text'} placeholder={''} />
         </Box>
         <Box>
-          <FormControl isRequired>
-            <FormLabel>Last Name</FormLabel>
-            <Input
-              placeholder="Last name"
-              value={lastName}
-              onChange={handleLastNameChange}
-            />
-          </FormControl>
+          <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type={'text'} placeholder={''} />
         </Box>
 
         <Box>
-          <FormControl isRequired>
-            <FormLabel>Date of Birth</FormLabel>
-            <Input
-              placeholder="Select "
-              size="md"
-              type="date"
-              value={dateOfBirth}
-              onChange={handleDateOfBirth}
-            />
-          </FormControl>
+          <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type={'date'} placeholder={''} />
         </Box>
 
         <Box>
-          <FormControl isRequired>
-            <FormLabel>Gender</FormLabel>
-            <Select placeholder="Select gender">
-              <option value="male"> Male </option>
-              <option value="female"> Female </option>
-            </Select>
-          </FormControl>
+          <ControlledSelect placeholder="Select gender" selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label='Gender' />
         </Box>
         <Box>
-          <FormControl isRequired>
-            <FormLabel>Phone Number</FormLabel>
-            <NumberInput>
-              <NumberInputField />
-            </NumberInput>
-          </FormControl>
+          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type={'number'} placeholder={''} />
         </Box>
       </SimpleGrid>
       <Flex justifyContent="end" gap="4">

@@ -8,10 +8,13 @@ interface Props {
   handleBack: () => void
   handleNext: () => void
 }
+
+const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdoor Activities']
+
 function Interests(props: Props) {
   const { handleBack, handleNext } = props
-  const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdoor Activities']
   const [interests, setInterests] = useState<string[]>([''])
+  
   const handleInterestChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setInterests((prevInterests) => {
       const newInterests = [...prevInterests]

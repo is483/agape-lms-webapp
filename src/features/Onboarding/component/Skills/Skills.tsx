@@ -15,10 +15,7 @@ function Skills(props: Props) {
   const { role } = useAppSelector(getAuth)
   const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
   const [skills, setSkills] = useState<string[]>([''])
-  const handleSave = () => {
-    // TODO: include api call to save changes
-    handleNext()
-  }
+
   const handleSkillsChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setSkills((prevSkills) => {
       const newSkills = [...prevSkills]
@@ -39,6 +36,12 @@ function Skills(props: Props) {
       return newSkills
     })
   }
+
+  const handleSave = () => {
+    // TODO: include api call to save changes
+    handleNext()
+  }
+
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Skills and Knowledge </Text>

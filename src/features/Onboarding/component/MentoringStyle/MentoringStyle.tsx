@@ -10,13 +10,14 @@ interface Props {
   handleNext: () => void
 }
 
+const mentoringOptions = ['Coaching Oriented', 'Directive', 'Supportive', 'Facilitative', 'Collaborative']
+
 function MentoringStyle(props: Props) {
   const { handleBack, handleNext } = props
   const { role } = useAppSelector(getAuth)
   const [meetingDays, setMeetingDays] = useState<string[]>([''])
   const [mentoringApproaches, setMentoringApproaches] = useState<string[]>([''])
   const [expectations, setExpectations] = useState('')
-  const mentoringOptions = ['Coaching Oriented', 'Directive', 'Supportive', 'Facilitative', 'Collaborative']
 
   const handleCheckboxChange = (meetingDays: string[]) => {
     setMeetingDays(meetingDays);

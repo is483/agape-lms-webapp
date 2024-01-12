@@ -9,11 +9,12 @@ interface Props {
   handleNext: () => void
 }
 
+const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
+
 function PersonalValues(props: Props) {
   const { handleBack, handleNext } = props
-  const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
   const [values, setValues] = useState<string[]>([''])
-
+  
   const handleValueChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setValues((prevValues) => {
       const newValues = [...prevValues]
