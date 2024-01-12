@@ -21,7 +21,7 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setToken: (state: AppState, action: PayloadAction<string>) => {
+    setToken: (state: AppState, action: PayloadAction<string | null>) => {
       state.auth.token = action.payload
     },
   },
