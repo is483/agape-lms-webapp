@@ -22,6 +22,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
           dispatch(setToken(token))
           dispatch(setIsLoggedIn(true))
           localStorage.setItem('token', token)
+          // TODO: Add decision to route to main page/onboarding page
         }).catch(({ error }) => {
           console.error(error)
           const { status } = error as FetchBaseQueryError
