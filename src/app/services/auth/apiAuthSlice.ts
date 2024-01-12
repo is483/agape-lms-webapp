@@ -24,7 +24,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    forgetPassword: build.mutation<any, ForgetPasswordRequest>({
+    forgetPassword: build.mutation<null, ForgetPasswordRequest>({
       query: (payload) => ({
         url: 'forget-password',
         method: 'POST',
@@ -32,7 +32,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    resetPassword: build.mutation<any, ResetPasswordRequest>({
+    resetPassword: build.mutation<null, ResetPasswordRequest>({
       query: (payload) => ({
         url: 'reset-password',
         method: 'POST',
