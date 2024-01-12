@@ -92,7 +92,7 @@ function ProfessionalExperience(props: Props) {
       <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight up to 5 of your previous job experiences! </Text>
       {role === 'Mentee' && (
         <Box marginTop="5">
-          <ControlledSelect error={errors.careerAspiration} label='Career Aspiration' options={careerOptions} placeholder={''} selectProps={{ onChange: handleCareerAspirationsChange, value: careerAspiration }} />
+          <ControlledSelect error={errors.careerAspiration} label="Career Aspiration" options={careerOptions} placeholder={''} selectProps={{ onChange: handleCareerAspirationsChange, value: careerAspiration }} />
         </Box>
       )}
       {workExperiences.map((workExperience, index) => {

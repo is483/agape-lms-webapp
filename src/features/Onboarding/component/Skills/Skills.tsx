@@ -4,17 +4,28 @@ import {
 import { ChangeEvent, useState } from 'react'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
-import { Icon } from '../../../../components'
+import { ControlledSelect, Icon } from '../../../../components'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
 }
+
+interface Errors {
+  skills: string
+}
+
+const defaultErrors: Errors = {
+  skills: 'No skill selected'
+}
+
+const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
+
 function Skills(props: Props) {
   const { handleBack, handleNext } = props
   const { role } = useAppSelector(getAuth)
-  const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
   const [skills, setSkills] = useState<string[]>([''])
+  const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   const handleSkillsChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setSkills((prevSkills) => {
@@ -53,13 +64,7 @@ function Skills(props: Props) {
       </Text>
       {skills.map((skill, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <FormControl isRequired>
-            <Select placeholder="Select option" onChange={(e) => handleSkillsChange(e, index)} value={skill}>
-              {skillOptions.map((skillOption) => (
-                <option value={skillOption}>{skillOption}</option>
-              ))}
-            </Select>
-          </FormControl>
+          <ControlledSelect error={errors.skills} placeholder={''} label=""  options={skillOptions} selectProps={{ onChange: (e)=> handleSkillsChange(e,index), value: skill}} />
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
         </Flex>
       ))}
