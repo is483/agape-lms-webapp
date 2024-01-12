@@ -1,6 +1,6 @@
 import {
   Box, Button, Flex, FormControl,
-  FormLabel, Input, SimpleGrid, Text,
+  FormLabel, Input, SimpleGrid, Text, Textarea,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
@@ -111,11 +111,13 @@ function ProfessionalExperience(props: Props) {
                 <ControlledTextInput error={errors.company} label={'Company'} type={'text'} placeholder={''} inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'company'), value: company }} />
               </Box>
             </SimpleGrid>
-            <ControlledTextInput error={errors.description} label={'Description'} type={'text'} placeholder={''} inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'description'), value: description }} />
+            <FormLabel> Description </FormLabel>
+            <Textarea borderColor={errors.description ? 'red.600' : 'inherit'} borderWidth={errors.description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e)=> handleWorkExperienceChange(e, index, 'description')} />
+            {!!errors.description && <Text position="absolute" fontSize="xs" color="red.600" >{errors.description}</Text>}
           </>
         )
       })}
-      <Box marginY="5">
+      <Box marginY="10">
         <Button size="sm" onClick={handleAddWorkExperience}> + Add Work Experience</Button>
       </Box>
 

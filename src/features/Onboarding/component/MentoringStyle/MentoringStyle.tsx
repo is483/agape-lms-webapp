@@ -2,7 +2,7 @@ import { Box, Button, Checkbox, CheckboxGroup, Flex, FormControl, FormLabel, Sel
 import getAuth from "../../../../app/redux/selectors"
 import { useAppSelector } from "../../../../hooks"
 import { ChangeEvent, useState } from "react"
-import { Icon } from "../../../../components"
+import { ControlledSelect, ControlledTextInput, Icon } from "../../../../components"
 
 
 interface Props {
@@ -10,14 +10,37 @@ interface Props {
   handleNext: () => void
 }
 
+interface Errors {
+  preferredCommunication: string
+  meetingDays: string
+  mentoringApproaches: string
+  expectations: string
+}
+
+const defaultErrors: Errors = {
+  preferredCommunication: 'Test Error',
+  meetingDays: 'Test Error',
+  mentoringApproaches: 'Test Error',
+  expectations: 'Test Error'
+}
+
 const mentoringOptions = ['Coaching Oriented', 'Directive', 'Supportive', 'Facilitative', 'Collaborative']
+const communicationOptions = ['Physical', 'Online']
+const dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 function MentoringStyle(props: Props) {
   const { handleBack, handleNext } = props
   const { role } = useAppSelector(getAuth)
+  const [preferredCommunication, setPreferredCommunication] = useState('')
   const [meetingDays, setMeetingDays] = useState<string[]>([''])
   const [mentoringApproaches, setMentoringApproaches] = useState<string[]>([''])
   const [expectations, setExpectations] = useState('')
+  const [errors, setErrors] = useState<Errors>(defaultErrors)
+
+  const handlePreferredCommunicationChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const newPreferredCommunication = e.target.value
+    setPreferredCommunication(newPreferredCommunication)
+  }
 
   const handleCheckboxChange = (meetingDays: string[]) => {
     setMeetingDays(meetingDays);
@@ -37,7 +60,7 @@ function MentoringStyle(props: Props) {
 
   const handleAddMentoringApproach = () => {
     setMentoringApproaches((prevMentoringApproach) => [
-      ...prevMentoringApproach,''
+      ...prevMentoringApproach, ''
     ])
   }
   const handleDeleteMentoringApproach = (index: number) => {
@@ -53,44 +76,32 @@ function MentoringStyle(props: Props) {
     handleNext()
   }
 
-  console.log(expectations)
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Mentoring Style </Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8">{role === 'Mentor' ? 'Define your approach to guidance and support' : 'Outline your learning preferences and expectations'} </Text>
+      <Text color="secondary.500" marginTop="1" marginBottom="55">{role === 'Mentor' ? 'Define your approach to guidance and support' : 'Outline your learning preferences and expectations'} </Text>
       <Box marginBottom="8">
-        <FormControl isRequired>
-          <FormLabel >Preferred Communication</FormLabel>
-          <Select placeholder="Select option">
-            <option value="physical"> Physical </option>
-            <option value="online"> Online </option>
-          </Select>
-        </FormControl>
+        <ControlledSelect label="Preferred Communication" error={errors.preferredCommunication} placeholder={""} options={communicationOptions} selectProps={{ onChange: handlePreferredCommunicationChange, value: preferredCommunication }} />
       </Box>
       <Box marginBottom="8">
-        <FormControl isRequired>
-          <FormLabel >Preferred Days of Meeting</FormLabel>
-          <CheckboxGroup onChange={handleCheckboxChange} value={meetingDays}>
-            <SimpleGrid columns={[1, null, 3]} spacingY={5}>
-              <Checkbox value="Monday">Monday</Checkbox>
-              <Checkbox value="Tuesday">Tuesday</Checkbox>
-              <Checkbox value="Wednesday">Wednesday</Checkbox>
-              <Checkbox value="Thursday">Thursday</Checkbox>
-              <Checkbox value="Friday">Friday</Checkbox>
-              <Checkbox value="Saturday">Saturday</Checkbox>
-              <Checkbox value="Sunday">Sunday</Checkbox>
-            </SimpleGrid>
-          </CheckboxGroup>
-        </FormControl>
+        <CheckboxGroup onChange={handleCheckboxChange} value={meetingDays}>
+          <FormLabel> Meeting Days </FormLabel>
+          <SimpleGrid columns={[1, null, 3]} marginBottom="2" spacingY={5}>
+            {dayOptions.map((day,index)=>(
+              <Checkbox value={day}> {day} </Checkbox>
+            ))}
+          </SimpleGrid>
+          {!!errors.meetingDays && <Text position="absolute" fontSize="xs" color="red.600" >{errors.meetingDays}</Text>}
+        </CheckboxGroup>
       </Box>
 
       {role === 'Mentee' && (
-        <Box>
-          <FormControl isRequired>
+        <Box marginY="10">
+          <FormControl>
             <FormLabel fontWeight="600">Expectations</FormLabel>
-            <Textarea placeholder="Describe what you kind of support you'd like from your mentor..." value={expectations} onChange={handleExpectationsChange}>
-
+            <Textarea borderColor={errors.expectations ? 'red.600' : 'inherit'} borderWidth={errors.expectations ? '2px' : '1px'} placeholder="Describe what you kind of support you'd like from your mentor..." value={expectations} onChange={handleExpectationsChange}>
             </Textarea>
+            {!!errors.expectations && <Text position="absolute" fontSize="xs" color="red.600" >{errors.meetingDays}</Text>}
           </FormControl>
 
         </Box>
@@ -100,18 +111,12 @@ function MentoringStyle(props: Props) {
           <FormLabel>Preferred Mentoring Approach (Select up to 3 options)</FormLabel>
           {mentoringApproaches.map((mentoringApproach, index) => (
             <Flex marginBottom="5" gap={4} alignItems="center">
-              <FormControl isRequired>
-                <Select placeholder="Select option" onChange={(e) => handleMentoringApproachesChange(e, index)} value={mentoringApproach}>
-                  {mentoringOptions.map((mentoringOption) => (
-                    <option value={mentoringOption}>{mentoringOption}</option>
-                  ))}
-                </Select>
-              </FormControl>
+              <ControlledSelect selectProps={{ onChange: (e) => handleMentoringApproachesChange(e, index), value: mentoringApproach }} options={mentoringOptions} error={errors.mentoringApproaches} placeholder={""} />
               <Icon name="delete" _hover={{ cursor: 'pointer' }} color={mentoringApproaches.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteMentoringApproach(index)} />
             </Flex>
           ))}
           {mentoringApproaches.length < 3 && (
-            <Box marginY="5">
+            <Box marginY="10">
               <Button size="sm" onClick={handleAddMentoringApproach}> + Add Mentoring Approach</Button>
             </Box>
           )}
