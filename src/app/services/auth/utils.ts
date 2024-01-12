@@ -3,7 +3,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { router } from '../../../main'
 import paths from '../../../paths'
-import { setToken } from '../../redux/appSlice'
+import { setIsLoggedIn, setToken } from '../../redux/appSlice'
 
 const { toast } = createStandaloneToast()
 
@@ -33,6 +33,8 @@ export const handleFetchError = (
 ) => {
   if (status === 403) {
     dispatch(setToken(null))
+    dispatch(setIsLoggedIn(false))
+    localStorage.removeItem('token')
     router.navigate(paths.SessionExpired)
   } else {
     toast({

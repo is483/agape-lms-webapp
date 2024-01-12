@@ -21,6 +21,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
           const { token } = data
           dispatch(setToken(token))
           dispatch(setIsLoggedIn(true))
+          localStorage.setItem('token', token)
         }).catch(({ error }) => {
           console.error(error)
           const { status } = error as FetchBaseQueryError
