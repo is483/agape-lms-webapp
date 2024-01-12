@@ -2,11 +2,19 @@ import {
   Box, Button, Flex, FormControl, FormLabel, Select, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { Icon } from '../../../../components'
+import { ControlledSelect, Icon } from '../../../../components'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
+}
+
+interface Errors {
+  interests: string
+}
+
+const defaultErrors: Errors = {
+  interests: 'No interests selected'
 }
 
 const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdoor Activities']
@@ -14,6 +22,7 @@ const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdo
 function Interests(props: Props) {
   const { handleBack, handleNext } = props
   const [interests, setInterests] = useState<string[]>([''])
+  const [errors, setErrors] = useState<Errors>(defaultErrors)
   
   const handleInterestChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setInterests((prevInterests) => {
@@ -48,15 +57,8 @@ function Interests(props: Props) {
       {
         interests.map((interest, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>
-            <FormControl>
-              <Select placeholder="Select option" onChange={(e) => handleInterestChange(e, index)} value={interest}>
-                {interestOptions.map((interestOption) => (
-                  <option value={interestOption}>{interestOption}</option>
-                ))}
-              </Select>
-            </FormControl>
+            <ControlledSelect selectProps={{ onChange: (e) => handleInterestChange(e, index), value: interest }} error={errors.interests} options={interestOptions} placeholder={''}/>
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={interests.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteInterest(index)} />
-
           </Flex>
         ))
       }

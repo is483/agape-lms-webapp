@@ -2,20 +2,31 @@ import React, { ChangeEvent, useState } from 'react'
 import { Box, Button, Flex, FormControl, FormLabel, Select, Text } from '@chakra-ui/react'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
-import { Icon } from '../../../../components'
+import { ControlledSelect, Icon } from '../../../../components'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
 }
 
+interface Errors {
+  challenges: string
+}
+
+const defaultErrors: Errors = {
+  challenges: 'No interests selected'
+}
+
+
+const mentorChallengesOptions = ['Balancing work life commitments', 'Imposter syndrome', 'Time management', 'Task delegation']
+const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
+
 function Challenges(props: Props) {
   const { handleBack, handleNext } = props
   const { role } = useAppSelector(getAuth)
-  const mentorChallengesOptions = ['Balancing work life commitments', 'Imposter syndrome', 'Time management', 'Task delegation']
-  const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
+  const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   const handleChallengeChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setChallenges((prevChallenges) => {
@@ -52,19 +63,13 @@ function Challenges(props: Props) {
       {
         challenges.map((challenge, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>
-            <FormControl>
-              <Select placeholder="Select challenge" onChange={(e) => handleChallengeChange(e, index)} value={challenge}>
-                {challengesOptions.map((challengeOption) => (
-                  <option value={challengeOption}>{challengeOption}</option>
-                ))}
-              </Select>
-            </FormControl>
+            <ControlledSelect selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }} error={errors.challenges} placeholder={''} options={challengesOptions}/>
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
           </Flex>
         ))
       }
       {challenges.length < 5 && (
-        <Box marginY="5">
+        <Box marginY="10">
           <Button size="sm" onClick={handleAddChallenge}> + Add Challenge</Button>
         </Box>
       )}

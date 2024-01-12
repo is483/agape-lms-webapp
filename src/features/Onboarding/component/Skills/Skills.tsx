@@ -69,7 +69,7 @@ function Skills(props: Props) {
         </Flex>
       ))}
       {skills.length < 5 && (
-        <Box marginY="5">
+        <Box marginY="10">
           <Button size="sm" onClick={handleAddSkills}> + Add Skills</Button>
         </Box>
       )}

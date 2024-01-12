@@ -2,11 +2,19 @@ import {
   Box, Button, Flex, FormControl, FormLabel, Select, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { Icon } from '../../../../components'
+import { ControlledSelect, Icon } from '../../../../components'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
+}
+
+interface Errors {
+  values: string
+}
+
+const defaultErrors: Errors = {
+  values: 'No skill selected'
 }
 
 const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
@@ -14,6 +22,7 @@ const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence'
 function PersonalValues(props: Props) {
   const { handleBack, handleNext } = props
   const [values, setValues] = useState<string[]>([''])
+  const [errors, setErrors] = useState<Errors>(defaultErrors)
   
   const handleValueChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setValues((prevValues) => {
@@ -50,18 +59,12 @@ function PersonalValues(props: Props) {
       <FormLabel>Personal Values (Select up to 5 options)</FormLabel>
       {values.map((value, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <FormControl>
-            <Select placeholder="Select option" onChange={(e) => handleValueChange(e, index)} value={value}>
-              {valueOptions.map((valueOption) => (
-                <option value={valueOption}>{valueOption}</option>
-              ))}
-            </Select>
-          </FormControl>
+          <ControlledSelect error={errors.values} placeholder={''} options={valueOptions} selectProps={{ onChange: (e)=> handleValueChange(e,index), value: value}}/>
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={values.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteValue(index)} />
         </Flex>
       ))}
       {values.length < 5 && (
-        <Box marginY="5">
+        <Box marginY="10">
           <Button size="sm" onClick={handleAddValue}> + Add Values</Button>
         </Box>
       )}
