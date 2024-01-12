@@ -6,6 +6,7 @@ interface Props {
 
 const defaultIconStyles = {
   fontWeight: '300',
+  color: 'secondary.600',
 }
 
 function Icon({ name, ...props }: Props & BoxProps) {

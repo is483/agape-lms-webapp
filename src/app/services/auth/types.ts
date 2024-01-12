@@ -1,3 +1,5 @@
+import { Role } from '../../types'
+
 export interface LoginRequest {
   email: string
   password: string
@@ -5,4 +7,30 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string
+}
+
+export interface RegisterRequest {
+  role: Role
+  email: string
+  password: string
+}
+
+export interface RegisterResponse extends LoginResponse { }
+
+export interface ForgetPasswordRequest {
+  email: string
+}
+
+export interface ResetPasswordRequest {
+  password: string
+}
+
+export interface VerifyResetTokenRequest {
+  token: string
+}
+
+export interface VerifyResetTokenResponse {
+  successful: boolean
+  error: string
+  fullName: string
 }

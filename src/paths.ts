@@ -1,6 +1,9 @@
 const paths = {
   Login: '/login',
   Register: '/register',
+  ForgetPassword: '/forget-password',
+  ResetPassword: '/reset-password',
+  SessionExpired: '/session-expired',
 
   Onboarding: {
     Introduction: '/onboarding/introduction',

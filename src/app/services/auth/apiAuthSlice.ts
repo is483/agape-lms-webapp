@@ -1,5 +1,9 @@
 import { apiSlice } from '../apiSlice'
-import { LoginRequest, LoginResponse } from './types'
+import {
+  ForgetPasswordRequest, LoginRequest, LoginResponse, RegisterRequest,
+  RegisterResponse, ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
+} from './types'
+import { defaultOnQueryStarted as onQueryStarted } from './utils'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -10,9 +14,45 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         body: credentials,
         invalidateTags: ['User'],
       }),
+      onQueryStarted,
+    }),
+    register: build.mutation<RegisterResponse, RegisterRequest>({
+      query: (credentials) => ({
+        url: 'register',
+        method: 'POST',
+        body: credentials,
+      }),
+      onQueryStarted,
+    }),
+    forgetPassword: build.mutation<null, ForgetPasswordRequest>({
+      query: (payload) => ({
+        url: 'forget-password',
+        method: 'POST',
+        body: payload,
+      }),
+      onQueryStarted,
+    }),
+    resetPassword: build.mutation<null, ResetPasswordRequest>({
+      query: (payload) => ({
+        url: 'reset-password',
+        method: 'POST',
+        body: payload,
+      }),
+      onQueryStarted,
+    }),
+    verifyResetToken: build.mutation<VerifyResetTokenResponse, VerifyResetTokenRequest>({
+      query: (payload) => ({
+        url: 'verify-reset-token',
+        method: 'POST',
+        body: payload,
+      }),
+      onQueryStarted,
     }),
   }),
   overrideExisting: false,
 })
 
-export const { useLoginMutation } = apiAuthSlice
+export const {
+  useLoginMutation, useRegisterMutation, useForgetPasswordMutation, useResetPasswordMutation,
+  useVerifyResetTokenMutation,
+} = apiAuthSlice
