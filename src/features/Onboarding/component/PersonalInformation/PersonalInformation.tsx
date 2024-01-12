@@ -104,7 +104,7 @@ function PersonalInformation(props: Props) {
           <ControlledSelect placeholder="Select gender" selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label='Gender' />
         </Box>
         <Box>
-          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type={'number'} placeholder={''} />
+          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type='number' placeholder={''} />
         </Box>
       </SimpleGrid>
       <Flex justifyContent="end" gap="4">
