@@ -8,7 +8,7 @@ import { RootState } from '../store'
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/',
+    baseUrl: 'http://localhost:8080/api/v1/',
     prepareHeaders: (headers, { getState }) => {
       const appState = (getState() as RootState).app
       const localStorageToken = localStorage.getItem('token')

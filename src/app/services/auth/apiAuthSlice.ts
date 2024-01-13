@@ -11,7 +11,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: 'login',
+        url: 'user/login',
         method: 'POST',
         body: credentials,
         invalidateTags: ['User'],
@@ -32,7 +32,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     register: build.mutation<null, RegisterRequest>({
       query: (credentials) => ({
-        url: 'register',
+        url: 'user/register',
         method: 'POST',
         body: credentials,
       }),
@@ -40,7 +40,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     forgetPassword: build.mutation<null, ForgetPasswordRequest>({
       query: (payload) => ({
-        url: 'forget-password',
+        url: 'user/forget-password',
         method: 'POST',
         body: payload,
       }),
@@ -48,7 +48,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     resetPassword: build.mutation<null, ResetPasswordRequest>({
       query: (payload) => ({
-        url: 'reset-password',
+        url: 'user/reset-password',
         method: 'POST',
         body: payload,
       }),
@@ -56,7 +56,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     verifyResetToken: build.mutation<VerifyResetTokenResponse, VerifyResetTokenRequest>({
       query: (payload) => ({
-        url: 'verify-reset-token',
+        url: 'user/verify-reset-token',
         method: 'POST',
         body: payload,
       }),
