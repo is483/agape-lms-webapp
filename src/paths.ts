@@ -7,11 +7,6 @@ const paths = {
   Introduction: '/introduction',
   Onboarding:'/onboarding',
 
-  // Onboarding: {
-  //   Introduction: '/onboarding/introduction',
-  //   Onboarding: '/onboarding/start',
-  // },
-
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',
   Milestones: '/milestones',

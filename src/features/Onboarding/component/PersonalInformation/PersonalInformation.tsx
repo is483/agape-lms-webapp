@@ -1,9 +1,13 @@
 import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
-  Select, NumberInputField, NumberInput, Flex, Circle, Button,
+  Flex, Circle, Button,
 } from '@chakra-ui/react'
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
+import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
+import { MenteeInfoRequest, MentorInfoRequest } from '../../../../app/services/user/types'
+import getAuth from '../../../../app/redux/selectors'
+import { useAppSelector } from '../../../../hooks'
 
 interface Props {
   handleBack: () => void
@@ -19,19 +23,20 @@ interface Errors {
 }
 
 const defaultErrors: Errors = {
-  firstName: 'No first name included',
-  lastName: 'No last name included',
-  dateOfBirth: 'No date of birth selected',
-  gender: 'No gender selected',
-  phoneNumber: 'No phone number included'
-
+  firstName: '',
+  lastName: '',
+  dateOfBirth: '',
+  gender: '',
+  phoneNumber: ''
 }
 
 const genderOptions = ['Male', 'Female']
 
-
 function PersonalInformation(props: Props) {
-  const { handleBack, handleNext } = props
+  const {  handleNext } = props
+  const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
+  const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
+  const { role } = useAppSelector(getAuth)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
@@ -64,9 +69,65 @@ function PersonalInformation(props: Props) {
     /^\d*$/.test(phoneNumber) && setPhoneNumber(phoneNumber);
   }
 
-  const handleSave = () => {
-    // TODO: include api call to save changes
-    handleNext()
+  const handleSave = async () => {
+    const newErrors = {
+      ...defaultErrors,
+    }
+
+    if (!firstName) {
+      newErrors.firstName = 'No first name included'
+    }
+
+    if (!lastName) {
+      newErrors.lastName = 'No last name included'
+    }
+    if (!dateOfBirth) {
+      newErrors.dateOfBirth = 'No date of birth selected'
+    }
+    if (!gender) {
+      newErrors.gender = 'No gender selected'
+    }
+    if (phoneNumber.length < 8 || phoneNumber.length > 8) {
+      newErrors.phoneNumber = 'Please enter a valid 8 digit phone number'
+    }
+    const hasErrors = Object.values(newErrors).some(error => error !== '');
+    if (hasErrors) {
+      setErrors(newErrors)
+      return;
+    }
+
+    else {
+      if (role === "Mentor") {
+        try {
+          const mentorInfoRequest: MentorInfoRequest = {
+            firstName,
+            lastName,
+            dateOfBirth,
+            gender,
+            phoneNumber
+          }
+          await updateMentorInfo(mentorInfoRequest).unwrap()
+          handleNext()
+        } catch (e) {
+          console.error(e)
+        }
+      }
+      else {
+        try {
+          const menteeInfoRequest: MenteeInfoRequest = {
+            firstName,
+            lastName,
+            dateOfBirth,
+            gender,
+            phoneNumber
+          }
+          await updateMenteeInfo(menteeInfoRequest).unwrap()
+          handleNext()
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    }
   }
 
   return (
@@ -108,8 +169,7 @@ function PersonalInformation(props: Props) {
         </Box>
       </SimpleGrid>
       <Flex justifyContent="end" gap="4">
-        <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave}>Next</Button>
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === "Mentor" ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
 
     </Box>
