@@ -8,6 +8,9 @@ import { NavbarLinkSection, NavbarLinks, navbarLinksRecord } from './constants'
 import { Icon } from '../../components'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import agapeLogo from '../../assets/agape_logo.png'
+import { useAppDispatch } from '../../hooks'
+import { setIsLoggedIn, setToken } from '../../app/redux/appSlice'
+import paths from '../../paths'
 
 interface Props {
   role: Role
@@ -18,12 +21,20 @@ function Navbar(props: Props) {
   const navbarLinks = navbarLinksRecord[role!]
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { pathname } = location
   const isMdUp = useBreakpoint('md')
 
   const handleNavClick = useCallback((path: string) => {
     navigate(path)
   }, [navigate])
+
+  const handleLogout = () => {
+    dispatch(setToken(null))
+    dispatch(setIsLoggedIn(false))
+    localStorage.removeItem('token')
+    navigate(paths.Login)
+  }
 
   const NavbarComponent = isMdUp ? DesktopSideNavbar : MobileNavbar
 
@@ -33,6 +44,7 @@ function Navbar(props: Props) {
       handleNavClick={handleNavClick}
       pathname={pathname}
       role={role}
+      handleLogout={handleLogout}
     />
   )
 }
@@ -42,10 +54,12 @@ interface NavbarProps {
   handleNavClick: (path: string) => void
   pathname: string
   role: Role
+  handleLogout: () => void
 }
 
 const DesktopSideNavbar = memo(({
   navbarLinks, handleNavClick, pathname, role,
+  handleLogout,
 }: NavbarProps) => (
   <Box
     background="white"
@@ -76,7 +90,7 @@ const DesktopSideNavbar = memo(({
           {links.map(({ name, iconName, path }) => {
             const isPath = path === pathname.toLowerCase()
             const color = {
-              ...(!isPath && { color: 'secondary.500' }),
+              color: isPath ? 'white' : 'secondary.500',
             }
             return (
               <Button
@@ -97,6 +111,9 @@ const DesktopSideNavbar = memo(({
           })}
         </Box>
       ))}
+      <Button fontSize="xs" fontWeight="bold" size="sm" onClick={handleLogout} textTransform="uppercase" leftIcon={<Icon fontSize="20px" name="logout" />}>
+        Logout
+      </Button>
     </Box>
   </Box>
 ))

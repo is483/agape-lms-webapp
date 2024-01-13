@@ -11,10 +11,14 @@ export const apiSlice = createApi({
     baseUrl: '/',
     prepareHeaders: (headers, { getState }) => {
       const appState = (getState() as RootState).app
+      const localStorageToken = localStorage.getItem('token')
       const { token } = appState.auth
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`)
+      const loginToken = token ?? localStorageToken
+
+      if (loginToken) {
+        headers.set('authorization', `Bearer ${loginToken}`)
       }
+
       return headers
     },
   }),
