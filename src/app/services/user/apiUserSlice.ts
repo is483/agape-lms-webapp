@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice'
-import { InfoRequest } from './types'
+import { ExperienceRequest, InfoRequest, MenteeExperienceRequest } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiUserSlice = apiSlice.injectEndpoints({
@@ -20,10 +20,27 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    updateMentorExperience: build.mutation<null, ExperienceRequest>({
+      query: (request) => ({
+        url: 'mentor/onboarding/experience',
+        method: 'PUT',
+        body: request,
+      }),
+      onQueryStarted,
+    }),
+    updateMenteeExperience: build.mutation<null, MenteeExperienceRequest>({
+      query: (request) => ({
+        url: 'mentee/onboarding/experience',
+        method: 'PUT',
+        body: request,
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
 export const {
-  useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation
+  useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation,
+  useUpdateMentorExperienceMutation, useUpdateMenteeExperienceMutation,
 } = apiUserSlice

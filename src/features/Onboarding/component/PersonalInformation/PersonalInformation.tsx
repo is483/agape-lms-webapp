@@ -10,7 +10,6 @@ import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 
 interface Props {
-  handleBack: () => void
   handleNext: () => void
 }
 
@@ -27,7 +26,7 @@ const defaultErrors: Errors = {
   lastName: '',
   dateOfBirth: '',
   gender: '',
-  phoneNumber: ''
+  phoneNumber: '',
 }
 
 const genderOptions = ['Male', 'Female']
@@ -65,8 +64,10 @@ function PersonalInformation(props: Props) {
   }
 
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const phoneNumber = e.target.value;
-    /^\d*$/.test(phoneNumber) && setPhoneNumber(phoneNumber);
+    const phoneNumber = e.target.value
+    if (/^\d*$/.test(phoneNumber)) {
+      setPhoneNumber(phoneNumber)
+    }
   }
 
   const handleSave = async () => {
@@ -75,42 +76,41 @@ function PersonalInformation(props: Props) {
     }
 
     if (!firstName) {
-      newErrors.firstName = 'No first name included'
+      newErrors.firstName = 'First name is required'
     }
 
     if (!lastName) {
-      newErrors.lastName = 'No last name included'
+      newErrors.lastName = 'Last name is required'
     }
     if (!dateOfBirth) {
-      newErrors.dateOfBirth = 'No date of birth selected'
+      newErrors.dateOfBirth = 'Date of birth is required'
     }
     if (!gender) {
-      newErrors.gender = 'No gender selected'
+      newErrors.gender = 'Gender is required'
     }
     if (phoneNumber.length < 8 || phoneNumber.length > 8) {
       newErrors.phoneNumber = 'Please enter a valid 8 digit phone number'
     }
-    const hasErrors = Object.values(newErrors).some(error => error !== '');
+    const hasErrors = Object.values(newErrors).some((error) => error !== '')
     if (hasErrors) {
       setErrors(newErrors)
-      return;
+      return
     }
-    const updateInfo = role === "Mentor" ? updateMentorInfo : updateMenteeInfo
+    const updateInfo = role === 'Mentor' ? updateMentorInfo : updateMenteeInfo
     const infoRequest: InfoRequest = {
       firstName,
       lastName,
       dateOfBirth,
       gender,
-      phoneNumber
+      phoneNumber,
     }
     try {
-      await updateInfo(infoRequest).unwrap();
-      handleNext();
+      await updateInfo(infoRequest).unwrap()
+      handleNext()
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
   }
-
 
   return (
     <Box>
@@ -133,25 +133,25 @@ function PersonalInformation(props: Props) {
       </Flex>
       <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
         <Box>
-          <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type={'text'} placeholder={''} />
+          <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text" placeholder="" />
         </Box>
         <Box>
-          <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type={'text'} placeholder={''} />
-        </Box>
-
-        <Box>
-          <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type={'date'} placeholder={''} />
+          <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type="text" placeholder="" />
         </Box>
 
         <Box>
-          <ControlledSelect placeholder="Select gender" selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label='Gender' />
+          <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type="date" placeholder="" />
+        </Box>
+
+        <Box>
+          <ControlledSelect placeholder="Select gender" selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label="Gender" />
         </Box>
         <Box>
-          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type={'text'} placeholder={''} />
+          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type="text" placeholder="" />
         </Box>
       </SimpleGrid>
       <Flex justifyContent="end" gap="4">
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === "Mentor" ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
 
     </Box>
