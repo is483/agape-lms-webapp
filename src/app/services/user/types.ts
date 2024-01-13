@@ -21,6 +21,10 @@ export interface SkillsRequest{
   skills: string[]
 }
 
+export interface ValuesRequest {
+  values: string[]
+}
+
 export interface InterestsRequest{
   interests: string[]
 }
