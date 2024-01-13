@@ -13,6 +13,7 @@ export interface RegisterRequest {
   role: Role
   email: string
   password: string
+  confirmPassword: string
 }
 
 export interface ForgetPasswordRequest {

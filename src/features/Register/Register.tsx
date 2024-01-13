@@ -78,6 +78,7 @@ function Register() {
         role: role as Role,
         email,
         password,
+        confirmPassword,
       }
       await register(registerRequest).unwrap()
       toast({
