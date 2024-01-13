@@ -5,7 +5,7 @@ import {
 import { ChangeEvent, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
-import { MenteeInfoRequest, MentorInfoRequest } from '../../../../app/services/user/types'
+import { InfoRequest } from '../../../../app/services/user/types'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 
@@ -33,7 +33,7 @@ const defaultErrors: Errors = {
 const genderOptions = ['Male', 'Female']
 
 function PersonalInformation(props: Props) {
-  const {  handleNext } = props
+  const { handleNext } = props
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
   const { role } = useAppSelector(getAuth)
@@ -95,40 +95,22 @@ function PersonalInformation(props: Props) {
       setErrors(newErrors)
       return;
     }
-
-    else {
-      if (role === "Mentor") {
-        try {
-          const mentorInfoRequest: MentorInfoRequest = {
-            firstName,
-            lastName,
-            dateOfBirth,
-            gender,
-            phoneNumber
-          }
-          await updateMentorInfo(mentorInfoRequest).unwrap()
-          handleNext()
-        } catch (e) {
-          console.error(e)
-        }
-      }
-      else {
-        try {
-          const menteeInfoRequest: MenteeInfoRequest = {
-            firstName,
-            lastName,
-            dateOfBirth,
-            gender,
-            phoneNumber
-          }
-          await updateMenteeInfo(menteeInfoRequest).unwrap()
-          handleNext()
-        } catch (e) {
-          console.error(e)
-        }
-      }
+    const updateInfo = role === "Mentor" ? updateMentorInfo : updateMenteeInfo
+    const infoRequest: InfoRequest = {
+      firstName,
+      lastName,
+      dateOfBirth,
+      gender,
+      phoneNumber
+    }
+    try {
+      await updateInfo(infoRequest).unwrap();
+      handleNext();
+    } catch (e) {
+      console.error(e);
     }
   }
+
 
   return (
     <Box>
@@ -175,4 +157,5 @@ function PersonalInformation(props: Props) {
     </Box>
   )
 }
+
 export default PersonalInformation

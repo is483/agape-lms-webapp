@@ -6,7 +6,3 @@ export interface InfoRequest {
   gender: string
   phoneNumber: string
 }
-
-export interface MentorInfoRequest extends InfoRequest{}
-
-export interface MenteeInfoRequest extends InfoRequest{}
