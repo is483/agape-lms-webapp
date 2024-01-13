@@ -1,10 +1,12 @@
 import {
-  Box, Button, Flex, FormControl, Select, Text,
+  Box, Button, Flex, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
+import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
+import { SkillsRequest } from '../../../../app/services/user/types'
 
 interface Props {
   handleBack: () => void
@@ -12,17 +14,19 @@ interface Props {
 }
 
 interface Errors {
-  skills: string
+  skills: string[]
 }
 
 const defaultErrors: Errors = {
-  skills: 'No skill selected'
+  skills: [],
 }
 
 const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
 
 function Skills(props: Props) {
   const { handleBack, handleNext } = props
+  const [updateMentorSkills, { isLoading: isMentorInfoLoading }] = useUpdateMentorSkillsMutation()
+  const [updateMenteeSkills, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeSkillsMutation()
   const { role } = useAppSelector(getAuth)
   const [skills, setSkills] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
@@ -38,6 +42,11 @@ function Skills(props: Props) {
     setSkills((prevSkills) => [
       ...prevSkills, '',
     ])
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      newErrors.skills = [...prevErrors.skills, '']
+      return newErrors
+    })
   }
   const handleDeleteSkill = (index: number) => {
     if (skills.length <= 1) return
@@ -46,13 +55,37 @@ function Skills(props: Props) {
       newSkills.splice(index, 1)
       return newSkills
     })
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      newErrors.skills.splice(index, 1)
+      return newErrors
+    })
   }
 
-  const handleSave = () => {
-    // TODO: include api call to save changes
-    handleNext()
+  const handleSave = async () => {
+    const newErrors = JSON.parse(JSON.stringify(defaultErrors))
+    let hasErrors = false
+    skills.forEach((skill, index) => {
+      if (!skill) {
+        newErrors.skills[index] = 'Skill required'
+        hasErrors = true
+      }
+    })
+    if (hasErrors) {
+      setErrors(newErrors)
+      return
+    }
+    const updateSkills = role === 'Mentor' ? updateMentorSkills : updateMenteeSkills
+    const skillsRequest: SkillsRequest = {
+      skills,
+    }
+    try {
+      await updateSkills(skillsRequest).unwrap()
+      handleNext()
+    } catch (e) {
+      console.error(e)
+    }
   }
-
   return (
     <Box>
       <Text fontSize="2xl" fontWeight="600"> Skills and Knowledge </Text>
@@ -64,7 +97,7 @@ function Skills(props: Props) {
       </Text>
       {skills.map((skill, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <ControlledSelect error={errors.skills} placeholder={''} label=""  options={skillOptions} selectProps={{ onChange: (e)=> handleSkillsChange(e,index), value: skill}} />
+          <ControlledSelect error={errors.skills[index]} placeholder="" label="" options={skillOptions} selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }} />
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
         </Flex>
       ))}
@@ -76,7 +109,7 @@ function Skills(props: Props) {
 
       <Flex justifyContent="end" gap="4">
         <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave}>Next</Button>
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
     </Box>
   )
