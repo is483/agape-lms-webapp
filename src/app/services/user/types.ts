@@ -22,7 +22,7 @@ export interface SkillsRequest{
 }
 
 export interface ValuesRequest {
-  values: string[]
+  personalValues: string[]
 }
 
 export interface InterestsRequest{

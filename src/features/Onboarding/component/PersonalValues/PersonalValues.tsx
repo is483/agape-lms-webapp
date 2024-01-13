@@ -14,11 +14,11 @@ interface Props {
 }
 
 interface Errors {
-  values: string[]
+  personalValues: string[]
 }
 
 const defaultErrors: Errors = {
-  values: [],
+  personalValues: [],
 }
 
 const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
@@ -47,7 +47,7 @@ function PersonalValues(props: Props) {
     ])
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors }
-      newErrors.values = [...prevErrors.values, '']
+      newErrors.personalValues = [...prevErrors.personalValues, '']
       return newErrors
     })
   }
@@ -61,7 +61,7 @@ function PersonalValues(props: Props) {
     })
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors }
-      newErrors.values.splice(index, 1)
+      newErrors.personalValues.splice(index, 1)
       return newErrors
     })
   }
@@ -81,7 +81,7 @@ function PersonalValues(props: Props) {
     }
     const updateValues = role === 'Mentor' ? updateMentorValues : updateMenteeValues
     const valueRequests: ValuesRequest = {
-      values,
+      personalValues: values,
     }
     try {
       await updateValues(valueRequests).unwrap()
@@ -98,7 +98,7 @@ function PersonalValues(props: Props) {
       <FormLabel>Personal Values (Select up to 5 options)</FormLabel>
       {values.map((value, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <ControlledSelect error={errors.values[index]} placeholder="" options={valueOptions} selectProps={{ onChange: (e) => handleValueChange(e, index), value }} />
+          <ControlledSelect error={errors.personalValues[index]} placeholder="" options={valueOptions} selectProps={{ onChange: (e) => handleValueChange(e, index), value }} />
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={values.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteValue(index)} />
         </Flex>
       ))}
