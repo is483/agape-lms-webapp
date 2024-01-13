@@ -10,9 +10,10 @@ export interface LoginResponse {
 }
 
 export interface RegisterRequest {
-  role: Role
+  role: string
   email: string
   password: string
+  confirmPassword: string
 }
 
 export interface ForgetPasswordRequest {

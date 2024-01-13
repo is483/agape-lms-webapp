@@ -75,9 +75,10 @@ function Register() {
 
     try {
       const registerRequest: RegisterRequest = {
-        role: role as Role,
+        role: role.toLowerCase(),
         email,
         password,
+        confirmPassword,
       }
       await register(registerRequest).unwrap()
       toast({
