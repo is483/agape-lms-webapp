@@ -1,10 +1,10 @@
 import { apiSlice } from '../apiSlice'
-import { MenteeInfoRequest,  MentorInfoRequest } from './types'
+import { InfoRequest } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiUserSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    updateMentorInfo: build.mutation<null, MentorInfoRequest>({
+    updateMentorInfo: build.mutation<null, InfoRequest>({
       query: (request) => ({
         url: 'mentor/onboarding/information',
         method: 'PUT',
@@ -12,7 +12,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    updateMenteeInfo: build.mutation<null, MenteeInfoRequest>({
+    updateMenteeInfo: build.mutation<null, InfoRequest>({
       query: (request) => ({
         url: 'mentee/onboarding/information',
         method: 'PUT',
