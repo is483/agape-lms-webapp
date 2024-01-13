@@ -20,3 +20,7 @@ export interface MenteeExperienceRequest extends ExperienceRequest{
 export interface SkillsRequest{
   skills: string[]
 }
+
+export interface InterestsRequest{
+  interests: string[]
+}
