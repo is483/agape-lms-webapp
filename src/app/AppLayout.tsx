@@ -6,7 +6,7 @@ import getAuth from './redux/selectors'
 import useBreakpoint from '../hooks/useBreakpoint'
 import Introduction from '../features/Onboarding/component/Introduction/Introduction'
 import paths from '../paths'
-import MentorOnboarding from '../features/Onboarding/MentorOnboarding'
+import Onboarding from '../features/Onboarding/Onboarding'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -24,8 +24,8 @@ function AppLayout() {
         )}
         {role === 'Mentor' && (
         <Routes>
-          <Route path={paths.Onboarding.Introduction} element={<Introduction />} />
-          <Route path={paths.Onboarding.Mentor} element={<MentorOnboarding />} />
+          <Route path={paths.Introduction} element={<Introduction />} />
+          <Route path={paths.Onboarding} element={<Onboarding />} />
         </Routes>
         )}
         {role === 'Mentee' && (

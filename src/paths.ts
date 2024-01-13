@@ -4,11 +4,13 @@ const paths = {
   ForgetPassword: '/forget-password',
   ResetPassword: '/reset-password',
   SessionExpired: '/session-expired',
+  Introduction: '/introduction',
+  Onboarding:'/onboarding',
 
-  Onboarding: {
-    Introduction: '/onboarding/introduction',
-    Mentor: '/onboarding/mentor',
-  },
+  // Onboarding: {
+  //   Introduction: '/onboarding/introduction',
+  //   Onboarding: '/onboarding/start',
+  // },
 
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',

@@ -23,9 +23,9 @@ const steps = [
   { title: 'Interest' },
 ]
 
-function MentorOnboarding() {
+function Onboarding() {
   const { activeStep, setActiveStep } = useSteps({
-    index: 4,
+    index: 0,
     count: steps.length,
   })
 
@@ -102,4 +102,4 @@ function MentorOnboarding() {
 
   )
 }
-export default MentorOnboarding
+export default Onboarding

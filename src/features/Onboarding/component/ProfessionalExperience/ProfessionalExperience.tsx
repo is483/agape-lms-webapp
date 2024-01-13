@@ -63,7 +63,7 @@ function ProfessionalExperience(props: Props) {
   }
 
   const handleWorkExperienceChange = (
-    e: ChangeEvent<HTMLInputElement>, index: number, key: keyof WorkExperience) => {
+    e: ChangeEvent<HTMLInputElement>| ChangeEvent<HTMLTextAreaElement>, index: number, key: keyof WorkExperience) => {
     const { value } = e.target
     setWorkExperiences((prevWorkExperiences) => {
       const newWorkExperiences = [...prevWorkExperiences]

@@ -8,7 +8,7 @@ function Introduction() {
   const navigate = useNavigate()
 
   const handleButtonClick = () => {
-    navigate(paths.Onboarding.Mentor)
+    navigate(paths.Onboarding)
   }
 
   return (
