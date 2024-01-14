@@ -133,21 +133,19 @@ function PersonalInformation(props: Props) {
       </Flex>
       <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
         <Box>
-          <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text"  />
+          <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text" />
         </Box>
         <Box>
-          <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type="text"  />
-        </Box>
-
-        <Box>
-          <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type="date"  />
-        </Box>
-
-        <Box>
-          <ControlledSelect placeholder="Select gender" selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label="Gender" />
+          <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type="text" />
         </Box>
         <Box>
-          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type="text"  />
+          <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type="date" />
+        </Box>
+        <Box>
+          <ControlledSelect selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label="Gender" />
+        </Box>
+        <Box>
+          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type="text" />
         </Box>
       </SimpleGrid>
       <Flex justifyContent="end" gap="4">
