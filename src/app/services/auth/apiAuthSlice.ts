@@ -5,7 +5,8 @@ import {
   ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from '../utils'
-import { setIsLoggedIn, setToken } from '../../redux/appSlice'
+import { setIsLoggedIn, setRole, setToken } from '../../redux/appSlice'
+import { Role } from '../../types'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -16,11 +17,16 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         body: credentials,
         invalidateTags: ['User'],
       }),
+      transformResponse: ({ token, role }: { token: string, role: string }) => ({
+        token,
+        role: role.charAt(0).toUpperCase() + role.slice(1) as Role,
+      }),
       onQueryStarted: (_arg: any, { dispatch, queryFulfilled }) => {
         queryFulfilled.then(({ data }) => {
-          const { token } = data
+          const { token, role } = data
           dispatch(setToken(token))
           dispatch(setIsLoggedIn(true))
+          dispatch(setRole(role))
           localStorage.setItem('token', token)
           // TODO: Add decision to route to main page/onboarding page
         }).catch(({ error }) => {

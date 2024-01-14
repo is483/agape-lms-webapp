@@ -27,8 +27,11 @@ export const appSlice = createSlice({
     setIsLoggedIn: (state: AppState, action: PayloadAction<boolean>) => {
       state.auth.isLoggedIn = action.payload
     },
+    setRole: (state: AppState, action: PayloadAction<Role>) => {
+      state.auth.role = action.payload
+    },
   },
 })
 
-export const { setToken, setIsLoggedIn } = appSlice.actions
+export const { setToken, setIsLoggedIn, setRole } = appSlice.actions
 export default appSlice.reducer
