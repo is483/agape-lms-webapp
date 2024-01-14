@@ -1,5 +1,9 @@
 import { apiSlice } from '../apiSlice'
-import { ExperienceRequest, InfoRequest, InterestsRequest, MenteeExperienceRequest, SkillsRequest, ValuesRequest } from './types'
+import {
+  ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
+  MenteeExperienceRequest, MenteeMentoringRequest,
+  MentorMentoringRequest, SkillsRequest, ValuesRequest,
+} from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiUserSlice = apiSlice.injectEndpoints({
@@ -84,6 +88,38 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    updateMentorChallenges: build.mutation<null, ChallengesRequest>({
+      query: (request) => ({
+        url: 'mentor/onboarding/challenges',
+        method: 'PUT',
+        body: request,
+      }),
+      onQueryStarted,
+    }),
+    updateMenteeChallenges: build.mutation<null, ChallengesRequest>({
+      query: (request) => ({
+        url: 'mentee/onboarding/challenges',
+        method: 'PUT',
+        body: request,
+      }),
+      onQueryStarted,
+    }),
+    updateMentorMentoringStyle: build.mutation<null, MentorMentoringRequest>({
+      query: (request) => ({
+        url: 'mentor/onboarding/style',
+        method: 'PUT',
+        body: request,
+      }),
+      onQueryStarted,
+    }),
+    updateMenteeMentoringStyle: build.mutation<null, MenteeMentoringRequest>({
+      query: (request) => ({
+        url: 'mentee/onboarding/style',
+        method: 'PUT',
+        body: request,
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -93,5 +129,7 @@ export const {
   useUpdateMentorExperienceMutation, useUpdateMenteeExperienceMutation,
   useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation,
   useUpdateMentorValuesMutation, useUpdateMenteeValuesMutation,
+  useUpdateMentorMentoringStyleMutation, useUpdateMenteeMentoringStyleMutation,
+  useUpdateMentorChallengesMutation, useUpdateMenteeChallengesMutation,
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
 } = apiUserSlice

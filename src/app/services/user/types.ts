@@ -28,3 +28,20 @@ export interface ValuesRequest {
 export interface InterestsRequest{
   interests: string[]
 }
+
+export interface ChallengesRequest{
+  challenges: string[]
+}
+
+export interface MentoringRequest{
+  preferredCommunication: string,
+  preferredMeetingDays: string[]
+}
+
+export interface MentorMentoringRequest extends MentoringRequest{
+  preferredMentoringApproach: string[]
+}
+
+export interface MenteeMentoringRequest extends MentoringRequest{
+  expectations : string
+}

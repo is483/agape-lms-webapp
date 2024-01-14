@@ -1,8 +1,12 @@
 import React, { ChangeEvent, useState } from 'react'
-import { Box, Button, Flex, FormControl, FormLabel, Select, Text } from '@chakra-ui/react'
+import {
+  Box, Button, Flex, FormLabel, Text,
+} from '@chakra-ui/react'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
+import { useUpdateMenteeChallengesMutation, useUpdateMentorChallengesMutation } from '../../../../app/services/user/apiUserSlice'
+import { ChallengesRequest } from '../../../../app/services/user/types'
 
 interface Props {
   handleBack: () => void
@@ -10,19 +14,22 @@ interface Props {
 }
 
 interface Errors {
-  challenges: string
+  challenges: string[]
 }
 
 const defaultErrors: Errors = {
-  challenges: 'No interests selected'
+  challenges: [],
 }
-
 
 const mentorChallengesOptions = ['Balancing work life commitments', 'Imposter syndrome', 'Time management', 'Task delegation']
 const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
 
 function Challenges(props: Props) {
   const { handleBack, handleNext } = props
+  const [updateMentorChallenges,
+    { isLoading: isMentorInfoLoading }] = useUpdateMentorChallengesMutation()
+  const [updateMenteeChallenges,
+    { isLoading: isMenteeInfoLoading }] = useUpdateMenteeChallengesMutation()
   const { role } = useAppSelector(getAuth)
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
@@ -40,6 +47,11 @@ function Challenges(props: Props) {
     setChallenges((prevChallenges) => [
       ...prevChallenges, '',
     ])
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      newErrors.challenges = [...prevErrors.challenges, '']
+      return newErrors
+    })
   }
 
   const handleDeleteChallenge = (index: number) => {
@@ -49,11 +61,36 @@ function Challenges(props: Props) {
       newChallenges.splice(index, 1)
       return newChallenges
     })
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      newErrors.challenges.splice(index, 1)
+      return newErrors
+    })
   }
 
-  const handleSave = () => {
-    // TODO: include api call to save changes
-    handleNext()
+  const handleSave = async () => {
+    const newErrors = JSON.parse(JSON.stringify(defaultErrors))
+    let hasErrors = false
+    challenges.forEach((challenge, index) => {
+      if (!challenge) {
+        newErrors.challenges[index] = 'Challenge required'
+        hasErrors = true
+      }
+    })
+    if (hasErrors) {
+      setErrors(newErrors)
+      return
+    }
+    const updateChallenges = role === 'Mentor' ? updateMentorChallenges : updateMenteeChallenges
+    const challengeRequests: ChallengesRequest = {
+      challenges,
+    }
+    try {
+      await updateChallenges(challengeRequests).unwrap()
+      handleNext()
+    } catch (e) {
+      console.error(e)
+    } handleNext()
   }
   return (
     <Box>
@@ -63,7 +100,7 @@ function Challenges(props: Props) {
       {
         challenges.map((challenge, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>
-            <ControlledSelect selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }} error={errors.challenges} placeholder={''} options={challengesOptions}/>
+            <ControlledSelect selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }} error={errors.challenges[index]} placeholder="" options={challengesOptions} />
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
           </Flex>
         ))
@@ -75,7 +112,7 @@ function Challenges(props: Props) {
       )}
       <Flex justifyContent="end" gap="4">
         <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave}>Next</Button>
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
     </Box>
   )
