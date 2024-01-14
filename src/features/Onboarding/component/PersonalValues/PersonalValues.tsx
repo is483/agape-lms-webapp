@@ -7,6 +7,7 @@ import { useUpdateMenteeValuesMutation, useUpdateMentorValuesMutation } from '..
 import { ValuesRequest } from '../../../../app/services/user/types'
 import { useAppSelector } from '../../../../hooks'
 import getAuth from '../../../../app/redux/selectors'
+import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
@@ -67,7 +68,7 @@ function PersonalValues(props: Props) {
   }
 
   const handleSave = async () => {
-    const newErrors = JSON.parse(JSON.stringify(defaultErrors))
+    const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     values.forEach((value, index) => {
       if (!value) {

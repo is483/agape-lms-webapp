@@ -7,6 +7,7 @@ import { useUpdateMenteeInterestsMutation, useUpdateMentorInterestsMutation } fr
 import { useAppSelector } from '../../../../hooks'
 import getAuth from '../../../../app/redux/selectors'
 import { InterestsRequest } from '../../../../app/services/user/types'
+import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
@@ -65,7 +66,7 @@ function Interests(props: Props) {
     })
   }
   const handleSave = async () => {
-    const newErrors = JSON.parse(JSON.stringify(defaultErrors))
+    const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     interests.forEach((interest, index) => {
       if (!interest) {

@@ -9,6 +9,7 @@ import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeMentoringStyleMutation, useUpdateMentorMentoringStyleMutation } from '../../../../app/services/user/apiUserSlice'
 import { MenteeMentoringRequest, MentorMentoringRequest } from '../../../../app/services/user/types'
 import { Role } from '../../../../app/types'
+import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
@@ -109,7 +110,7 @@ function MentoringStyle(props: Props) {
     })
   }
   const handleSave = async () => {
-    const newErrors = role === 'Mentor' ? JSON.parse(JSON.stringify(mentorDefaultErrors)) : JSON.parse(JSON.stringify(menteeDefaultErrors))
+    const newErrors = role === 'Mentor' ? deepCopy(mentorDefaultErrors) : deepCopy(menteeDefaultErrors)
     let hasErrors = false
     if (!preferredCommunication) {
       newErrors.preferredCommunication = 'Preferred Communication method required'

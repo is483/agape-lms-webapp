@@ -7,6 +7,7 @@ import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeChallengesMutation, useUpdateMentorChallengesMutation } from '../../../../app/services/user/apiUserSlice'
 import { ChallengesRequest } from '../../../../app/services/user/types'
+import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
@@ -69,7 +70,7 @@ function Challenges(props: Props) {
   }
 
   const handleSave = async () => {
-    const newErrors = JSON.parse(JSON.stringify(defaultErrors))
+    const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     challenges.forEach((challenge, index) => {
       if (!challenge) {

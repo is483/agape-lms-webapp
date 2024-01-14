@@ -7,6 +7,7 @@ import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
 import { SkillsRequest } from '../../../../app/services/user/types'
+import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
@@ -63,7 +64,7 @@ function Skills(props: Props) {
   }
 
   const handleSave = async () => {
-    const newErrors = JSON.parse(JSON.stringify(defaultErrors))
+    const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     skills.forEach((skill, index) => {
       if (!skill) {

@@ -7,6 +7,7 @@ import { ControlledSelect, ControlledTextInput, Icon } from '../../../../compone
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import useBreakpoint from '../../../../hooks/useBreakpoint'
+import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
@@ -55,7 +56,7 @@ function ProfessionalExperience(props: Props) {
       ...prevWorkExperiences, { ...defaultWorkExperience },
     ])
     setErrors((prevErrors) => {
-      const newErrors = JSON.parse(JSON.stringify(prevErrors)) as Errors
+      const newErrors = deepCopy(prevErrors) as Errors
       newErrors.workExperience.push({ ...defaultWorkExperience })
       return newErrors
     })
@@ -80,7 +81,7 @@ function ProfessionalExperience(props: Props) {
       return newWorkExperiences
     })
     setErrors((prevErrors) => {
-      const newErrors = JSON.parse(JSON.stringify(prevErrors)) as Errors
+      const newErrors = deepCopy(prevErrors) as Errors
       newErrors.workExperience.splice(index, 1)
       return newErrors
     })
@@ -88,7 +89,7 @@ function ProfessionalExperience(props: Props) {
 
   const handleSave = () => {
     // TODO: include api call to save changes
-    const newErrors: Errors = JSON.parse(JSON.stringify(errors))
+    const newErrors: Errors = deepCopy(errors)
     newErrors.careerAspiration = ''
     let hasErrors: boolean = false
 
