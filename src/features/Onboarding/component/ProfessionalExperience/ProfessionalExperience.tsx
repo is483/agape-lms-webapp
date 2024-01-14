@@ -27,16 +27,12 @@ const defaultWorkExperience: WorkExperience = {
 
 interface Errors {
   careerAspiration: string
-  jobTitle: string
-  company: string
-  description: string
+  workExperience: WorkExperience[]
 }
 
 const defaultErrors: Errors = {
-  careerAspiration: 'No career aspiration selected',
-  jobTitle: 'No job title included',
-  company: 'No company included',
-  description: 'No description included',
+  careerAspiration: '',
+  workExperience: [{ ...defaultWorkExperience }],
 }
 
 const careerOptions = ['IT Technician', 'Video Producer', 'Content Creator']
@@ -58,10 +54,15 @@ function ProfessionalExperience(props: Props) {
     setWorkExperiences((prevWorkExperiences) => [
       ...prevWorkExperiences, { ...defaultWorkExperience },
     ])
+    setErrors((prevErrors) => {
+      const newErrors = JSON.parse(JSON.stringify(prevErrors)) as Errors
+      newErrors.workExperience.push({ ...defaultWorkExperience })
+      return newErrors
+    })
   }
 
   const handleWorkExperienceChange = (
-    e: ChangeEvent<HTMLInputElement>| ChangeEvent<HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
     index: number, key: keyof WorkExperience) => {
     const { value } = e.target
     setWorkExperiences((prevWorkExperiences) => {
@@ -78,10 +79,46 @@ function ProfessionalExperience(props: Props) {
       newWorkExperiences.splice(index, 1)
       return newWorkExperiences
     })
+    setErrors((prevErrors) => {
+      const newErrors = JSON.parse(JSON.stringify(prevErrors)) as Errors
+      newErrors.workExperience.splice(index, 1)
+      return newErrors
+    })
   }
 
   const handleSave = () => {
     // TODO: include api call to save changes
+    const newErrors: Errors = JSON.parse(JSON.stringify(errors))
+    newErrors.careerAspiration = ''
+    let hasErrors: boolean = false
+
+    if (role === 'Mentee' && !errors.careerAspiration) {
+      newErrors.careerAspiration = 'Career Aspiration required'
+      hasErrors = true
+    }
+
+    workExperiences.forEach(({ company, description, jobTitle }, i) => {
+      newErrors.workExperience[i].company = ''
+      newErrors.workExperience[i].description = ''
+      newErrors.workExperience[i].jobTitle = ''
+      if (!company) {
+        newErrors.workExperience[i].company = 'Company is required'
+        hasErrors = true
+      }
+      if (!description) {
+        newErrors.workExperience[i].description = 'Description is required'
+        hasErrors = true
+      }
+      if (!jobTitle) {
+        newErrors.workExperience[i].jobTitle = 'Job title is required'
+        hasErrors = true
+      }
+    })
+
+    if (hasErrors) {
+      setErrors(newErrors)
+      return
+    }
     handleNext()
   }
 
@@ -104,15 +141,15 @@ function ProfessionalExperience(props: Props) {
             </Flex>
             <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
               <Box marginBottom={isMdUp ? '55' : '0'}>
-                <ControlledTextInput error={errors.jobTitle} label="Job Title" type="text" placeholder="" inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'jobTitle'), value: jobTitle }} />
+                <ControlledTextInput error={errors.workExperience[index].jobTitle} label="Job Title" type="text" placeholder="" inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'jobTitle'), value: jobTitle }} />
               </Box>
               <Box marginBottom="55">
-                <ControlledTextInput error={errors.company} label="Company" type="text" placeholder="" inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'company'), value: company }} />
+                <ControlledTextInput error={errors.workExperience[index].company} label="Company" type="text" placeholder="" inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'company'), value: company }} />
               </Box>
             </SimpleGrid>
             <FormLabel> Description </FormLabel>
-            <Textarea borderColor={errors.description ? 'red.600' : 'inherit'} borderWidth={errors.description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e) => handleWorkExperienceChange(e, index, 'description')} />
-            {!!errors.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.description}</Text>}
+            <Textarea borderColor={errors.workExperience[index].description ? 'red.600' : 'inherit'} borderWidth={errors.workExperience[index].description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e) => handleWorkExperienceChange(e, index, 'description')} />
+            {!!errors.workExperience[index].description && <Text position="absolute" fontSize="xs" color="red.600">{errors.workExperience[index].description}</Text>}
           </>
         )
       })}
