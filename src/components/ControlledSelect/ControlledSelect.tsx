@@ -11,7 +11,6 @@ import './styles.css'
 interface Props {
   error: string
   iconProps?: { name: string } & BoxProps
-  placeholder: string
   boxProps?: BoxProps
   options: string[]
   selectProps?: SelectProps

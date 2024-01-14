@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import {
   Box, Button, Flex, FormLabel, Text,
 } from '@chakra-ui/react'
@@ -101,7 +101,7 @@ function Challenges(props: Props) {
       {
         challenges.map((challenge, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>
-            <ControlledSelect selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }} error={errors.challenges[index]} placeholder="" options={challengesOptions} />
+            <ControlledSelect selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }} error={errors.challenges[index]}  options={challengesOptions} />
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
           </Flex>
         ))

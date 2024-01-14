@@ -164,7 +164,7 @@ function MentoringStyle(props: Props) {
       <Text fontSize="2xl" fontWeight="600"> Mentoring Style </Text>
       <Text color="secondary.500" marginTop="1" marginBottom="55">{role === 'Mentor' ? 'Define your approach to guidance and support' : 'Outline your learning preferences and expectations'} </Text>
       <Box marginBottom="8">
-        <ControlledSelect label="Preferred Communication" error={errors.preferredCommunication} placeholder="" options={communicationOptions} selectProps={{ onChange: handlePreferredCommunicationChange, value: preferredCommunication }} />
+        <ControlledSelect label="Preferred Communication" error={errors.preferredCommunication} options={communicationOptions} selectProps={{ onChange: handlePreferredCommunicationChange, value: preferredCommunication }} />
       </Box>
       <Box marginBottom="8">
         <CheckboxGroup onChange={handleCheckboxChange} value={meetingDays}>
@@ -192,7 +192,14 @@ function MentoringStyle(props: Props) {
           <FormLabel>Preferred Mentoring Approach (Select up to 3 options)</FormLabel>
           {mentoringApproaches.map((mentoringApproach, index) => (
             <Flex marginBottom="5" gap={4} alignItems="center">
-              <ControlledSelect selectProps={{ onChange: (e) => handleMentoringApproachesChange(e, index), value: mentoringApproach }} options={mentoringOptions} error={errors.mentoringApproaches[index]} placeholder="" />
+              <ControlledSelect
+                selectProps={{
+                  onChange: (e) => handleMentoringApproachesChange(e, index),
+                  value: mentoringApproach,
+                }}
+                options={mentoringOptions}
+                error={errors.mentoringApproaches[index]}
+              />
               <Icon name="delete" _hover={{ cursor: 'pointer' }} color={mentoringApproaches.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteMentoringApproach(index)} />
             </Flex>
           ))}

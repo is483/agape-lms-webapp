@@ -11,7 +11,7 @@ interface Props {
   error: string
   iconProps?: { name: string } & BoxProps
   type: HTMLInputTypeAttribute | 'select'
-  placeholder: string
+  placeholder?: string
   boxProps?: BoxProps
   inputProps?: InputProps
   label?: string
@@ -65,6 +65,7 @@ ControlledTextInput.defaultProps = {
   iconProps: undefined,
   inputProps: {},
   label: undefined,
+  placeholder: '',
 }
 
 export default ControlledTextInput

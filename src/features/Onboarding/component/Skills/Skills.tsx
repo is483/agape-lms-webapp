@@ -98,7 +98,11 @@ function Skills(props: Props) {
       </Text>
       {skills.map((skill, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <ControlledSelect error={errors.skills[index]} placeholder="" label="" options={skillOptions} selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }} />
+          <ControlledSelect
+            error={errors.skills[index]}
+            options={skillOptions}
+            selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }}
+          />
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
         </Flex>
       ))}

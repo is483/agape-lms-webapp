@@ -97,7 +97,11 @@ function Interests(props: Props) {
       {
         interests.map((interest, index) => (
           <Flex alignItems="center" marginBottom="5" gap={4}>
-            <ControlledSelect selectProps={{ onChange: (e) => handleInterestChange(e, index), value: interest }} error={errors.interests[index]} options={interestOptions} placeholder="" />
+            <ControlledSelect
+              selectProps={{ onChange: (e) => handleInterestChange(e, index), value: interest }}
+              error={errors.interests[index]}
+              options={interestOptions}
+            />
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={interests.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteInterest(index)} />
           </Flex>
         ))

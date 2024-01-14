@@ -99,7 +99,11 @@ function PersonalValues(props: Props) {
       <FormLabel>Personal Values (Select up to 5 options)</FormLabel>
       {values.map((value, index) => (
         <Flex alignItems="center" marginBottom="5" gap={4}>
-          <ControlledSelect error={errors.personalValues[index]} placeholder="" options={valueOptions} selectProps={{ onChange: (e) => handleValueChange(e, index), value }} />
+          <ControlledSelect
+            error={errors.personalValues[index]}
+            options={valueOptions}
+            selectProps={{ onChange: (e) => handleValueChange(e, index), value }}
+          />
           <Icon name="delete" _hover={{ cursor: 'pointer' }} color={values.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteValue(index)} />
         </Flex>
       ))}
