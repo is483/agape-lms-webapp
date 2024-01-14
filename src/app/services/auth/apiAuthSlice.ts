@@ -5,7 +5,7 @@ import {
   ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from '../utils'
-import { setIsLoggedIn, setRole, setToken } from '../../redux/appSlice'
+import { setAuth } from '../../redux/appSlice'
 import { Role } from '../../types'
 import { router } from '../../../main'
 import paths from '../../../paths'
@@ -26,9 +26,11 @@ const apiAuthSlice = apiSlice.injectEndpoints({
       onQueryStarted: (_arg: any, { dispatch, queryFulfilled }) => {
         queryFulfilled.then(({ data }) => {
           const { token, role } = data
-          dispatch(setToken(token))
-          dispatch(setIsLoggedIn(true))
-          dispatch(setRole(role))
+          dispatch(setAuth({
+            token,
+            isLoggedIn: true,
+            role,
+          }))
           localStorage.setItem('token', token)
           // TODO: Add decision to route to main page/onboarding page
           router.navigate(paths.Onboarding)

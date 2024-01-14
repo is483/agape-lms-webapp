@@ -2,9 +2,10 @@ import { apiSlice } from '../apiSlice'
 import {
   ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
   MenteeExperienceRequest, MenteeMentoringRequest,
-  MentorMentoringRequest, SkillsRequest, ValuesRequest,
+  MentorMentoringRequest, RoleResponse, SkillsRequest, ValuesRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
+import { Role } from '../../types'
 
 const apiUserSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -120,6 +121,15 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    getUserRole: build.query<RoleResponse, null>({
+      query: () => ({
+        url: 'user/retrieve-role',
+      }),
+      transformResponse: ({ role }: { role: string }) => ({
+        role: role.charAt(0).toUpperCase() + role.slice(1) as Role,
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -132,4 +142,5 @@ export const {
   useUpdateMentorMentoringStyleMutation, useUpdateMenteeMentoringStyleMutation,
   useUpdateMentorChallengesMutation, useUpdateMenteeChallengesMutation,
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
+  useGetUserRoleQuery,
 } = apiUserSlice

@@ -1,3 +1,5 @@
+import { Role } from '../../types'
+
 export interface InfoRequest {
   // profileImgUrl: string
   firstName: string
@@ -46,4 +48,8 @@ export interface MentorMentoringRequest extends MentoringRequest {
 
 export interface MenteeMentoringRequest extends MentoringRequest {
   expectations: string
+}
+
+export interface RoleResponse {
+  role: Role
 }

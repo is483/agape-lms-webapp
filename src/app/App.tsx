@@ -1,6 +1,9 @@
 import { Box } from '@chakra-ui/react'
-import { Route, Routes } from 'react-router-dom'
-import { useAppSelector } from '../hooks'
+import {
+  Route, Routes, useLocation, useNavigate,
+} from 'react-router-dom'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import getAuth from './redux/selectors'
 import { Login } from '../features/Login'
 import { Register } from '../features/Register'
@@ -9,12 +12,38 @@ import paths from '../paths'
 import { ForgetPassword } from '../features/ForgetPassword'
 import { ResetPassword } from '../features/ResetPassword'
 import { SessionExpired } from '../features/SessionExpired'
+import { useGetUserRoleQuery } from './services/user/apiUserSlice'
+import { setAuth } from './redux/appSlice'
+
+const tokenFromStorage = localStorage.getItem('token')
 
 function App() {
   const { isLoggedIn } = useAppSelector(getAuth)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const { data, isLoading } = useGetUserRoleQuery(null, { skip: !tokenFromStorage })
 
-  // TODO: Remove false condition when login implemented
-  // false &&
+  useEffect(() => {
+    if (data) {
+      dispatch(setAuth({
+        token: tokenFromStorage!,
+        isLoggedIn: true,
+        role: data.role,
+      }))
+      // TODO: navigate to correct path
+      if (pathname !== '') {
+        navigate(pathname)
+      } else {
+        // TODO
+      }
+    }
+  }, [data, dispatch, pathname, navigate])
+
+  if (isLoading) {
+    return null
+  }
+
   if (!isLoggedIn) {
     return (
       <Box>
