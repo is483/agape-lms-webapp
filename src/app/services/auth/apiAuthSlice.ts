@@ -7,6 +7,8 @@ import {
 import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from '../utils'
 import { setIsLoggedIn, setRole, setToken } from '../../redux/appSlice'
 import { Role } from '../../types'
+import { router } from '../../../main'
+import paths from '../../../paths'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -29,6 +31,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
           dispatch(setRole(role))
           localStorage.setItem('token', token)
           // TODO: Add decision to route to main page/onboarding page
+          router.navigate(paths.Onboarding)
         }).catch(({ error }) => {
           console.error(error)
           const { status } = error as FetchBaseQueryError
