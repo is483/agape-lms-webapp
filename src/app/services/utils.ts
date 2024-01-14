@@ -36,7 +36,7 @@ export const handleFetchError = (
     dispatch(setIsLoggedIn(false))
     localStorage.removeItem('token')
     router.navigate(paths.SessionExpired)
-  } else {
+  } else if (typeof status === 'number' && status >= 500) {
     toast({
       title: 'Error',
       description: 'An unexpected error has occured. Please try again later.',
