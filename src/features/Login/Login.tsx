@@ -2,7 +2,7 @@ import {
   Box, Button, Container, Flex, Hide, Image,
   Input, InputGroup, InputLeftElement, Stack, Text,
 } from '@chakra-ui/react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import agapeLogo from '../../assets/agape_logo.png'
 import loginIllustration from '../../assets/login_illustration.png'
 import { Icon, Link } from '../../components'
@@ -14,10 +14,11 @@ function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const [login, { isLoading }] = useLoginMutation()
+  const [error, setError] = useState('')
 
   const handleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) return
-
+    setError('')
     const email = emailRef.current.value
     const password = passwordRef.current.value
 
@@ -27,9 +28,12 @@ function Login() {
     }
 
     try {
-      await login(loginRequest)
-    } catch (e) {
+      await login(loginRequest).unwrap()
+    } catch (e: any) {
       console.error(e)
+      if (e?.status < 500) {
+        setError('Invalid credentials')
+      }
     }
   }
 
@@ -60,6 +64,7 @@ function Login() {
             <Flex justifyContent="end" mt="1">
               <Link fontWeight="500" color="red.600" to={paths.ForgetPassword}>Forgot Password?</Link>
             </Flex>
+            {!!error && <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>}
             <Button isLoading={isLoading} onClick={handleLogin} w="100%" colorScheme="red" mt="16">Login</Button>
             <Flex justifyContent="center" mt="12">
               <Text>
