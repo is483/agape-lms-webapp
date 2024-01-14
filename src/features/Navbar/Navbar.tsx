@@ -9,7 +9,7 @@ import { Icon } from '../../components'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import agapeLogo from '../../assets/agape_logo.png'
 import { useAppDispatch } from '../../hooks'
-import { setIsLoggedIn, setToken } from '../../app/redux/appSlice'
+import { setAuth } from '../../app/redux/appSlice'
 import paths from '../../paths'
 
 interface Props {
@@ -30,8 +30,11 @@ function Navbar(props: Props) {
   }, [navigate])
 
   const handleLogout = () => {
-    dispatch(setToken(null))
-    dispatch(setIsLoggedIn(false))
+    dispatch(setAuth({
+      token: null,
+      isLoggedIn: false,
+      role: null,
+    }))
     localStorage.removeItem('token')
     navigate(paths.Login)
   }

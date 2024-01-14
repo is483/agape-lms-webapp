@@ -13,7 +13,7 @@ const initialState: AppState = {
   auth: {
     token: null,
     isLoggedIn: false,
-    role: 'Mentor',
+    role: null,
   },
 }
 
@@ -30,8 +30,16 @@ export const appSlice = createSlice({
     setRole: (state: AppState, action: PayloadAction<Role>) => {
       state.auth.role = action.payload
     },
+    setAuth: (
+      state: AppState,
+      action: PayloadAction<{ token: string | null, isLoggedIn: boolean, role: Role | null }>,
+    ) => {
+      state.auth = action.payload
+    },
   },
 })
 
-export const { setToken, setIsLoggedIn, setRole } = appSlice.actions
+export const {
+  setToken, setIsLoggedIn, setRole, setAuth,
+} = appSlice.actions
 export default appSlice.reducer
