@@ -7,6 +7,8 @@ import { ControlledSelect, ControlledTextInput, Icon } from '../../../../compone
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { deepCopy } from '../../../../utils'
+import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } from '../../../../app/services/user/apiUserSlice'
+import { ExperienceRequest, MenteeExperienceRequest } from '../../../../app/services/user/types'
 
 interface Props {
   handleBack: () => void
@@ -41,6 +43,14 @@ const defaultWorkExperiences: WorkExperience[] = [{ ...defaultWorkExperience }]
 
 function ProfessionalExperience(props: Props) {
   const { handleBack, handleNext } = props
+  const [
+    updateMenteeExperience,
+    { isLoading: isMenteeLoading },
+  ] = useUpdateMenteeExperienceMutation()
+  const [
+    updateMentorExperience,
+    { isLoading: isMentorLoading },
+  ] = useUpdateMentorExperienceMutation()
   const [workExperiences, setWorkExperiences] = useState(defaultWorkExperiences)
   const [careerAspiration, setCareerAspiration] = useState('')
   const { role } = useAppSelector(getAuth)
@@ -85,8 +95,7 @@ function ProfessionalExperience(props: Props) {
     })
   }
 
-  const handleSave = () => {
-    // TODO: include api call to save changes
+  const handleSave = async () => {
     const newErrors: Errors = deepCopy(errors)
     newErrors.careerAspiration = ''
     let hasErrors: boolean = false
@@ -117,6 +126,24 @@ function ProfessionalExperience(props: Props) {
     if (hasErrors) {
       setErrors(newErrors)
       return
+    }
+
+    try {
+      if (role === 'Mentor') {
+        const request: ExperienceRequest = {
+          workExperience: workExperiences,
+        }
+        await updateMentorExperience(request)
+      } else if (role === 'Mentee') {
+        const request: MenteeExperienceRequest = {
+          workExperience: workExperiences,
+          careerAspiration,
+        }
+        await updateMenteeExperience(request)
+      }
+      handleNext()
+    } catch (e) {
+      console.error(e)
     }
     handleNext()
   }
@@ -166,7 +193,7 @@ function ProfessionalExperience(props: Props) {
 
       <Flex justifyContent="end" gap="4">
         <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave}>Next</Button>
+        <Button isLoading={isMenteeLoading || isMentorLoading} colorScheme="red" onClick={handleSave}>Next</Button>
       </Flex>
     </Box>
   )
