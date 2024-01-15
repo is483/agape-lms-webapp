@@ -4,7 +4,7 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeValuesMutation, useUpdateMentorValuesMutation } from '../../../../app/services/user/apiUserSlice'
-import { ValuesRequest } from '../../../../app/services/user/types'
+import { TransformedUserResponse, ValuesRequest } from '../../../../app/services/user/types'
 import { useAppSelector } from '../../../../hooks'
 import getAuth from '../../../../app/redux/selectors'
 import { deepCopy } from '../../../../utils'
@@ -12,7 +12,7 @@ import { deepCopy } from '../../../../utils'
 interface Props {
   handleBack: () => void
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface Errors {
@@ -36,7 +36,8 @@ function PersonalValues(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setValues(data?.personalValues ?? [''])
+    if (!data) return
+    setValues(data.personalValues)
   }, [data])
 
   const handleValueChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

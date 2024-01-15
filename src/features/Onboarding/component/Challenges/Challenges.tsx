@@ -6,13 +6,13 @@ import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeChallengesMutation, useUpdateMentorChallengesMutation } from '../../../../app/services/user/apiUserSlice'
-import { ChallengesRequest } from '../../../../app/services/user/types'
+import { ChallengesRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface Errors {
@@ -38,7 +38,8 @@ function Challenges(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setChallenges(data?.challenges ?? [''])
+    if (!data) return
+    setChallenges(data.challenges)
   }, [data])
 
   const handleChallengeChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

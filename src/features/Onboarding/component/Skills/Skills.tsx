@@ -6,13 +6,13 @@ import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
-import { SkillsRequest } from '../../../../app/services/user/types'
+import { SkillsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface Errors {
@@ -34,6 +34,7 @@ function Skills(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
+    if (!data) return
     setSkills(data.skills ?? [''])
   }, [data])
 

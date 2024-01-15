@@ -2,7 +2,8 @@ import { apiSlice } from '../apiSlice'
 import {
   ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
   MenteeExperienceRequest, MenteeMentoringRequest,
-  MentorMentoringRequest, SkillsRequest, UserRequest, ValuesRequest,
+  MentorMentoringRequest, SkillsRequest, TransformedUserResponse,
+  UserRequest, UserResponse, ValuesRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDate } from '../../../utils'
@@ -10,22 +11,26 @@ import { transformGender } from './utils'
 
 const apiUserSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getUserInfo: build.query<any, UserRequest>({
+    getUserInfo: build.query<TransformedUserResponse, UserRequest>({
       query: ({ role }) => ({
         url: `/user/retrieve-profile?role=${role}`,
       }),
       providesTags: ['User'],
-      transformResponse: (response: any) => {
-        const transformedResponse = response?.profile
-        transformedResponse.gender = transformGender(transformedResponse.gender)
-        transformedResponse.dateOfBirth = formatDate(transformedResponse?.dateOfBirth)
-        transformedResponse.workExperience = JSON.parse(transformedResponse?.workExperience)
-        transformedResponse.skills = transformedResponse?.skills?.split(', ')
-        transformedResponse.personalValues = transformedResponse?.personalValues?.split(', ')
-        transformedResponse.preferredMeetingDays = transformedResponse?.preferredMeetingDays?.split(', ')
-        transformedResponse.preferredMentoringApproach = transformedResponse?.preferredMentoringApproach?.split(', ')
-        transformedResponse.challenges = transformedResponse?.challenges?.split(', ')
-        transformedResponse.interests = transformedResponse?.interests?.split(', ')
+      transformResponse: (response: { profile: UserResponse }): TransformedUserResponse => {
+        const transformedResponse: any = { ...response?.profile }
+        transformedResponse.gender = transformGender(response.profile.gender) ?? ''
+        transformedResponse.dateOfBirth = formatDate(response.profile.dateOfBirth) ?? ''
+        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? []
+        transformedResponse.skills = response.profile.skills?.split(', ') ?? []
+        transformedResponse.personalValues = response.profile.personalValues?.split(', ') ?? ['']
+        transformedResponse.preferredMeetingDays = response.profile.preferredMeetingDays?.split(', ').filter((day) => day !== '') ?? []
+        transformedResponse.preferredMentoringApproach = response.profile.preferredMentoringApproach?.split(', ') ?? ['']
+        transformedResponse.challenges = response.profile.challenges?.split(', ') ?? ['']
+        transformedResponse.interests = response.profile.interests?.split(', ') ?? ['']
+        transformedResponse.expectations = response.profile.expectations ?? ''
+        transformedResponse.firstName = response.profile.firstName ?? ''
+        transformedResponse.lastName = response.profile.lastName ?? ''
+        transformedResponse.phoneNumber = response.profile.phoneNumber ?? ''
         return transformedResponse
       },
       onQueryStarted,

@@ -7,14 +7,14 @@ import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeMentoringStyleMutation, useUpdateMentorMentoringStyleMutation } from '../../../../app/services/user/apiUserSlice'
-import { MenteeMentoringRequest, MentorMentoringRequest } from '../../../../app/services/user/types'
+import { MenteeMentoringRequest, MentorMentoringRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { Role } from '../../../../app/types'
 import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface MentorErrors {
@@ -57,10 +57,14 @@ const dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 
 function MentoringStyle(props: Props) {
   const { handleBack, handleNext, data } = props
-  const [updateMentorMentoringStyle,
-    { isLoading: isMentorInfoLoading }] = useUpdateMentorMentoringStyleMutation()
-  const [updateMenteeMentoringStyle,
-    { isLoading: isMenteeInfoLoading }] = useUpdateMenteeMentoringStyleMutation()
+  const [
+    updateMentorMentoringStyle,
+    { isLoading: isMentorInfoLoading },
+  ] = useUpdateMentorMentoringStyleMutation()
+  const [
+    updateMenteeMentoringStyle,
+    { isLoading: isMenteeInfoLoading },
+  ] = useUpdateMenteeMentoringStyleMutation()
   const { role } = useAppSelector(getAuth)
   const [preferredCommunication, setPreferredCommunication] = useState('')
   const [meetingDays, setMeetingDays] = useState<string[]>([])
@@ -69,15 +73,16 @@ function MentoringStyle(props: Props) {
   const [errors, setErrors] = useState<Errors>(mentorDefaultErrors)
 
   useEffect(() => {
+    if (!data) return
     if (role === 'Mentor') {
       setErrors(mentorDefaultErrors)
     } else {
       setErrors(menteeDefaultErrors)
     }
-    setPreferredCommunication(data?.preferredCommunication ?? '')
-    setMeetingDays(data?.preferredMeetingDays ?? [''])
-    setMentoringApproaches(data?.preferredMentoringApproach ?? [''])
-    setExpectations(data?.expectations ?? '')
+    setPreferredCommunication(data.preferredCommunication)
+    setMeetingDays(data.preferredMeetingDays)
+    setMentoringApproaches(data.preferredMentoringApproach)
+    setExpectations(data.expectations)
   }, [role, data])
 
   const handlePreferredCommunicationChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -121,6 +126,7 @@ function MentoringStyle(props: Props) {
       newErrors.preferredCommunication = 'Preferred Communication method required'
       hasErrors = true
     }
+
     if (meetingDays.length === 0) {
       newErrors.meetingDays = 'Preferred Meeting Days required'
       hasErrors = true

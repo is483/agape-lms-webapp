@@ -8,12 +8,12 @@ import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { deepCopy } from '../../../../utils'
 import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } from '../../../../app/services/user/apiUserSlice'
-import { ExperienceRequest, MenteeExperienceRequest } from '../../../../app/services/user/types'
+import { ExperienceRequest, MenteeExperienceRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface WorkExperience {
@@ -58,8 +58,9 @@ function ProfessionalExperience(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setCareerAspiration(data?.careerAspiration ?? '')
-    setWorkExperiences(data?.workExperience ?? [])
+    if (!data) return
+    setCareerAspiration(data.careerAspiration ?? '')
+    setWorkExperiences(data.workExperience ?? [])
   }, [data])
 
   const handleCareerAspirationsChange = (e: ChangeEvent<HTMLSelectElement>) => {

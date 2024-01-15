@@ -6,13 +6,13 @@ import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeInterestsMutation, useUpdateMentorInterestsMutation } from '../../../../app/services/user/apiUserSlice'
 import { useAppSelector } from '../../../../hooks'
 import getAuth from '../../../../app/redux/selectors'
-import { InterestsRequest } from '../../../../app/services/user/types'
+import { InterestsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
 
 interface Props {
   handleBack: () => void
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface Errors {
@@ -36,7 +36,8 @@ function Interests(props: Props) {
   const { role } = useAppSelector(getAuth)
 
   useEffect(() => {
-    setInterests(data?.interests ?? [''])
+    if (!data) return
+    setInterests(data.interests)
   }, [data])
 
   const handleInterestChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

@@ -2,6 +2,46 @@ export interface UserRequest {
   role: string
 }
 
+export interface UserResponse {
+  role: string
+  firstName: string
+  lastName: string
+  dateOfBirth: string
+  phoneNumber: string
+  gender: string
+  profileImgURL: string
+  skills: string
+  personalValues: string
+  preferredCommunication: string
+  preferredMeetingDays: string
+  challenges: string
+  interests: string
+  workExperience: string
+
+  // Only Mentor
+  preferredMentoringApproach?: string
+  // Only Mentee
+  expectations?: string
+  careerAspiration?: string
+}
+
+export type TransformedUserResponse = UserResponse & {
+  skills: string[]
+  personalValues: string[]
+  preferredMeetingDays: string[]
+  preferredMentoringApproach: string[]
+  challenges: string[]
+  interests: string[]
+  workExperience: {
+    jobTitle: string
+    company: string
+    description: string
+  }[]
+  // Only Mentee
+  expectations: string
+  careerAspiration: string
+}
+
 export interface InfoRequest {
   // profileImgUrl: string
   firstName: string
@@ -16,7 +56,7 @@ export interface ExperienceRequest {
     jobTitle: string
     company: string
     description: string
-  }[];
+  }[]
 }
 
 export interface MenteeExperienceRequest extends ExperienceRequest {

@@ -5,13 +5,13 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
-import { InfoRequest } from '../../../../app/services/user/types'
+import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 
 interface Props {
   handleNext: () => void
-  data: any
+  data: TransformedUserResponse | undefined
 }
 
 interface Errors {
@@ -45,11 +45,12 @@ function PersonalInformation(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setFirstName(data?.firstName ?? '')
-    setLastName(data?.lastName ?? '')
-    setDateOfBirth(data?.dateOfBirth ?? '')
-    setGender(data?.gender ?? '')
-    setPhoneNumber(data?.phoneNumber ?? '')
+    if (!data) return
+    setFirstName(data.firstName)
+    setLastName(data.lastName)
+    setDateOfBirth(data.dateOfBirth)
+    setGender(data.gender)
+    setPhoneNumber(data.phoneNumber)
   }, [data])
 
   const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
