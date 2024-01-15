@@ -12,6 +12,9 @@ import PersonalValues from './component/PersonalValues/PersonalValues'
 import Challenges from './component/Challenges/Challenges'
 import Interests from './component/Interests/Interests'
 import MentoringStyle from './component/MentoringStyle/MentoringStyle'
+import { useGetUserInfoQuery } from '../../app/services/user/apiUserSlice'
+import { useAppSelector } from '../../hooks'
+import getAuth from '../../app/redux/selectors'
 
 const steps = [
   { title: 'Personal Information' },
@@ -24,6 +27,8 @@ const steps = [
 ]
 
 function Onboarding() {
+  const { role } = useAppSelector(getAuth)
+  const { data } = useGetUserInfoQuery({ role: role?.toLowerCase() ?? '' })
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
@@ -56,44 +61,50 @@ function Onboarding() {
         <Box>
           {activeStep === 0 && (
             <PersonalInformation
-              handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
           {activeStep === 1 && (
             <ProfessionalExperience
               handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
           {activeStep === 2 && (
             <Skills
               handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
           {activeStep === 3 && (
             <PersonalValues
               handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
           {activeStep === 4 && (
             <MentoringStyle
               handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
           {activeStep === 5 && (
             <Challenges
               handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
           {activeStep === 6 && (
             <Interests
               handleBack={handleBack}
               handleNext={handleNext}
+              data={data}
             />
           )}
         </Box>

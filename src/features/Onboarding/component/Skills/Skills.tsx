@@ -1,7 +1,7 @@
 import {
   Box, Button, Flex, Text,
 } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
@@ -12,6 +12,7 @@ import { deepCopy } from '../../../../utils'
 interface Props {
   handleBack: () => void
   handleNext: () => void
+  data: any
 }
 
 interface Errors {
@@ -25,12 +26,16 @@ const defaultErrors: Errors = {
 const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
 
 function Skills(props: Props) {
-  const { handleBack, handleNext } = props
+  const { handleBack, handleNext, data } = props
   const [updateMentorSkills, { isLoading: isMentorInfoLoading }] = useUpdateMentorSkillsMutation()
   const [updateMenteeSkills, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeSkillsMutation()
   const { role } = useAppSelector(getAuth)
   const [skills, setSkills] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
+
+  useEffect(() => {
+    setSkills(data.skills ?? [])
+  }, [data])
 
   const handleSkillsChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setSkills((prevSkills) => {

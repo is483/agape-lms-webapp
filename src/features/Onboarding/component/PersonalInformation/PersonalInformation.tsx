@@ -2,7 +2,7 @@ import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
   Flex, Circle, Button,
 } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
 import { InfoRequest } from '../../../../app/services/user/types'
@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../../hooks'
 
 interface Props {
   handleNext: () => void
+  data: any
 }
 
 interface Errors {
@@ -32,7 +33,7 @@ const defaultErrors: Errors = {
 const genderOptions = ['Male', 'Female']
 
 function PersonalInformation(props: Props) {
-  const { handleNext } = props
+  const { handleNext, data } = props
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
   const { role } = useAppSelector(getAuth)
@@ -42,6 +43,14 @@ function PersonalInformation(props: Props) {
   const [gender, setGender] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [errors, setErrors] = useState<Errors>(defaultErrors)
+
+  useEffect(() => {
+    setFirstName(data?.firstName ?? '')
+    setLastName(data?.lastName ?? '')
+    setDateOfBirth(data?.dateOfBirth ?? '')
+    setGender(data?.gender ?? '')
+    setPhoneNumber(data?.phoneNumber ?? '')
+  }, [data])
 
   const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const firstName = e.target.value
@@ -100,7 +109,7 @@ function PersonalInformation(props: Props) {
     const infoRequest: InfoRequest = {
       firstName,
       lastName,
-      dateOfBirth,
+      dateOfBirth: new Date(dateOfBirth).toISOString(),
       gender,
       phoneNumber,
     }

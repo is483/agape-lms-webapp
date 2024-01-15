@@ -1,7 +1,7 @@
 import {
   Box, Button, Flex, FormLabel, Text,
 } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeInterestsMutation, useUpdateMentorInterestsMutation } from '../../../../app/services/user/apiUserSlice'
 import { useAppSelector } from '../../../../hooks'
@@ -12,6 +12,7 @@ import { deepCopy } from '../../../../utils'
 interface Props {
   handleBack: () => void
   handleNext: () => void
+  data: any
 }
 
 interface Errors {
@@ -25,7 +26,7 @@ const defaultErrors: Errors = {
 const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdoor Activities']
 
 function Interests(props: Props) {
-  const { handleBack, handleNext } = props
+  const { handleBack, handleNext, data } = props
   const [updateMentorInterests,
     { isLoading: isMentorInfoLoading }] = useUpdateMentorInterestsMutation()
   const [updateMenteeInterests,
@@ -33,6 +34,10 @@ function Interests(props: Props) {
   const [interests, setInterests] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const { role } = useAppSelector(getAuth)
+
+  useEffect(() => {
+    setInterests(data?.interests ?? [])
+  }, [data])
 
   const handleInterestChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setInterests((prevInterests) => {

@@ -1,3 +1,7 @@
+export interface UserRequest {
+  role: string
+}
+
 export interface InfoRequest {
   // profileImgUrl: string
   firstName: string

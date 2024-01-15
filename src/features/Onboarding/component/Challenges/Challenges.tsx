@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import {
   Box, Button, Flex, FormLabel, Text,
 } from '@chakra-ui/react'
@@ -12,6 +12,7 @@ import { deepCopy } from '../../../../utils'
 interface Props {
   handleBack: () => void
   handleNext: () => void
+  data: any
 }
 
 interface Errors {
@@ -22,11 +23,11 @@ const defaultErrors: Errors = {
   challenges: [],
 }
 
-const mentorChallengesOptions = ['Balancing work life commitments', 'Imposter syndrome', 'Time management', 'Task delegation']
+const mentorChallengesOptions = ['Balancing work', 'Imposter syndrome', 'Time management', 'Task delegation']
 const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
 
 function Challenges(props: Props) {
-  const { handleBack, handleNext } = props
+  const { handleBack, handleNext, data } = props
   const [updateMentorChallenges,
     { isLoading: isMentorInfoLoading }] = useUpdateMentorChallengesMutation()
   const [updateMenteeChallenges,
@@ -35,6 +36,10 @@ function Challenges(props: Props) {
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
+
+  useEffect(() => {
+    setChallenges(data?.challenges ?? [])
+  }, [data])
 
   const handleChallengeChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setChallenges((prevChallenges) => {
@@ -91,7 +96,7 @@ function Challenges(props: Props) {
       handleNext()
     } catch (e) {
       console.error(e)
-    } handleNext()
+    }
   }
   return (
     <Box>

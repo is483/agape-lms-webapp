@@ -2,7 +2,7 @@ import {
   Box, Button, Flex,
   FormLabel, SimpleGrid, Text, Textarea,
 } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import getAuth from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
@@ -13,6 +13,7 @@ import { ExperienceRequest, MenteeExperienceRequest } from '../../../../app/serv
 interface Props {
   handleBack: () => void
   handleNext: () => void
+  data: any
 }
 
 interface WorkExperience {
@@ -42,7 +43,7 @@ const careerOptions = ['IT Technician', 'Video Producer', 'Content Creator']
 const defaultWorkExperiences: WorkExperience[] = [{ ...defaultWorkExperience }]
 
 function ProfessionalExperience(props: Props) {
-  const { handleBack, handleNext } = props
+  const { handleBack, handleNext, data } = props
   const [
     updateMenteeExperience,
     { isLoading: isMenteeLoading },
@@ -55,6 +56,11 @@ function ProfessionalExperience(props: Props) {
   const [careerAspiration, setCareerAspiration] = useState('')
   const { role } = useAppSelector(getAuth)
   const [errors, setErrors] = useState<Errors>(defaultErrors)
+
+  useEffect(() => {
+    setCareerAspiration(data?.careerAspiration ?? '')
+    setWorkExperiences(data?.workExperience ?? [])
+  }, [data])
 
   const handleCareerAspirationsChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCareerAspiration(e.target.value)
@@ -167,14 +173,14 @@ function ProfessionalExperience(props: Props) {
             </Flex>
             <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
               <ControlledTextInput
-                error={errors.workExperience[index].jobTitle}
+                error={errors.workExperience[index]?.jobTitle}
                 label="Job Title"
                 type="text"
                 boxProps={{ mb: '6' }}
                 inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'jobTitle'), value: jobTitle }}
               />
               <ControlledTextInput
-                error={errors.workExperience[index].company}
+                error={errors.workExperience[index]?.company}
                 label="Company"
                 type="text"
                 boxProps={{ mb: '6' }}
@@ -182,8 +188,8 @@ function ProfessionalExperience(props: Props) {
               />
             </SimpleGrid>
             <FormLabel> Description </FormLabel>
-            <Textarea borderColor={errors.workExperience[index].description ? 'red.600' : 'inherit'} borderWidth={errors.workExperience[index].description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e) => handleWorkExperienceChange(e, index, 'description')} />
-            {!!errors.workExperience[index].description && <Text position="absolute" fontSize="xs" color="red.600">{errors.workExperience[index].description}</Text>}
+            <Textarea borderColor={errors.workExperience[index]?.description ? 'red.600' : 'inherit'} borderWidth={errors.workExperience[index]?.description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e) => handleWorkExperienceChange(e, index, 'description')} />
+            {!!errors.workExperience[index]?.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.workExperience[index]?.description}</Text>}
           </Box>
         )
       })}

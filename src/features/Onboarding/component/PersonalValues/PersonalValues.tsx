@@ -1,7 +1,7 @@
 import {
   Box, Button, Flex, FormLabel, Text,
 } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeValuesMutation, useUpdateMentorValuesMutation } from '../../../../app/services/user/apiUserSlice'
 import { ValuesRequest } from '../../../../app/services/user/types'
@@ -12,6 +12,7 @@ import { deepCopy } from '../../../../utils'
 interface Props {
   handleBack: () => void
   handleNext: () => void
+  data: any
 }
 
 interface Errors {
@@ -25,7 +26,7 @@ const defaultErrors: Errors = {
 const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
 
 function PersonalValues(props: Props) {
-  const { handleBack, handleNext } = props
+  const { handleBack, handleNext, data } = props
   const [values, setValues] = useState<string[]>([''])
   const [updateMentorValues,
     { isLoading: isMentorInfoLoading }] = useUpdateMentorValuesMutation()
@@ -33,6 +34,10 @@ function PersonalValues(props: Props) {
     { isLoading: isMenteeInfoLoading }] = useUpdateMenteeValuesMutation()
   const { role } = useAppSelector(getAuth)
   const [errors, setErrors] = useState<Errors>(defaultErrors)
+
+  useEffect(() => {
+    setValues(data?.personalValues ?? [])
+  }, [data])
 
   const handleValueChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
     setValues((prevValues) => {
