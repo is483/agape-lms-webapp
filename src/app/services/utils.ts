@@ -1,9 +1,9 @@
 import { createStandaloneToast } from '@chakra-ui/react'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
-import { router } from '../../../main'
-import paths from '../../../paths'
-import { setIsLoggedIn, setToken } from '../../redux/appSlice'
+import { router } from '../../main'
+import paths from '../../paths'
+import { setIsLoggedIn, setToken } from '../redux/appSlice'
 
 const { toast } = createStandaloneToast()
 

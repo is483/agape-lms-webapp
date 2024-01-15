@@ -1,5 +1,3 @@
-import { Role } from '../../types'
-
 export interface LoginRequest {
   email: string
   password: string
