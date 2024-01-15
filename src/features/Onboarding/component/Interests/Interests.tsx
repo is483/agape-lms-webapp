@@ -36,7 +36,7 @@ function Interests(props: Props) {
   const { role } = useAppSelector(getAuth)
 
   useEffect(() => {
-    setInterests(data?.interests ?? [])
+    setInterests(data?.interests ?? [''])
   }, [data])
 
   const handleInterestChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

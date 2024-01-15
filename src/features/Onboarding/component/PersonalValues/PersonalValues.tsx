@@ -36,7 +36,7 @@ function PersonalValues(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setValues(data?.personalValues ?? [])
+    setValues(data?.personalValues ?? [''])
   }, [data])
 
   const handleValueChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

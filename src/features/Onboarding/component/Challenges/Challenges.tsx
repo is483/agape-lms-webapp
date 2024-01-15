@@ -38,7 +38,7 @@ function Challenges(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setChallenges(data?.challenges ?? [])
+    setChallenges(data?.challenges ?? [''])
   }, [data])
 
   const handleChallengeChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

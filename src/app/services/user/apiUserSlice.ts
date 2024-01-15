@@ -6,6 +6,7 @@ import {
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDate } from '../../../utils'
+import { transformGender } from './utils'
 
 const apiUserSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -15,17 +16,17 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['User'],
       transformResponse: (response: any) => {
-        const transformResponse = response?.profile
-        transformResponse.gender = transformResponse?.gender === 'M' ? 'Male' : 'Female'
-        transformResponse.dateOfBirth = formatDate(transformResponse?.dateOfBirth)
-        transformResponse.workExperience = JSON.parse(transformResponse?.workExperience)
-        transformResponse.skills = transformResponse?.skills?.split(', ')
-        transformResponse.personalValues = transformResponse?.personalValues?.split(', ')
-        transformResponse.preferredMeetingDays = transformResponse?.preferredMeetingDays?.split(', ')
-        transformResponse.preferredMentoringApproach = transformResponse?.preferredMentoringApproach?.split(', ')
-        transformResponse.challenges = transformResponse?.challenges?.split(', ')
-        transformResponse.interests = transformResponse?.interests?.split(', ')
-        return transformResponse
+        const transformedResponse = response?.profile
+        transformedResponse.gender = transformGender(transformedResponse.gender)
+        transformedResponse.dateOfBirth = formatDate(transformedResponse?.dateOfBirth)
+        transformedResponse.workExperience = JSON.parse(transformedResponse?.workExperience)
+        transformedResponse.skills = transformedResponse?.skills?.split(', ')
+        transformedResponse.personalValues = transformedResponse?.personalValues?.split(', ')
+        transformedResponse.preferredMeetingDays = transformedResponse?.preferredMeetingDays?.split(', ')
+        transformedResponse.preferredMentoringApproach = transformedResponse?.preferredMentoringApproach?.split(', ')
+        transformedResponse.challenges = transformedResponse?.challenges?.split(', ')
+        transformedResponse.interests = transformedResponse?.interests?.split(', ')
+        return transformedResponse
       },
       onQueryStarted,
     }),

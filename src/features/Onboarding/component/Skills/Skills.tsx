@@ -34,7 +34,7 @@ function Skills(props: Props) {
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
-    setSkills(data.skills ?? [])
+    setSkills(data.skills ?? [''])
   }, [data])
 
   const handleSkillsChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {

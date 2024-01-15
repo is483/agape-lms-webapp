@@ -75,7 +75,7 @@ function MentoringStyle(props: Props) {
       setErrors(menteeDefaultErrors)
     }
     setPreferredCommunication(data?.preferredCommunication ?? '')
-    setMeetingDays(data?.preferredMeetingDays ?? [])
+    setMeetingDays(data?.preferredMeetingDays ?? [''])
     setMentoringApproaches(data?.preferredMentoringApproach ?? [''])
     setExpectations(data?.expectations ?? '')
   }, [role, data])
