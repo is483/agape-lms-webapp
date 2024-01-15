@@ -4,6 +4,8 @@ import {
   Hide,
   useSteps,
 } from '@chakra-ui/react'
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import OnboardingStepper from './component/Stepper'
 import PersonalInformation from './component/PersonalInformation/PersonalInformation'
 import ProfessionalExperience from './component/ProfessionalExperience/ProfessionalExperience'
@@ -33,6 +35,11 @@ function Onboarding() {
     index: 0,
     count: steps.length,
   })
+  const { step } = useParams()
+
+  useEffect(() => {
+    setActiveStep(Number(step) - 1)
+  }, [setActiveStep, step])
 
   const handleActiveStep = (index: number) => {
     setActiveStep(index)
@@ -49,6 +56,7 @@ function Onboarding() {
       setActiveStep(activeStep + 1)
     }
   }
+
   return (
     <Flex>
       <Box margin="8">
