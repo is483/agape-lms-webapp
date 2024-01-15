@@ -4,8 +4,8 @@ const paths = {
   ForgetPassword: '/forget-password',
   ResetPassword: '/reset-password',
   SessionExpired: '/session-expired',
-  Introduction: '/introduction',
-  Onboarding: '/onboarding/:step',
+  Introduction: '/onboarding/introduction',
+  Onboarding: '/onboarding',
 
   Feedback: '/feedback',
   MentorProfile: '/mentor-profile',

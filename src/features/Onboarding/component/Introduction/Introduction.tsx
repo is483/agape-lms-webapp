@@ -8,7 +8,7 @@ function Introduction() {
   const navigate = useNavigate()
 
   const handleButtonClick = () => {
-    navigate(paths.Onboarding)
+    navigate(`${paths.Onboarding}/${1}`)
   }
 
   return (

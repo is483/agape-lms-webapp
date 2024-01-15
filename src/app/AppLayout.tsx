@@ -25,13 +25,13 @@ function AppLayout() {
         {role === 'Mentor' && (
           <Routes>
             <Route path={paths.Introduction} element={<Introduction />} />
-            <Route path={paths.Onboarding} element={<Onboarding />} />
+            <Route path={`${paths.Onboarding}/:step`} element={<Onboarding />} />
           </Routes>
         )}
         {role === 'Mentee' && (
           <Routes>
             <Route path={paths.Introduction} element={<Introduction />} />
-            <Route path={paths.Onboarding} element={<Onboarding />} />
+            <Route path={`${paths.Onboarding}/:step`} element={<Onboarding />} />
           </Routes>
         )}
       </Box>
