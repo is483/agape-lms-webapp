@@ -60,7 +60,7 @@ function ProfessionalExperience(props: Props) {
   useEffect(() => {
     if (!data) return
     setCareerAspiration(data.careerAspiration ?? '')
-    setWorkExperiences(data.workExperience ?? [])
+    setWorkExperiences(deepCopy(data.workExperience) ?? [])
   }, [data])
 
   const handleCareerAspirationsChange = (e: ChangeEvent<HTMLSelectElement>) => {
