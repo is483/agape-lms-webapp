@@ -52,7 +52,7 @@ function PersonalValues(props: Props) {
       ...prevValues, '',
     ])
     setErrors((prevErrors) => {
-      const newErrors = { ...prevErrors }
+      const newErrors = deepCopy(prevErrors)
       newErrors.personalValues = [...prevErrors.personalValues, '']
       return newErrors
     })
@@ -66,7 +66,7 @@ function PersonalValues(props: Props) {
       return newValues
     })
     setErrors((prevErrors) => {
-      const newErrors = { ...prevErrors }
+      const newErrors = deepCopy(prevErrors)
       newErrors.personalValues.splice(index, 1)
       return newErrors
     })
@@ -77,7 +77,7 @@ function PersonalValues(props: Props) {
     let hasErrors = false
     values.forEach((value, index) => {
       if (!value) {
-        newErrors.values[index] = 'Personal Value required'
+        newErrors.personalValues[index] = 'Personal Value required'
         hasErrors = true
       }
     })
