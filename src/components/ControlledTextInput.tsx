@@ -11,7 +11,7 @@ interface Props {
   error: string
   iconProps?: { name: string } & BoxProps
   type: HTMLInputTypeAttribute | 'select'
-  placeholder: string
+  placeholder?: string
   boxProps?: BoxProps
   inputProps?: InputProps
   label?: string
@@ -34,7 +34,7 @@ const ControlledTextInput = forwardRef<HTMLInputElement, Props>(({
     />
   )
   const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>
-  const LabelComponent = <Text textTransform="uppercase" fontWeight="bold" fontSize="xs" position="absolute" top="-5">{label}</Text>
+  const LabelComponent = <Text fontSize="md" position="absolute" top="-7">{label}</Text>
 
   if (!iconProps) {
     return (
@@ -65,6 +65,7 @@ ControlledTextInput.defaultProps = {
   iconProps: undefined,
   inputProps: {},
   label: undefined,
+  placeholder: '',
 }
 
 export default ControlledTextInput

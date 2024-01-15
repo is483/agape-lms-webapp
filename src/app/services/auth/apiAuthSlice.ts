@@ -4,7 +4,7 @@ import {
   ForgetPasswordRequest, LoginRequest, LoginResponse, RegisterRequest,
   ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
-import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from './utils'
+import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from '../utils'
 import { setIsLoggedIn, setToken } from '../../redux/appSlice'
 
 const apiAuthSlice = apiSlice.injectEndpoints({

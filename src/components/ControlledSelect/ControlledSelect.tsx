@@ -4,15 +4,13 @@ import {
   Select,
   SelectProps,
 } from '@chakra-ui/react'
-import { HTMLInputTypeAttribute, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import Icon from '../Icon'
 import './styles.css'
 
 interface Props {
   error: string
   iconProps?: { name: string } & BoxProps
-  type: HTMLInputTypeAttribute | 'select'
-  placeholder: string
   boxProps?: BoxProps
   options: string[]
   selectProps?: SelectProps
@@ -32,7 +30,7 @@ const ControlledSelect = forwardRef<HTMLSelectElement, Props>(({
     </Select>
   )
   const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>
-  const LabelComponent = <Text textTransform="uppercase" fontWeight="bold" fontSize="xs" position="absolute" top="-5">{label}</Text>
+  const LabelComponent = <Text fontSize="md" position="absolute" top="-7">{label}</Text>
 
   if (!iconProps) {
     return (
