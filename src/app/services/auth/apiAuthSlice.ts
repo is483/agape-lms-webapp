@@ -40,9 +40,8 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     forgetPassword: build.mutation<null, ForgetPasswordRequest>({
       query: (payload) => ({
-        url: 'user/forget-password',
-        method: 'POST',
-        body: payload,
+        url: `user/forget-password?email=${payload.email}`,
+        method: 'GET',
       }),
       onQueryStarted,
     }),
