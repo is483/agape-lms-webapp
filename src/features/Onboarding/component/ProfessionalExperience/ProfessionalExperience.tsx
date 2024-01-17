@@ -6,11 +6,10 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { getAuth } from '../../../../app/redux/selectors'
-import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { useAppSelector } from '../../../../hooks'
 import { deepCopy } from '../../../../utils'
 import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } from '../../../../app/services/user/apiUserSlice'
 import { ExperienceRequest, MenteeExperienceRequest, TransformedUserResponse } from '../../../../app/services/user/types'
-import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props extends FlexProps {
   handleBack: () => void
@@ -48,7 +47,6 @@ function ProfessionalExperience(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const dispatch = useAppDispatch()
   const [
     updateMenteeExperience,
     { isLoading: isMenteeLoading },
@@ -153,7 +151,6 @@ function ProfessionalExperience(props: Props) {
         }
         await updateMenteeExperience(request)
       }
-      dispatch(incrementOnboardingStep(3))
       handleNext()
     } catch (e) {
       console.error(e)

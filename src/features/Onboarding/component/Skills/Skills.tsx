@@ -8,7 +8,6 @@ import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
 import { SkillsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
-import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props extends FlexProps {
   handleBack: () => void
@@ -30,7 +29,6 @@ function Skills(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const dispatch = useAppDispatch()
   const [updateMentorSkills, { isLoading: isMentorInfoLoading }] = useUpdateMentorSkillsMutation()
   const [updateMenteeSkills, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeSkillsMutation()
   const { role } = useAppSelector(getAuth)
@@ -92,7 +90,6 @@ function Skills(props: Props) {
     }
     try {
       await updateSkills(skillsRequest).unwrap()
-      dispatch(incrementOnboardingStep(4))
       handleNext()
     } catch (e) {
       console.error(e)

@@ -3,13 +3,11 @@ import {
   Box, Button, Flex, FlexProps, FormLabel, Text,
 } from '@chakra-ui/react'
 import { getAuth } from '../../../../app/redux/selectors'
-import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeChallengesMutation, useUpdateMentorChallengesMutation } from '../../../../app/services/user/apiUserSlice'
 import { ChallengesRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
-import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
-
 interface Props extends FlexProps {
   handleBack: () => void
   handleNext: () => void
@@ -28,7 +26,6 @@ const mentorChallengesOptions = ['Balancing work', 'Imposter syndrome', 'Time ma
 const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
 
 function Challenges(props: Props) {
-  const dispatch = useAppDispatch()
   const {
     handleBack, handleNext, data, ...rest
   } = props
@@ -100,7 +97,6 @@ function Challenges(props: Props) {
     }
     try {
       await updateChallenges(challengeRequests).unwrap()
-      dispatch(incrementOnboardingStep(7))
       handleNext()
     } catch (e) {
       console.error(e)

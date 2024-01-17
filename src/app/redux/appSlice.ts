@@ -9,7 +9,6 @@ export interface AppState {
   }
   onboardingStatus: {
     isComplete: boolean
-    step: number
   }
 }
 
@@ -21,7 +20,6 @@ const initialState: AppState = {
   },
   onboardingStatus: {
     isComplete: false,
-    step: 1,
   },
 }
 
@@ -44,16 +42,10 @@ export const appSlice = createSlice({
     ) => {
       state.auth = action.payload
     },
-    incrementOnboardingStep: (state: AppState, action: PayloadAction<number>) => {
-      if (action.payload > state.onboardingStatus.step) {
-        state.onboardingStatus.step = action.payload
-      }
-    },
     setOnboardingStatus: (
       state: AppState,
       action: PayloadAction<{
         isComplete: boolean
-        step: number
       }>) => {
       state.onboardingStatus = action.payload
     },
@@ -62,6 +54,6 @@ export const appSlice = createSlice({
 
 export const {
   setToken, setIsLoggedIn, setRole, setAuth,
-  setOnboardingStatus, incrementOnboardingStep,
+  setOnboardingStatus,
 } = appSlice.actions
 export default appSlice.reducer

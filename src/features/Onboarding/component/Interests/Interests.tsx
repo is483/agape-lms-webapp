@@ -96,7 +96,7 @@ function Interests(props: Props) {
     }
     try {
       await updateInterests(interestRequests).unwrap()
-      dispatch(setOnboardingStatus({ isComplete: true, step: 8 }))
+      dispatch(setOnboardingStatus({ isComplete: true }))
       handleNext()
     } catch (e) {
       console.error(e)

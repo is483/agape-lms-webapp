@@ -5,10 +5,9 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeValuesMutation, useUpdateMentorValuesMutation } from '../../../../app/services/user/apiUserSlice'
 import { TransformedUserResponse, ValuesRequest } from '../../../../app/services/user/types'
-import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { useAppSelector } from '../../../../hooks'
 import { getAuth } from '../../../../app/redux/selectors'
 import { deepCopy } from '../../../../utils'
-import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props extends FlexProps {
   handleBack: () => void
@@ -30,7 +29,6 @@ function PersonalValues(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const dispatch = useAppDispatch()
   const [values, setValues] = useState<string[]>([''])
   const [updateMentorValues,
     { isLoading: isMentorInfoLoading }] = useUpdateMentorValuesMutation()
@@ -96,7 +94,6 @@ function PersonalValues(props: Props) {
     }
     try {
       await updateValues(valueRequests).unwrap()
-      dispatch(incrementOnboardingStep(5))
       handleNext()
     } catch (e) {
       console.error(e)
