@@ -6,8 +6,9 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
 import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
-import getAuth from '../../../../app/redux/selectors'
-import { useAppSelector } from '../../../../hooks'
+import { getAuth } from '../../../../app/redux/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props {
   handleNext: () => void
@@ -34,6 +35,7 @@ const genderOptions = ['Male', 'Female']
 
 function PersonalInformation(props: Props) {
   const { handleNext, data } = props
+  const dispatch = useAppDispatch()
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
   const { role } = useAppSelector(getAuth)
@@ -116,6 +118,7 @@ function PersonalInformation(props: Props) {
     }
     try {
       await updateInfo(infoRequest).unwrap()
+      dispatch(incrementOnboardingStep(2))
       handleNext()
     } catch (e) {
       console.error(e)

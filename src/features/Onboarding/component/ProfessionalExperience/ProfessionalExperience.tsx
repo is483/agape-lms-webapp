@@ -4,11 +4,12 @@ import {
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
-import getAuth from '../../../../app/redux/selectors'
-import { useAppSelector } from '../../../../hooks'
+import { getAuth } from '../../../../app/redux/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { deepCopy } from '../../../../utils'
 import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } from '../../../../app/services/user/apiUserSlice'
 import { ExperienceRequest, MenteeExperienceRequest, TransformedUserResponse } from '../../../../app/services/user/types'
+import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props {
   handleBack: () => void
@@ -44,6 +45,7 @@ const defaultWorkExperiences: WorkExperience[] = [{ ...defaultWorkExperience }]
 
 function ProfessionalExperience(props: Props) {
   const { handleBack, handleNext, data } = props
+  const dispatch = useAppDispatch()
   const [
     updateMenteeExperience,
     { isLoading: isMenteeLoading },
@@ -60,7 +62,7 @@ function ProfessionalExperience(props: Props) {
   useEffect(() => {
     if (!data) return
     setCareerAspiration(data.careerAspiration ?? '')
-    setWorkExperiences(deepCopy(data.workExperience) ?? [])
+    setWorkExperiences(deepCopy(data.workExperience))
   }, [data])
 
   const handleCareerAspirationsChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -148,6 +150,7 @@ function ProfessionalExperience(props: Props) {
         }
         await updateMenteeExperience(request)
       }
+      dispatch(incrementOnboardingStep(3))
       handleNext()
     } catch (e) {
       console.error(e)

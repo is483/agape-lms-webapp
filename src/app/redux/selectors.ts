@@ -1,5 +1,5 @@
 import { RootState } from '../store'
 
-const getAuth = (state: RootState) => state.app.auth
+export const getAuth = (state: RootState) => state.app.auth
 
-export default getAuth
+export const getOnboardingStatus = (state: RootState) => state.app.onboardingStatus

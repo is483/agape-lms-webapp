@@ -1,3 +1,5 @@
+import { Role } from '../../types'
+
 export interface UserRequest {
   role: string
 }
@@ -90,4 +92,13 @@ export interface MentorMentoringRequest extends MentoringRequest {
 
 export interface MenteeMentoringRequest extends MentoringRequest {
   expectations: string
+}
+
+export interface RoleResponse {
+  role: Role
+}
+
+export interface OnboardingResponse {
+  onboardingStep?: number
+  onboardingComplete: boolean
 }

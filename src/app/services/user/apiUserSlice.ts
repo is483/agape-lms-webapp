@@ -2,12 +2,13 @@ import { apiSlice } from '../apiSlice'
 import {
   ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
   MenteeExperienceRequest, MenteeMentoringRequest,
-  MentorMentoringRequest, SkillsRequest, TransformedUserResponse,
+  MentorMentoringRequest, RoleResponse, SkillsRequest, TransformedUserResponse,
   UserRequest, UserResponse, ValuesRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDate } from '../../../utils'
 import { transformGender } from './utils'
+import { Role } from '../../types'
 
 const apiUserSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -20,8 +21,8 @@ const apiUserSlice = apiSlice.injectEndpoints({
         const transformedResponse: any = { ...response?.profile }
         transformedResponse.gender = transformGender(response.profile.gender) ?? ''
         transformedResponse.dateOfBirth = formatDate(response.profile.dateOfBirth) ?? ''
-        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? []
-        transformedResponse.skills = response.profile.skills?.split(', ') ?? []
+        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{}]
+        transformedResponse.skills = response.profile.skills?.split(', ') ?? ['']
         transformedResponse.personalValues = response.profile.personalValues?.split(', ') ?? ['']
         transformedResponse.preferredMeetingDays = response.profile.preferredMeetingDays?.split(', ').filter((day) => day !== '') ?? []
         transformedResponse.preferredMentoringApproach = response.profile.preferredMentoringApproach?.split(', ') ?? ['']
@@ -160,6 +161,15 @@ const apiUserSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['User'],
       onQueryStarted,
     }),
+    getUserRole: build.query<RoleResponse, null>({
+      query: () => ({
+        url: 'user/retrieve-role',
+      }),
+      transformResponse: ({ role }: { role: string }) => ({
+        role: role.charAt(0).toUpperCase() + role.slice(1) as Role,
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -172,5 +182,5 @@ export const {
   useUpdateMentorMentoringStyleMutation, useUpdateMenteeMentoringStyleMutation,
   useUpdateMentorChallengesMutation, useUpdateMenteeChallengesMutation,
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
-  useGetUserInfoQuery,
+  useGetUserInfoQuery, useGetUserRoleQuery,
 } = apiUserSlice

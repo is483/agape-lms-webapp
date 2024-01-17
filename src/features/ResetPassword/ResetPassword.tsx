@@ -121,7 +121,7 @@ function ResetPassword() {
             <Flex justifyContent="center" mt="12">
               <Text>
                 Have an account?&nbsp;
-                <Link fontWeight="500" color="red.600" to={paths.Register}>Go to login.</Link>
+                <Link fontWeight="500" color="red.600" to={paths.Login}>Go to login.</Link>
               </Text>
             </Flex>
           </Box>

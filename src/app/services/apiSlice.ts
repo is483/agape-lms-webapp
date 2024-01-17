@@ -7,11 +7,13 @@ import { RootState } from '../store'
 */
 
 const apiVersion = 1
+const baseUrl = 'https://agape-lms-hmwzd56c5a-as.a.run.app'
+export const apiUrl = `${baseUrl}/api/v${apiVersion}/`
 
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://agape-lms-hmwzd56c5a-as.a.run.app/api/v${apiVersion}/`,
+    baseUrl: apiUrl,
     prepareHeaders: (headers, { getState }) => {
       const appState = (getState() as RootState).app
       const localStorageToken = localStorage.getItem('token')
