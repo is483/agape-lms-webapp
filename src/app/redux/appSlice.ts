@@ -44,6 +44,11 @@ export const appSlice = createSlice({
     ) => {
       state.auth = action.payload
     },
+    incrementOnboardingStep: (state: AppState, action: PayloadAction<number>) => {
+      if (action.payload > state.onboardingStatus.step) {
+        state.onboardingStatus.step = action.payload
+      }
+    },
     setOnboardingStatus: (
       state: AppState,
       action: PayloadAction<{
@@ -57,5 +62,6 @@ export const appSlice = createSlice({
 
 export const {
   setToken, setIsLoggedIn, setRole, setAuth,
+  setOnboardingStatus, incrementOnboardingStep,
 } = appSlice.actions
 export default appSlice.reducer

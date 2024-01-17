@@ -21,8 +21,8 @@ const apiUserSlice = apiSlice.injectEndpoints({
         const transformedResponse: any = { ...response?.profile }
         transformedResponse.gender = transformGender(response.profile.gender) ?? ''
         transformedResponse.dateOfBirth = formatDate(response.profile.dateOfBirth) ?? ''
-        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? []
-        transformedResponse.skills = response.profile.skills?.split(', ') ?? []
+        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{}]
+        transformedResponse.skills = response.profile.skills?.split(', ') ?? ['']
         transformedResponse.personalValues = response.profile.personalValues?.split(', ') ?? ['']
         transformedResponse.preferredMeetingDays = response.profile.preferredMeetingDays?.split(', ').filter((day) => day !== '') ?? []
         transformedResponse.preferredMentoringApproach = response.profile.preferredMentoringApproach?.split(', ') ?? ['']

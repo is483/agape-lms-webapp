@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import OnboardingStepper from './component/Stepper'
+import OnboardingStepper from './component/OnboardingStepper'
 import PersonalInformation from './component/PersonalInformation/PersonalInformation'
 import ProfessionalExperience from './component/ProfessionalExperience/ProfessionalExperience'
 import Skills from './component/Skills/Skills'
@@ -16,7 +16,7 @@ import Interests from './component/Interests/Interests'
 import MentoringStyle from './component/MentoringStyle/MentoringStyle'
 import { useGetUserInfoQuery } from '../../app/services/user/apiUserSlice'
 import { useAppSelector } from '../../hooks'
-import getAuth from '../../app/redux/selectors'
+import { getAuth } from '../../app/redux/selectors'
 
 const steps = [
   { title: 'Personal Information' },

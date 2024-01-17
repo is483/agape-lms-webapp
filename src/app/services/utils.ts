@@ -17,10 +17,16 @@ export const defaultOnQueryStarted = async (
   { queryFulfilled, dispatch }: PartialOnQueryStarted,
 ) => {
   queryFulfilled.catch(({ error }) => {
-    console.error(error)
-    const { status } = error as FetchBaseQueryError
-    handleFetchError(status, dispatch)
+    defaultCatchHandler(error, dispatch)
   })
+}
+
+export const defaultCatchHandler = (
+  error: any, dispatch: ThunkDispatch<any, any, UnknownAction>,
+) => {
+  console.error(error)
+  const { status } = error as FetchBaseQueryError
+  handleFetchError(status, dispatch)
 }
 
 /*

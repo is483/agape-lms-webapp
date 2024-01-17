@@ -2,12 +2,13 @@ import {
   Box, Button, Flex, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
-import getAuth from '../../../../app/redux/selectors'
-import { useAppSelector } from '../../../../hooks'
+import { getAuth } from '../../../../app/redux/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
 import { SkillsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
+import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props {
   handleBack: () => void
@@ -27,6 +28,7 @@ const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emo
 
 function Skills(props: Props) {
   const { handleBack, handleNext, data } = props
+  const dispatch = useAppDispatch()
   const [updateMentorSkills, { isLoading: isMentorInfoLoading }] = useUpdateMentorSkillsMutation()
   const [updateMenteeSkills, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeSkillsMutation()
   const { role } = useAppSelector(getAuth)
@@ -35,7 +37,7 @@ function Skills(props: Props) {
 
   useEffect(() => {
     if (!data) return
-    setSkills(data.skills ?? [''])
+    setSkills(data.skills)
   }, [data])
 
   const handleSkillsChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
@@ -88,6 +90,7 @@ function Skills(props: Props) {
     }
     try {
       await updateSkills(skillsRequest).unwrap()
+      dispatch(incrementOnboardingStep(4))
       handleNext()
     } catch (e) {
       console.error(e)

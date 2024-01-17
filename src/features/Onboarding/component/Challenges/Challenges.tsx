@@ -2,12 +2,13 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import {
   Box, Button, Flex, FormLabel, Text,
 } from '@chakra-ui/react'
-import getAuth from '../../../../app/redux/selectors'
-import { useAppSelector } from '../../../../hooks'
+import { getAuth } from '../../../../app/redux/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeChallengesMutation, useUpdateMentorChallengesMutation } from '../../../../app/services/user/apiUserSlice'
 import { ChallengesRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
+import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props {
   handleBack: () => void
@@ -27,11 +28,14 @@ const mentorChallengesOptions = ['Balancing work', 'Imposter syndrome', 'Time ma
 const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
 
 function Challenges(props: Props) {
+  const dispatch = useAppDispatch()
   const { handleBack, handleNext, data } = props
   const [updateMentorChallenges,
-    { isLoading: isMentorInfoLoading }] = useUpdateMentorChallengesMutation()
+    { isLoading: isMentorInfoLoading },
+  ] = useUpdateMentorChallengesMutation()
   const [updateMenteeChallenges,
-    { isLoading: isMenteeInfoLoading }] = useUpdateMenteeChallengesMutation()
+    { isLoading: isMenteeInfoLoading },
+  ] = useUpdateMenteeChallengesMutation()
   const { role } = useAppSelector(getAuth)
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
@@ -94,6 +98,7 @@ function Challenges(props: Props) {
     }
     try {
       await updateChallenges(challengeRequests).unwrap()
+      dispatch(incrementOnboardingStep(7))
       handleNext()
     } catch (e) {
       console.error(e)

@@ -3,13 +3,14 @@ import {
   FormControl, FormLabel, SimpleGrid, Text, Textarea,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
-import getAuth from '../../../../app/redux/selectors'
-import { useAppSelector } from '../../../../hooks'
+import { getAuth } from '../../../../app/redux/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeMentoringStyleMutation, useUpdateMentorMentoringStyleMutation } from '../../../../app/services/user/apiUserSlice'
 import { MenteeMentoringRequest, MentorMentoringRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { Role } from '../../../../app/types'
 import { deepCopy } from '../../../../utils'
+import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
 interface Props {
   handleBack: () => void
@@ -57,6 +58,7 @@ const dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 
 function MentoringStyle(props: Props) {
   const { handleBack, handleNext, data } = props
+  const dispatch = useAppDispatch()
   const [
     updateMentorMentoringStyle,
     { isLoading: isMentorInfoLoading },
@@ -165,6 +167,7 @@ function MentoringStyle(props: Props) {
       } else {
         await updateMenteeMentoringStyle(menteeMentoringRequest).unwrap()
       }
+      dispatch(incrementOnboardingStep(6))
       handleNext()
     } catch (e) {
       console.error(e)

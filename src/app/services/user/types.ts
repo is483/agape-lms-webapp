@@ -99,6 +99,6 @@ export interface RoleResponse {
 }
 
 export interface OnboardingResponse {
-  onboardingStep?: string
+  onboardingStep?: number
   onboardingComplete: boolean
 }

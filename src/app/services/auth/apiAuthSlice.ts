@@ -1,11 +1,10 @@
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { apiSlice } from '../apiSlice'
 import {
   ForgetPasswordRequest, LoginRequest, LoginResponse, RegisterRequest,
   ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
-import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from '../utils'
-import { setAuth } from '../../redux/appSlice'
+import { defaultOnQueryStarted as onQueryStarted, defaultCatchHandler } from '../utils'
+import { setAuth, setOnboardingStatus } from '../../redux/appSlice'
 import { Role } from '../../types'
 import { router } from '../../../main'
 import paths from '../../../paths'
@@ -36,9 +35,7 @@ const apiAuthSlice = apiSlice.injectEndpoints({
           // TODO: Add decision to route to main page/onboarding page
           router.navigate(paths.Onboarding)
         }).catch(({ error }) => {
-          console.error(error)
-          const { status } = error as FetchBaseQueryError
-          handleFetchError(status, dispatch)
+          defaultCatchHandler(error, dispatch)
         })
       },
     }),
@@ -79,7 +76,17 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         url: 'user/verify-onboarding-status',
         method: 'GET',
       }),
-      onQueryStarted,
+      onQueryStarted: (_arg: any, { dispatch, queryFulfilled }) => {
+        queryFulfilled.then(({ data }) => {
+          const { onboardingComplete, onboardingStep } = data
+          dispatch(setOnboardingStatus({
+            isComplete: onboardingComplete,
+            step: onboardingStep ?? 8,
+          }))
+        }).catch(({ error }) => {
+          defaultCatchHandler(error, dispatch)
+        })
+      },
     }),
   }),
   overrideExisting: false,

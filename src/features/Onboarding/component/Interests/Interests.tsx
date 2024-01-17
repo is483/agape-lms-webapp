@@ -4,10 +4,11 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeInterestsMutation, useUpdateMentorInterestsMutation } from '../../../../app/services/user/apiUserSlice'
-import { useAppSelector } from '../../../../hooks'
-import getAuth from '../../../../app/redux/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { getAuth } from '../../../../app/redux/selectors'
 import { InterestsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
+import { setOnboardingStatus } from '../../../../app/redux/appSlice'
 
 interface Props {
   handleBack: () => void
@@ -27,10 +28,13 @@ const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdo
 
 function Interests(props: Props) {
   const { handleBack, handleNext, data } = props
+  const dispatch = useAppDispatch()
   const [updateMentorInterests,
-    { isLoading: isMentorInfoLoading }] = useUpdateMentorInterestsMutation()
+    { isLoading: isMentorInfoLoading },
+  ] = useUpdateMentorInterestsMutation()
   const [updateMenteeInterests,
-    { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInterestsMutation()
+    { isLoading: isMenteeInfoLoading },
+  ] = useUpdateMenteeInterestsMutation()
   const [interests, setInterests] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const { role } = useAppSelector(getAuth)
@@ -90,6 +94,7 @@ function Interests(props: Props) {
     }
     try {
       await updateInterests(interestRequests).unwrap()
+      dispatch(setOnboardingStatus({ isComplete: true, step: 8 }))
       handleNext()
     } catch (e) {
       console.error(e)

@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import getAuth from './redux/selectors'
+import { getAuth } from './redux/selectors'
 import { Login } from '../features/Login'
 import { Register } from '../features/Register'
 import AppLayout from './AppLayout'
