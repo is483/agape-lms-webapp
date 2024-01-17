@@ -1,11 +1,13 @@
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { apiSlice } from '../apiSlice'
 import {
   ForgetPasswordRequest, LoginRequest, LoginResponse, RegisterRequest,
   ResetPasswordRequest, VerifyResetTokenRequest, VerifyResetTokenResponse,
 } from './types'
-import { defaultOnQueryStarted as onQueryStarted, handleFetchError } from '../utils'
-import { setIsLoggedIn, setToken } from '../../redux/appSlice'
+import { defaultOnQueryStarted as onQueryStarted, defaultCatchHandler } from '../utils'
+import { setAuth, setOnboardingStatus } from '../../redux/appSlice'
+import { Role } from '../../types'
+import { OnboardingResponse } from '../user/types'
+import { resetTokenHeaders } from './utils'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -16,17 +18,21 @@ const apiAuthSlice = apiSlice.injectEndpoints({
         body: credentials,
         invalidateTags: ['User'],
       }),
+      transformResponse: ({ token, role }: { token: string, role: string }) => ({
+        token,
+        role: role.charAt(0).toUpperCase() + role.slice(1) as Role,
+      }),
       onQueryStarted: (_arg: any, { dispatch, queryFulfilled }) => {
         queryFulfilled.then(({ data }) => {
-          const { token } = data
-          dispatch(setToken(token))
-          dispatch(setIsLoggedIn(true))
+          const { token, role } = data
+          dispatch(setAuth({
+            token,
+            isLoggedIn: true,
+            role,
+          }))
           localStorage.setItem('token', token)
-          // TODO: Add decision to route to main page/onboarding page
         }).catch(({ error }) => {
-          console.error(error)
-          const { status } = error as FetchBaseQueryError
-          handleFetchError(status, dispatch)
+          defaultCatchHandler(error, dispatch)
         })
       },
     }),
@@ -40,27 +46,43 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     forgetPassword: build.mutation<null, ForgetPasswordRequest>({
       query: (payload) => ({
-        url: 'user/forget-password',
-        method: 'POST',
-        body: payload,
+        url: `user/forget-password?email=${payload.email}`,
+        method: 'GET',
       }),
       onQueryStarted,
     }),
     resetPassword: build.mutation<null, ResetPasswordRequest>({
       query: (payload) => ({
         url: 'user/reset-password',
-        method: 'POST',
+        method: 'PUT',
         body: payload,
+        headers: resetTokenHeaders(payload),
       }),
       onQueryStarted,
     }),
     verifyResetToken: build.mutation<VerifyResetTokenResponse, VerifyResetTokenRequest>({
       query: (payload) => ({
         url: 'user/verify-reset-token',
-        method: 'POST',
-        body: payload,
+        method: 'GET',
+        headers: resetTokenHeaders(payload),
       }),
       onQueryStarted,
+    }),
+    verifyOnboardingStatus: build.mutation<OnboardingResponse, null>({
+      query: () => ({
+        url: 'user/verify-onboarding-status',
+        method: 'GET',
+      }),
+      onQueryStarted: (_arg: any, { dispatch, queryFulfilled }) => {
+        queryFulfilled.then(({ data }) => {
+          const { onboardingComplete } = data
+          dispatch(setOnboardingStatus({
+            isComplete: onboardingComplete,
+          }))
+        }).catch(({ error }) => {
+          defaultCatchHandler(error, dispatch)
+        })
+      },
     }),
   }),
   overrideExisting: false,
@@ -68,5 +90,5 @@ const apiAuthSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation, useRegisterMutation, useForgetPasswordMutation, useResetPasswordMutation,
-  useVerifyResetTokenMutation,
+  useVerifyResetTokenMutation, useVerifyOnboardingStatusMutation,
 } = apiAuthSlice

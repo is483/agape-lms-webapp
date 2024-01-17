@@ -1,9 +1,10 @@
 import {
   Box, Button, Checkbox, CheckboxGroup, Flex,
+  FlexProps,
   FormControl, FormLabel, SimpleGrid, Text, Textarea,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
-import getAuth from '../../../../app/redux/selectors'
+import { getAuth } from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeMentoringStyleMutation, useUpdateMentorMentoringStyleMutation } from '../../../../app/services/user/apiUserSlice'
@@ -11,7 +12,7 @@ import { MenteeMentoringRequest, MentorMentoringRequest, TransformedUserResponse
 import { Role } from '../../../../app/types'
 import { deepCopy } from '../../../../utils'
 
-interface Props {
+interface Props extends FlexProps {
   handleBack: () => void
   handleNext: () => void
   data: TransformedUserResponse | undefined
@@ -56,7 +57,9 @@ const communicationOptions = ['Physical', 'Online']
 const dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 function MentoringStyle(props: Props) {
-  const { handleBack, handleNext, data } = props
+  const {
+    handleBack, handleNext, data, ...rest
+  } = props
   const [
     updateMentorMentoringStyle,
     { isLoading: isMentorInfoLoading },
@@ -171,61 +174,63 @@ function MentoringStyle(props: Props) {
     }
   }
   return (
-    <Box>
-      <Text fontSize="2xl" fontWeight="600"> Mentoring Style </Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="55">{role === 'Mentor' ? 'Define your approach to guidance and support' : 'Outline your learning preferences and expectations'} </Text>
-      <Box marginBottom="8">
-        <ControlledSelect label="Preferred Communication" error={errors?.preferredCommunication} options={communicationOptions} selectProps={{ onChange: handlePreferredCommunicationChange, value: preferredCommunication }} />
-      </Box>
-      <Box marginBottom="8">
-        <CheckboxGroup onChange={handleCheckboxChange} value={meetingDays}>
-          <FormLabel> Meeting Days </FormLabel>
-          <SimpleGrid columns={[1, null, 3]} marginBottom="2" spacingY={5}>
-            {dayOptions.map((day) => (
-              <Checkbox value={day}> {day} </Checkbox>
-            ))}
-          </SimpleGrid>
-          {!!errors?.meetingDays && <Text position="absolute" fontSize="xs" color="red.600">{errors?.meetingDays}</Text>}
-        </CheckboxGroup>
-      </Box>
+    <Flex {...rest}>
+      <Box>
+        <Text fontSize="2xl" fontWeight="600"> Mentoring Style </Text>
+        <Text color="secondary.500" marginTop="1" marginBottom="55">{role === 'Mentor' ? 'Define your approach to guidance and support' : 'Outline your learning preferences and expectations'} </Text>
+        <Box marginBottom="8">
+          <ControlledSelect label="Preferred Communication" error={errors?.preferredCommunication} options={communicationOptions} selectProps={{ onChange: handlePreferredCommunicationChange, value: preferredCommunication }} />
+        </Box>
+        <Box marginBottom="8">
+          <CheckboxGroup onChange={handleCheckboxChange} value={meetingDays}>
+            <FormLabel> Meeting Days </FormLabel>
+            <SimpleGrid columns={[1, null, 3]} marginBottom="2" spacingY={5}>
+              {dayOptions.map((day) => (
+                <Checkbox value={day}> {day} </Checkbox>
+              ))}
+            </SimpleGrid>
+            {!!errors?.meetingDays && <Text position="absolute" fontSize="xs" color="red.600">{errors?.meetingDays}</Text>}
+          </CheckboxGroup>
+        </Box>
 
-      {role === 'Mentee' && instanceOfMenteeError(errors) && (
-        <Box marginY="10">
-          <FormControl>
-            <FormLabel fontWeight="600">Expectations</FormLabel>
-            <Textarea borderColor={errors?.expectations ? 'red.600' : 'inherit'} borderWidth={errors?.expectations ? '2px' : '1px'} placeholder="Describe what you kind of support you'd like from your mentor..." value={expectations} onChange={handleExpectationsChange} />
-            {!!errors?.expectations && <Text position="absolute" fontSize="xs" color="red.600">{errors?.expectations}</Text>}
-          </FormControl>
-        </Box>
-      )}
-      {role === 'Mentor' && instanceOfMentorError(errors) && (
-        <Box>
-          <FormLabel>Preferred Mentoring Approach (Select up to 3 options)</FormLabel>
-          {mentoringApproaches?.map((mentoringApproach, index) => (
-            <Flex marginBottom="5" gap={4} alignItems="center">
-              <ControlledSelect
-                selectProps={{
-                  onChange: (e) => handleMentoringApproachesChange(e, index),
-                  value: mentoringApproach,
-                }}
-                options={mentoringOptions}
-                error={errors?.mentoringApproaches[index]}
-              />
-              <Icon name="delete" _hover={{ cursor: 'pointer' }} color={mentoringApproaches.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteMentoringApproach(index)} />
-            </Flex>
-          ))}
-          {mentoringApproaches.length < 3 && (
-            <Box marginY="10">
-              <Button size="sm" onClick={handleAddMentoringApproach}> + Add Mentoring Approach</Button>
-            </Box>
-          )}
-        </Box>
-      )}
-      <Flex justifyContent="end" gap="4">
+        {role === 'Mentee' && instanceOfMenteeError(errors) && (
+          <Box marginY="10">
+            <FormControl>
+              <FormLabel fontWeight="600">Expectations</FormLabel>
+              <Textarea borderColor={errors?.expectations ? 'red.600' : 'inherit'} borderWidth={errors?.expectations ? '2px' : '1px'} placeholder="Describe what you kind of support you'd like from your mentor..." value={expectations} onChange={handleExpectationsChange} />
+              {!!errors?.expectations && <Text position="absolute" fontSize="xs" color="red.600">{errors?.expectations}</Text>}
+            </FormControl>
+          </Box>
+        )}
+        {role === 'Mentor' && instanceOfMentorError(errors) && (
+          <Box>
+            <FormLabel>Preferred Mentoring Approach (Select up to 3 options)</FormLabel>
+            {mentoringApproaches?.map((mentoringApproach, index) => (
+              <Flex marginBottom="5" gap={4} alignItems="center">
+                <ControlledSelect
+                  selectProps={{
+                    onChange: (e) => handleMentoringApproachesChange(e, index),
+                    value: mentoringApproach,
+                  }}
+                  options={mentoringOptions}
+                  error={errors?.mentoringApproaches[index]}
+                />
+                <Icon name="delete" _hover={{ cursor: 'pointer' }} color={mentoringApproaches.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteMentoringApproach(index)} />
+              </Flex>
+            ))}
+            {mentoringApproaches.length < 3 && (
+              <Box marginBottom="10">
+                <Button size="sm" onClick={handleAddMentoringApproach}> + Add Mentoring Approach</Button>
+              </Box>
+            )}
+          </Box>
+        )}
+      </Box>
+      <Flex justifyContent="end" gap="4" my="8">
         <Button onClick={handleBack}>Back</Button>
         <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 export default MentoringStyle

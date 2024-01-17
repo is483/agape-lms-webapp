@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import {
-  Box, Button, Flex, FormLabel, Text,
+  Box, Button, Flex, FlexProps, FormLabel, Text,
 } from '@chakra-ui/react'
-import getAuth from '../../../../app/redux/selectors'
+import { getAuth } from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMenteeChallengesMutation, useUpdateMentorChallengesMutation } from '../../../../app/services/user/apiUserSlice'
 import { ChallengesRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
 
-interface Props {
+interface Props extends FlexProps {
   handleBack: () => void
   handleNext: () => void
   data: TransformedUserResponse | undefined
@@ -27,11 +27,15 @@ const mentorChallengesOptions = ['Balancing work', 'Imposter syndrome', 'Time ma
 const menteeChallengesOptions = ['Career transition', 'Confidence building', 'Overcoming procrastination']
 
 function Challenges(props: Props) {
-  const { handleBack, handleNext, data } = props
+  const {
+    handleBack, handleNext, data, ...rest
+  } = props
   const [updateMentorChallenges,
-    { isLoading: isMentorInfoLoading }] = useUpdateMentorChallengesMutation()
+    { isLoading: isMentorInfoLoading },
+  ] = useUpdateMentorChallengesMutation()
   const [updateMenteeChallenges,
-    { isLoading: isMenteeInfoLoading }] = useUpdateMenteeChallengesMutation()
+    { isLoading: isMenteeInfoLoading },
+  ] = useUpdateMenteeChallengesMutation()
   const { role } = useAppSelector(getAuth)
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
@@ -100,32 +104,34 @@ function Challenges(props: Props) {
     }
   }
   return (
-    <Box>
-      <Text fontSize="2xl" fontWeight="600"> Challenges/Lessons</Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8"> Reflect on obstacles overcome and wisdom gained</Text>
-      <FormLabel>Challenges/Lessons (Select up to 5 options)</FormLabel>
-      {
-        challenges.map((challenge, index) => (
-          <Flex alignItems="center" marginBottom="5" gap={4}>
-            <ControlledSelect
-              selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }}
-              error={errors.challenges[index]}
-              options={challengesOptions}
-            />
-            <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
-          </Flex>
-        ))
-      }
-      {challenges.length < 5 && (
-        <Box marginY="10">
-          <Button size="sm" onClick={handleAddChallenge}> + Add Challenge</Button>
-        </Box>
-      )}
-      <Flex justifyContent="end" gap="4">
+    <Flex {...rest}>
+      <Box>
+        <Text fontSize="2xl" fontWeight="600"> Challenges/Lessons</Text>
+        <Text color="secondary.500" marginTop="1" marginBottom="8"> Reflect on obstacles overcome and wisdom gained</Text>
+        <FormLabel>Challenges/Lessons (Select up to 5 options)</FormLabel>
+        {
+          challenges.map((challenge, index) => (
+            <Flex alignItems="center" marginBottom="5" gap={4}>
+              <ControlledSelect
+                selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }}
+                error={errors.challenges[index]}
+                options={challengesOptions}
+              />
+              <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
+            </Flex>
+          ))
+        }
+        {challenges.length < 5 && (
+          <Box marginY="10">
+            <Button size="sm" onClick={handleAddChallenge}> + Add Challenge</Button>
+          </Box>
+        )}
+      </Box>
+      <Flex justifyContent="end" gap="4" my="8">
         <Button onClick={handleBack}>Back</Button>
         <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 export default Challenges
