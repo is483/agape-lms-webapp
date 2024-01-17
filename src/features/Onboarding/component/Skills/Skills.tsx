@@ -3,7 +3,7 @@ import {
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../../../app/redux/selectors'
-import { useAppDispatch, useAppSelector } from '../../../../hooks'
+import { useAppSelector } from '../../../../hooks'
 import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
 import { SkillsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
