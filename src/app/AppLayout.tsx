@@ -1,40 +1,37 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { Route, Routes } from 'react-router-dom'
 import { Navbar } from '../features/Navbar'
 import { useAppSelector } from '../hooks'
 import { getAuth } from './redux/selectors'
-import useBreakpoint from '../hooks/useBreakpoint'
 import Introduction from '../features/Onboarding/component/Introduction/Introduction'
 import paths from '../paths'
-import Onboarding from '../features/Onboarding/Onboarding'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
-  const isMdUp = useBreakpoint('md')
-  // const location = useLocation()
-  // const { pathname } = location
 
   return (
     <Box background="gray.50" minHeight="100vh">
-      {role && <Navbar role={role} />}
-      <Box paddingLeft={isMdUp ? '280px' : ''}>
-        {role === 'Admin' && (
-          <>
-          </>
-        )}
-        {role === 'Mentor' && (
-          <Routes>
-            <Route path={paths.Introduction} element={<Introduction />} />
-            <Route path={`${paths.Onboarding}/:step`} element={<Onboarding />} />
-          </Routes>
-        )}
-        {role === 'Mentee' && (
-          <Routes>
-            <Route path={paths.Introduction} element={<Introduction />} />
-            <Route path={`${paths.Onboarding}/:step`} element={<Onboarding />} />
-          </Routes>
-        )}
-      </Box>
+      <Flex gap="0">
+        <Box width={[0, null, 280]} height="100vh">
+          {role && <Navbar role={role} />}
+        </Box>
+        <Box width="100%" marginBottom={['48px', null, 0]}>
+          {role === 'Admin' && (
+            <>
+            </>
+          )}
+          {role === 'Mentor' && (
+            <Routes>
+              <Route path={paths.Introduction} element={<Introduction />} />
+            </Routes>
+          )}
+          {role === 'Mentee' && (
+            <Routes>
+              <Route path={paths.Introduction} element={<Introduction />} />
+            </Routes>
+          )}
+        </Box>
+      </Flex>
     </Box>
   )
 }

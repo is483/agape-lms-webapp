@@ -74,10 +74,9 @@ const apiAuthSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted: (_arg: any, { dispatch, queryFulfilled }) => {
         queryFulfilled.then(({ data }) => {
-          const { onboardingComplete, onboardingStep } = data
+          const { onboardingComplete } = data
           dispatch(setOnboardingStatus({
             isComplete: onboardingComplete,
-            step: onboardingStep ?? 8,
           }))
         }).catch(({ error }) => {
           defaultCatchHandler(error, dispatch)
