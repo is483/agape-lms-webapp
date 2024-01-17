@@ -30,7 +30,5 @@ export interface VerifyResetTokenRequest {
 }
 
 export interface VerifyResetTokenResponse {
-  successful: boolean
-  error: string
-  fullName: string
+  email: string
 }
