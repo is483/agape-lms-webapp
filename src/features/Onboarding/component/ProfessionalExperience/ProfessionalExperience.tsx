@@ -1,5 +1,6 @@
 import {
   Box, Button, Flex,
+  FlexProps,
   FormLabel, SimpleGrid, Text, Textarea,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -11,7 +12,7 @@ import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } 
 import { ExperienceRequest, MenteeExperienceRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
-interface Props {
+interface Props extends FlexProps {
   handleBack: () => void
   handleNext: () => void
   data: TransformedUserResponse | undefined
@@ -44,7 +45,9 @@ const careerOptions = ['IT Technician', 'Video Producer', 'Content Creator']
 const defaultWorkExperiences: WorkExperience[] = [{ ...defaultWorkExperience }]
 
 function ProfessionalExperience(props: Props) {
-  const { handleBack, handleNext, data } = props
+  const {
+    handleBack, handleNext, data, ...rest
+  } = props
   const dispatch = useAppDispatch()
   const [
     updateMenteeExperience,
@@ -159,53 +162,54 @@ function ProfessionalExperience(props: Props) {
   }
 
   return (
-    <Box>
-      <Text fontSize="2xl" fontWeight="600"> Professional Experience </Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight up to 5 of your previous job experiences! </Text>
-      {role === 'Mentee' && (
-        <Box marginTop="5">
-          <ControlledSelect error={errors.careerAspiration} label="Career Aspiration" options={careerOptions} selectProps={{ onChange: handleCareerAspirationsChange, value: careerAspiration }} />
-        </Box>
-      )}
-      {workExperiences.map((workExperience, index) => {
-        const { jobTitle, company, description } = workExperience
-        return (
-          <Box mb="8">
-            <Flex justifyContent="space-between" marginY="8">
-              <Text size="md" fontWeight="600" marginBottom="3"> Work Experience {index + 1} </Text>
-              <Icon name="delete" _hover={{ cursor: 'pointer' }} color={workExperiences.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteWorkExperience(index)} />
-            </Flex>
-            <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
-              <ControlledTextInput
-                error={errors.workExperience[index]?.jobTitle}
-                label="Job Title"
-                type="text"
-                boxProps={{ mb: '6' }}
-                inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'jobTitle'), value: jobTitle }}
-              />
-              <ControlledTextInput
-                error={errors.workExperience[index]?.company}
-                label="Company"
-                type="text"
-                boxProps={{ mb: '6' }}
-                inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'company'), value: company }}
-              />
-            </SimpleGrid>
-            <FormLabel> Description </FormLabel>
-            <Textarea borderColor={errors.workExperience[index]?.description ? 'red.600' : 'inherit'} borderWidth={errors.workExperience[index]?.description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e) => handleWorkExperienceChange(e, index, 'description')} />
-            {!!errors.workExperience[index]?.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.workExperience[index]?.description}</Text>}
+    <Flex {...rest}>
+      <Box>
+        <Text fontSize="2xl" fontWeight="600"> Professional Experience </Text>
+        <Text color="secondary.500" marginTop="1" marginBottom="8"> Highlight up to 5 of your previous job experiences! </Text>
+        {role === 'Mentee' && (
+          <Box marginTop="5">
+            <ControlledSelect error={errors.careerAspiration} label="Career Aspiration" options={careerOptions} selectProps={{ onChange: handleCareerAspirationsChange, value: careerAspiration }} />
           </Box>
-        )
-      })}
-      <Box marginY="10">
-        <Button size="sm" onClick={handleAddWorkExperience}> + Add Work Experience</Button>
+        )}
+        {workExperiences.map((workExperience, index) => {
+          const { jobTitle, company, description } = workExperience
+          return (
+            <Box mb="8">
+              <Flex justifyContent="space-between" marginY="8">
+                <Text size="md" fontWeight="600" marginBottom="3"> Work Experience {index + 1} </Text>
+                <Icon name="delete" _hover={{ cursor: 'pointer' }} color={workExperiences.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteWorkExperience(index)} />
+              </Flex>
+              <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
+                <ControlledTextInput
+                  error={errors.workExperience[index]?.jobTitle}
+                  label="Job Title"
+                  type="text"
+                  boxProps={{ mb: '6' }}
+                  inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'jobTitle'), value: jobTitle }}
+                />
+                <ControlledTextInput
+                  error={errors.workExperience[index]?.company}
+                  label="Company"
+                  type="text"
+                  boxProps={{ mb: '6' }}
+                  inputProps={{ onChange: (e) => handleWorkExperienceChange(e, index, 'company'), value: company }}
+                />
+              </SimpleGrid>
+              <FormLabel> Description </FormLabel>
+              <Textarea borderColor={errors.workExperience[index]?.description ? 'red.600' : 'inherit'} borderWidth={errors.workExperience[index]?.description ? '2px' : '1px'} placeholder="Describe what you did at your previous company" value={description} onChange={(e) => handleWorkExperienceChange(e, index, 'description')} />
+              {!!errors.workExperience[index]?.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.workExperience[index]?.description}</Text>}
+            </Box>
+          )
+        })}
+        <Box marginBottom="10">
+          <Button size="sm" onClick={handleAddWorkExperience}> + Add Work Experience</Button>
+        </Box>
       </Box>
-
-      <Flex justifyContent="end" gap="4">
+      <Flex justifyContent="end" gap="4" my="8">
         <Button onClick={handleBack}>Back</Button>
         <Button isLoading={isMenteeLoading || isMentorLoading} colorScheme="red" onClick={handleSave}>Next</Button>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 

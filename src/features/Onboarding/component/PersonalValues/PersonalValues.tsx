@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, FormLabel, Text,
+  Box, Button, Flex, FlexProps, FormLabel, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
@@ -10,7 +10,7 @@ import { getAuth } from '../../../../app/redux/selectors'
 import { deepCopy } from '../../../../utils'
 import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
-interface Props {
+interface Props extends FlexProps {
   handleBack: () => void
   handleNext: () => void
   data: TransformedUserResponse | undefined
@@ -27,7 +27,9 @@ const defaultErrors: Errors = {
 const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
 
 function PersonalValues(props: Props) {
-  const { handleBack, handleNext, data } = props
+  const {
+    handleBack, handleNext, data, ...rest
+  } = props
   const dispatch = useAppDispatch()
   const [values, setValues] = useState<string[]>([''])
   const [updateMentorValues,
@@ -102,30 +104,32 @@ function PersonalValues(props: Props) {
   }
 
   return (
-    <Box>
-      <Text fontSize="2xl" fontWeight="600"> Personal Values </Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8"> Share about your core principles and beliefs </Text>
-      <FormLabel>Personal Values (Select up to 5 options)</FormLabel>
-      {values.map((value, index) => (
-        <Flex alignItems="center" marginBottom="5" gap={4}>
-          <ControlledSelect
-            error={errors.personalValues[index]}
-            options={valueOptions}
-            selectProps={{ onChange: (e) => handleValueChange(e, index), value }}
-          />
-          <Icon name="delete" _hover={{ cursor: 'pointer' }} color={values.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteValue(index)} />
-        </Flex>
-      ))}
-      {values.length < 5 && (
-        <Box marginY="10">
-          <Button size="sm" onClick={handleAddValue}> + Add Values</Button>
-        </Box>
-      )}
-      <Flex justifyContent="end" gap="4">
+    <Flex {...rest}>
+      <Box>
+        <Text fontSize="2xl" fontWeight="600"> Personal Values </Text>
+        <Text color="secondary.500" marginTop="1" marginBottom="8"> Share about your core principles and beliefs </Text>
+        <FormLabel>Personal Values (Select up to 5 options)</FormLabel>
+        {values.map((value, index) => (
+          <Flex alignItems="center" marginBottom="5" gap={4}>
+            <ControlledSelect
+              error={errors.personalValues[index]}
+              options={valueOptions}
+              selectProps={{ onChange: (e) => handleValueChange(e, index), value }}
+            />
+            <Icon name="delete" _hover={{ cursor: 'pointer' }} color={values.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteValue(index)} />
+          </Flex>
+        ))}
+        {values.length < 5 && (
+          <Box marginBottom="10">
+            <Button size="sm" onClick={handleAddValue}> + Add Values</Button>
+          </Box>
+        )}
+      </Box>
+      <Flex justifyContent="end" gap="4" my="8">
         <Button onClick={handleBack}>Back</Button>
         <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 export default PersonalValues

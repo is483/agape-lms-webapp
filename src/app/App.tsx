@@ -1,10 +1,10 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import {
   Route, Routes, useLocation, useNavigate,
 } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { getAuth } from './redux/selectors'
+import { getAuth, getOnboardingStatus } from './redux/selectors'
 import { Login } from '../features/Login'
 import { Register } from '../features/Register'
 import AppLayout from './AppLayout'
@@ -15,6 +15,7 @@ import { SessionExpired } from '../features/SessionExpired'
 import { useGetUserRoleQuery } from './services/user/apiUserSlice'
 import { setAuth } from './redux/appSlice'
 import { useVerifyOnboardingStatusMutation } from './services/auth/apiAuthSlice'
+import Onboarding from '../features/Onboarding/Onboarding'
 
 const tokenFromStorage = localStorage.getItem('token')
 
@@ -25,6 +26,7 @@ function App() {
   const { pathname } = useLocation()
   const { data, isLoading } = useGetUserRoleQuery(null, { skip: !tokenFromStorage })
   const [verifyOnboardingStatus] = useVerifyOnboardingStatusMutation()
+  const { isComplete: onboardingComplete } = useAppSelector(getOnboardingStatus)
   const initialPath = useRef(pathname)
 
   useEffect(() => {
@@ -60,6 +62,16 @@ function App() {
           <Route path={paths.SessionExpired} element={<SessionExpired />} />
         </Routes>
       </Box>
+    )
+  }
+
+  if (!onboardingComplete) {
+    return (
+      <Flex background="white" justify="center" paddingTop={[4, null, 16]} minHeight="100vh">
+        <Routes>
+          <Route path={`${paths.Onboarding}/:step`} element={<Onboarding />} />
+        </Routes>
+      </Flex>
     )
   }
 

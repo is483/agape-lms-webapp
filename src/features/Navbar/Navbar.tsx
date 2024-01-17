@@ -66,9 +66,8 @@ const DesktopSideNavbar = memo(({
 }: NavbarProps) => (
   <Box
     background="white"
-    width="280px"
+    width="100%"
     height="100%"
-    position="fixed"
     display="flex"
     alignItems="center"
     flexDirection="column"
@@ -128,6 +127,7 @@ const MobileNavbar = memo(({ navbarLinks, handleNavClick, pathname }: NavbarProp
 
   return (
     <Box
+      zIndex="1000"
       position="fixed"
       bottom="0"
       boxShadow="lg"

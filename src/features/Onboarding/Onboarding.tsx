@@ -58,23 +58,28 @@ function Onboarding() {
   }
 
   return (
-    <Flex>
-      <Box margin="8">
-        <Hide below="md">
+    <Flex flex={['1', null, '0.5']}>
+      <Hide below="md">
+        <Box margin="8">
           <OnboardingStepper activeStep={activeStep} handleActiveStep={handleActiveStep} />
-        </Hide>
-      </Box>
-
-      <Box flex="1" margin="8" marginLeft="20">
+        </Box>
+      </Hide>
+      <Box flex="1" margin="8">
         <Box>
           {activeStep === 0 && (
             <PersonalInformation
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleNext={handleNext}
               data={data}
             />
           )}
           {activeStep === 1 && (
             <ProfessionalExperience
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleBack={handleBack}
               handleNext={handleNext}
               data={data}
@@ -82,6 +87,9 @@ function Onboarding() {
           )}
           {activeStep === 2 && (
             <Skills
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleBack={handleBack}
               handleNext={handleNext}
               data={data}
@@ -89,6 +97,9 @@ function Onboarding() {
           )}
           {activeStep === 3 && (
             <PersonalValues
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleBack={handleBack}
               handleNext={handleNext}
               data={data}
@@ -96,6 +107,9 @@ function Onboarding() {
           )}
           {activeStep === 4 && (
             <MentoringStyle
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleBack={handleBack}
               handleNext={handleNext}
               data={data}
@@ -103,6 +117,9 @@ function Onboarding() {
           )}
           {activeStep === 5 && (
             <Challenges
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleBack={handleBack}
               handleNext={handleNext}
               data={data}
@@ -110,6 +127,9 @@ function Onboarding() {
           )}
           {activeStep === 6 && (
             <Interests
+              minHeight="calc(100vh - 8rem)"
+              flexDir="column"
+              justify="space-between"
               handleBack={handleBack}
               handleNext={handleNext}
               data={data}

@@ -1,6 +1,6 @@
 import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
-  Flex, Circle, Button,
+  Flex, Circle, Button, FlexProps,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
@@ -10,7 +10,7 @@ import { getAuth } from '../../../../app/redux/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
-interface Props {
+interface Props extends FlexProps {
   handleNext: () => void
   data: TransformedUserResponse | undefined
 }
@@ -34,7 +34,7 @@ const defaultErrors: Errors = {
 const genderOptions = ['Male', 'Female']
 
 function PersonalInformation(props: Props) {
-  const { handleNext, data } = props
+  const { handleNext, data, ...rest } = props
   const dispatch = useAppDispatch()
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
@@ -126,46 +126,47 @@ function PersonalInformation(props: Props) {
   }
 
   return (
-    <Box>
-      <Text fontSize="2xl" fontWeight="600"> Personal Information </Text>
-      <Text color="secondary.500" marginTop="1"> Let&apos;s set up your profile! </Text>
-      <Flex marginY="8" gap="5">
-        <Box>
-          <Circle size="70px" bg="secondary.100">
-            <Icon name="person" color="secondary.500" />
-          </Circle>
-        </Box>
-        <Box flex="1">
-          <FormControl>
-            <FormLabel>Display Picture</FormLabel>
-            <Input
-              type="file"
-            />
-          </FormControl>
-        </Box>
-      </Flex>
-      <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
-        <Box>
-          <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text" />
-        </Box>
-        <Box>
-          <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type="text" />
-        </Box>
-        <Box>
-          <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type="date" />
-        </Box>
-        <Box>
-          <ControlledSelect selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label="Gender" />
-        </Box>
-        <Box>
-          <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type="text" />
-        </Box>
-      </SimpleGrid>
-      <Flex justifyContent="end" gap="4">
+    <Flex {...rest}>
+      <Box>
+        <Text fontSize="2xl" fontWeight="600"> Personal Information </Text>
+        <Text color="secondary.500" marginTop="1"> Let&apos;s set up your profile! </Text>
+        <Flex marginY="8" gap="5">
+          <Box>
+            <Circle size="70px" bg="secondary.100">
+              <Icon name="person" color="secondary.500" />
+            </Circle>
+          </Box>
+          <Box flex="1">
+            <FormControl>
+              <FormLabel>Display Picture</FormLabel>
+              <Input
+                type="file"
+              />
+            </FormControl>
+          </Box>
+        </Flex>
+        <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
+          <Box>
+            <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text" />
+          </Box>
+          <Box>
+            <ControlledTextInput label="Last Name" inputProps={{ onChange: handleLastNameChange, value: lastName }} error={errors.lastName} type="text" />
+          </Box>
+          <Box>
+            <ControlledTextInput label="Date of Birth" inputProps={{ onChange: handleDateOfBirth, value: dateOfBirth }} error={errors.dateOfBirth} type="date" />
+          </Box>
+          <Box>
+            <ControlledSelect selectProps={{ onChange: handleGenderChange, value: gender }} error={errors.gender} options={genderOptions} label="Gender" />
+          </Box>
+          <Box>
+            <ControlledTextInput label="Phone Number" inputProps={{ onChange: handleNumberChange, value: phoneNumber }} error={errors.phoneNumber} type="text" />
+          </Box>
+        </SimpleGrid>
+      </Box>
+      <Flex justifyContent="end" gap="4" my="8">
         <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
-
-    </Box>
+    </Flex>
   )
 }
 

@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, Text,
+  Box, Button, Flex, FlexProps, Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../../../app/redux/selectors'
@@ -10,7 +10,7 @@ import { SkillsRequest, TransformedUserResponse } from '../../../../app/services
 import { deepCopy } from '../../../../utils'
 import { incrementOnboardingStep } from '../../../../app/redux/appSlice'
 
-interface Props {
+interface Props extends FlexProps {
   handleBack: () => void
   handleNext: () => void
   data: TransformedUserResponse | undefined
@@ -27,7 +27,9 @@ const defaultErrors: Errors = {
 const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
 
 function Skills(props: Props) {
-  const { handleBack, handleNext, data } = props
+  const {
+    handleBack, handleNext, data, ...rest
+  } = props
   const dispatch = useAppDispatch()
   const [updateMentorSkills, { isLoading: isMentorInfoLoading }] = useUpdateMentorSkillsMutation()
   const [updateMenteeSkills, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeSkillsMutation()
@@ -97,35 +99,36 @@ function Skills(props: Props) {
     }
   }
   return (
-    <Box>
-      <Text fontSize="2xl" fontWeight="600"> Skills and Knowledge </Text>
-      <Text color="secondary.500" marginTop="1" marginBottom="8">
-        {role === 'Mentor' ? 'Share with us what you are good at!' : 'Highlight what are some skills you\'d like to learn'}
-      </Text>
-      <Text marginBottom="3">
-        {role === 'Mentor' ? 'Skills (Select up to 5 options)' : 'Skills you\'d like to acquire (Select up to 5 options)'}
-      </Text>
-      {skills.map((skill, index) => (
-        <Flex alignItems="center" marginBottom="5" gap={4}>
-          <ControlledSelect
-            error={errors.skills[index]}
-            options={skillOptions}
-            selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }}
-          />
-          <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
-        </Flex>
-      ))}
-      {skills.length < 5 && (
-        <Box marginY="10">
-          <Button size="sm" onClick={handleAddSkills}> + Add Skills</Button>
-        </Box>
-      )}
-
-      <Flex justifyContent="end" gap="4">
+    <Flex {...rest}>
+      <Box>
+        <Text fontSize="2xl" fontWeight="600"> Skills and Knowledge </Text>
+        <Text color="secondary.500" marginTop="1" marginBottom="8">
+          {role === 'Mentor' ? 'Share with us what you are good at!' : 'Highlight what are some skills you\'d like to learn'}
+        </Text>
+        <Text marginBottom="3">
+          {role === 'Mentor' ? 'Skills (Select up to 5 options)' : 'Skills you\'d like to acquire (Select up to 5 options)'}
+        </Text>
+        {skills.map((skill, index) => (
+          <Flex alignItems="center" marginBottom="5" gap={4}>
+            <ControlledSelect
+              error={errors.skills[index]}
+              options={skillOptions}
+              selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }}
+            />
+            <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />
+          </Flex>
+        ))}
+        {skills.length < 5 && (
+          <Box marginBottom="10">
+            <Button size="sm" onClick={handleAddSkills}> + Add Skills</Button>
+          </Box>
+        )}
+      </Box>
+      <Flex justifyContent="end" gap="4" my="8">
         <Button onClick={handleBack}>Back</Button>
         <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 
