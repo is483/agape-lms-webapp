@@ -6,8 +6,6 @@ import {
 import { defaultOnQueryStarted as onQueryStarted, defaultCatchHandler } from '../utils'
 import { setAuth, setOnboardingStatus } from '../../redux/appSlice'
 import { Role } from '../../types'
-import { router } from '../../../main'
-import paths from '../../../paths'
 import { OnboardingResponse } from '../user/types'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
@@ -32,8 +30,6 @@ const apiAuthSlice = apiSlice.injectEndpoints({
             role,
           }))
           localStorage.setItem('token', token)
-          // TODO: Add decision to route to main page/onboarding page
-          router.navigate(paths.Onboarding)
         }).catch(({ error }) => {
           defaultCatchHandler(error, dispatch)
         })

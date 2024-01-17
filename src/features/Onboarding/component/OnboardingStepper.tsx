@@ -41,18 +41,16 @@ function OnboardingStepper(props: StepperProps) {
     <Stepper index={activeStep} orientation="vertical" height="400px" gap="0" colorScheme="red">
       {steps.map((step, index) => (
         <Step key={step.title} onClick={() => handleStep(index)}>
-          <StepIndicator _hover={{ cursor: 'pointer' }}>
+          <StepIndicator _hover={{ cursor: index < maxStep ? 'pointer' : 'auto' }}>
             <StepStatus
               complete={<StepIcon />}
               incomplete={<StepNumber />}
               active={<StepNumber />}
             />
           </StepIndicator>
-
           <Box flexShrink="0" _hover={{ cursor: index < maxStep ? 'pointer' : 'auto' }}>
             <StepTitle>{step.title}</StepTitle>
           </Box>
-
           <StepSeparator />
         </Step>
       ))}

@@ -3,17 +3,20 @@ import {
   Input, InputGroup, InputLeftElement, Stack, Text,
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import agapeLogo from '../../assets/agape_logo.png'
 import loginIllustration from '../../assets/login_illustration.png'
 import { Icon, Link } from '../../components'
 import paths from '../../paths'
-import { useLoginMutation } from '../../app/services/auth/apiAuthSlice'
+import { useLoginMutation, useVerifyOnboardingStatusMutation } from '../../app/services/auth/apiAuthSlice'
 import { LoginRequest } from '../../app/services/auth/types'
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
+  const [verifyOnboardingStatus] = useVerifyOnboardingStatusMutation()
   const [error, setError] = useState('')
 
   const handleLogin = async () => {
@@ -29,6 +32,12 @@ function Login() {
 
     try {
       await login(loginRequest).unwrap()
+      const { onboardingComplete, onboardingStep } = await verifyOnboardingStatus(null).unwrap()
+      if (!onboardingComplete) {
+        navigate(`${paths.Onboarding}/${onboardingStep}`)
+      } else {
+        // TODO: navigate to main page for role
+      }
     } catch (e: any) {
       console.error(e)
       if (e?.status < 500) {
