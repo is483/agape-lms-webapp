@@ -54,8 +54,9 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     resetPassword: build.mutation<null, ResetPasswordRequest>({
       query: (payload) => ({
         url: 'user/reset-password',
-        method: 'POST',
+        method: 'PUT',
         body: payload,
+        headers: resetTokenHeaders(payload),
       }),
       onQueryStarted,
     }),

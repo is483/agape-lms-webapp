@@ -77,6 +77,7 @@ function ResetPassword() {
 
     try {
       const forgetPasswordRequest: ResetPasswordRequest = {
+        token: resetToken!,
         password,
       }
       await resetPassword(forgetPasswordRequest).unwrap()

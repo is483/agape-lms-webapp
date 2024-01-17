@@ -23,6 +23,7 @@ export interface ForgetPasswordRequest {
 
 export interface ResetPasswordRequest {
   password: string
+  token: string
 }
 
 export interface VerifyResetTokenRequest {
