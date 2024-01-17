@@ -9,7 +9,7 @@ import { Icon } from '../../components'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import agapeLogo from '../../assets/agape_logo.png'
 import { useAppDispatch } from '../../hooks'
-import { setIsLoggedIn, setToken } from '../../app/redux/appSlice'
+import { setAuth } from '../../app/redux/appSlice'
 import paths from '../../paths'
 
 interface Props {
@@ -30,8 +30,11 @@ function Navbar(props: Props) {
   }, [navigate])
 
   const handleLogout = () => {
-    dispatch(setToken(null))
-    dispatch(setIsLoggedIn(false))
+    dispatch(setAuth({
+      token: null,
+      isLoggedIn: false,
+      role: null,
+    }))
     localStorage.removeItem('token')
     navigate(paths.Login)
   }
@@ -63,9 +66,8 @@ const DesktopSideNavbar = memo(({
 }: NavbarProps) => (
   <Box
     background="white"
-    width="280px"
+    width="100%"
     height="100%"
-    position="fixed"
     display="flex"
     alignItems="center"
     flexDirection="column"
@@ -125,6 +127,7 @@ const MobileNavbar = memo(({ navbarLinks, handleNavClick, pathname }: NavbarProp
 
   return (
     <Box
+      zIndex="1000"
       position="fixed"
       bottom="0"
       boxShadow="lg"
