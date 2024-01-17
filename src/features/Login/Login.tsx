@@ -34,6 +34,10 @@ function Login() {
       await login(loginRequest).unwrap()
       const { onboardingComplete, onboardingStep } = await verifyOnboardingStatus(null).unwrap()
       if (!onboardingComplete) {
+        if (onboardingStep === '1') {
+          navigate(`${paths.Introduction}`)
+          return
+        }
         navigate(`${paths.Onboarding}/${onboardingStep}`)
       } else {
         // TODO: navigate to main page for role

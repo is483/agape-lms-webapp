@@ -17,6 +17,7 @@ import { useGetUserRoleQuery } from './services/user/apiUserSlice'
 import { setAuth } from './redux/appSlice'
 import { useVerifyOnboardingStatusMutation } from './services/auth/apiAuthSlice'
 import Onboarding from '../features/Onboarding/Onboarding'
+import Introduction from '../features/Onboarding/component/Introduction/Introduction'
 
 const tokenFromStorage = localStorage.getItem('token')
 
@@ -41,6 +42,10 @@ function App() {
       }))
       fetchOnboardingStatus().then(({ onboardingComplete, onboardingStep }) => {
         if (!onboardingComplete) {
+          if (onboardingStep === '1') {
+            navigate(`${paths.Introduction}`)
+            return
+          }
           navigate(`${paths.Onboarding}/${onboardingStep}`)
         }
       })
@@ -70,6 +75,7 @@ function App() {
     return (
       <Flex background="white" justify="center" paddingTop={[4, null, 16]} minHeight="100vh">
         <Routes>
+          <Route path={paths.Introduction} element={<Introduction />} />
           <Route path={`${paths.Onboarding}/:step`} element={<Onboarding />} />
         </Routes>
       </Flex>
