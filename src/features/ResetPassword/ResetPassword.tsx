@@ -30,7 +30,7 @@ function ResetPassword() {
   const [resetPassword, { isLoading }] = useResetPasswordMutation()
   const [verifyToken] = useVerifyResetTokenMutation()
   const [searchParams] = useSearchParams()
-  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
   const navigate = useNavigate()
   const toast = useToast()
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -46,12 +46,10 @@ function ResetPassword() {
 
     async function fetchResetTokenValidity() {
       try {
-        const { successful, fullName, error } = await verifyToken({ token: resetToken! }).unwrap()
-        if (successful) {
-          setFullName(fullName)
-          return
+        const { email } = await verifyToken({ token: resetToken! }).unwrap()
+        if (email) {
+          setEmail(email)
         }
-        setErrors({ ...defaultErrors, serverError: error })
       } catch (e) {
         console.error(e)
         setErrors({ ...defaultErrors, serverError: 'Internal Server Error. Please try again later or contact us.' })
@@ -79,6 +77,7 @@ function ResetPassword() {
 
     try {
       const forgetPasswordRequest: ResetPasswordRequest = {
+        token: resetToken!,
         password,
       }
       await resetPassword(forgetPasswordRequest).unwrap()
@@ -107,8 +106,8 @@ function ResetPassword() {
             <Text fontSize="2xl" fontWeight="bold" mb="1">Change Password</Text>
             <Text mb="10">
               {
-                !!fullName
-                && <Box as="span" display="inline" marginRight="1">Welcome back <Text as="span" color="red.700" fontWeight="600" display="inline">{fullName}</Text>!</Box>
+                !!email
+                && <Box as="span" display="inline" marginRight="1">Welcome back <Text as="span" color="red.700" fontWeight="600" display="inline">{email}</Text>!</Box>
               }
               Enter your new password below
             </Text>

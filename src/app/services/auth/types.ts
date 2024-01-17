@@ -23,6 +23,7 @@ export interface ForgetPasswordRequest {
 
 export interface ResetPasswordRequest {
   password: string
+  token: string
 }
 
 export interface VerifyResetTokenRequest {
@@ -30,7 +31,5 @@ export interface VerifyResetTokenRequest {
 }
 
 export interface VerifyResetTokenResponse {
-  successful: boolean
-  error: string
-  fullName: string
+  email: string
 }

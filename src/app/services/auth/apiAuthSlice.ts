@@ -7,6 +7,7 @@ import { defaultOnQueryStarted as onQueryStarted, defaultCatchHandler } from '..
 import { setAuth, setOnboardingStatus } from '../../redux/appSlice'
 import { Role } from '../../types'
 import { OnboardingResponse } from '../user/types'
+import { resetTokenHeaders } from './utils'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -45,25 +46,25 @@ const apiAuthSlice = apiSlice.injectEndpoints({
     }),
     forgetPassword: build.mutation<null, ForgetPasswordRequest>({
       query: (payload) => ({
-        url: 'user/forget-password',
-        method: 'POST',
-        body: payload,
+        url: `user/forget-password?email=${payload.email}`,
+        method: 'GET',
       }),
       onQueryStarted,
     }),
     resetPassword: build.mutation<null, ResetPasswordRequest>({
       query: (payload) => ({
         url: 'user/reset-password',
-        method: 'POST',
+        method: 'PUT',
         body: payload,
+        headers: resetTokenHeaders(payload),
       }),
       onQueryStarted,
     }),
     verifyResetToken: build.mutation<VerifyResetTokenResponse, VerifyResetTokenRequest>({
       query: (payload) => ({
         url: 'user/verify-reset-token',
-        method: 'POST',
-        body: payload,
+        method: 'GET',
+        headers: resetTokenHeaders(payload),
       }),
       onQueryStarted,
     }),
