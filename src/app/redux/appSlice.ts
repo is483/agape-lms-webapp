@@ -3,9 +3,13 @@ import { Role } from '../types'
 
 export interface AppState {
   auth: {
-    token: string | null,
-    isLoggedIn: boolean,
-    role: Role | null,
+    token: string | null
+    isLoggedIn: boolean
+    role: Role | null
+  }
+  onboardingStatus: {
+    isComplete: boolean
+    step: number
   }
 }
 
@@ -14,6 +18,10 @@ const initialState: AppState = {
     token: null,
     isLoggedIn: false,
     role: null,
+  },
+  onboardingStatus: {
+    isComplete: false,
+    step: 1,
   },
 }
 
@@ -35,6 +43,14 @@ export const appSlice = createSlice({
       action: PayloadAction<{ token: string | null, isLoggedIn: boolean, role: Role | null }>,
     ) => {
       state.auth = action.payload
+    },
+    setOnboardingStatus: (
+      state: AppState,
+      action: PayloadAction<{
+        isComplete: boolean
+        step: number
+      }>) => {
+      state.onboardingStatus = action.payload
     },
   },
 })

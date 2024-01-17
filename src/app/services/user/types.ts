@@ -97,3 +97,8 @@ export interface MenteeMentoringRequest extends MentoringRequest {
 export interface RoleResponse {
   role: Role
 }
+
+export interface OnboardingResponse {
+  onboardingStep?: string
+  onboardingComplete: boolean
+}

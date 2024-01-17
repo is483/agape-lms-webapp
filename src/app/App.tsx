@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 import {
   Route, Routes, useLocation, useNavigate,
 } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import getAuth from './redux/selectors'
 import { Login } from '../features/Login'
@@ -14,6 +14,7 @@ import { ResetPassword } from '../features/ResetPassword'
 import { SessionExpired } from '../features/SessionExpired'
 import { useGetUserRoleQuery } from './services/user/apiUserSlice'
 import { setAuth } from './redux/appSlice'
+import { useVerifyOnboardingStatusMutation } from './services/auth/apiAuthSlice'
 
 const tokenFromStorage = localStorage.getItem('token')
 
@@ -23,22 +24,25 @@ function App() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { data, isLoading } = useGetUserRoleQuery(null, { skip: !tokenFromStorage })
+  const [verifyOnboardingStatus] = useVerifyOnboardingStatusMutation()
+  const initialPath = useRef(pathname)
 
   useEffect(() => {
+    const fetchOnboardingStatus = async () => verifyOnboardingStatus(null).unwrap()
+
     if (data) {
       dispatch(setAuth({
         token: tokenFromStorage!,
         isLoggedIn: true,
         role: data.role,
       }))
-      // TODO: navigate to correct path
-      if (pathname !== '') {
-        navigate(pathname)
-      } else {
-        // TODO
-      }
+      fetchOnboardingStatus().then(({ onboardingComplete, onboardingStep }) => {
+        if (!onboardingComplete) {
+          navigate(`${paths.Onboarding}/${onboardingStep}`)
+        }
+      })
     }
-  }, [data, dispatch, pathname, navigate])
+  }, [data, dispatch, initialPath, navigate, verifyOnboardingStatus])
 
   if (isLoading) {
     return null

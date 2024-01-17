@@ -9,6 +9,7 @@ import { setAuth } from '../../redux/appSlice'
 import { Role } from '../../types'
 import { router } from '../../../main'
 import paths from '../../../paths'
+import { OnboardingResponse } from '../user/types'
 
 const apiAuthSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -73,11 +74,18 @@ const apiAuthSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    verifyOnboardingStatus: build.mutation<OnboardingResponse, null>({
+      query: () => ({
+        url: 'user/verify-onboarding-status',
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
 export const {
   useLoginMutation, useRegisterMutation, useForgetPasswordMutation, useResetPasswordMutation,
-  useVerifyResetTokenMutation,
+  useVerifyResetTokenMutation, useVerifyOnboardingStatusMutation,
 } = apiAuthSlice
