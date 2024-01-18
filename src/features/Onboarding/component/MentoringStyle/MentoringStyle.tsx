@@ -207,7 +207,7 @@ function MentoringStyle(props: Props) {
                     value: mentoringApproach,
                   }}
                   options={
-                    [...mentoringOptions].filter((option) => mentoringApproach === option || !mentoringApproaches.includes(option))
+                    mentoringOptions.filter((option) => mentoringApproach === option || !mentoringApproaches.includes(option))
                   }
                   error={errors?.mentoringApproaches[index]}
                 />

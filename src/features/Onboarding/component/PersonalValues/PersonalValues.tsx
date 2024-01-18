@@ -109,7 +109,7 @@ function PersonalValues(props: Props) {
             <ControlledSelect
               error={errors.personalValues[index]}
               options={
-                [...valueOptions].filter((option) => value === option || !values.includes(option))
+                valueOptions.filter((option) => value === option || !values.includes(option))
               }
               selectProps={{ onChange: (e) => handleValueChange(e, index), value }}
             />

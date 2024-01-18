@@ -110,7 +110,7 @@ function Skills(props: Props) {
             <ControlledSelect
               error={errors.skills[index]}
               options={
-                [...skillOptions].filter((option) => skill === option || !skills.includes(option))
+                skillOptions.filter((option) => skill === option || !skills.includes(option))
               }
               selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }}
             />

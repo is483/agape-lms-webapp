@@ -111,7 +111,7 @@ function Interests(props: Props) {
                 selectProps={{ onChange: (e) => handleInterestChange(e, index), value: interest }}
                 error={errors.interests[index]}
                 options={
-                  [...interestOptions].filter((option) => interest === option || !interests.includes(option))
+                  interestOptions.filter((option) => interest === option || !interests.includes(option))
                 }
               />
               <Icon name="delete" _hover={{ cursor: 'pointer' }} color={interests.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteInterest(index)} />

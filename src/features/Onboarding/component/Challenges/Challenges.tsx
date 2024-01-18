@@ -112,7 +112,7 @@ function Challenges(props: Props) {
                 selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }}
                 error={errors.challenges[index]}
                 options={
-                  [...challengesOptions].filter((option) => challenge === option || !challenges.includes(option))
+                  challengesOptions.filter((option) => challenge === option || !challenges.includes(option))
                 }
               />
               <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
