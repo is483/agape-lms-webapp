@@ -89,6 +89,7 @@ function ResetPassword() {
         isClosable: true,
         position: 'bottom-right',
       })
+      navigate(paths.Login)
     } catch (e) {
       console.error(e)
       setErrors({ ...defaultErrors, serverError: 'Internal Server Error. Please try again later or contact us.' })
