@@ -90,8 +90,11 @@ function Register() {
         position: 'bottom-right',
       })
       navigate(paths.Login)
-    } catch (e) {
+    } catch (e: any) {
       console.error(e)
+      if (e.status === 400) {
+        setErrors(e.data.errors)
+      }
     }
   }
 
@@ -106,7 +109,7 @@ function Register() {
             <Text fontSize="2xl" fontWeight="bold" mb="1">Registration</Text>
             <Text>Sign up for an account now!</Text>
             <Stack mt="12" spacing="8">
-              <ControlledSelect ref={roleRef} error={errors.role} placeholder="Email" iconProps={{ name: 'person' }} options={roleOptions} />
+              <ControlledSelect ref={roleRef} error={errors.role} iconProps={{ name: 'person' }} options={roleOptions} />
               <ControlledTextInput ref={emailRef} error={errors.email} type="email" placeholder="Email" iconProps={{ name: 'email' }} />
               <ControlledTextInput ref={passwordRef} error={errors.password} type="password" placeholder="Password" iconProps={{ name: 'lock' }} />
               <ControlledTextInput ref={confirmPasswordRef} error={errors.confirmPassword} type="password" placeholder="Confirm Password" iconProps={{ name: 'lock' }} />
