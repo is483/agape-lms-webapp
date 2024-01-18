@@ -38,7 +38,7 @@ function Onboarding() {
   const { step } = useParams()
 
   useEffect(() => {
-    if (step?.toLowerCase() !== 'introduction') return
+    if (step?.toLowerCase() === 'introduction') return
     setActiveStep(Number(step) - 1)
   }, [setActiveStep, step])
 
@@ -55,7 +55,7 @@ function Onboarding() {
   }
 
   return (
-    <Flex flex={['1', null, '0.5']}>
+    <Flex flex={['1', null, null, '0.75', null, '0.5']}>
       <Hide below="md">
         <Box margin="8">
           <OnboardingStepper activeStep={activeStep} />

@@ -110,7 +110,7 @@ function ProfessionalExperience(props: Props) {
     newErrors.careerAspiration = ''
     let hasErrors: boolean = false
 
-    if (role === 'Mentee' && !errors.careerAspiration) {
+    if (role === 'Mentee' && !careerAspiration) {
       newErrors.careerAspiration = 'Career Aspiration required'
       hasErrors = true
     }
