@@ -47,14 +47,8 @@ function ProfessionalExperience(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const [
-    updateMenteeExperience,
-    { isLoading: isMenteeLoading },
-  ] = useUpdateMenteeExperienceMutation()
-  const [
-    updateMentorExperience,
-    { isLoading: isMentorLoading },
-  ] = useUpdateMentorExperienceMutation()
+  const [updateMenteeExperience,{ isLoading: isMenteeLoading }] = useUpdateMenteeExperienceMutation()
+  const [updateMentorExperience,{ isLoading: isMentorLoading }] = useUpdateMentorExperienceMutation()
   const [workExperiences, setWorkExperiences] = useState(defaultWorkExperiences)
   const [careerAspiration, setCareerAspiration] = useState('')
   const { role } = useAppSelector(getAuth)

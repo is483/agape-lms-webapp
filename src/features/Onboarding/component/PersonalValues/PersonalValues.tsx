@@ -30,10 +30,8 @@ function PersonalValues(props: Props) {
     handleBack, handleNext, data, ...rest
   } = props
   const [values, setValues] = useState<string[]>([''])
-  const [updateMentorValues,
-    { isLoading: isMentorInfoLoading }] = useUpdateMentorValuesMutation()
-  const [updateMenteeValues,
-    { isLoading: isMenteeInfoLoading }] = useUpdateMenteeValuesMutation()
+  const [updateMentorValues, { isLoading: isMentorInfoLoading }] = useUpdateMentorValuesMutation()
+  const [updateMenteeValues, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeValuesMutation()
   const { role } = useAppSelector(getAuth)
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
@@ -110,7 +108,9 @@ function PersonalValues(props: Props) {
           <Flex alignItems="center" marginBottom="5" gap={4}>
             <ControlledSelect
               error={errors.personalValues[index]}
-              options={valueOptions}
+              options={
+                [...valueOptions].filter((option) => value === option || !values.includes(option))
+              }
               selectProps={{ onChange: (e) => handleValueChange(e, index), value }}
             />
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={values.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteValue(index)} />

@@ -60,14 +60,8 @@ function MentoringStyle(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const [
-    updateMentorMentoringStyle,
-    { isLoading: isMentorInfoLoading },
-  ] = useUpdateMentorMentoringStyleMutation()
-  const [
-    updateMenteeMentoringStyle,
-    { isLoading: isMenteeInfoLoading },
-  ] = useUpdateMenteeMentoringStyleMutation()
+  const [updateMentorMentoringStyle, { isLoading: isMentorInfoLoading }] = useUpdateMentorMentoringStyleMutation()
+  const [updateMenteeMentoringStyle, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeMentoringStyleMutation()
   const { role } = useAppSelector(getAuth)
   const [preferredCommunication, setPreferredCommunication] = useState('')
   const [meetingDays, setMeetingDays] = useState<string[]>([])
@@ -212,7 +206,9 @@ function MentoringStyle(props: Props) {
                     onChange: (e) => handleMentoringApproachesChange(e, index),
                     value: mentoringApproach,
                   }}
-                  options={mentoringOptions}
+                  options={
+                    [...mentoringOptions].filter((option) => mentoringApproach === option || !mentoringApproaches.includes(option))
+                  }
                   error={errors?.mentoringApproaches[index]}
                 />
                 <Icon name="delete" _hover={{ cursor: 'pointer' }} color={mentoringApproaches.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteMentoringApproach(index)} />

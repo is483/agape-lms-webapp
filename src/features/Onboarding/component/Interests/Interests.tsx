@@ -31,12 +31,8 @@ function Interests(props: Props) {
     handleBack, handleNext, data, ...rest
   } = props
   const dispatch = useAppDispatch()
-  const [updateMentorInterests,
-    { isLoading: isMentorInfoLoading },
-  ] = useUpdateMentorInterestsMutation()
-  const [updateMenteeInterests,
-    { isLoading: isMenteeInfoLoading },
-  ] = useUpdateMenteeInterestsMutation()
+  const [updateMentorInterests, { isLoading: isMentorInfoLoading }] = useUpdateMentorInterestsMutation()
+  const [updateMenteeInterests, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInterestsMutation()
   const [interests, setInterests] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const { role } = useAppSelector(getAuth)
@@ -114,7 +110,9 @@ function Interests(props: Props) {
               <ControlledSelect
                 selectProps={{ onChange: (e) => handleInterestChange(e, index), value: interest }}
                 error={errors.interests[index]}
-                options={interestOptions}
+                options={
+                  [...interestOptions].filter((option) => interest === option || !interests.includes(option))
+                }
               />
               <Icon name="delete" _hover={{ cursor: 'pointer' }} color={interests.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteInterest(index)} />
             </Flex>

@@ -109,7 +109,9 @@ function Skills(props: Props) {
           <Flex alignItems="center" marginBottom="5" gap={4}>
             <ControlledSelect
               error={errors.skills[index]}
-              options={skillOptions}
+              options={
+                [...skillOptions].filter((option) => skill === option || !skills.includes(option))
+              }
               selectProps={{ onChange: (e) => handleSkillsChange(e, index), value: skill }}
             />
             <Icon name="delete" _hover={{ cursor: 'pointer' }} color={skills.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteSkill(index)} />

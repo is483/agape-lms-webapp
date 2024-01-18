@@ -10,6 +10,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint'],
   rules: {
+    "max-len": ["error", { "ts": 150 }],
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'function-paren-newline': 'off',
     'no-use-before-define': ['error', { 'functions': false, 'variables': false }],

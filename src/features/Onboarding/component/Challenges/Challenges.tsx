@@ -30,12 +30,8 @@ function Challenges(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const [updateMentorChallenges,
-    { isLoading: isMentorInfoLoading },
-  ] = useUpdateMentorChallengesMutation()
-  const [updateMenteeChallenges,
-    { isLoading: isMenteeInfoLoading },
-  ] = useUpdateMenteeChallengesMutation()
+  const [updateMentorChallenges, { isLoading: isMentorInfoLoading }] = useUpdateMentorChallengesMutation()
+  const [updateMenteeChallenges, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeChallengesMutation()
   const { role } = useAppSelector(getAuth)
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
@@ -115,14 +111,16 @@ function Challenges(props: Props) {
               <ControlledSelect
                 selectProps={{ onChange: (e) => handleChallengeChange(e, index), value: challenge }}
                 error={errors.challenges[index]}
-                options={challengesOptions}
+                options={
+                  [...challengesOptions].filter((option) => challenge === option || !challenges.includes(option))
+                }
               />
               <Icon name="delete" _hover={{ cursor: 'pointer' }} color={challenges.length <= 1 ? 'secondary.200' : 'secondary.500'} onClick={() => handleDeleteChallenge(index)} />
             </Flex>
           ))
         }
         {challenges.length < 5 && (
-          <Box marginY="10">
+          <Box marginBottom="10">
             <Button size="sm" onClick={handleAddChallenge}> + Add Challenge</Button>
           </Box>
         )}
