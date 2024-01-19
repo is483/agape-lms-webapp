@@ -45,7 +45,7 @@ export type TransformedUserResponse = UserResponse & {
 }
 
 export interface InfoRequest {
-  // profileImgUrl: string
+  profileImg: string
   firstName: string
   lastName: string
   dateOfBirth: string

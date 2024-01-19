@@ -14,7 +14,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getUserInfo: build.query<TransformedUserResponse, UserRequest>({
       query: ({ role }) => ({
-        url: `/user/retrieve-profile?role=${role}`,
+        url: `/user/retrieve-profile?role=${role.toLowerCase()}`,
       }),
       providesTags: ['User'],
       transformResponse: (response: { profile: UserResponse }): TransformedUserResponse => {

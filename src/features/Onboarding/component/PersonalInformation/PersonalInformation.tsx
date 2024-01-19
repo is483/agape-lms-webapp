@@ -1,8 +1,8 @@
 import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
-  Flex, Circle, Button, FlexProps,
+  Flex, Circle, Button, FlexProps, Image,
 } from '@chakra-ui/react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
 import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
@@ -15,6 +15,7 @@ interface Props extends FlexProps {
 }
 
 interface Errors {
+  image: string
   firstName: string
   lastName: string
   dateOfBirth: string
@@ -23,6 +24,7 @@ interface Errors {
 }
 
 const defaultErrors: Errors = {
+  image: '',
   firstName: '',
   lastName: '',
   dateOfBirth: '',
@@ -37,6 +39,8 @@ function PersonalInformation(props: Props) {
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
   const { role } = useAppSelector(getAuth)
+  const inputImageRef = useRef<HTMLInputElement>(null)
+  const [image, setImage] = useState<string>('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
@@ -51,7 +55,38 @@ function PersonalInformation(props: Props) {
     setDateOfBirth(data.dateOfBirth)
     setGender(data.gender)
     setPhoneNumber(data.phoneNumber)
+    setImage(data.profileImgURL)
   }, [data])
+
+  const handleAddImageClick = () => {
+    inputImageRef.current?.click()
+  }
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    const [file] = files
+
+    const fileSize = file.size / 1024 / 1024; // in MiB
+    if (fileSize > 1) {
+      setErrors({ ...defaultErrors, image: '1mb file size limit exceeded' })
+      return
+    }
+
+    setErrors({ ...defaultErrors, image: '' })
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+      console.log(file.size)
+      if (typeof reader.result === 'string') {
+        setImage(reader.result)
+      }
+    }
+  }
+
+  const removeImage = () => {
+    setImage('')
+  }
 
   const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const firstName = e.target.value
@@ -113,6 +148,7 @@ function PersonalInformation(props: Props) {
       dateOfBirth: new Date(dateOfBirth).toISOString(),
       gender,
       phoneNumber,
+      profileImg: image,
     }
     try {
       await updateInfo(infoRequest).unwrap()
@@ -129,20 +165,32 @@ function PersonalInformation(props: Props) {
         <Text color="secondary.500" marginTop="1"> Let&apos;s set up your profile! </Text>
         <Flex marginY="8" gap="5">
           <Box>
-            <Circle size="70px" bg="secondary.100">
-              <Icon name="person" color="secondary.500" />
-            </Circle>
+            {image
+              ? <Image background="gray" rounded="full" src={image} width="70px" height="70px" />
+              : (
+                <Circle size="70px" bg="secondary.100">
+                  <Icon name="person" color="secondary.500" />
+                </Circle>
+              )
+            }
+            {errors.image && <Text position="absolute" fontSize="xs" color="red.600">{errors.image}</Text>}
           </Box>
           <Box flex="1">
             <FormControl>
               <FormLabel>Display Picture</FormLabel>
               <Input
                 type="file"
+                accept="image/jpeg, image/png"
+                onChange={handleImageChange}
+                display="none"
+                ref={inputImageRef}
               />
+              <Button onClick={handleAddImageClick}>Add Image</Button>
+              <Button onClick={removeImage} variant="ghost" marginStart="2">Remove Image</Button>
             </FormControl>
           </Box>
         </Flex>
-        <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
+        <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55" marginTop="16">
           <Box>
             <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text" />
           </Box>
