@@ -1,8 +1,8 @@
 import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
-  Flex, Circle, Button, FlexProps,
+  Flex, Circle, Button, FlexProps, Image,
 } from '@chakra-ui/react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
 import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
@@ -37,6 +37,8 @@ function PersonalInformation(props: Props) {
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
   const { role } = useAppSelector(getAuth)
+  const inputImageRef = useRef<HTMLInputElement>(null)
+  const [image, setImage] = useState<string>('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
@@ -52,6 +54,26 @@ function PersonalInformation(props: Props) {
     setGender(data.gender)
     setPhoneNumber(data.phoneNumber)
   }, [data])
+
+  const handleAddImageClick = () => {
+    () => inputImageRef.current?.click()
+  }
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    const [file] = files
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        setImage(reader.result)
+      }
+    }
+  }
+
+  const removeImage = () => {
+    setImage('')
+  }
 
   const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const firstName = e.target.value
@@ -113,6 +135,7 @@ function PersonalInformation(props: Props) {
       dateOfBirth: new Date(dateOfBirth).toISOString(),
       gender,
       phoneNumber,
+      profileImg: image,
     }
     try {
       await updateInfo(infoRequest).unwrap()
@@ -129,16 +152,27 @@ function PersonalInformation(props: Props) {
         <Text color="secondary.500" marginTop="1"> Let&apos;s set up your profile! </Text>
         <Flex marginY="8" gap="5">
           <Box>
-            <Circle size="70px" bg="secondary.100">
-              <Icon name="person" color="secondary.500" />
-            </Circle>
+            {image
+              ? <Image background="gray" rounded="full" src={image} width="70px" height="70px" />
+              : (
+                <Circle size="70px" bg="secondary.100">
+                  <Icon name="person" color="secondary.500" />
+                </Circle>
+              )
+            }
           </Box>
           <Box flex="1">
             <FormControl>
               <FormLabel>Display Picture</FormLabel>
               <Input
                 type="file"
+                accept="image/jpeg, image/png"
+                onChange={handleImageChange}
+                display="none"
+                ref={inputImageRef}
               />
+              <Button onClick={handleAddImageClick}>Add Image</Button>
+              <Button onClick={removeImage} variant="ghost" marginStart="2">Remove Image</Button>
             </FormControl>
           </Box>
         </Flex>
