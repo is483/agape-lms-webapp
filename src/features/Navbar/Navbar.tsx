@@ -1,5 +1,5 @@
 import {
-  Box, Button, Image, Text,
+  Box, Button, Circle, Image, Text,
 } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { memo, useCallback } from 'react'
@@ -11,6 +11,7 @@ import agapeLogo from '../../assets/agape_logo.png'
 import { useAppDispatch } from '../../hooks'
 import { setAuth } from '../../app/redux/appSlice'
 import paths from '../../paths'
+import { useGetUserInfoQuery } from '../../app/services/user/apiUserSlice'
 
 interface Props {
   role: Role
@@ -74,17 +75,10 @@ const DesktopSideNavbar = memo(({
     gap="5"
     padding="8"
   >
-    {/* TODO: Get user image + full name */}
     {role === 'Admin'
       ? <Image src={agapeLogo} maxWidth="100%" />
-      : (
-        <>
-          <Image src="https://i.pravatar.cc/" borderRadius="100%" maxWidth="100%" width="140px" height="140px" />
-          <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
-            Name Placeholder
-          </Text>
-        </>
-      )}
+      : <UserInformation role={role} />
+    }
     <Box display="flex" gap="6" flexDirection="column" width="100%">
       {navbarLinks.map(({ title, links }) => (
         <Box key={title} display="flex" gap="2" flexDirection="column">
@@ -119,6 +113,35 @@ const DesktopSideNavbar = memo(({
     </Box>
   </Box>
 ))
+
+interface UserInformationProps {
+  role: Role
+}
+
+function UserInformation({ role }: UserInformationProps) {
+  const { data, isLoading, isFetching } = useGetUserInfoQuery({ role })
+
+  if (isLoading || isFetching || !data) return null
+
+  const { firstName, lastName, profileImgURL } = data
+  const fullName = `${firstName} ${lastName}`
+
+  return (
+    <>
+      {!!profileImgURL
+        ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="140px" height="140px" />
+        : (
+          <Circle size="140px" bg="secondary.100">
+            <Icon name="person" color="secondary.300" fontSize="100px" />
+          </Circle>
+        )
+      }
+      <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
+        {fullName}
+      </Text>
+    </>
+  )
+}
 
 const MobileNavbar = memo(({ navbarLinks, handleNavClick, pathname }: NavbarProps) => {
   const flattenLinks: NavbarLinks[] = ([] as NavbarLinks[]).concat(
