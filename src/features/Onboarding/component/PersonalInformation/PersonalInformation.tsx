@@ -15,6 +15,7 @@ interface Props extends FlexProps {
 }
 
 interface Errors {
+  image: string
   firstName: string
   lastName: string
   dateOfBirth: string
@@ -23,6 +24,7 @@ interface Errors {
 }
 
 const defaultErrors: Errors = {
+  image: '',
   firstName: '',
   lastName: '',
   dateOfBirth: '',
@@ -53,18 +55,29 @@ function PersonalInformation(props: Props) {
     setDateOfBirth(data.dateOfBirth)
     setGender(data.gender)
     setPhoneNumber(data.phoneNumber)
+    setImage(data.profileImgURL)
   }, [data])
 
   const handleAddImageClick = () => {
-    () => inputImageRef.current?.click()
+    inputImageRef.current?.click()
   }
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     const [file] = files
+
+    const fileSize = file.size / 1024 / 1024; // in MiB
+    if (fileSize > 1) {
+      setErrors({ ...defaultErrors, image: '1mb file size limit exceeded' })
+      return
+    }
+
+    setErrors({ ...defaultErrors, image: '' })
+
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {
+      console.log(file.size)
       if (typeof reader.result === 'string') {
         setImage(reader.result)
       }
@@ -160,6 +173,7 @@ function PersonalInformation(props: Props) {
                 </Circle>
               )
             }
+            {errors.image && <Text position="absolute" fontSize="xs" color="red.600">{errors.image}</Text>}
           </Box>
           <Box flex="1">
             <FormControl>
@@ -176,7 +190,7 @@ function PersonalInformation(props: Props) {
             </FormControl>
           </Box>
         </Flex>
-        <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55">
+        <SimpleGrid columns={[1, null, 2]} spacing="4" spacingY="55" marginTop="16">
           <Box>
             <ControlledTextInput label="First Name" inputProps={{ onChange: handleFirstNameChange, value: firstName }} error={errors.firstName} type="text" />
           </Box>
