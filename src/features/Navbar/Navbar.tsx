@@ -75,9 +75,10 @@ const DesktopSideNavbar = memo(({
     gap="5"
     padding="8"
   >
-    {role === 'Admin'
-      ? <Image src={agapeLogo} maxWidth="100%" />
-      : <UserInformation role={role} />
+    {
+      role === 'Admin'
+        ? <Image src={agapeLogo} maxWidth="100%" />
+        : <UserInformation role={role} />
     }
     <Box display="flex" gap="6" flexDirection="column" width="100%">
       {navbarLinks.map(({ title, links }) => (
@@ -128,13 +129,14 @@ function UserInformation({ role }: UserInformationProps) {
 
   return (
     <>
-      {!!profileImgURL
-        ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="140px" height="140px" />
-        : (
-          <Circle size="140px" bg="secondary.100">
-            <Icon name="person" color="secondary.300" fontSize="100px" />
-          </Circle>
-        )
+      {
+        profileImgURL
+          ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="140px" height="140px" />
+          : (
+            <Circle size="140px" bg="secondary.100">
+              <Icon name="person" color="secondary.300" fontSize="100px" />
+            </Circle>
+          )
       }
       <Text fontSize="xl" fontWeight="700" wordBreak="break-all" color="red.700">
         {fullName}
