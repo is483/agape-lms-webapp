@@ -11,7 +11,7 @@ interface ContainerProps extends BoxProps {
 function Container({ children, containerProps, ...rest }: ContainerProps) {
   return (
     <Box padding="8" background="white" rounded="8" margin="4" {...rest}>
-      <ChakraContainer {...containerProps}>
+      <ChakraContainer maxW="conatiner.xl" {...containerProps}>
         {children}
       </ChakraContainer>
     </Box>
