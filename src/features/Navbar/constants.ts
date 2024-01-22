@@ -22,7 +22,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
           name: 'Mentoring Journeys',
           mobileName: 'Journeys',
           iconName: 'conversion_path',
-          path: paths.MentoringJourney,
+          path: paths.MentoringJourneys.ViewAll,
         },
         {
           name: 'Mentors',
@@ -61,7 +61,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
           name: 'Mentoring Journeys',
           mobileName: 'Journeys',
           iconName: 'conversion_path',
-          path: paths.MentoringJourney,
+          path: paths.MentoringJourneys.ViewAll,
         },
         {
           name: 'Sessions',
@@ -132,4 +132,4 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
       ],
     },
   ],
-}
+} as const
