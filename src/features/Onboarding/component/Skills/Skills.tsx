@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, FlexProps, Text,
+  Box, Button, Flex, FlexProps, Text, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../../../app/redux/selectors'
@@ -31,6 +31,7 @@ function Skills(props: Props) {
   } = props
   const [updateMentorSkills, { isLoading: isMentorInfoLoading }] = useUpdateMentorSkillsMutation()
   const [updateMenteeSkills, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeSkillsMutation()
+  const toast = useToast()
   const { role } = useAppSelector(getAuth)
   const [skills, setSkills] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
@@ -90,7 +91,18 @@ function Skills(props: Props) {
     }
     try {
       await updateSkills(skillsRequest).unwrap()
-      !!handleNext && handleNext()
+      if (!handleNext) {
+        toast({
+          title: 'Skills and Knowledge',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
     }
