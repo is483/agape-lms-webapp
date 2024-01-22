@@ -10,8 +10,8 @@ import { SkillsRequest, TransformedUserResponse } from '../../../../app/services
 import { deepCopy } from '../../../../utils'
 
 interface Props extends FlexProps {
-  handleBack: () => void
-  handleNext: () => void
+  handleBack?: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -90,7 +90,7 @@ function Skills(props: Props) {
     }
     try {
       await updateSkills(skillsRequest).unwrap()
-      handleNext()
+      !!handleNext && handleNext()
     } catch (e) {
       console.error(e)
     }
@@ -124,11 +124,16 @@ function Skills(props: Props) {
         )}
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
+        {handleBack && <Button onClick={handleBack}>Back</Button>}
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Next' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
+}
+
+Skills.defaultProps = {
+  handleBack: undefined,
+  handleNext: undefined,
 }
 
 export default Skills
