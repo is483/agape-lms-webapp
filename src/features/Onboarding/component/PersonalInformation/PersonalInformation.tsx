@@ -1,8 +1,10 @@
 import {
   Box, Text, FormControl, Input, FormLabel, SimpleGrid,
-  Flex, Circle, Button, FlexProps, Image,
+  Flex, Circle, Button, FlexProps, Image, useToast,
 } from '@chakra-ui/react'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import {
+  ChangeEvent, useEffect, useRef, useState,
+} from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
 import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../../../app/services/user/apiUserSlice'
 import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
@@ -10,7 +12,7 @@ import { getAuth } from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
 
 interface Props extends FlexProps {
-  handleNext: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -39,6 +41,7 @@ function PersonalInformation(props: Props) {
   const [updateMentorInfo, { isLoading: isMentorInfoLoading }] = useUpdateMentorInfoMutation()
   const [updateMenteeInfo, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeInfoMutation()
   const { role } = useAppSelector(getAuth)
+  const toast = useToast()
   const inputImageRef = useRef<HTMLInputElement>(null)
   const [image, setImage] = useState<string>('')
   const [firstName, setFirstName] = useState('')
@@ -66,7 +69,7 @@ function PersonalInformation(props: Props) {
     const files = Array.from(e.target.files ?? [])
     const [file] = files
 
-    const fileSize = file.size / 1024 / 1024; // in MiB
+    const fileSize = file.size / 1024 / 1024 // in MiB
     if (fileSize > 1) {
       setErrors({ ...defaultErrors, image: '1mb file size limit exceeded' })
       return
@@ -77,7 +80,6 @@ function PersonalInformation(props: Props) {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {
-      console.log(file.size)
       if (typeof reader.result === 'string') {
         setImage(reader.result)
       }
@@ -152,7 +154,18 @@ function PersonalInformation(props: Props) {
     }
     try {
       await updateInfo(infoRequest).unwrap()
-      handleNext()
+      if (!handleNext) {
+        toast({
+          title: 'Personal Information',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
     }
@@ -171,8 +184,7 @@ function PersonalInformation(props: Props) {
                 <Circle size="70px" bg="secondary.100">
                   <Icon name="person" color="secondary.500" />
                 </Circle>
-              )
-            }
+              )}
             {errors.image && <Text position="absolute" fontSize="xs" color="red.600">{errors.image}</Text>}
           </Box>
           <Box flex="1">
@@ -209,10 +221,14 @@ function PersonalInformation(props: Props) {
         </SimpleGrid>
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Next' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
+}
+
+PersonalInformation.defaultProps = {
+  handleNext: undefined,
 }
 
 export default PersonalInformation
