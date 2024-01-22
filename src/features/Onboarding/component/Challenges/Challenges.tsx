@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import {
-  Box, Button, Flex, FlexProps, FormLabel, Text,
+  Box, Button, Flex, FlexProps, FormLabel, Text, useToast,
 } from '@chakra-ui/react'
 import { getAuth } from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
@@ -10,8 +10,8 @@ import { ChallengesRequest, TransformedUserResponse } from '../../../../app/serv
 import { deepCopy } from '../../../../utils'
 
 interface Props extends FlexProps {
-  handleBack: () => void
-  handleNext: () => void
+  handleBack?: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -35,6 +35,7 @@ function Challenges(props: Props) {
   const { role } = useAppSelector(getAuth)
   const challengesOptions = role === 'Mentor' ? mentorChallengesOptions : menteeChallengesOptions
   const [challenges, setChallenges] = useState<string[]>([''])
+  const toast = useToast()
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
@@ -94,7 +95,18 @@ function Challenges(props: Props) {
     }
     try {
       await updateChallenges(challengeRequests).unwrap()
-      handleNext()
+      if (!handleNext) {
+        toast({
+          title: 'Challenges/Lessons',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
     }
@@ -126,10 +138,15 @@ function Challenges(props: Props) {
         )}
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
+        {handleBack && <Button onClick={handleBack}>Back</Button>}
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Next' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
+}
+
+Challenges.defaultProps = {
+  handleBack: undefined,
+  handleNext: undefined,
 }
 export default Challenges

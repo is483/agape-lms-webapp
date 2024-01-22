@@ -11,6 +11,8 @@ import PersonalInformation from '../Onboarding/component/PersonalInformation/Per
 import ProfessionalExperience from '../Onboarding/component/ProfessionalExperience/ProfessionalExperience'
 import PersonalValues from '../Onboarding/component/PersonalValues/PersonalValues'
 import MentoringStyle from '../Onboarding/component/MentoringStyle/MentoringStyle'
+import Challenges from '../Onboarding/component/Challenges/Challenges'
+import Interests from '../Onboarding/component/Interests/Interests'
 
 const steps = [
   { title: 'Personal Information' },
@@ -94,6 +96,26 @@ function MyProfile() {
           <Box>
             {activeStep === 4 && (
               <MentoringStyle
+                minHeight="calc(100vh - 8rem)"
+                flexDir="column"
+                justify="space-between"
+                data={data}
+              />
+            )}
+          </Box>
+          <Box>
+            {activeStep === 5 && (
+              <Challenges
+                minHeight="calc(100vh - 8rem)"
+                flexDir="column"
+                justify="space-between"
+                data={data}
+              />
+            )}
+          </Box>
+          <Box>
+            {activeStep === 6 && (
+              <Interests
                 minHeight="calc(100vh - 8rem)"
                 flexDir="column"
                 justify="space-between"

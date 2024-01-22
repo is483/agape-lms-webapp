@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, FlexProps, FormLabel, Text,
+  Box, Button, Flex, FlexProps, FormLabel, Text, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
@@ -11,8 +11,8 @@ import { deepCopy } from '../../../../utils'
 import { setOnboardingStatus } from '../../../../app/redux/appSlice'
 
 interface Props extends FlexProps {
-  handleBack: () => void
-  handleNext: () => void
+  handleBack?: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -36,6 +36,7 @@ function Interests(props: Props) {
   const [interests, setInterests] = useState<string[]>([''])
   const [errors, setErrors] = useState<Errors>(defaultErrors)
   const { role } = useAppSelector(getAuth)
+  const toast = useToast()
 
   useEffect(() => {
     if (!data) return
@@ -93,10 +94,21 @@ function Interests(props: Props) {
     try {
       await updateInterests(interestRequests).unwrap()
       dispatch(setOnboardingStatus({ isComplete: true }))
-      handleNext()
+      if (!handleNext) {
+        toast({
+          title: 'Interests',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
-    } handleNext()
+    }
   }
   return (
     <Flex {...rest}>
@@ -126,10 +138,15 @@ function Interests(props: Props) {
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
         <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Finish</Button>
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Finish' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
+}
+
+Interests.defaultProps = {
+  handleBack: undefined,
+  handleNext: undefined,
 }
 
 export default Interests
