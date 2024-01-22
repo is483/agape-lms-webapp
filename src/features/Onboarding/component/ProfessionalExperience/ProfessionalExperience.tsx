@@ -110,23 +110,25 @@ function ProfessionalExperience(props: Props) {
       hasErrors = true
     }
 
-    workExperiences.forEach(({ company, description, jobTitle }, i) => {
-      newErrors.workExperience[i].company = ''
-      newErrors.workExperience[i].description = ''
-      newErrors.workExperience[i].jobTitle = ''
-      if (!company) {
-        newErrors.workExperience[i].company = 'Company is required'
-        hasErrors = true
-      }
-      if (!description) {
-        newErrors.workExperience[i].description = 'Description is required'
-        hasErrors = true
-      }
-      if (!jobTitle) {
-        newErrors.workExperience[i].jobTitle = 'Job title is required'
-        hasErrors = true
-      }
-    })
+    if (role === 'Mentor') {
+      workExperiences.forEach(({ company, description, jobTitle }, i) => {
+        newErrors.workExperience[i].company = ''
+        newErrors.workExperience[i].description = ''
+        newErrors.workExperience[i].jobTitle = ''
+        if (!company) {
+          newErrors.workExperience[i].company = 'Company is required'
+          hasErrors = true
+        }
+        if (!description) {
+          newErrors.workExperience[i].description = 'Description is required'
+          hasErrors = true
+        }
+        if (!jobTitle) {
+          newErrors.workExperience[i].jobTitle = 'Job title is required'
+          hasErrors = true
+        }
+      })
+    }
 
     if (hasErrors) {
       setErrors(newErrors)
@@ -142,7 +144,7 @@ function ProfessionalExperience(props: Props) {
       } else if (role === 'Mentee') {
         const request: MenteeExperienceRequest = {
           workExperience: workExperiences,
-          careerAspiration,
+          careerAspirations: careerAspiration,
         }
         await updateMenteeExperience(request)
       }

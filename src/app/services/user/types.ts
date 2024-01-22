@@ -24,7 +24,7 @@ export interface UserResponse {
   preferredMentoringApproach?: string
   // Only Mentee
   expectations?: string
-  careerAspiration?: string
+  careerAspirations?: string
 }
 
 export type TransformedUserResponse = UserResponse & {
@@ -62,7 +62,7 @@ export interface ExperienceRequest {
 }
 
 export interface MenteeExperienceRequest extends ExperienceRequest {
-  careerAspiration: string
+  careerAspirations: string
 }
 
 export interface SkillsRequest {
