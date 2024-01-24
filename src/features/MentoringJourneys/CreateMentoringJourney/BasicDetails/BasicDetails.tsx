@@ -9,7 +9,8 @@ import {
   setDate, setDescription, setMentee, setTitle,
 } from '../redux/mentoringJourneyFormSlice'
 
-const assignedMentees: string[] = []
+// TODO: replace with real values
+const assignedMentees: string[] = ['Jacob']
 
 interface BasicDetailsProps {
   handleNextStep: (toStep: number) => void
