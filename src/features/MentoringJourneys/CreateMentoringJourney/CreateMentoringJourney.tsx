@@ -5,12 +5,13 @@ import {
 import { useState } from 'react'
 import { Container } from '../../../components'
 import { BasicDetails } from './BasicDetails'
-import { useValidateBasicDetails } from './hooks'
+import { useValidateBasicDetails, useValidateObjectives } from './hooks'
 import { Objectives } from './Objectives'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
   const validateBasicDetails = useValidateBasicDetails()
+  const validateObjectives = useValidateObjectives()
 
   const handleTabsChange = (index: number) => {
     setTabIndex(index)
@@ -22,9 +23,15 @@ function CreateMentoringJourney() {
     if (toStep === 2) { // Basic Details Complete
       !validateBasicDetails() && goNextStep()
     } else if (toStep === 3) { // Objective Complete
-      // TODO
+      !validateObjectives() && goNextStep()
     } else if (toStep === 4) { // Milestones Complete
       // TODO
+    }
+  }
+
+  const handlePrevStep = () => {
+    if (tabIndex > 0) {
+      setTabIndex((prevIndex) => prevIndex - 1)
     }
   }
 
@@ -44,7 +51,7 @@ function CreateMentoringJourney() {
             <BasicDetails handleNextStep={handleNextStep} />
           </TabPanel>
           <TabPanel px="0">
-            <Objectives handleNextStep={handleNextStep} />
+            <Objectives handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
           </TabPanel>
           <TabPanel px="0">
             Milestones

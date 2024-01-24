@@ -10,12 +10,13 @@ import { setMentoringOutcome, setOutcomeDescription } from '../redux/mentoringJo
 
 interface ObjectivesProps {
   handleNextStep: (toStep: number) => void
+  handlePrevStep: () => void
 }
 
 const mentoringOutcomes: string[] = ['1', '2']
 
 function Objectives(props: ObjectivesProps) {
-  const { handleNextStep } = props
+  const { handleNextStep, handlePrevStep } = props
   const dispatch = useAppDispatch()
   const { outcome, description } = useAppSelector(getObjectives)
 
@@ -29,17 +30,23 @@ function Objectives(props: ObjectivesProps) {
         <Text mb="2" fontSize="xs" color="secondary.300">
           What would you like to achieve from this mentoring journey?
         </Text>
-        <ControlledSelect error="" options={mentoringOutcomes} selectProps={{ value: outcome.value, onChange: handleOutcomeChange }} />
+        <ControlledSelect error={outcome.error} options={mentoringOutcomes} selectProps={{ value: outcome.value, onChange: handleOutcomeChange }} />
       </Box>
       <Box mb="8">
         <Text>Describe your outcome in greater detail</Text>
         <Text mb="2" fontSize="xs" color="secondary.300">
           Provide an in-depth explanation of your ultimate goal,so that we can effectively guide you to reach it!
         </Text>
-        <Textarea value={description.value} onChange={handleDescriptionChange} />
-        {!!outcome.error && <Text position="absolute" fontSize="xs" color="red.600">{outcome.error}</Text>}
+        <Textarea
+          borderColor={description.error ? 'red.600' : 'inherit'}
+          borderWidth={description.error ? '2px' : '1px'}
+          value={description.value}
+          onChange={handleDescriptionChange}
+        />
+        {!!description.error && <Text position="absolute" fontSize="xs" color="red.600">{description.error}</Text>}
       </Box>
-      <Flex justify="flex-end">
+      <Flex justify="flex-end" gap="4">
+        <Button colorScheme="red" variant="outline" onClick={handlePrevStep}>Back</Button>
         <Button colorScheme="red" onClick={() => handleNextStep(3)}>Next</Button>
       </Flex>
     </Flex>
