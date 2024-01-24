@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Container } from '../../../components'
 import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails } from './hooks'
+import { Objectives } from './Objectives'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -39,13 +40,13 @@ function CreateMentoringJourney() {
           <Tab>3. Milestones</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
+          <TabPanel px="0">
             <BasicDetails handleNextStep={handleNextStep} />
           </TabPanel>
-          <TabPanel>
-            Objectives
+          <TabPanel px="0">
+            <Objectives handleNextStep={handleNextStep} />
           </TabPanel>
-          <TabPanel>
+          <TabPanel px="0">
             Milestones
           </TabPanel>
         </TabPanels>
