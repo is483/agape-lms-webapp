@@ -29,7 +29,7 @@ function BasicDetails(props: BasicDetailsProps) {
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => dispatch(setDescription(e.target.value))
 
   return (
-    <Flex mt="8" flexDir="column">
+    <Flex mt="12" flexDir="column">
       <Box width="400px" maxWidth="100%" mb="12">
         <ControlledSelect error={mentee.error} options={assignedMentees} label="Mentee" selectProps={{ value: mentee.value, onChange: handleMenteeChange }} />
       </Box>

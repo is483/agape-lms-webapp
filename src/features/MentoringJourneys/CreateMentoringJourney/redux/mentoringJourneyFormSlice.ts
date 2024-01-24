@@ -18,6 +18,16 @@ export interface MentoringJourneyFormState {
       value: string,
     },
   },
+  objectives: {
+    outcome: {
+      value: string,
+      error: string,
+    },
+    description: {
+      value: string,
+      error: string,
+    },
+  },
 }
 
 const initialState: MentoringJourneyFormState = {
@@ -38,12 +48,23 @@ const initialState: MentoringJourneyFormState = {
       value: '',
     },
   },
+  objectives: {
+    outcome: {
+      value: '',
+      error: '',
+    },
+    description: {
+      value: '',
+      error: '',
+    },
+  },
 }
 
 export const mentoringJourneyFormSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
+    // Basic Details
     setMentee: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.basicDetails.mentee.value = action.payload
     },
@@ -70,6 +91,23 @@ export const mentoringJourneyFormSlice = createSlice({
     setDateError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.basicDetails.date.error = action.payload
     },
+    // Objectives
+    setMentoringOutcome: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
+      state.objectives.outcome.value = action.payload
+    },
+    setOutcomeDescription: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
+      state.objectives.description.value = action.payload
+    },
+    clearObjectiveErrors: (state: MentoringJourneyFormState) => {
+      state.objectives.description.error = ''
+      state.objectives.outcome.error = ''
+    },
+    setMentoringOutcomeError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
+      state.objectives.outcome.error = action.payload
+    },
+    setOutcomeDescriptionError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
+      state.objectives.description.error = action.payload
+    },
   },
 })
 
@@ -77,5 +115,8 @@ export const {
   setMentee, setTitle, setDate, setDescription,
   setMenteeError, setTitleError, setDateError,
   clearBasicDetailsErrors,
+  setMentoringOutcome, setOutcomeDescription,
+  setMentoringOutcomeError, setOutcomeDescriptionError,
+  clearObjectiveErrors,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer
