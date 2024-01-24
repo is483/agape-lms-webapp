@@ -7,6 +7,7 @@ import { Container } from '../../../components'
 import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails, useValidateObjectives } from './hooks'
 import { Objectives } from './Objectives'
+import { Milestones } from './Milestones'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -54,7 +55,7 @@ function CreateMentoringJourney() {
             <Objectives handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
           </TabPanel>
           <TabPanel px="0">
-            Milestones
+            <Milestones />
           </TabPanel>
         </TabPanels>
       </Tabs>
