@@ -39,7 +39,7 @@ function BasicDetails(props: BasicDetailsProps) {
       <Box width="400px" maxWidth="100%" mb="8">
         <Text>Start Date</Text>
         <Text mb="2" fontSize="xs" color="secondary.300">All mentoring journeys have a default period of 12 months</Text>
-        <ControlledTextInput error={date.error} type="date" inputProps={{ value: date.value, onChange: handleDateChange }} />
+        <ControlledTextInput error={date.error} type="date" inputProps={{ value: date.value, onChange: handleDateChange, min: new Date().toISOString().split('T')[0] }} />
       </Box>
       <Box mb="8">
         <Text>Description</Text>
