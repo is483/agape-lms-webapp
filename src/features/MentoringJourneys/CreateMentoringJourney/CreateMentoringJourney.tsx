@@ -7,14 +7,29 @@ import { Container } from '../../../components'
 import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails, useValidateObjectives } from './hooks'
 import { Objectives } from './Objectives'
+import { useAppDispatch } from '../../../hooks'
+import { clearBasicDetailsErrors, clearObjectiveErrors } from './redux/mentoringJourneyFormSlice'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
   const validateBasicDetails = useValidateBasicDetails()
   const validateObjectives = useValidateObjectives()
+  const dispatch = useAppDispatch()
 
   const handleTabsChange = (index: number) => {
-    setTabIndex(index)
+    if (index < tabIndex) {
+      setTabIndex(index)
+      dispatch(clearBasicDetailsErrors())
+      dispatch(clearObjectiveErrors())
+      return
+    }
+    if (tabIndex === 0) { // Basic Details
+      !validateBasicDetails() && setTabIndex(index)
+    } else if (tabIndex === 1) { // Objective
+      !validateObjectives() && setTabIndex(index)
+    } else if (tabIndex === 2) { // Milestones
+      // TODO
+    }
   }
 
   const handleNextStep = (toStep: number) => {
