@@ -12,15 +12,15 @@ function useValidateBasicDetails() {
   return useCallback(() => {
     let hasErrors: boolean = false
     dispatch(clearBasicDetailsErrors())
-    if (!mentee.value) {
+    if (!mentee.value.trim()) {
       dispatch(setMenteeError('Mentee is required'))
       hasErrors = true
     }
-    if (!title.value) {
+    if (!title.value.trim()) {
       dispatch(setTitleError('Title is required'))
       hasErrors = true
     }
-    if (!date.value) {
+    if (!date.value.trim()) {
       dispatch(setDateError('Date is required'))
       hasErrors = true
     }

@@ -12,11 +12,11 @@ function useValidateObjectives() {
   return useCallback(() => {
     let hasErrors: boolean = false
     dispatch(clearObjectiveErrors())
-    if (!outcome.value) {
+    if (!outcome.value.trim()) {
       dispatch(setMentoringOutcomeError('Mentoring Outcome is required'))
       hasErrors = true
     }
-    if (!description.value) {
+    if (!description.value.trim()) {
       dispatch(setOutcomeDescriptionError('Outcome description is required'))
       hasErrors = true
     }
