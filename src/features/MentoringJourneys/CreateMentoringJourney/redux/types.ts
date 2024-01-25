@@ -9,7 +9,7 @@ export interface Goal {
   title: string,
   measurableObjective: string,
   deadline: string,
-  actionPlan: ActionPlan[]
+  actionPlans: ActionPlan[]
 }
 
 export interface Milestone {

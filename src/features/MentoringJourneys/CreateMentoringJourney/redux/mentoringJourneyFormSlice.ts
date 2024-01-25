@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { Goal, Milestone } from './types'
+import { Milestone } from './types'
 import { defaultMilestones } from './constants'
 
 export interface MentoringJourneyFormState {
@@ -117,9 +117,14 @@ export const mentoringJourneyFormSlice = createSlice({
       state.objectives.description.error = action.payload
     },
     // Milestones
-    addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ index: number, goal: Goal }>) => {
-      const { index, goal } = action.payload
-      state.milestones.milestones[index].goals.push(goal)
+    addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload
+      state.milestones.milestones[index].goals.push({
+        title: '',
+        measurableObjective: '',
+        deadline: '',
+        actionPlans: [],
+      })
     },
     removeGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
       const { milestoneIndex, goalIndex } = action.payload
