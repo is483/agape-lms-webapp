@@ -60,7 +60,7 @@ function Register() {
     if (!role) {
       errors.role = 'Please select a role'
     }
-    if (password.length < 8) {
+    if (password.trim().length < 8) {
       errors.password = 'Password must be longer than 8 characters'
     }
     if (password !== confirmPassword) {
