@@ -123,7 +123,12 @@ export const mentoringJourneyFormSlice = createSlice({
         title: '',
         measurableObjective: '',
         deadline: '',
-        actionPlans: [],
+        actionPlans: [{
+          byWho: '',
+          deadline: '',
+          resourcesRequired: '',
+          progressIndicator: '',
+        }],
       })
     },
     removeGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
@@ -140,6 +145,32 @@ export const mentoringJourneyFormSlice = createSlice({
         milestoneIndex, goalIndex, field, value,
       } = action.payload
       state.milestones.milestones[milestoneIndex].goals[goalIndex][field] = value
+    },
+    addActionPlanStep: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
+      const { milestoneIndex, goalIndex } = action.payload
+      state.milestones.milestones[milestoneIndex].goals[goalIndex].actionPlans.push({
+        byWho: '',
+        deadline: '',
+        resourcesRequired: '',
+        progressIndicator: '',
+      })
+    },
+    deleteActionPlanStep: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number, actionPlanIndex: number }>) => {
+      const { milestoneIndex, goalIndex, actionPlanIndex } = action.payload
+      state.milestones.milestones[milestoneIndex].goals[goalIndex].actionPlans.splice(actionPlanIndex, 1)
+    },
+    editActionPlanStep: (state: MentoringJourneyFormState, action: PayloadAction<{
+      milestoneIndex: number,
+      goalIndex: number,
+      actionPlanIndex: number,
+      field: 'byWho' | 'deadline' | 'resourcesRequired' | 'progressIndicator',
+      value: string,
+    }>) => {
+      const {
+        milestoneIndex, goalIndex, actionPlanIndex,
+        field, value,
+      } = action.payload
+      state.milestones.milestones[milestoneIndex].goals[goalIndex].actionPlans[actionPlanIndex][field] = value
     },
   },
 })
