@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { Milestone } from './types'
 
 export interface MentoringJourneyFormState {
   basicDetails: {
@@ -27,6 +28,9 @@ export interface MentoringJourneyFormState {
       value: string,
       error: string,
     },
+  },
+  milestones: {
+    milestones: Milestone[]
   },
 }
 
@@ -57,6 +61,9 @@ const initialState: MentoringJourneyFormState = {
       value: '',
       error: '',
     },
+  },
+  milestones: {
+    milestones: [],
   },
 }
 
@@ -108,6 +115,7 @@ export const mentoringJourneyFormSlice = createSlice({
     setOutcomeDescriptionError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.objectives.description.error = action.payload
     },
+    // Milestones
   },
 })
 
