@@ -1,6 +1,6 @@
 import { Milestone } from './types'
 
-const MILESTONES = [
+export const MILESTONES = [
   {
     title: 'Building Foundations',
     goal: 'Collaboratively set short-term and long-term recovery goals.',

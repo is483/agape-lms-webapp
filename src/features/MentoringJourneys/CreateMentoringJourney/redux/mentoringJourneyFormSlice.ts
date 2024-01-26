@@ -131,7 +131,7 @@ export const mentoringJourneyFormSlice = createSlice({
         }],
       })
     },
-    removeGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
+    deleteGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
       const { milestoneIndex, goalIndex } = action.payload
       state.milestones.milestones[milestoneIndex].goals.splice(goalIndex, 1)
     },
@@ -182,5 +182,7 @@ export const {
   setMentoringOutcome, setOutcomeDescription,
   setMentoringOutcomeError, setOutcomeDescriptionError,
   clearObjectiveErrors,
+  addGoal, editGoal, deleteGoal,
+  addActionPlanStep, editActionPlanStep, deleteActionPlanStep,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer
