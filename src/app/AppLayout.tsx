@@ -6,6 +6,8 @@ import { getAuth } from './redux/selectors'
 import Introduction from '../features/Onboarding/component/Introduction/Introduction'
 import paths from '../paths'
 import { MyProfile } from '../features/MyProfile'
+import { MentoringJourneys } from '../features/MentoringJourneys'
+import { CreateMentoringJourney } from '../features/MentoringJourneys/CreateMentoringJourney'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -25,12 +27,15 @@ function AppLayout() {
             <Routes>
               <Route path={paths.Introduction} element={<Introduction />} />
               <Route path={paths.MyProfile} element={<MyProfile />} />
+              <Route path={paths.MentoringJourneys.ViewAll} element={<MentoringJourneys />} />
+              <Route path={paths.MentoringJourneys.Create} element={<CreateMentoringJourney />} />
             </Routes>
           )}
           {role === 'Mentee' && (
             <Routes>
               <Route path={paths.Introduction} element={<Introduction />} />
               <Route path={paths.MyProfile} element={<MyProfile />} />
+              <Route path={paths.MentoringJourneys.ViewAll} element={<MentoringJourneys />} />
             </Routes>
           )}
         </Box>

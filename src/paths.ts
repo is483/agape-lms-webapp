@@ -11,7 +11,6 @@ const paths = {
   MentorProfile: '/mentor-profile',
   Milestones: '/milestones',
 
-  MentoringJourney: '/mentoring-journeys',
   Sessions: '/sessions',
   AssignedMentees: '/assigned-mentees',
   Training: '/training',
@@ -20,6 +19,11 @@ const paths = {
   Mentors: '/mentors',
   Mentees: '/mentees',
   Pairing: '/pairing',
+
+  MentoringJourneys: {
+    ViewAll: '/mentoring-journeys',
+    Create: '/mentoring-journeys/create',
+  },
 }
 
 export default paths
