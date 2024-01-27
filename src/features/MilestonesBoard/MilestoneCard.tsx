@@ -12,12 +12,13 @@ interface MilestoneCardProps {
   dateStr: string
   isEditable: boolean
   handleOpenInfoModal: (index: number) => void
+  handleOpenFormModal: (index: number) => void
 }
 
 function MilestoneCard(props: MilestoneCardProps) {
   const {
     milestone, index, dateStr, isEditable,
-    handleOpenInfoModal,
+    handleOpenInfoModal, handleOpenFormModal,
   } = props
   const { step, goals } = milestone
 
@@ -40,7 +41,7 @@ function MilestoneCard(props: MilestoneCardProps) {
           </Text>
         </Box>
         {goals.map((goal, index) => (<GoalCard goal={goal} index={index} isEditable={isEditable} />))}
-        <Button size="xs" variant="ghost" color="gray.500" w="min-content">+ New Goal</Button>
+        <Button onClick={() => handleOpenFormModal(index)} size="xs" variant="ghost" color="gray.500" w="min-content">+ New Goal</Button>
       </Flex>
     </Box>
   )
