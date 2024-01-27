@@ -1,13 +1,9 @@
 /* eslint-disable no-param-reassign */
 import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Flex,
-  Heading,
-  Modal, ModalCloseButton, ModalContent,
-  ModalOverlay, Progress, Tag, Text,
+  Button, Card, CardBody, CardHeader,
+  Flex, Heading, Modal, ModalCloseButton,
+  ModalContent, ModalOverlay, Progress, Tag,
+  Text,
 } from '@chakra-ui/react'
 import { useImmer } from 'use-immer'
 import { ChangeEvent } from 'react'
@@ -130,61 +126,18 @@ function GoalFormModal(props: GoalFormModalProps) {
             0/{goal.actionPlans.length}
           </Tag>
         </Flex>
-        {actionPlans.map(({
-          byWho, deadline, resourcesRequired, progressIndicator,
-        }, index) => {
-          const updateByWho = (e: ChangeEvent<HTMLSelectElement>) => handleByWhoChange(e, index)
-          const updateStepDeadline = (e: ChangeEvent<HTMLInputElement>) => handleStepDeadlineChange(e, index)
-          const updateResourcesRequired = (e: ChangeEvent<HTMLInputElement>) => handleResourceRequiredChange(e, index)
-          const updateProgressIndicator = (e: ChangeEvent<HTMLInputElement>) => handleProgressIndicatorChange(e, index)
-
-          return (
-            <Card mt="4">
-              <CardHeader>
-                <Flex justify="space-between">
-                  <Heading size="sm" fontWeight="600">Step {index + 1}</Heading>
-                  {actionPlans.length > 1 && <Icon onClick={() => removeActionPlan(index)} as="button" name="close" />}
-                </Flex>
-              </CardHeader>
-              <CardBody>
-                <Flex flexDir="column" gap="10">
-                  <Flex gap={['10', null, '4']} flexDir={['column', null, 'row']}>
-                    <ControlledSelect
-                      label="By Who"
-                      error={byWho.error}
-                      options={mentees}
-                      boxProps={{ flex: '1' }}
-                      selectProps={{ onChange: updateByWho, value: byWho.value }}
-                    />
-                    <ControlledTextInput
-                      label="Deadline"
-                      placeholder="Select a date"
-                      error={deadline.error}
-                      type="date"
-                      boxProps={{ flex: '1' }}
-                      inputProps={{ onChange: updateStepDeadline, value: deadline.value }}
-                    />
-                  </Flex>
-                  <ControlledTextInput
-                    label="Resources Required"
-                    placeholder="How can we help you achieve your goal?"
-                    error={resourcesRequired.error}
-                    type="text"
-                    inputProps={{ onChange: updateResourcesRequired, value: resourcesRequired.value }}
-                  />
-                  <ControlledTextInput
-                    label="Progress Indicator"
-                    placeholder="What does success look like?"
-                    error={progressIndicator.error}
-                    type="text"
-                    inputProps={{ onChange: updateProgressIndicator, value: progressIndicator.value }}
-                  />
-                </Flex>
-
-              </CardBody>
-            </Card>
-          )
-        })}
+        {actionPlans.map((actionPlanStep, index) => (
+          <ActionPlanStepForm
+            handleByWhoChange={handleByWhoChange}
+            handleStepDeadlineChange={handleStepDeadlineChange}
+            handleResourceRequiredChange={handleResourceRequiredChange}
+            handleProgressIndicatorChange={handleProgressIndicatorChange}
+            removeActionPlan={removeActionPlan}
+            index={index}
+            actionPlanStep={actionPlanStep}
+            showRemoveIcon={actionPlans.length > 1}
+          />
+        ))}
         <Button onClick={addActionPlan} size="sm" mt="4" variant="ghost" colorScheme="red" width="fit-content">+ Add Step</Button>
         <Flex gap="4" justify="flex-end" mt="8">
           <Button colorScheme="red" size="sm" variant="outline" onClick={onModalClose}>Cancel</Button>
@@ -192,6 +145,82 @@ function GoalFormModal(props: GoalFormModalProps) {
         </Flex>
       </ModalContent>
     </Modal>
+  )
+}
+
+interface ActionPlanStepFormProps {
+  handleByWhoChange: (e: ChangeEvent<HTMLSelectElement>, index: number) => void
+  handleStepDeadlineChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void
+  handleResourceRequiredChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void
+  handleProgressIndicatorChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void
+  removeActionPlan: (index: number) => void
+  index: number
+  actionPlanStep: typeof defaultActionPlanStep
+  showRemoveIcon: boolean
+}
+
+function ActionPlanStepForm(props: ActionPlanStepFormProps) {
+  const {
+    handleByWhoChange, handleStepDeadlineChange,
+    handleResourceRequiredChange, handleProgressIndicatorChange,
+    index, actionPlanStep, removeActionPlan,
+    showRemoveIcon,
+  } = props
+
+  const {
+    byWho, deadline, resourcesRequired, progressIndicator,
+  } = actionPlanStep
+
+  const updateByWho = (e: ChangeEvent<HTMLSelectElement>) => handleByWhoChange(e, index)
+  const updateStepDeadline = (e: ChangeEvent<HTMLInputElement>) => handleStepDeadlineChange(e, index)
+  const updateResourcesRequired = (e: ChangeEvent<HTMLInputElement>) => handleResourceRequiredChange(e, index)
+  const updateProgressIndicator = (e: ChangeEvent<HTMLInputElement>) => handleProgressIndicatorChange(e, index)
+
+  return (
+    <Card mt="4">
+      <CardHeader>
+        <Flex justify="space-between">
+          <Heading size="sm" fontWeight="600">Step {index + 1}</Heading>
+          {showRemoveIcon && <Icon onClick={() => removeActionPlan(index)} as="button" name="close" />}
+        </Flex>
+      </CardHeader>
+      <CardBody>
+        <Flex flexDir="column" gap="10">
+          <Flex gap={['10', null, '4']} flexDir={['column', null, 'row']}>
+            <ControlledSelect
+              label="By Who"
+              error={byWho.error}
+              options={mentees}
+              boxProps={{ flex: '1' }}
+              selectProps={{ onChange: updateByWho, value: byWho.value }}
+            />
+            <ControlledTextInput
+              label="Deadline"
+              placeholder="Select a date"
+              error={deadline.error}
+              type="date"
+              boxProps={{ flex: '1' }}
+              inputProps={{ onChange: updateStepDeadline, value: deadline.value }}
+            />
+          </Flex>
+          <ControlledTextInput
+            label="Resources Required"
+            placeholder="How can we help you achieve your goal?"
+            error={resourcesRequired.error}
+            type="text"
+            inputProps={{ onChange: updateResourcesRequired, value: resourcesRequired.value }}
+          />
+          <ControlledTextInput
+            label="Progress Indicator"
+            placeholder="What does success look like?"
+            error={progressIndicator.error}
+            type="text"
+            inputProps={{ onChange: updateProgressIndicator, value: progressIndicator.value }}
+          />
+        </Flex>
+
+      </CardBody>
+    </Card>
   )
 }
 
