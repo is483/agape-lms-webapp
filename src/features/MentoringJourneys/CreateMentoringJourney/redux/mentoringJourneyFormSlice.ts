@@ -32,6 +32,7 @@ export interface MentoringJourneyFormState {
   },
   milestones: {
     milestones: Milestone[]
+    error: string
     milestoneIndex: number
     goalIndex: number | undefined
   },
@@ -67,6 +68,7 @@ const initialState: MentoringJourneyFormState = {
   },
   milestones: {
     milestones: defaultMilestones,
+    error: '',
     milestoneIndex: 0,
     goalIndex: undefined,
   },
@@ -141,6 +143,9 @@ export const mentoringJourneyFormSlice = createSlice({
     setGoalIndex: (state: MentoringJourneyFormState, action: PayloadAction<number | undefined>) => {
       state.milestones.goalIndex = action.payload
     },
+    setMilestoneError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
+      state.milestones.error = action.payload
+    },
   },
 })
 
@@ -153,5 +158,6 @@ export const {
   clearObjectiveErrors,
   addGoal, editGoal, deleteGoal,
   setMilestoneIndex, setGoalIndex,
+  setMilestoneError,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer

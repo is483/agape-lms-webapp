@@ -1,14 +1,29 @@
-import { Box } from '@chakra-ui/react'
+import {
+  Box, Button, Flex, Text,
+} from '@chakra-ui/react'
 import { MilestonesBoard } from '../../../MilestonesBoard'
 import { useAppSelector } from '../../../../hooks'
 import { getBasicDetails, getMilestones } from '../redux/selectors'
 
-function Milestones() {
+interface MilestoneProps {
+  handleNextStep: (toStep: number) => void
+  handlePrevStep: () => void
+}
+
+function Milestones(props: MilestoneProps) {
+  const { handleNextStep, handlePrevStep } = props
   const { milestones } = useAppSelector(getMilestones)
   const { date } = useAppSelector(getBasicDetails)
+  const { error } = useAppSelector(getMilestones)
+
   return (
     <Box>
+      {!!error && <Text color="red.600">{error}</Text>}
       <MilestonesBoard data={milestones} startDate={date.value} isEditable />
+      <Flex justify="flex-end" gap="4">
+        <Button colorScheme="red" variant="outline" onClick={handlePrevStep}>Back</Button>
+        <Button colorScheme="red" onClick={() => handleNextStep(4)}>Next</Button>
+      </Flex>
     </Box>
   )
 }
