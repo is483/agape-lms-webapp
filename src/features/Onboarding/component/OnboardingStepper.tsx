@@ -21,17 +21,18 @@ const steps = [
 ]
 
 interface StepperProps {
-  activeStep: number
+  activeStep: number,
+  handleActiveStep?: (index: number) => void
 }
 
 function OnboardingStepper(props: StepperProps) {
-  const { activeStep } = props
+  const { activeStep, handleActiveStep } = props
 
   return (
     <Stepper index={activeStep} orientation="vertical" height="400px" gap="0" colorScheme="red">
-      {steps.map((step) => (
-        <Step key={step.title}>
-          <StepIndicator>
+      {steps.map((step, index) => (
+        <Step key={step.title} onClick={() => handleActiveStep && handleActiveStep(index)}>
+          <StepIndicator _hover={{ cursor: handleActiveStep ? 'pointer' : 'default' }}>
             <StepStatus
               complete={<StepIcon />}
               incomplete={<StepNumber />}
@@ -47,4 +48,9 @@ function OnboardingStepper(props: StepperProps) {
     </Stepper>
   )
 }
+
+OnboardingStepper.defaultProps = {
+  handleActiveStep: undefined,
+}
+
 export default OnboardingStepper

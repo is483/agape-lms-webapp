@@ -1,7 +1,7 @@
 import {
   Box, Button, Checkbox, CheckboxGroup, Flex,
   FlexProps,
-  FormControl, FormLabel, SimpleGrid, Text, Textarea,
+  FormControl, FormLabel, SimpleGrid, Text, Textarea, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../../../app/redux/selectors'
@@ -13,8 +13,8 @@ import { Role } from '../../../../app/types'
 import { deepCopy } from '../../../../utils'
 
 interface Props extends FlexProps {
-  handleBack: () => void
-  handleNext: () => void
+  handleBack?: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -63,6 +63,7 @@ function MentoringStyle(props: Props) {
   const [updateMentorMentoringStyle, { isLoading: isMentorInfoLoading }] = useUpdateMentorMentoringStyleMutation()
   const [updateMenteeMentoringStyle, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeMentoringStyleMutation()
   const { role } = useAppSelector(getAuth)
+  const toast = useToast()
   const [preferredCommunication, setPreferredCommunication] = useState('')
   const [meetingDays, setMeetingDays] = useState<string[]>([])
   const [mentoringApproaches, setMentoringApproaches] = useState<string[]>([''])
@@ -162,7 +163,18 @@ function MentoringStyle(props: Props) {
       } else {
         await updateMenteeMentoringStyle(menteeMentoringRequest).unwrap()
       }
-      handleNext()
+      if (!handleNext) {
+        toast({
+          title: 'Mentoring Style',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
     }
@@ -223,10 +235,15 @@ function MentoringStyle(props: Props) {
         )}
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
+        {handleBack && <Button onClick={handleBack}>Back</Button>}
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Next' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
+}
+
+MentoringStyle.defaultProps = {
+  handleBack: undefined,
+  handleNext: undefined,
 }
 export default MentoringStyle

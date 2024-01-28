@@ -14,7 +14,7 @@ const paths = {
   Sessions: '/sessions',
   AssignedMentees: '/assigned-mentees',
   Training: '/training',
-  Profile: '/profile',
+  MyProfile: '/profile',
 
   Mentors: '/mentors',
   Mentees: '/mentees',

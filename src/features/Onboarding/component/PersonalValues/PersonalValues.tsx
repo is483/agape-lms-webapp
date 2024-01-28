@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, FlexProps, FormLabel, Text,
+  Box, Button, Flex, FlexProps, FormLabel, Text, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, Icon } from '../../../../components'
@@ -10,8 +10,8 @@ import { getAuth } from '../../../../app/redux/selectors'
 import { deepCopy } from '../../../../utils'
 
 interface Props extends FlexProps {
-  handleBack: () => void
-  handleNext: () => void
+  handleBack?: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -33,6 +33,7 @@ function PersonalValues(props: Props) {
   const [updateMentorValues, { isLoading: isMentorInfoLoading }] = useUpdateMentorValuesMutation()
   const [updateMenteeValues, { isLoading: isMenteeInfoLoading }] = useUpdateMenteeValuesMutation()
   const { role } = useAppSelector(getAuth)
+  const toast = useToast()
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
@@ -92,7 +93,18 @@ function PersonalValues(props: Props) {
     }
     try {
       await updateValues(valueRequests).unwrap()
-      handleNext()
+      if (!handleNext) {
+        toast({
+          title: 'Personal Values',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
     }
@@ -123,10 +135,16 @@ function PersonalValues(props: Props) {
         )}
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button onClick={handleBack}>Back</Button>
-        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>Next</Button>
+        {handleBack && <Button onClick={handleBack}>Back</Button>}
+        <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Next' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
 }
+
+PersonalValues.defaultProps = {
+  handleNext: undefined,
+  handleBack: undefined,
+}
+
 export default PersonalValues
