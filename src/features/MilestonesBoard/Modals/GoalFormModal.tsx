@@ -8,6 +8,7 @@ import {
 import { useImmer } from 'use-immer'
 import { ChangeEvent } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../components'
+import { clearErrors } from '../../../utils'
 
 interface GoalFormModalProps {
   isModalOpen: boolean
@@ -92,13 +93,64 @@ function GoalFormModal(props: GoalFormModalProps) {
     })
   }
 
+  const handleModalCancel = () => {
+    // TODO: Clear form state
+    onModalClose()
+  }
+
+  const handleCreate = () => {
+    let hasErrors: boolean = false
+    updateGoal((draft) => {
+      const { title, deadline, measurableObjective } = draft
+      clearErrors(draft)
+
+      if (!title.value.trim()) {
+        title.error = 'Goal is required'
+        hasErrors = true
+      }
+      if (!deadline.value) {
+        deadline.error = 'Deadline is required'
+        hasErrors = true
+      }
+      if (!measurableObjective.value) {
+        measurableObjective.error = 'Deadline is required'
+        hasErrors = true
+      }
+
+      draft.actionPlans.forEach(({
+        byWho, deadline, progressIndicator, resourcesRequired,
+      }) => {
+        if (!byWho.value) {
+          byWho.error = 'By who is required'
+          hasErrors = true
+        }
+        if (!deadline.value) {
+          deadline.error = 'Deadline is required'
+          hasErrors = true
+        }
+        if (!progressIndicator.value) {
+          progressIndicator.error = 'Progress indicator is required'
+          hasErrors = true
+        }
+        if (!resourcesRequired.value) {
+          resourcesRequired.error = 'Resources required is required'
+          hasErrors = true
+        }
+      })
+    })
+    if (hasErrors) return
+
+    // TODO: Save to form slice state
+    onModalClose()
+  }
+
   return (
-    <Modal size="3xl" isOpen={isModalOpen} onClose={onModalClose} isCentered>
+    <Modal size="3xl" isOpen={isModalOpen} onClose={handleModalCancel} isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" overflowY="auto" maxHeight="90vh">
         <Text textTransform="uppercase" fontWeight="600" fontSize="md">Setting a goal</Text>
         <ModalCloseButton />
-        <Flex flexDir="column" mt="12" gap="10">
+        <Flex flexDir="column" mt="12" gap="12">
           <ControlledTextInput
             label="Goal"
             error={title.error}
@@ -140,8 +192,8 @@ function GoalFormModal(props: GoalFormModalProps) {
         ))}
         <Button onClick={addActionPlan} size="sm" mt="4" variant="ghost" colorScheme="red" width="fit-content">+ Add Step</Button>
         <Flex gap="4" justify="flex-end" mt="8">
-          <Button colorScheme="red" size="sm" variant="outline" onClick={onModalClose}>Cancel</Button>
-          <Button colorScheme="red" size="sm">Create</Button>
+          <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
+          <Button colorScheme="red" size="sm" onClick={handleCreate}>Create</Button>
         </Flex>
       </ModalContent>
     </Modal>
@@ -185,7 +237,7 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
         </Flex>
       </CardHeader>
       <CardBody>
-        <Flex flexDir="column" gap="10">
+        <Flex flexDir="column" gap="12">
           <Flex gap={['10', null, '4']} flexDir={['column', null, 'row']}>
             <ControlledSelect
               label="By Who"

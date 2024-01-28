@@ -41,7 +41,11 @@ function MilestoneCard(props: MilestoneCardProps) {
           </Text>
         </Box>
         {goals.map((goal, index) => (<GoalCard goal={goal} index={index} isEditable={isEditable} />))}
-        <Button onClick={() => handleOpenFormModal(index)} size="xs" variant="ghost" color="gray.500" w="min-content">+ New Goal</Button>
+        {isEditable && (
+          <Button onClick={() => handleOpenFormModal(index)} size="xs" variant="ghost" color="gray.500" w="min-content">
+            + New Goal
+          </Button>
+        )}
       </Flex>
     </Box>
   )
