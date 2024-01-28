@@ -6,16 +6,17 @@ import { Icon } from '../../../components'
 import { MILESTONES } from '../../MentoringJourneys/CreateMentoringJourney/redux/constants'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
+import { getMilestoneIndex } from '../../MentoringJourneys/CreateMentoringJourney/redux/selectors'
 
 interface MilestoneInfoModalProps {
   isModalOpen: boolean
   onModalClose: () => void
-  milestoneIndex: number
 }
 
 function MilestoneInfoModal(props: MilestoneInfoModalProps) {
-  const { isModalOpen, onModalClose, milestoneIndex } = props
+  const { isModalOpen, onModalClose } = props
   const { role } = useAppSelector(getAuth)
+  const milestoneIndex = useAppSelector(getMilestoneIndex)
   const {
     title, goal, duration, success,
   } = MILESTONES[milestoneIndex]

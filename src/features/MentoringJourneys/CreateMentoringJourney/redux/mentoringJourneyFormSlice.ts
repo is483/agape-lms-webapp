@@ -32,6 +32,8 @@ export interface MentoringJourneyFormState {
   },
   milestones: {
     milestones: Milestone[]
+    milestoneIndex: number
+    goalIndex: number | undefined
   },
 }
 
@@ -65,6 +67,8 @@ const initialState: MentoringJourneyFormState = {
   },
   milestones: {
     milestones: defaultMilestones,
+    milestoneIndex: 0,
+    goalIndex: undefined,
   },
 }
 
@@ -117,21 +121,25 @@ export const mentoringJourneyFormSlice = createSlice({
       state.objectives.description.error = action.payload
     },
     // Milestones
-    addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ index: number, goal: Goal }>) => {
-      const { index, goal } = action.payload
-      state.milestones.milestones[index].goals.push(goal)
+    addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ goal: Goal }>) => {
+      const { goal } = action.payload
+      const { milestoneIndex } = state.milestones
+      state.milestones.milestones[milestoneIndex].goals.push(goal)
     },
     deleteGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
       const { milestoneIndex, goalIndex } = action.payload
       state.milestones.milestones[milestoneIndex].goals.splice(goalIndex, 1)
     },
-    editGoal: (state: MentoringJourneyFormState, action: PayloadAction<{
-      milestoneIndex: number,
-      goalIndex: number,
-      goal: Goal,
-    }>) => {
-      const { milestoneIndex, goalIndex, goal } = action.payload
-      state.milestones.milestones[milestoneIndex].goals.splice(goalIndex, 1, goal)
+    editGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ goal: Goal }>) => {
+      const { goal } = action.payload
+      const { milestoneIndex, goalIndex } = state.milestones
+      state.milestones.milestones[milestoneIndex].goals.splice(goalIndex!, 1, goal)
+    },
+    setMilestoneIndex: (state: MentoringJourneyFormState, action: PayloadAction<number>) => {
+      state.milestones.milestoneIndex = action.payload
+    },
+    setGoalIndex: (state: MentoringJourneyFormState, action: PayloadAction<number | undefined>) => {
+      state.milestones.goalIndex = action.payload
     },
   },
 })
@@ -144,5 +152,6 @@ export const {
   setMentoringOutcomeError, setOutcomeDescriptionError,
   clearObjectiveErrors,
   addGoal, editGoal, deleteGoal,
+  setMilestoneIndex, setGoalIndex,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer

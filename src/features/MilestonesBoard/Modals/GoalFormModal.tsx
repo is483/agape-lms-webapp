@@ -6,17 +6,16 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useImmer } from 'use-immer'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../components'
 import { clearErrors } from '../../../utils'
 import { Goal } from '../../MentoringJourneys/CreateMentoringJourney/redux/types'
-import { useAppDispatch } from '../../../hooks'
-import { addGoal } from '../../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
+import { addGoal, editGoal } from '../../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
 
 interface GoalFormModalProps {
   isModalOpen: boolean
   onModalClose: () => void
-  milestoneIndex: number
 }
 
 const defaultActionPlanStep = {
@@ -36,14 +35,33 @@ const defaultGoal = {
 const mentees: string[] = ['1', '2']
 
 function GoalFormModal(props: GoalFormModalProps) {
-  const { isModalOpen, onModalClose, milestoneIndex } = props
+  const { isModalOpen, onModalClose } = props
   const dispatch = useAppDispatch()
   const [goal, updateGoal] = useImmer(defaultGoal)
   const {
     title, measurableObjective, deadline, actionPlans,
   } = goal
+  const { milestones, milestoneIndex, goalIndex } = useAppSelector((state) => state.mentoringJourneyForm.milestones)
+  const goalInfo = milestones[milestoneIndex].goals[goalIndex ?? 0]
+  const isEditing = goalIndex !== undefined
 
-  // TODO: fill in edit form
+  useEffect(() => {
+    if (!isEditing) return
+    updateGoal((draft) => {
+      draft.title.value = goalInfo.title
+      draft.deadline.value = goalInfo.deadline
+      draft.measurableObjective.value = goalInfo.measurableObjective
+      draft.actionPlans = []
+      goalInfo.actionPlans.forEach((actionPlan) => {
+        draft.actionPlans.push({
+          byWho: { value: actionPlan.byWho, error: '' },
+          deadline: { value: actionPlan.deadline, error: '' },
+          resourcesRequired: { value: actionPlan.resourcesRequired, error: '' },
+          progressIndicator: { value: actionPlan.progressIndicator, error: '' },
+        })
+      })
+    })
+  }, [goalIndex, goalInfo, isEditing, updateGoal])
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateGoal((draft) => { draft.title.value = e.target.value })
@@ -142,7 +160,11 @@ function GoalFormModal(props: GoalFormModalProps) {
         progressIndicator: progressIndicator.value,
       })),
     }
-    dispatch(addGoal({ index: milestoneIndex, goal }))
+    if (isEditing) {
+      dispatch(editGoal({ goal }))
+    } else {
+      dispatch(addGoal({ goal }))
+    }
     updateGoal({
       ...defaultGoal,
       actionPlans: [{ ...defaultActionPlanStep }],
@@ -199,7 +221,7 @@ function GoalFormModal(props: GoalFormModalProps) {
         <Button onClick={addActionPlan} size="sm" mt="4" variant="ghost" colorScheme="red" width="fit-content">+ Add Step</Button>
         <Flex gap="4" justify="flex-end" mt="8">
           <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
-          <Button colorScheme="red" size="sm" onClick={handleCreate}>Create</Button>
+          <Button colorScheme="red" size="sm" onClick={handleCreate}>{isEditing ? 'Save' : 'Create'}</Button>
         </Flex>
       </ModalContent>
     </Modal>

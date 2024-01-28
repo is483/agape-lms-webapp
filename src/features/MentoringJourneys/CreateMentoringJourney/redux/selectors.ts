@@ -5,3 +5,5 @@ export const getBasicDetails = (state: RootState) => state.mentoringJourneyForm.
 export const getObjectives = (state: RootState) => state.mentoringJourneyForm.objectives
 
 export const getMilestones = (state: RootState) => state.mentoringJourneyForm.milestones
+
+export const getMilestoneIndex = (state: RootState) => state.mentoringJourneyForm.milestones.milestoneIndex

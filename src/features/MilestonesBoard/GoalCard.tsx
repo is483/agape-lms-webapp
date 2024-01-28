@@ -17,11 +17,13 @@ interface GoalProps {
   milestoneIndex: number
   goalIndex: number
   isEditable: boolean
+  handleOpenFormModal: (milestoneIndex: number, goalIndex?: number) => void
 }
 
 function GoalCard(props: GoalProps) {
   const {
     goal, milestoneIndex, goalIndex, isEditable,
+    handleOpenFormModal,
   } = props
   const dispatch = useAppDispatch()
   const {
@@ -42,7 +44,7 @@ function GoalCard(props: GoalProps) {
               <Icon name="more_horiz" fontSize="xl" color="black" _hover={{ cursor: 'pointer' }} />
             </MenuButton>
             <MenuList>
-              <MenuItem>Edit</MenuItem>
+              <MenuItem onClick={() => handleOpenFormModal(milestoneIndex, goalIndex)}>Edit</MenuItem>
               <MenuItem onClick={handleDeleteGoal}>Delete</MenuItem>
             </MenuList>
           </Menu>
