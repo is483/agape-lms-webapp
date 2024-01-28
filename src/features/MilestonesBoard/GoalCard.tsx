@@ -9,37 +9,49 @@ import {
 import { Goal } from '../MentoringJourneys/CreateMentoringJourney/redux/types'
 import { Icon } from '../../components'
 import ActionPlanStep from './ActionPlanStep'
+import { useAppDispatch } from '../../hooks'
+import { deleteGoal } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
 
 interface GoalProps {
   goal: Goal
-  index: number
+  milestoneIndex: number
+  goalIndex: number
   isEditable: boolean
 }
 
 function GoalCard(props: GoalProps) {
-  const { goal, index, isEditable } = props
   const {
-    title, measurableObjective, deadline, actionPlans,
+    goal, milestoneIndex, goalIndex, isEditable,
+  } = props
+  const dispatch = useAppDispatch()
+  const {
+    title, deadline, actionPlans,
   } = goal
+
+  const handleDeleteGoal = () => {
+    dispatch(deleteGoal({ milestoneIndex, goalIndex }))
+  }
 
   return (
     <Box p="2" background="white" rounded="md" shadow="sm">
       <Flex justify="space-between">
-        <Text fontSize="xs" fontWeight="600" color="red.800">Goal {index + 1}</Text>
-        <Menu>
-          <MenuButton>
-            <Icon name="more_horiz" fontSize="xl" color="black" _hover={{ cursor: 'pointer' }} />
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Edit</MenuItem>
-            <MenuItem>Delete</MenuItem>
-          </MenuList>
-        </Menu>
+        <Text fontSize="xs" fontWeight="600" color="red.800">Goal {goalIndex + 1}</Text>
+        {isEditable && (
+          <Menu>
+            <MenuButton>
+              <Icon name="more_horiz" fontSize="xl" color="black" _hover={{ cursor: 'pointer' }} />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>Edit</MenuItem>
+              <MenuItem onClick={handleDeleteGoal}>Delete</MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </Flex>
       <Text fontSize="sm">{title}</Text>
       <Flex justify="space-between" mt="1">
         <Text fontSize="sm" color="gray.500" fontWeight="bold" mb="1">Progress</Text>
-        <Text fontSize="sm" color="gray.700">0/2</Text>
+        <Text fontSize="sm" color="gray.700">0/{goal.actionPlans.length}</Text>
       </Flex>
       <Progress value={0} rounded="sm" />
       <Flex mt="2" gap="1" align="center">
@@ -53,7 +65,9 @@ function GoalCard(props: GoalProps) {
             <AccordionIcon color="red.700" />
           </AccordionButton>
           <AccordionPanel p="0" pt="2">
-            {actionPlans.map((actionPlanStep, index) => (<ActionPlanStep actionPlanStep={actionPlanStep} index={index} />))}
+            {actionPlans.map((actionPlanStep, index) => (
+              <ActionPlanStep actionPlanStep={actionPlanStep} index={index} />
+            ))}
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

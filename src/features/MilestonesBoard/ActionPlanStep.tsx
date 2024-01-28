@@ -14,10 +14,12 @@ function ActionPlanStep(props: ActionPlanStepProps) {
     deadline, resourcesRequired, progressIndicator, byWho,
   } = actionPlanStep
 
+  // TODO: Add by who indicator
+
   return (
     <Flex align="start" mb="2">
       <Checkbox m="2" mt="1" ml="0" />
-      <Box>
+      <Box flexGrow="1" px="1">
         <Flex justify="space-between" mb="1">
           <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">Step 1</Text>
           <Text fontSize="sm" color="gray.500">{deadline}</Text>

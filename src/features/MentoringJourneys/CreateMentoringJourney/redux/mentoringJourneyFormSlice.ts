@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { Milestone } from './types'
+import { Goal, Milestone } from './types'
 import { defaultMilestones } from './constants'
 
 export interface MentoringJourneyFormState {
@@ -117,19 +117,9 @@ export const mentoringJourneyFormSlice = createSlice({
       state.objectives.description.error = action.payload
     },
     // Milestones
-    addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ index: number }>) => {
-      const { index } = action.payload
-      state.milestones.milestones[index].goals.push({
-        title: '',
-        measurableObjective: '',
-        deadline: '',
-        actionPlans: [{
-          byWho: '',
-          deadline: '',
-          resourcesRequired: '',
-          progressIndicator: '',
-        }],
-      })
+    addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ index: number, goal: Goal }>) => {
+      const { index, goal } = action.payload
+      state.milestones.milestones[index].goals.push(goal)
     },
     deleteGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
       const { milestoneIndex, goalIndex } = action.payload
@@ -138,39 +128,10 @@ export const mentoringJourneyFormSlice = createSlice({
     editGoal: (state: MentoringJourneyFormState, action: PayloadAction<{
       milestoneIndex: number,
       goalIndex: number,
-      field: 'title' | 'measurableObjective' | 'deadline',
-      value: string,
+      goal: Goal,
     }>) => {
-      const {
-        milestoneIndex, goalIndex, field, value,
-      } = action.payload
-      state.milestones.milestones[milestoneIndex].goals[goalIndex][field] = value
-    },
-    addActionPlanStep: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number }>) => {
-      const { milestoneIndex, goalIndex } = action.payload
-      state.milestones.milestones[milestoneIndex].goals[goalIndex].actionPlans.push({
-        byWho: '',
-        deadline: '',
-        resourcesRequired: '',
-        progressIndicator: '',
-      })
-    },
-    deleteActionPlanStep: (state: MentoringJourneyFormState, action: PayloadAction<{ milestoneIndex: number, goalIndex: number, actionPlanIndex: number }>) => {
-      const { milestoneIndex, goalIndex, actionPlanIndex } = action.payload
-      state.milestones.milestones[milestoneIndex].goals[goalIndex].actionPlans.splice(actionPlanIndex, 1)
-    },
-    editActionPlanStep: (state: MentoringJourneyFormState, action: PayloadAction<{
-      milestoneIndex: number,
-      goalIndex: number,
-      actionPlanIndex: number,
-      field: 'byWho' | 'deadline' | 'resourcesRequired' | 'progressIndicator',
-      value: string,
-    }>) => {
-      const {
-        milestoneIndex, goalIndex, actionPlanIndex,
-        field, value,
-      } = action.payload
-      state.milestones.milestones[milestoneIndex].goals[goalIndex].actionPlans[actionPlanIndex][field] = value
+      const { milestoneIndex, goalIndex, goal } = action.payload
+      state.milestones.milestones[milestoneIndex].goals.splice(goalIndex, 1, goal)
     },
   },
 })
@@ -183,6 +144,5 @@ export const {
   setMentoringOutcomeError, setOutcomeDescriptionError,
   clearObjectiveErrors,
   addGoal, editGoal, deleteGoal,
-  addActionPlanStep, editActionPlanStep, deleteActionPlanStep,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer

@@ -9,6 +9,9 @@ import { useImmer } from 'use-immer'
 import { ChangeEvent } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../components'
 import { clearErrors } from '../../../utils'
+import { Goal } from '../../MentoringJourneys/CreateMentoringJourney/redux/types'
+import { useAppDispatch } from '../../../hooks'
+import { addGoal } from '../../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
 
 interface GoalFormModalProps {
   isModalOpen: boolean
@@ -34,113 +37,116 @@ const mentees: string[] = ['1', '2']
 
 function GoalFormModal(props: GoalFormModalProps) {
   const { isModalOpen, onModalClose, milestoneIndex } = props
+  const dispatch = useAppDispatch()
   const [goal, updateGoal] = useImmer(defaultGoal)
   const {
     title, measurableObjective, deadline, actionPlans,
   } = goal
 
+  // TODO: fill in edit form
+
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateGoal((draft) => {
-      draft.title.value = e.target.value
-    })
+    updateGoal((draft) => { draft.title.value = e.target.value })
   }
 
   const handleMeasurableObjectiveChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateGoal((draft) => {
-      draft.measurableObjective.value = e.target.value
-    })
+    updateGoal((draft) => { draft.measurableObjective.value = e.target.value })
   }
 
   const handleDeadlineChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateGoal((draft) => {
-      draft.deadline.value = e.target.value
-    })
+    updateGoal((draft) => { draft.deadline.value = e.target.value })
   }
 
   const addActionPlan = () => {
-    updateGoal((draft) => {
-      draft.actionPlans.push({ ...defaultActionPlanStep })
-    })
+    updateGoal((draft) => { draft.actionPlans.push({ ...defaultActionPlanStep }) })
   }
 
   const removeActionPlan = (index: number) => {
-    updateGoal((draft) => {
-      draft.actionPlans.splice(index, 1)
-    })
+    updateGoal((draft) => { draft.actionPlans.splice(index, 1) })
   }
 
   const handleByWhoChange = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
-    updateGoal((draft) => {
-      draft.actionPlans[index].byWho.value = e.target.value
-    })
+    updateGoal((draft) => { draft.actionPlans[index].byWho.value = e.target.value })
   }
 
   const handleStepDeadlineChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    updateGoal((draft) => {
-      draft.actionPlans[index].deadline.value = e.target.value
-    })
+    updateGoal((draft) => { draft.actionPlans[index].deadline.value = e.target.value })
   }
 
   const handleResourceRequiredChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    updateGoal((draft) => {
-      draft.actionPlans[index].resourcesRequired.value = e.target.value
-    })
+    updateGoal((draft) => { draft.actionPlans[index].resourcesRequired.value = e.target.value })
   }
 
   const handleProgressIndicatorChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    updateGoal((draft) => {
-      draft.actionPlans[index].progressIndicator.value = e.target.value
-    })
+    updateGoal((draft) => { draft.actionPlans[index].progressIndicator.value = e.target.value })
   }
 
   const handleModalCancel = () => {
-    // TODO: Clear form state
     onModalClose()
+    updateGoal({
+      ...defaultGoal,
+      actionPlans: [{ ...defaultActionPlanStep }],
+    })
   }
 
   const handleCreate = () => {
     let hasErrors: boolean = false
-    updateGoal((draft) => {
-      const { title, deadline, measurableObjective } = draft
-      clearErrors(draft)
 
-      if (!title.value.trim()) {
-        title.error = 'Goal is required'
-        hasErrors = true
-      }
-      if (!deadline.value) {
-        deadline.error = 'Deadline is required'
-        hasErrors = true
-      }
-      if (!measurableObjective.value) {
-        measurableObjective.error = 'Deadline is required'
-        hasErrors = true
-      }
+    updateGoal((draft) => clearErrors(draft))
 
-      draft.actionPlans.forEach(({
-        byWho, deadline, progressIndicator, resourcesRequired,
-      }) => {
-        if (!byWho.value) {
-          byWho.error = 'By who is required'
-          hasErrors = true
-        }
-        if (!deadline.value) {
-          deadline.error = 'Deadline is required'
-          hasErrors = true
-        }
-        if (!progressIndicator.value) {
-          progressIndicator.error = 'Progress indicator is required'
-          hasErrors = true
-        }
-        if (!resourcesRequired.value) {
-          resourcesRequired.error = 'Resources required is required'
-          hasErrors = true
-        }
-      })
+    if (!title.value.trim()) {
+      updateGoal((draft) => { draft.title.error = 'Goal is required' })
+      hasErrors = true
+    }
+    if (!deadline.value.trim()) {
+      updateGoal((draft) => { draft.deadline.error = 'Deadline is required' })
+      hasErrors = true
+    }
+    if (!measurableObjective.value.trim()) {
+      updateGoal((draft) => { draft.measurableObjective.error = 'Measurable Objective is required' })
+      hasErrors = true
+    }
+
+    actionPlans.forEach(({
+      byWho, deadline, progressIndicator, resourcesRequired,
+    }, index: number) => {
+      if (!byWho.value.trim()) {
+        updateGoal((draft) => { draft.actionPlans[index].byWho.error = 'By who is required' })
+        hasErrors = true
+      }
+      if (!deadline.value.trim()) {
+        updateGoal((draft) => { draft.actionPlans[index].deadline.error = 'Deadline is required' })
+        hasErrors = true
+      }
+      if (!progressIndicator.value.trim()) {
+        updateGoal((draft) => { draft.actionPlans[index].progressIndicator.error = 'Progress indicator is required' })
+        hasErrors = true
+      }
+      if (!resourcesRequired.value.trim()) {
+        updateGoal((draft) => { draft.actionPlans[index].resourcesRequired.error = 'Resources required is required' })
+        hasErrors = true
+      }
     })
-    if (hasErrors) return
 
-    // TODO: Save to form slice state
+    if (hasErrors) return
+    const goal: Goal = {
+      title: title.value,
+      measurableObjective: measurableObjective.value,
+      deadline: deadline.value,
+      actionPlans: actionPlans.map(({
+        byWho, deadline, resourcesRequired, progressIndicator,
+      }) => ({
+        byWho: byWho.value,
+        deadline: deadline.value,
+        resourcesRequired: resourcesRequired.value,
+        progressIndicator: progressIndicator.value,
+      })),
+    }
+    dispatch(addGoal({ index: milestoneIndex, goal }))
+    updateGoal({
+      ...defaultGoal,
+      actionPlans: [{ ...defaultActionPlanStep }],
+    })
     onModalClose()
   }
 

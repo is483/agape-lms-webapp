@@ -44,7 +44,7 @@ function MilestonesBoard(props: MilestonesBoardProps) {
         return (
           <MilestoneCard
             milestone={milestone}
-            index={index}
+            milestoneIndex={index}
             dateStr={dateStr}
             isEditable={isEditable}
             handleOpenInfoModal={handleOpenInfoModal}
