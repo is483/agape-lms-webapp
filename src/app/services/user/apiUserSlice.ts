@@ -1,5 +1,6 @@
 import { apiSlice } from '../apiSlice'
 import {
+  AssignedMenteesResponse,
   ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
   MenteeExperienceRequest, MenteeMentoringRequest,
   MentorMentoringRequest, RoleResponse, SkillsRequest, TransformedUserResponse,
@@ -170,7 +171,13 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    // TODO: get assigned mentees
+
+    getAssignedMentees: build.query<AssignedMenteesResponse, null>({
+      query: () => ({
+        url: 'mentor/mentoring-journeys/assigned-mentees',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -184,4 +191,5 @@ export const {
   useUpdateMentorChallengesMutation, useUpdateMenteeChallengesMutation,
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
   useGetUserInfoQuery, useGetUserRoleQuery,
+  useGetAssignedMenteesQuery,
 } = apiUserSlice
