@@ -103,7 +103,7 @@ export interface OnboardingResponse {
   onboardingComplete: boolean
 }
 
-export interface AssignedMenteesResponse {
+export interface User {
   userInformationId: number,
   menteeId: number,
   firstName: string,
@@ -124,4 +124,8 @@ export interface AssignedMenteesResponse {
   // Only Mentee
   expectations?: string
   careerAspirations?: string
+}
+
+export interface UsersResponse {
+  assignedMentees: User[]
 }

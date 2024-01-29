@@ -11,7 +11,4 @@ function UserDetails(props: UserDetailsProps) {
     </>
   )
 }
-
-// TODO: Component for desktop + mobile
-
 export default UserDetails
