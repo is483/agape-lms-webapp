@@ -1,9 +1,10 @@
 import {
   Box, Card, Circle, Flex, Icon, Text, Image, HStack,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import { User } from '../../app/services/user/types'
+import UserDetails from './UserDetails'
 
 interface UsersListProps {
   title: string
@@ -18,24 +19,40 @@ interface Props {
 function UsersList(props: UsersListProps) {
   const { title, description, users } = props
   const isMdUp = useBreakpoint('md')
-  const MyUsersListComponent = isMdUp ? UsersListDesktop : UsersListMobile
+  const UsersListComponent = isMdUp ? UsersListDesktop : UsersListMobile
   return (
     <Box>
       <Box marginBottom="45">
         <Text fontSize="2xl" fontWeight="600"> {title} </Text>
         <Text color="secondary.500"> {description} </Text>
       </Box>
-      <MyUsersListComponent users={users} />
+      {users.length > 0 && <UsersListComponent users={users} />}
+      {users.length === 0 && <NoUserList />}
+
     </Box>
 
+  )
+}
+
+function NoUserList() {
+  return (
+    <Text>No Users </Text>
   )
 }
 function UsersListDesktop(props: Props) {
   const { users } = props
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+
   const handleSelectedUser = (user: User) => {
     setSelectedUser(user)
   }
+
+  useEffect(() => {
+    if (users.length > 0) {
+      setSelectedUser(users[0])
+    }
+  }, [users])
+
   return (
     <Flex minHeight="100vh">
       <Box flex="3">
@@ -63,7 +80,7 @@ function UsersListDesktop(props: Props) {
         })}
       </Box>
       <Box flex="7">
-        Lance Lim
+        {selectedUser && <UserDetails user={selectedUser} />}
       </Box>
     </Flex>
   )

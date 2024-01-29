@@ -1,14 +1,19 @@
+import {
+  Container, Text,
+} from '@chakra-ui/react'
+import { User } from '../../app/services/user/types'
+
 interface UserDetailsProps {
-  user: any
+  user: User
 }
 
 function UserDetails(props: UserDetailsProps) {
   const { user } = props
 
   return (
-    <>
-      User details
-    </>
+    <Container>
+      <Text>{user?.firstName}</Text>
+    </Container>
   )
 }
 export default UserDetails
