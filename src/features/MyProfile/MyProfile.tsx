@@ -120,7 +120,7 @@ function MyProfileDesktop(props: Props) {
             const ProfileComponent = component
             return index === activeStep && (
               <ProfileComponent
-                minHeight="calc(100vh - 8rem)"
+                minHeight="calc(100vh - 16rem)"
                 flexDir="column"
                 justify="space-between"
                 data={data}

@@ -39,7 +39,7 @@ function OnboardingStepper(props: StepperProps) {
               active={<StepNumber />}
             />
           </StepIndicator>
-          <Box flexShrink="0">
+          <Box flexShrink="0" _hover={{ cursor: handleActiveStep ? 'pointer' : 'default' }}>
             <StepTitle>{step.title}</StepTitle>
           </Box>
           <StepSeparator />
