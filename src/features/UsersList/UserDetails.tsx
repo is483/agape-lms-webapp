@@ -1,8 +1,8 @@
-interface UsersListProps {
+interface UserDetailsProps {
   user: any
 }
 
-function UserDetails(props: UsersListProps) {
+function UserDetails(props: UserDetailsProps) {
   const { user } = props
 
   return (
