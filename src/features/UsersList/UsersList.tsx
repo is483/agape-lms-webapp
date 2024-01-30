@@ -1,5 +1,5 @@
 import {
-  Box, Card, Circle, Flex, Icon, Text, Image, HStack,
+  Box, Card, Circle, Flex, Icon, Text, Image, HStack, Divider,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import useBreakpoint from '../../hooks/useBreakpoint'
@@ -23,8 +23,11 @@ function UsersList(props: UsersListProps) {
   return (
     <Box>
       <Box marginBottom="45">
-        <Text fontSize="2xl" fontWeight="600"> {title} </Text>
-        <Text color="secondary.500"> {description} </Text>
+        <Box marginBottom="5">
+          <Text fontSize="2xl" fontWeight="600"> {title} </Text>
+          <Text color="secondary.500"> {description} </Text>
+        </Box>
+        <Divider orientation="horizontal" />
       </Box>
       {users.length > 0 && <UsersListComponent users={users} />}
       {users.length === 0 && <NoUserList />}
@@ -79,6 +82,7 @@ function UsersListDesktop(props: Props) {
           )
         })}
       </Box>
+      <Box flex="1" />
       <Box flex="7">
         {selectedUser && <UserDetails user={selectedUser} />}
       </Box>
