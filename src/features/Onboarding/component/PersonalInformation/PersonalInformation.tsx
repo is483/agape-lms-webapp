@@ -59,7 +59,7 @@ function PersonalInformation(props: Props) {
     setGender(data.gender)
     setPhoneNumber(data.phoneNumber)
     setImage(data.profileImgURL)
-  }, [data, errors])
+  }, [data])
 
   const handleAddImageClick = () => {
     inputImageRef.current?.click()
@@ -118,6 +118,7 @@ function PersonalInformation(props: Props) {
   }
 
   const handleSave = async () => {
+    setErrors(defaultErrors)
     const newErrors = {
       ...defaultErrors,
     }

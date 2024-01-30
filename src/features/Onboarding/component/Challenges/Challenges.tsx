@@ -77,6 +77,7 @@ function Challenges(props: Props) {
   }
 
   const handleSave = async () => {
+    setErrors(defaultErrors)
     const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     challenges.forEach((challenge, index) => {

@@ -75,6 +75,7 @@ function PersonalValues(props: Props) {
   }
 
   const handleSave = async () => {
+    setErrors(defaultErrors)
     const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     values.forEach((value, index) => {

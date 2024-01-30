@@ -73,6 +73,7 @@ function Skills(props: Props) {
   }
 
   const handleSave = async () => {
+    setErrors(defaultErrors)
     const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     skills.forEach((skill, index) => {
