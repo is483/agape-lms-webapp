@@ -115,15 +115,15 @@ function ProfessionalExperience(props: Props) {
         newErrors.workExperience[i].company = ''
         newErrors.workExperience[i].description = ''
         newErrors.workExperience[i].jobTitle = ''
-        if (!company) {
+        if (!company.trim()) {
           newErrors.workExperience[i].company = 'Company is required'
           hasErrors = true
         }
-        if (!description) {
+        if (!description.trim()) {
           newErrors.workExperience[i].description = 'Description is required'
           hasErrors = true
         }
-        if (!jobTitle) {
+        if (!jobTitle.trim()) {
           newErrors.workExperience[i].jobTitle = 'Job title is required'
           hasErrors = true
         }

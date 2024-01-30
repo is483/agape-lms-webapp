@@ -59,7 +59,7 @@ function PersonalInformation(props: Props) {
     setGender(data.gender)
     setPhoneNumber(data.phoneNumber)
     setImage(data.profileImgURL)
-  }, [data])
+  }, [data, errors])
 
   const handleAddImageClick = () => {
     inputImageRef.current?.click()
@@ -122,11 +122,11 @@ function PersonalInformation(props: Props) {
       ...defaultErrors,
     }
 
-    if (!firstName) {
+    if (!firstName.trim()) {
       newErrors.firstName = 'First name is required'
     }
 
-    if (!lastName) {
+    if (!lastName.trim()) {
       newErrors.lastName = 'Last name is required'
     }
     if (!dateOfBirth) {
@@ -135,7 +135,7 @@ function PersonalInformation(props: Props) {
     if (!gender) {
       newErrors.gender = 'Gender is required'
     }
-    if (phoneNumber.length < 8 || phoneNumber.length > 8) {
+    if (phoneNumber.trim().length < 8 || phoneNumber.trim().length > 8) {
       newErrors.phoneNumber = 'Please enter a valid 8 digit phone number'
     }
     const hasErrors = Object.values(newErrors).some((error) => error !== '')

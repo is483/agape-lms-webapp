@@ -137,7 +137,7 @@ function Interests(props: Props) {
         )}
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button onClick={handleBack}>Back</Button>
+        {handleBack && <Button onClick={handleBack}>Back</Button>}
         <Button colorScheme="red" onClick={handleSave} isLoading={role === 'Mentor' ? isMentorInfoLoading : isMenteeInfoLoading}>{handleNext ? 'Finish' : 'Save'}</Button>
       </Flex>
     </Flex>
