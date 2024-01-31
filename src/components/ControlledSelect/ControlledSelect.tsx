@@ -12,7 +12,7 @@ interface Props {
   error: string
   iconProps?: { name: string } & BoxProps
   boxProps?: BoxProps
-  options: string[]
+  options: string[] | { value: string, children: any }[]
   selectProps?: SelectProps
   label?: string
 }
@@ -26,7 +26,17 @@ const ControlledSelect = forwardRef<HTMLSelectElement, Props>(({
 
   const InputComponent = (
     <Select ref={ref} placeholder="Select option" {...errorStyleProps} {...selectProps}>
-      {options.map((option) => <option key={option} value={option}>{option}</option>)}
+      {options.map((option) => {
+        const isString = typeof option === 'string'
+        return (
+          <option
+            key={isString ? option : option.value}
+            value={isString ? option : option.value}
+          >
+            {isString ? option : option.children}
+          </option>
+        )
+      })}
     </Select>
   )
   const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>

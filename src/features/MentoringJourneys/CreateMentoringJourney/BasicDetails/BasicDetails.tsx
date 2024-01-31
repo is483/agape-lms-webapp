@@ -8,9 +8,7 @@ import { getBasicDetails } from '../redux/selectors'
 import {
   setDate, setDescription, setMentee, setTitle,
 } from '../redux/mentoringJourneyFormSlice'
-
-// TODO: replace with real values
-const assignedMentees: string[] = ['Jacob']
+import useAssignedMenteesOptions from '../../../../hooks/useAssignedMenteesOptions'
 
 interface BasicDetailsProps {
   handleNextStep: (toStep: number) => void
@@ -22,6 +20,7 @@ function BasicDetails(props: BasicDetailsProps) {
   const {
     mentee, title, date, description,
   } = useAppSelector(getBasicDetails)
+  const assignedMenteeOptions = useAssignedMenteesOptions()
 
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => dispatch(setMentee(e.target.value))
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => dispatch(setTitle(e.target.value))
@@ -31,7 +30,7 @@ function BasicDetails(props: BasicDetailsProps) {
   return (
     <Flex mt="12" flexDir="column">
       <Box width="400px" maxWidth="100%" mb="12">
-        <ControlledSelect error={mentee.error} options={assignedMentees} label="Mentee" selectProps={{ value: mentee.value, onChange: handleMenteeChange }} />
+        <ControlledSelect error={mentee.error} options={assignedMenteeOptions} label="Mentee" selectProps={{ value: mentee.value, onChange: handleMenteeChange }} />
       </Box>
       <Box width="400px" maxWidth="100%" mb="5">
         <ControlledTextInput error={title.error} label="Title" type="text" inputProps={{ value: title.value, onChange: handleTitleChange }} />
