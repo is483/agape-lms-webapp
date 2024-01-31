@@ -14,6 +14,7 @@ interface MilestonesBoardProps {
 }
 
 const formatDate = (date: Date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+const colors = ['blue.600', 'green.600', 'yellow.600', 'orange.600', 'red.600', 'purple.600']
 
 function MilestonesBoard(props: MilestonesBoardProps) {
   const { data, startDate, isEditable } = props
@@ -33,7 +34,7 @@ function MilestonesBoard(props: MilestonesBoardProps) {
   }
 
   return (
-    <Box background="blue.50" rounded="md" minHeight="60vh">
+    <Box background="blue.50" rounded="md" height="65vh" whiteSpace="nowrap" overflow="scroll" position="relative">
       <MilestoneInfoModal isModalOpen={isInfoModalOpen} onModalClose={onInfoModalClose} />
       <GoalFormModal isModalOpen={isGoalModalOpen} onModalClose={onGoalModalClose} />
       {data.map((milestone, index) => {
@@ -45,6 +46,8 @@ function MilestonesBoard(props: MilestonesBoardProps) {
         const dateStr = `${formatDate(fromDate)} - ${formatDate(toDate)} `
         return (
           <MilestoneCard
+            cardColor={colors[index]}
+            display="inline-block"
             milestone={milestone}
             milestoneIndex={index}
             dateStr={dateStr}

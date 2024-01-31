@@ -1,14 +1,15 @@
 import {
-  Box, Button, Flex, Text,
+  Box, BoxProps, Button, Flex, Text,
 } from '@chakra-ui/react'
 import { Milestone } from '../MentoringJourneys/CreateMentoringJourney/redux/types'
 import { Icon } from '../../components'
 import { MILESTONES } from '../MentoringJourneys/CreateMentoringJourney/redux/constants'
 import GoalCard from './GoalCard'
 
-interface MilestoneCardProps {
+interface MilestoneCardProps extends BoxProps {
   milestone: Milestone
   milestoneIndex: number
+  cardColor: string
   dateStr: string
   isEditable: boolean
   handleOpenInfoModal: (index: number) => void
@@ -18,14 +19,14 @@ interface MilestoneCardProps {
 function MilestoneCard(props: MilestoneCardProps) {
   const {
     milestone, milestoneIndex, dateStr, isEditable,
-    handleOpenInfoModal, handleOpenFormModal,
+    handleOpenInfoModal, handleOpenFormModal, cardColor, ...boxProps
   } = props
   const { step, goals } = milestone
 
   return (
-    <Box maxWidth="100%" width="360px">
+    <Box maxWidth="100%" width="360px" {...boxProps}>
       <Flex flexDir="column" gap="4" m="4" pt="4">
-        <Box background="blue.600" p="2" rounded="md" shadow="sm">
+        <Box background={cardColor} p="2" rounded="md" shadow="sm">
           <Flex justify="space-between">
             <Text color="white" fontSize="xs" fontWeight="bold">
               Milestone {step}

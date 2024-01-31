@@ -17,10 +17,10 @@ function Milestones(props: MilestoneProps) {
   const { error } = useAppSelector(getMilestones)
 
   return (
-    <Box>
-      {!!error && <Text color="red.600">{error}</Text>}
+    <Box maxWidth="100%" position="absolute" pt="8">
+      {!!error && <Text position="absolute" top="0" color="red.600">{error}</Text>}
       <MilestonesBoard data={milestones} startDate={date.value} isEditable />
-      <Flex justify="flex-end" gap="4">
+      <Flex justify="flex-end" gap="4" mt="4">
         <Button colorScheme="red" variant="outline" onClick={handlePrevStep}>Back</Button>
         <Button colorScheme="red" onClick={() => handleNextStep(4)}>Next</Button>
       </Flex>

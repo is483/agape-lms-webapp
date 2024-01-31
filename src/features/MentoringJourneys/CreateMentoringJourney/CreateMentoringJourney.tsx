@@ -1,15 +1,16 @@
 import {
-  Tab, TabList, TabPanel, TabPanels,
-  Tabs, Text,
+  Divider, Flex, Tab, TabList,
+  TabPanel, TabPanels, Tabs, Text,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Container } from '../../../components'
+import { Container, Icon, Link } from '../../../components'
 import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails, useValidateMilestones, useValidateObjectives } from './hooks'
 import { Objectives } from './Objectives'
 import { Milestones } from './Milestones'
 import { useAppDispatch } from '../../../hooks'
 import { clearBasicDetailsErrors, clearObjectiveErrors } from './redux/mentoringJourneyFormSlice'
+import paths from '../../../paths'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -59,15 +60,22 @@ function CreateMentoringJourney() {
   }
 
   return (
-    <Container>
-      <Text fontWeight="600">
+    <Container position="relative">
+      <Link fontSize="lg" fontWeight="600" to={paths.MentoringJourneys.ViewAll} gap="2" _hover={{ textDecoration: 'none' }}>
+        <Flex align="center">
+          <Icon name="arrow_back" />
+          Back
+        </Flex>
+      </Link>
+      <Divider position="absolute" left="0" mt="6" />
+      <Text fontSize="lg" fontWeight="600" mt="12">
         Create Mentoring Journey
       </Text>
       <Tabs colorScheme="red" mt="8" index={tabIndex} onChange={handleTabsChange}>
         <TabList>
-          <Tab>1. Basic Details</Tab>
-          <Tab>2. Objective</Tab>
-          <Tab>3. Milestones</Tab>
+          <Tab fontSize={['xs', null, 'md']}>1. Basic Details</Tab>
+          <Tab fontSize={['xs', null, 'md']}>2. Objective</Tab>
+          <Tab fontSize={['xs', null, 'md']}>3. Milestones</Tab>
         </TabList>
         <TabPanels>
           <TabPanel px="0">
@@ -76,7 +84,7 @@ function CreateMentoringJourney() {
           <TabPanel px="0">
             <Objectives handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
           </TabPanel>
-          <TabPanel px="0">
+          <TabPanel px="0" height={['calc(65vh + 124px)', null, 'calc(65vh + 108px)']}>
             <Milestones handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
           </TabPanel>
         </TabPanels>
