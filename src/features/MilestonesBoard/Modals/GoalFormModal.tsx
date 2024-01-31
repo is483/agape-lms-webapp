@@ -12,6 +12,9 @@ import { clearErrors } from '../../../utils'
 import { Goal } from '../../MentoringJourneys/CreateMentoringJourney/redux/types'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { addGoal, editGoal } from '../../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
+import { useGetUserInfoQuery } from '../../../app/services/user/apiUserSlice'
+import { getAuth } from '../../../app/redux/selectors'
+import { getBasicDetails, getMilestones } from '../../MentoringJourneys/CreateMentoringJourney/redux/selectors'
 
 interface GoalFormModalProps {
   isModalOpen: boolean
@@ -32,8 +35,6 @@ const defaultGoal = {
   actionPlans: [{ ...defaultActionPlanStep }],
 }
 
-const mentees: string[] = ['1', '2']
-
 function GoalFormModal(props: GoalFormModalProps) {
   const { isModalOpen, onModalClose } = props
   const dispatch = useAppDispatch()
@@ -41,7 +42,7 @@ function GoalFormModal(props: GoalFormModalProps) {
   const {
     title, measurableObjective, deadline, actionPlans,
   } = goal
-  const { milestones, milestoneIndex, goalIndex } = useAppSelector((state) => state.mentoringJourneyForm.milestones)
+  const { milestones, milestoneIndex, goalIndex } = useAppSelector(getMilestones)
   const goalInfo = milestones[milestoneIndex].goals[goalIndex ?? 0]
   const isEditing = goalIndex !== undefined
 
@@ -247,6 +248,11 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
     showRemoveIcon,
   } = props
 
+  const { mentee } = useAppSelector(getBasicDetails)
+  const { role } = useAppSelector(getAuth)
+  const { data: myInfo } = useGetUserInfoQuery({ role: role ?? '' })
+  const byWhoOptions = [`${myInfo?.firstName} ${myInfo?.lastName}`, mentee.value]
+
   const {
     byWho, deadline, resourcesRequired, progressIndicator,
   } = actionPlanStep
@@ -270,7 +276,7 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
             <ControlledSelect
               label="By Who"
               error={byWho.error}
-              options={mentees}
+              options={byWhoOptions}
               boxProps={{ flex: '1' }}
               selectProps={{ onChange: updateByWho, value: byWho.value }}
             />

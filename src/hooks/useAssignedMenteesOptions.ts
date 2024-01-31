@@ -7,10 +7,7 @@ function useAssignedMenteesOptions() {
 
   if (isLoading || isError || isFetching) return []
 
-  return data?.assignedMentees.map((assignedMentee) => ({
-    value: assignedMentee.menteeId.toString(),
-    children: `${assignedMentee.firstName ?? ''} ${assignedMentee.lastName ?? ''}`,
-  })) ?? []
+  return data?.assignedMentees.map((assignedMentee) => `${assignedMentee.firstName ?? ''} ${assignedMentee.lastName ?? ''}`) ?? []
 }
 
 export default useAssignedMenteesOptions
