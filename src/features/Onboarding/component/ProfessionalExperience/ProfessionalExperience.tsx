@@ -1,7 +1,7 @@
 import {
   Box, Button, Flex,
   FlexProps,
-  FormLabel, SimpleGrid, Text, Textarea,
+  FormLabel, SimpleGrid, Text, Textarea, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ControlledSelect, ControlledTextInput, Icon } from '../../../../components'
@@ -12,8 +12,8 @@ import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } 
 import { ExperienceRequest, MenteeExperienceRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 
 interface Props extends FlexProps {
-  handleBack: () => void
-  handleNext: () => void
+  handleBack?: () => void
+  handleNext?: () => void
   data: TransformedUserResponse | undefined
 }
 
@@ -47,11 +47,12 @@ function ProfessionalExperience(props: Props) {
   const {
     handleBack, handleNext, data, ...rest
   } = props
-  const [updateMenteeExperience,{ isLoading: isMenteeLoading }] = useUpdateMenteeExperienceMutation()
-  const [updateMentorExperience,{ isLoading: isMentorLoading }] = useUpdateMentorExperienceMutation()
+  const [updateMenteeExperience, { isLoading: isMenteeLoading }] = useUpdateMenteeExperienceMutation()
+  const [updateMentorExperience, { isLoading: isMentorLoading }] = useUpdateMentorExperienceMutation()
   const [workExperiences, setWorkExperiences] = useState(defaultWorkExperiences)
   const [careerAspiration, setCareerAspiration] = useState('')
   const { role } = useAppSelector(getAuth)
+  const toast = useToast()
   const [errors, setErrors] = useState<Errors>(defaultErrors)
 
   useEffect(() => {
@@ -109,23 +110,25 @@ function ProfessionalExperience(props: Props) {
       hasErrors = true
     }
 
-    workExperiences.forEach(({ company, description, jobTitle }, i) => {
-      newErrors.workExperience[i].company = ''
-      newErrors.workExperience[i].description = ''
-      newErrors.workExperience[i].jobTitle = ''
-      if (!company) {
-        newErrors.workExperience[i].company = 'Company is required'
-        hasErrors = true
-      }
-      if (!description) {
-        newErrors.workExperience[i].description = 'Description is required'
-        hasErrors = true
-      }
-      if (!jobTitle) {
-        newErrors.workExperience[i].jobTitle = 'Job title is required'
-        hasErrors = true
-      }
-    })
+    if (role === 'Mentor') {
+      workExperiences.forEach(({ company, description, jobTitle }, i) => {
+        newErrors.workExperience[i].company = ''
+        newErrors.workExperience[i].description = ''
+        newErrors.workExperience[i].jobTitle = ''
+        if (!company) {
+          newErrors.workExperience[i].company = 'Company is required'
+          hasErrors = true
+        }
+        if (!description) {
+          newErrors.workExperience[i].description = 'Description is required'
+          hasErrors = true
+        }
+        if (!jobTitle) {
+          newErrors.workExperience[i].jobTitle = 'Job title is required'
+          hasErrors = true
+        }
+      })
+    }
 
     if (hasErrors) {
       setErrors(newErrors)
@@ -141,15 +144,26 @@ function ProfessionalExperience(props: Props) {
       } else if (role === 'Mentee') {
         const request: MenteeExperienceRequest = {
           workExperience: workExperiences,
-          careerAspiration,
+          careerAspirations: careerAspiration,
         }
         await updateMenteeExperience(request)
       }
-      handleNext()
+
+      if (!handleNext) {
+        toast({
+          title: 'Professional Experience',
+          description: 'Your changes has been saved!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+      } else {
+        handleNext()
+      }
     } catch (e) {
       console.error(e)
     }
-    handleNext()
   }
 
   return (
@@ -197,11 +211,16 @@ function ProfessionalExperience(props: Props) {
         </Box>
       </Box>
       <Flex justifyContent="end" gap="4" my="8">
-        <Button onClick={handleBack}>Back</Button>
-        <Button isLoading={isMenteeLoading || isMentorLoading} colorScheme="red" onClick={handleSave}>Next</Button>
+        {handleBack && <Button onClick={handleBack}>Back</Button>}
+        <Button isLoading={isMenteeLoading || isMentorLoading} colorScheme="red" onClick={handleSave}>{handleNext ? 'Next' : 'Save'}</Button>
       </Flex>
     </Flex>
   )
+}
+
+ProfessionalExperience.defaultProps = {
+  handleNext: undefined,
+  handleBack: undefined,
 }
 
 export default ProfessionalExperience
