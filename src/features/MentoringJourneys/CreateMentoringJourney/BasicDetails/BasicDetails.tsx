@@ -18,11 +18,11 @@ function BasicDetails(props: BasicDetailsProps) {
   const { handleNextStep } = props
   const dispatch = useAppDispatch()
   const {
-    mentee, title, date, description,
+    menteeId, title, date, description,
   } = useAppSelector(getBasicDetails)
-  const assignedMenteeOptions = useAssignedMenteesOptions()
+  const { options: assignedMenteeOptions, menteeIdToMenteeName } = useAssignedMenteesOptions()
 
-  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => dispatch(setMentee(e.target.value))
+  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => dispatch(setMentee({ menteeId: e.target.value, menteeName: menteeIdToMenteeName[e.target.value] }))
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => dispatch(setTitle(e.target.value))
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => dispatch(setDate(e.target.value))
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => dispatch(setDescription(e.target.value))
@@ -30,7 +30,7 @@ function BasicDetails(props: BasicDetailsProps) {
   return (
     <Flex mt="12" flexDir="column">
       <Box width="400px" maxWidth="100%" mb="12">
-        <ControlledSelect error={mentee.error} options={assignedMenteeOptions} label="Mentee" selectProps={{ value: mentee.value, onChange: handleMenteeChange }} />
+        <ControlledSelect error={menteeId.error} options={assignedMenteeOptions} label="Mentee" selectProps={{ value: menteeId.value, onChange: handleMenteeChange }} />
       </Box>
       <Box width="400px" maxWidth="100%" mb="5">
         <ControlledTextInput error={title.error} label="Title" type="text" inputProps={{ value: title.value, onChange: handleTitleChange }} />

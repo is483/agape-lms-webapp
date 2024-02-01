@@ -5,9 +5,23 @@ function useAssignedMenteesOptions() {
     data, isLoading, isError, isFetching,
   } = useGetAssignedMenteesQuery(null)
 
-  if (isLoading || isError || isFetching) return []
+  if (isLoading || isError || isFetching) {
+    return {
+      options: [],
+      menteeIdToMenteeName: {},
+    }
+  }
 
-  return data?.assignedMentees.map((assignedMentee) => `${assignedMentee.firstName ?? ''} ${assignedMentee.lastName ?? ''}`) ?? []
+  const menteeIdToMenteeName: Record<string, string> = {}
+
+  return {
+    options: data?.assignedMentees.map(({ firstName, lastName, menteeId }) => {
+      const fullName = `${firstName ?? ''} ${lastName ?? ''}`
+      menteeIdToMenteeName[menteeId] = fullName
+      return { value: menteeId.toString(), children: fullName }
+    }) ?? [],
+    menteeIdToMenteeName,
+  }
 }
 
 export default useAssignedMenteesOptions

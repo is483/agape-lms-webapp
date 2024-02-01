@@ -249,10 +249,10 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
     showRemoveIcon,
   } = props
 
-  const { mentee } = useAppSelector(getBasicDetails)
+  const { menteeName } = useAppSelector(getBasicDetails)
   const { role } = useAppSelector(getAuth)
   const { data: myInfo } = useGetUserInfoQuery({ role: role ?? '' })
-  const byWhoOptions = [`${myInfo?.firstName} ${myInfo?.lastName}`, mentee.value]
+  const byWhoOptions = [`${myInfo?.firstName} ${myInfo?.lastName}`, menteeName?.value]
 
   const {
     byWho, deadline, resourcesRequired, progressIndicator,

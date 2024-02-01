@@ -4,7 +4,11 @@ import { defaultMilestones } from './constants'
 
 export interface MentoringJourneyFormState {
   basicDetails: {
-    mentee: {
+    menteeId: {
+      value: string,
+      error: string,
+    },
+    menteeName: {
       value: string,
       error: string,
     },
@@ -40,7 +44,11 @@ export interface MentoringJourneyFormState {
 
 const initialState: MentoringJourneyFormState = {
   basicDetails: {
-    mentee: {
+    menteeId: {
+      value: '',
+      error: '',
+    },
+    menteeName: {
       value: '',
       error: '',
     },
@@ -79,8 +87,9 @@ export const mentoringJourneyFormSlice = createSlice({
   initialState,
   reducers: {
     // Basic Details
-    setMentee: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
-      state.basicDetails.mentee.value = action.payload
+    setMentee: (state: MentoringJourneyFormState, action: PayloadAction<{ menteeId: string, menteeName: string }>) => {
+      state.basicDetails.menteeId.value = action.payload.menteeId
+      state.basicDetails.menteeName.value = action.payload.menteeName
     },
     setTitle: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.basicDetails.title.value = action.payload
@@ -92,12 +101,12 @@ export const mentoringJourneyFormSlice = createSlice({
       state.basicDetails.description.value = action.payload
     },
     clearBasicDetailsErrors: (state: MentoringJourneyFormState) => {
-      state.basicDetails.mentee.error = ''
+      state.basicDetails.menteeId.error = ''
       state.basicDetails.title.error = ''
       state.basicDetails.date.error = ''
     },
     setMenteeError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
-      state.basicDetails.mentee.error = action.payload
+      state.basicDetails.menteeId.error = action.payload
     },
     setTitleError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.basicDetails.title.error = action.payload
