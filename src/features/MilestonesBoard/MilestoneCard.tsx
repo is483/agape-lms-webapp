@@ -21,7 +21,7 @@ function MilestoneCard(props: MilestoneCardProps) {
     milestone, milestoneIndex, dateStr, isEditable,
     handleOpenInfoModal, handleOpenFormModal, cardColor, ...boxProps
   } = props
-  const { step, goals } = milestone
+  const { milestoneStep, goals } = milestone
 
   return (
     <Box maxWidth="100%" width="360px" {...boxProps}>
@@ -29,7 +29,7 @@ function MilestoneCard(props: MilestoneCardProps) {
         <Box background={cardColor} p="2" rounded="md" shadow="sm">
           <Flex justify="space-between">
             <Text color="white" fontSize="xs" fontWeight="bold">
-              Milestone {step}
+              Milestone {milestoneStep}
             </Text>
             <Icon onClick={() => handleOpenInfoModal(milestoneIndex)} name="info" color="white" fontSize="lg" _hover={{ cursor: 'pointer' }} />
           </Flex>

@@ -3,18 +3,19 @@ export interface ActionPlan {
   deadline: string
   resourcesRequired: string
   progressIndicator: string
+  step: number
 }
 
 export interface Goal {
-  title: string,
+  goalName: string,
   measurableObjective: string,
   deadline: string,
   actionPlans: ActionPlan[]
 }
 
 export interface Milestone {
-  title: string
-  step: number
+  milestoneTitle: string
+  milestoneStep: number
   reflection: string
   goals: Goal[]
 }

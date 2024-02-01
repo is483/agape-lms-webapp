@@ -27,7 +27,7 @@ function GoalCard(props: GoalProps) {
   } = props
   const dispatch = useAppDispatch()
   const {
-    title, deadline, actionPlans,
+    goalName, deadline, actionPlans,
   } = goal
 
   const handleDeleteGoal = () => {
@@ -50,7 +50,7 @@ function GoalCard(props: GoalProps) {
           </Menu>
         )}
       </Flex>
-      <Text fontSize="sm">{title}</Text>
+      <Text fontSize="sm">{goalName}</Text>
       <Flex justify="space-between" mt="1">
         <Text fontSize="sm" color="gray.500" fontWeight="bold" mb="1">Progress</Text>
         <Text fontSize="sm" color="gray.700">0/{goal.actionPlans.length}</Text>

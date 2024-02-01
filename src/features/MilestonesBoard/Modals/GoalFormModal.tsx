@@ -29,7 +29,7 @@ const defaultActionPlanStep = {
 }
 
 const defaultGoal = {
-  title: { value: '', error: '' },
+  goalName: { value: '', error: '' },
   measurableObjective: { value: '', error: '' },
   deadline: { value: '', error: '' },
   actionPlans: [{ ...defaultActionPlanStep }],
@@ -40,7 +40,7 @@ function GoalFormModal(props: GoalFormModalProps) {
   const dispatch = useAppDispatch()
   const [goal, updateGoal] = useImmer(defaultGoal)
   const {
-    title, measurableObjective, deadline, actionPlans,
+    goalName, measurableObjective, deadline, actionPlans,
   } = goal
   const { milestones, milestoneIndex, goalIndex } = useAppSelector(getMilestones)
   const goalInfo = milestones[milestoneIndex].goals[goalIndex ?? 0]
@@ -49,7 +49,7 @@ function GoalFormModal(props: GoalFormModalProps) {
   useEffect(() => {
     if (!isEditing) return
     updateGoal((draft) => {
-      draft.title.value = goalInfo.title
+      draft.goalName.value = goalInfo.goalName
       draft.deadline.value = goalInfo.deadline
       draft.measurableObjective.value = goalInfo.measurableObjective
       draft.actionPlans = []
@@ -65,7 +65,7 @@ function GoalFormModal(props: GoalFormModalProps) {
   }, [goalIndex, goalInfo, isEditing, updateGoal])
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateGoal((draft) => { draft.title.value = e.target.value })
+    updateGoal((draft) => { draft.goalName.value = e.target.value })
   }
 
   const handleMeasurableObjectiveChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -113,8 +113,8 @@ function GoalFormModal(props: GoalFormModalProps) {
 
     updateGoal((draft) => clearErrors(draft))
 
-    if (!title.value.trim()) {
-      updateGoal((draft) => { draft.title.error = 'Goal is required' })
+    if (!goalName.value.trim()) {
+      updateGoal((draft) => { draft.goalName.error = 'Goal is required' })
       hasErrors = true
     }
     if (!deadline.value.trim()) {
@@ -149,16 +149,17 @@ function GoalFormModal(props: GoalFormModalProps) {
 
     if (hasErrors) return
     const goal: Goal = {
-      title: title.value,
+      goalName: goalName.value,
       measurableObjective: measurableObjective.value,
       deadline: deadline.value,
       actionPlans: actionPlans.map(({
         byWho, deadline, resourcesRequired, progressIndicator,
-      }) => ({
+      }, index) => ({
         byWho: byWho.value,
         deadline: deadline.value,
         resourcesRequired: resourcesRequired.value,
         progressIndicator: progressIndicator.value,
+        step: index + 1,
       })),
     }
     if (isEditing) {
@@ -182,9 +183,9 @@ function GoalFormModal(props: GoalFormModalProps) {
         <Flex flexDir="column" mt="12" gap="12">
           <ControlledTextInput
             label="Goal"
-            error={title.error}
+            error={goalName.error}
             type="text"
-            inputProps={{ onChange: handleTitleChange, value: title.value }}
+            inputProps={{ onChange: handleTitleChange, value: goalName.value }}
           />
           <ControlledTextInput
             label="Measurable Objective"
