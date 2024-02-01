@@ -8,11 +8,12 @@ import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails, useValidateMilestones, useValidateObjectives } from './hooks'
 import { Objectives } from './Objectives'
 import { Milestones } from './Milestones'
-import { useAppDispatch } from '../../../hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { clearBasicDetailsErrors, clearObjectiveErrors } from './redux/mentoringJourneyFormSlice'
 import paths from '../../../paths'
 import { useCreateMentoringJourneyMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { CreateMentoringJourneyRequest } from '../../../app/services/mentoringJourney/types'
+import { getBasicDetails, getMilestones, getObjectives } from './redux/selectors'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -20,6 +21,9 @@ function CreateMentoringJourney() {
   const validateObjectives = useValidateObjectives()
   const validateMilestones = useValidateMilestones()
   const [createMentoringJourney] = useCreateMentoringJourneyMutation()
+  const basicDetails = useAppSelector(getBasicDetails)
+  const objectives = useAppSelector(getObjectives)
+  const milestones = useAppSelector(getMilestones)
   const dispatch = useAppDispatch()
 
   const handleTabsChange = (index: number) => {
@@ -57,12 +61,20 @@ function CreateMentoringJourney() {
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // TODO: send the mentoring journey data to the server
     // TODO: route to mentoring journey view all page
     const request: CreateMentoringJourneyRequest = {
-      // menteeId
+      menteeId: basicDetails.menteeId.value,
+      title: basicDetails.title.value,
+      startDate: basicDetails.date.value,
+      description: basicDetails.description.value,
+      mentoringOutcome: objectives.outcome.value,
+      outcomeDescription: objectives.description.value,
+      milestones: milestones.milestones,
     }
+
+    await createMentoringJourney(request).unwrap()
   }
 
   return (
