@@ -11,12 +11,15 @@ import { Milestones } from './Milestones'
 import { useAppDispatch } from '../../../hooks'
 import { clearBasicDetailsErrors, clearObjectiveErrors } from './redux/mentoringJourneyFormSlice'
 import paths from '../../../paths'
+import { useCreateMentoringJourneyMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
+import { CreateMentoringJourneyRequest } from '../../../app/services/mentoringJourney/types'
 
 function CreateMentoringJourney() {
   const [tabIndex, setTabIndex] = useState(0)
   const validateBasicDetails = useValidateBasicDetails()
   const validateObjectives = useValidateObjectives()
   const validateMilestones = useValidateMilestones()
+  const [createMentoringJourney] = useCreateMentoringJourneyMutation()
   const dispatch = useAppDispatch()
 
   const handleTabsChange = (index: number) => {
@@ -57,6 +60,9 @@ function CreateMentoringJourney() {
   const handleSave = () => {
     // TODO: send the mentoring journey data to the server
     // TODO: route to mentoring journey view all page
+    const request: CreateMentoringJourneyRequest = {
+      // menteeId
+    }
   }
 
   return (
@@ -79,13 +85,13 @@ function CreateMentoringJourney() {
         </TabList>
         <TabPanels>
           <TabPanel px="0">
-            <BasicDetails handleNextStep={handleNextStep} />
+            {tabIndex === 0 && <BasicDetails handleNextStep={handleNextStep} />}
           </TabPanel>
           <TabPanel px="0">
-            <Objectives handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
+            {tabIndex === 1 && <Objectives handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />}
           </TabPanel>
           <TabPanel px="0" height={['calc(65vh + 124px)', null, 'calc(65vh + 108px)']}>
-            <Milestones handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />
+            {tabIndex === 2 && <Milestones handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />}
           </TabPanel>
         </TabPanels>
       </Tabs>
