@@ -2,7 +2,7 @@ import {
   Divider, Flex, Tab, TabList,
   TabPanel, TabPanels, Tabs, Text, useToast,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container, Icon, Link } from '../../../components'
 import { BasicDetails } from './BasicDetails'
@@ -10,7 +10,7 @@ import { useValidateBasicDetails, useValidateMilestones, useValidateObjectives }
 import { Objectives } from './Objectives'
 import { Milestones } from './Milestones'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { clearBasicDetailsErrors, clearObjectiveErrors } from './redux/mentoringJourneyFormSlice'
+import { clearBasicDetailsErrors, clearMentoringJourneyForm, clearObjectiveErrors } from './redux/mentoringJourneyFormSlice'
 import paths from '../../../paths'
 import { useCreateMentoringJourneyMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { CreateMentoringJourneyRequest } from '../../../app/services/mentoringJourney/types'
@@ -29,6 +29,11 @@ function CreateMentoringJourney() {
   const navigate = useNavigate()
   const toast = useToast()
 
+  useEffect(() => {
+    dispatch(clearBasicDetailsErrors())
+    dispatch(clearObjectiveErrors())
+  }, [dispatch])
+
   const handleTabsChange = (index: number) => {
     if (index < tabIndex) {
       setTabIndex(index)
@@ -36,12 +41,12 @@ function CreateMentoringJourney() {
       dispatch(clearObjectiveErrors())
       return
     }
-    if (tabIndex === 0) { // Basic Details
+    if (index === 0) { // Basic Details
+      setTabIndex(index)
+    } else if (index === 1) { // Objective
       !validateBasicDetails() && setTabIndex(index)
-    } else if (tabIndex === 1) { // Objective
-      !validateObjectives() && setTabIndex(index)
-    } else if (tabIndex === 2) { // Milestones
-      !validateMilestones() && setTabIndex(index)
+    } else if (index === 2) { // Milestones
+      !validateBasicDetails() && !validateObjectives() && setTabIndex(index)
     }
   }
 
@@ -86,6 +91,7 @@ function CreateMentoringJourney() {
         isClosable: true,
         position: 'bottom-right',
       })
+      dispatch(clearMentoringJourneyForm())
     } catch (e) {
       console.error(e)
     }

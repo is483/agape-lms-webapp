@@ -57,7 +57,7 @@ export const MILESTONES = [
   },
 ] as const
 
-export const defaultMilestones: Milestone[] = MILESTONES.map((_, index) => ({
+export const createDefaultMilestones = (): Milestone[] => MILESTONES.map((_, index) => ({
   milestoneTitle: '',
   milestoneStep: index + 1,
   reflection: '',

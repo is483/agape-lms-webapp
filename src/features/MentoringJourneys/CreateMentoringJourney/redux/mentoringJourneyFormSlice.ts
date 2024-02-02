@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Goal, Milestone } from './types'
-import { defaultMilestones } from './constants'
+import { createDefaultMilestones } from './constants'
 
 export interface MentoringJourneyFormState {
   basicDetails: {
@@ -42,7 +42,7 @@ export interface MentoringJourneyFormState {
   },
 }
 
-const initialState: MentoringJourneyFormState = {
+const createDefaultState = (): MentoringJourneyFormState => ({
   basicDetails: {
     menteeId: {
       value: '',
@@ -75,12 +75,14 @@ const initialState: MentoringJourneyFormState = {
     },
   },
   milestones: {
-    milestones: defaultMilestones,
+    milestones: createDefaultMilestones(),
     error: '',
     milestoneIndex: 0,
     goalIndex: undefined,
   },
-}
+})
+
+const initialState: MentoringJourneyFormState = createDefaultState()
 
 export const mentoringJourneyFormSlice = createSlice({
   name: 'app',
@@ -155,6 +157,12 @@ export const mentoringJourneyFormSlice = createSlice({
     setMilestoneError: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.milestones.error = action.payload
     },
+    clearMentoringJourneyForm: (state: MentoringJourneyFormState) => {
+      const defaultState = createDefaultState()
+      state.basicDetails = defaultState.basicDetails
+      state.objectives = defaultState.objectives
+      state.milestones = defaultState.milestones
+    },
   },
 })
 
@@ -167,6 +175,6 @@ export const {
   clearObjectiveErrors,
   addGoal, editGoal, deleteGoal,
   setMilestoneIndex, setGoalIndex,
-  setMilestoneError,
+  setMilestoneError, clearMentoringJourneyForm,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer
