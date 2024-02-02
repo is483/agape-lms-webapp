@@ -8,10 +8,11 @@ import { getBasicDetails, getMilestones } from '../redux/selectors'
 interface MilestoneProps {
   handleNextStep: (toStep: number) => void
   handlePrevStep: () => void
+  isCreatingMentoringJourney: boolean
 }
 
 function Milestones(props: MilestoneProps) {
-  const { handleNextStep, handlePrevStep } = props
+  const { handleNextStep, handlePrevStep, isCreatingMentoringJourney } = props
   const { milestones } = useAppSelector(getMilestones)
   const { date } = useAppSelector(getBasicDetails)
   const { error } = useAppSelector(getMilestones)
@@ -22,7 +23,7 @@ function Milestones(props: MilestoneProps) {
       <MilestonesBoard data={milestones} startDate={date.value} isEditable />
       <Flex justify="flex-end" gap="4" mt="4">
         <Button colorScheme="red" variant="outline" onClick={handlePrevStep}>Back</Button>
-        <Button colorScheme="red" onClick={() => handleNextStep(4)}>Next</Button>
+        <Button colorScheme="red" onClick={() => handleNextStep(4)} isLoading={isCreatingMentoringJourney}>Next</Button>
       </Flex>
     </Box>
   )

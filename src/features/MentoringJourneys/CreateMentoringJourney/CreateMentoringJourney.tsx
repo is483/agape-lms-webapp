@@ -1,8 +1,9 @@
 import {
   Divider, Flex, Tab, TabList,
-  TabPanel, TabPanels, Tabs, Text,
+  TabPanel, TabPanels, Tabs, Text, useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Container, Icon, Link } from '../../../components'
 import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails, useValidateMilestones, useValidateObjectives } from './hooks'
@@ -20,11 +21,13 @@ function CreateMentoringJourney() {
   const validateBasicDetails = useValidateBasicDetails()
   const validateObjectives = useValidateObjectives()
   const validateMilestones = useValidateMilestones()
-  const [createMentoringJourney] = useCreateMentoringJourneyMutation()
+  const [createMentoringJourney, { isLoading }] = useCreateMentoringJourneyMutation()
   const basicDetails = useAppSelector(getBasicDetails)
   const objectives = useAppSelector(getObjectives)
   const milestones = useAppSelector(getMilestones)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const toast = useToast()
 
   const handleTabsChange = (index: number) => {
     if (index < tabIndex) {
@@ -62,8 +65,6 @@ function CreateMentoringJourney() {
   }
 
   const handleSave = async () => {
-    // TODO: send the mentoring journey data to the server
-    // TODO: route to mentoring journey view all page
     const request: CreateMentoringJourneyRequest = {
       menteeId: basicDetails.menteeId.value,
       title: basicDetails.title.value,
@@ -74,7 +75,20 @@ function CreateMentoringJourney() {
       milestones: milestones.milestones,
     }
 
-    await createMentoringJourney(request).unwrap()
+    try {
+      await createMentoringJourney(request).unwrap()
+      navigate(paths.MentoringJourneys.ViewAll)
+      toast({
+        title: 'Mentoring Journey Created',
+        description: 'Mentoring journey successfully created! You may now view your created mentoring journey in the mentoring journeys page',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
@@ -103,7 +117,7 @@ function CreateMentoringJourney() {
             {tabIndex === 1 && <Objectives handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />}
           </TabPanel>
           <TabPanel px="0" height={['calc(65vh + 124px)', null, 'calc(65vh + 108px)']}>
-            {tabIndex === 2 && <Milestones handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} />}
+            {tabIndex === 2 && <Milestones handleNextStep={handleNextStep} handlePrevStep={handlePrevStep} isCreatingMentoringJourney={isLoading} />}
           </TabPanel>
         </TabPanels>
       </Tabs>
