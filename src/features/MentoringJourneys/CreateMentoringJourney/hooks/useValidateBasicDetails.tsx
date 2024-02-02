@@ -7,12 +7,12 @@ import {
 
 function useValidateBasicDetails() {
   const dispatch = useAppDispatch()
-  const { mentee, title, date } = useAppSelector(getBasicDetails)
+  const { menteeId, title, date } = useAppSelector(getBasicDetails)
 
   return useCallback(() => {
     let hasErrors: boolean = false
     dispatch(clearBasicDetailsErrors())
-    if (!mentee.value.trim()) {
+    if (!menteeId.value.trim()) {
       dispatch(setMenteeError('Mentee is required'))
       hasErrors = true
     }
@@ -25,7 +25,7 @@ function useValidateBasicDetails() {
       hasErrors = true
     }
     return hasErrors
-  }, [mentee, title, date, dispatch])
+  }, [menteeId, title, date, dispatch])
 }
 
 export default useValidateBasicDetails
