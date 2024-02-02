@@ -84,7 +84,7 @@ function UsersListDesktop(props: Props) {
       </Box>
       <Box flex="1" />
       <Box flex="7">
-        {selectedUser && <UserDetails user={selectedUser} />}
+        {selectedUser && <UserDetails user={selectedUser}/>}
       </Box>
     </Flex>
   )
