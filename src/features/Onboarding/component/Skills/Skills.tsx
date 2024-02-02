@@ -73,7 +73,6 @@ function Skills(props: Props) {
   }
 
   const handleSave = async () => {
-    setErrors(defaultErrors)
     const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     skills.forEach((skill, index) => {
@@ -82,8 +81,8 @@ function Skills(props: Props) {
         hasErrors = true
       }
     })
+    setErrors(newErrors)
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateSkills = role === 'Mentor' ? updateMentorSkills : updateMenteeSkills

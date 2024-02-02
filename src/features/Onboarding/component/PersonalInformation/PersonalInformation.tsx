@@ -10,6 +10,7 @@ import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../
 import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { getAuth } from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
+import { deepCopy } from '../../../../utils'
 
 interface Props extends FlexProps {
   handleNext?: () => void
@@ -118,11 +119,7 @@ function PersonalInformation(props: Props) {
   }
 
   const handleSave = async () => {
-    setErrors(defaultErrors)
-    const newErrors = {
-      ...defaultErrors,
-    }
-
+    const newErrors = deepCopy(defaultErrors)
     if (!firstName.trim()) {
       newErrors.firstName = 'First name is required'
     }
@@ -139,9 +136,9 @@ function PersonalInformation(props: Props) {
     if (phoneNumber.trim().length < 8 || phoneNumber.trim().length > 8) {
       newErrors.phoneNumber = 'Please enter a valid 8 digit phone number'
     }
+    setErrors(newErrors)
     const hasErrors = Object.values(newErrors).some((error) => error !== '')
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateInfo = role === 'Mentor' ? updateMentorInfo : updateMenteeInfo

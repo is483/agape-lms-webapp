@@ -101,8 +101,8 @@ function ProfessionalExperience(props: Props) {
   }
 
   const handleSave = async () => {
-    setErrors(defaultErrors)
     const newErrors: Errors = deepCopy(errors)
+    setErrors(newErrors)
     newErrors.careerAspiration = ''
     let hasErrors: boolean = false
 
@@ -130,9 +130,7 @@ function ProfessionalExperience(props: Props) {
         }
       })
     }
-
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
 

@@ -84,8 +84,8 @@ function Interests(props: Props) {
         hasErrors = true
       }
     })
+    setErrors(newErrors)
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateInterests = role === 'Mentor' ? updateMentorInterests : updateMenteeInterests

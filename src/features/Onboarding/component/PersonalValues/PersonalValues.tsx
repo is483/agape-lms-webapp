@@ -75,7 +75,6 @@ function PersonalValues(props: Props) {
   }
 
   const handleSave = async () => {
-    setErrors(defaultErrors)
     const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     values.forEach((value, index) => {
@@ -84,8 +83,8 @@ function PersonalValues(props: Props) {
         hasErrors = true
       }
     })
+    setErrors(newErrors)
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateValues = role === 'Mentor' ? updateMentorValues : updateMenteeValues
