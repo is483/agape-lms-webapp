@@ -3,6 +3,7 @@ import {
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon } from '../../components'
+import useBreakpoint from '../../hooks/useBreakpoint'
 
 interface UserDetailsProps {
   user: User
@@ -21,23 +22,25 @@ function UserDetails(props: UserDetailsProps) {
   }
 
   const formattedDateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  const isMdUp = useBreakpoint('md')
+
   return (
     <Flex flexDirection="column" minHeight="100vh">
-      <HStack spacing="20" marginBottom="10">
+      <HStack spacing={isMdUp ? '20' : '10'} marginBottom="10">
         {
           profileImgURL
-            ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="120px" height="120px" />
+            ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} />
             : (
               <Circle size="140px" bg="secondary.100">
                 <Icon name="person" color="secondary.300" fontSize="100px" />
               </Circle>
             )
         }
-        <Text fontSize="4xl">
+        <Text fontSize={isMdUp ? '4xl' : '2xl'}>
           {firstName} {lastName}
         </Text>
       </HStack>
-      <SimpleGrid columns={[1, null, 4]} marginBottom="10">
+      <SimpleGrid columns={[1, 2, null, null, 4]} marginBottom="10" spacingY={['20px', null, null, '30px']}>
         <HStack>
           <Icon name="calendar_month" color="secondary.300" fontSize="30px" />
           <Text color="secondary.300" fontSize="lg">{formattedDateOfBirth}</Text>
@@ -60,7 +63,7 @@ function UserDetails(props: UserDetailsProps) {
         <Text fontWeight="600" fontSize="xl"> Work Experience </Text>
         {JSON.parse(workExperience).map((work: { company: string; jobTitle: string; description: string; }) => (
           <Box>
-            <Text> {work.company} {work.jobTitle}</Text>
+            <Text> {work.company} - {work.jobTitle}</Text>
             <Text> {work.description} </Text>
           </Box>
         ))}

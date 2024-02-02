@@ -1,10 +1,11 @@
 import {
-  Box, Card, Circle, Flex, Icon, Text, Image, HStack, Divider,
+  Box, Card, Circle, Flex, Text, Image, HStack, Divider, Accordion, AccordionButton, AccordionItem, AccordionPanel,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import { User } from '../../app/services/user/types'
 import UserDetails from './UserDetails'
+import { Icon } from '../../components'
 
 interface UsersListProps {
   title: string
@@ -22,16 +23,13 @@ function UsersList(props: UsersListProps) {
   const UsersListComponent = isMdUp ? UsersListDesktop : UsersListMobile
   return (
     <Box>
-      <Box marginBottom="45">
-        <Box marginBottom="5">
-          <Text fontSize="2xl" fontWeight="600"> {title} </Text>
-          <Text color="secondary.500"> {description} </Text>
-        </Box>
-        <Divider orientation="horizontal" />
+      <Box marginBottom="5">
+        <Text fontSize="2xl" fontWeight="600"> {title} </Text>
+        <Text color="secondary.500"> {description} </Text>
       </Box>
+      <Divider orientation="horizontal" />
       {users.length > 0 && <UsersListComponent users={users} />}
       {users.length === 0 && <NoUserList />}
-
     </Box>
 
   )
@@ -58,7 +56,7 @@ function UsersListDesktop(props: Props) {
 
   return (
     <Flex minHeight="100vh">
-      <Box flex="3">
+      <Box flex="3" paddingRight="10" paddingTop="10">
         {users?.map((user: User) => {
           const {
             firstName, lastName, profileImgURL, userInformationId,
@@ -82,9 +80,8 @@ function UsersListDesktop(props: Props) {
           )
         })}
       </Box>
-      <Box flex="1" />
-      <Box flex="7">
-        {selectedUser && <UserDetails user={selectedUser}/>}
+      <Box flex="7" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="10">
+        {selectedUser && <UserDetails user={selectedUser} />}
       </Box>
     </Flex>
   )
@@ -93,8 +90,50 @@ function UsersListDesktop(props: Props) {
 function UsersListMobile(props: Props) {
   const { users } = props
   return (
-    <>
-    </>
+    <Box>
+      <Accordion allowMultiple>
+        {users.map((user) => (
+          <AccordionItem>
+            {({ isExpanded }) => {
+              const bgColor = isExpanded ? 'primary.800' : 'white'
+              const textColor = isExpanded ? 'white' : 'black'
+              return (
+                <>
+                  <AccordionButton paddingY="4" background={bgColor} _hover={{ background: bgColor }} color={textColor}>
+                    <Flex justifyContent="space-between" alignItems="center" width="100%">
+                      <HStack spacing="5">
+                        {
+                          user.profileImgURL
+                            ? <Image src={user.profileImgURL} borderRadius="100%" maxWidth="100%" width="70px" height="70px" />
+                            : (
+                              <Circle size="140px" bg="secondary.100">
+                                <Icon name="person" color="secondary.300" fontSize="100px" />
+                              </Circle>
+                            )
+                        }
+                        <Text fontSize="2xl">
+                          {user.firstName} {user.lastName}
+                        </Text>
+                      </HStack>
+                      {isExpanded ? (
+                        <Icon name="remove" fontWeight="200" fontSize="28px" color="white" />
+                      ) : (
+                        <Icon name="add" fontWeight="200" fontSize="28px" />
+                      )}
+                    </Flex>
+                  </AccordionButton>
+                  <AccordionPanel pb={4}>
+                    <UserDetails
+                      user={user}
+                    />
+                  </AccordionPanel>
+                </>
+              )
+            }}
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </Box>
   )
 }
 
