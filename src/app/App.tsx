@@ -1,6 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
 import {
-  Navigate,
   Route, Routes, useLocation, useNavigate,
 } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
@@ -60,7 +59,8 @@ function App() {
     return (
       <Box>
         <Routes>
-          <Route path="*" element={<Navigate to={paths.Login} replace />} />
+          {/* TODO: look into this */}
+          {/* <Route path="*" element={<Navigate to={paths.Login} replace />} /> */}
           <Route path={paths.Login} element={<Login />} />
           <Route path={paths.Register} element={<Register />} />
           <Route path={paths.ForgetPassword} element={<ForgetPassword />} />

@@ -12,10 +12,10 @@ function MentoringJourneyDetails() {
       <BackButton path={paths.MentoringJourneys.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
       <Tabs mt="12" colorScheme="red">
-        <TabList gap="6" maxWidth="min-content">
-          <Tab py="1">Overview</Tab>
-          <Tab py="1">Milestones</Tab>
-          <Tab py="1">Feedback</Tab>
+        <TabList gap={['1', '2', '6']} maxWidth="min-content">
+          <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Overview</Tab>
+          <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Milestones</Tab>
+          <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Feedback</Tab>
         </TabList>
         <TabPanels>
           <TabPanel px="0">

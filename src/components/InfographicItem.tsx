@@ -1,7 +1,8 @@
 import {
   Box, Circle, Flex, FlexProps,
-  Icon, Text,
+  Text,
 } from '@chakra-ui/react'
+import Icon from './Icon'
 
 interface InfographicItemProps extends FlexProps {
   amount: string | number
