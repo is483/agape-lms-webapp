@@ -7,6 +7,7 @@ import paths from '../../paths'
 import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { MentoringJourney } from '../../app/services/mentoringJourney/types'
 import { MILESTONES } from './CreateMentoringJourney/redux/constants'
+import useWindowSize from '../../hooks/useWindowSize'
 
 enum MentoringJourneyStatus {
   ONGOING, PAST
@@ -35,10 +36,10 @@ function MentoringJourneys() {
         </Flex>
       </Container>
       <Container>
-        <Flex justify="space-between">
+        <Flex justify="space-between" mb="4">
           <Text fontWeight="700" fontSize="lg">Mentoring Journeys</Text>
           <Link to={paths.MentoringJourneys.Create}>
-            <Button colorScheme="red">+ Create Journey</Button>
+            <Button size={['xs', 'sm', null, 'md']} colorScheme="red">+ Create Journey</Button>
           </Link>
         </Flex>
         <Tabs variant="solid-rounded" colorScheme="red">
@@ -106,8 +107,11 @@ interface MentoringJourneyTableProps {
 
 function MentoringJourneyTable(props: MentoringJourneyTableProps) {
   const { type, data } = props
+  const [x] = useWindowSize()
+  const width = `${x - 379}px`
+
   return (
-    <TableContainer whiteSpace="unset">
+    <TableContainer whiteSpace="unset" width={['100%', null, width, '100%']}>
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -134,7 +138,7 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
             const { firstName, lastName, profileImgURL } = mentee
             const fullName = `${firstName} ${lastName}`
             return (
-              <Tr>
+              <Tr key={mentoringJourneyId}>
                 <Td>
                   <Flex gap="2" align="center">
                     {
