@@ -31,15 +31,10 @@ function UsersList(props: UsersListProps) {
         <Divider orientation="horizontal" />
       </Hide>
       {users.length > 0 && <UsersListComponent users={users} />}
-      {users.length === 0 && <NoUserList />}
     </Box>
   )
 }
-function NoUserList() {
-  return (
-    <Text>No Users </Text>
-  )
-}
+
 function UsersListDesktop(props: Props) {
   const { users } = props
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
