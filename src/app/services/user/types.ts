@@ -130,4 +130,3 @@ export interface User {
 export interface UsersResponse {
   assignedMentees: User[]
 }
-
