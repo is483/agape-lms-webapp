@@ -25,7 +25,7 @@ function Navbar(props: Props) {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { pathname } = location
-  const isMdUp = useBreakpoint('md')
+  const isLgUp = useBreakpoint('lg')
 
   const handleNavClick = useCallback((path: string) => {
     navigate(path)
@@ -42,7 +42,7 @@ function Navbar(props: Props) {
     dispatch(clearMentoringJourneyForm())
   }
 
-  const NavbarComponent = isMdUp ? DesktopSideNavbar : MobileNavbar
+  const NavbarComponent = isLgUp ? DesktopSideNavbar : MobileNavbar
 
   return (
     <NavbarComponent
