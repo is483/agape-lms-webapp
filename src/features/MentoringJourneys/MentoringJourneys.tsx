@@ -3,7 +3,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td, Image, Badge, Spinner,
 } from '@chakra-ui/react'
 import {
-  Container, Icon, InfographicItem, Link,
+  Container, Icon, InfographicItem, Link, ProfileIcon,
 } from '../../components'
 import paths from '../../paths'
 import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
@@ -118,15 +118,7 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
               <Tr key={mentoringJourneyId}>
                 <Td>
                   <Flex gap="2" align="center">
-                    {
-                      profileImgURL
-                        ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="24px" height="24px" />
-                        : (
-                          <Circle size="24px" bg="secondary.100">
-                            <Icon name="person" color="secondary.300" fontSize="20px" />
-                          </Circle>
-                        )
-                    }
+                    <ProfileIcon imgUrl={profileImgURL} width="24px" height="24px" iconProps={{ fontSize: '20px' }} />
                     {fullName}
                   </Flex>
                 </Td>

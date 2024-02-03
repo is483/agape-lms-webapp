@@ -3,7 +3,7 @@ import Icon from './Icon'
 
 interface ProfileIconProps extends BoxProps {
   imgUrl: string | undefined
-  iconProps?: typeof Icon
+  iconProps?: BoxProps
 }
 
 function ProfileIcon(props: ProfileIconProps) {
