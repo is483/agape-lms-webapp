@@ -130,3 +130,30 @@ export interface User {
 export interface UsersResponse {
   assignedMentees: User[]
 }
+
+export interface User {
+  userInformationId: number,
+  menteeId: number,
+  firstName: string,
+  lastName: string,
+  dateOfBirth: string
+  phoneNumber: string
+  gender: string
+  profileImgURL: string
+  skills: string
+  personalValues: string
+  preferredCommunication: string
+  preferredMeetingDays: string
+  challenges: string
+  interests: string
+  workExperience: string,
+  // Only Mentor
+  preferredMentoringApproach?: string
+  // Only Mentee
+  expectations?: string
+  careerAspirations?: string
+}
+
+export interface UsersResponse {
+  assignedMentees: User[]
+}

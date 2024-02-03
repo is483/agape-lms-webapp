@@ -20,6 +20,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
       transformResponse: (response: { profile: UserResponse }): TransformedUserResponse => {
         const transformedResponse: any = { ...response?.profile }
         transformedResponse.gender = transformGender(response.profile.gender) ?? ''
+        transformedResponse.profileImgUrl = response.profile.profileImgURL ?? ''
         transformedResponse.dateOfBirth = formatDate(response.profile.dateOfBirth) ?? ''
         transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{}]
         transformedResponse.skills = response.profile.skills?.split(', ') ?? ['']
