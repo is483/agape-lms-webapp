@@ -1,9 +1,10 @@
-import { Container } from '../../../components'
+import { BackButton, Container } from '../../../components'
+import paths from '../../../paths'
 
 function MentoringJourneyDetails() {
   return (
     <Container>
-      Mentoring Journey Details
+      <BackButton path={paths.MentoringJourneys.ViewAll} />
     </Container>
   )
 }

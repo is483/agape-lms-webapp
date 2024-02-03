@@ -1,10 +1,10 @@
 import {
-  Divider, Flex, Tab, TabList,
+  Divider, Tab, TabList,
   TabPanel, TabPanels, Tabs, Text, useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Container, Icon, Link } from '../../../components'
+import { BackButton, Container } from '../../../components'
 import { BasicDetails } from './BasicDetails'
 import { useValidateBasicDetails, useValidateMilestones, useValidateObjectives } from './hooks'
 import { Objectives } from './Objectives'
@@ -99,12 +99,7 @@ function CreateMentoringJourney() {
 
   return (
     <Container position="relative">
-      <Link fontSize="lg" fontWeight="600" to={paths.MentoringJourneys.ViewAll} gap="2" _hover={{ textDecoration: 'none' }}>
-        <Flex align="center">
-          <Icon name="arrow_back" />
-          Back
-        </Flex>
-      </Link>
+      <BackButton path={paths.MentoringJourneys.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
       <Text fontSize="lg" fontWeight="600" mt="12">
         Create Mentoring Journey
