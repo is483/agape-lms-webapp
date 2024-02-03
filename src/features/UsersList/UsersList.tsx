@@ -56,31 +56,31 @@ function UsersListDesktop(props: Props) {
 
   return (
     <Flex minHeight="100vh">
-      <Box flex="3" paddingRight="10" paddingTop="10">
+      <Box paddingRight="10" paddingTop="10" width="280px">
         {users?.map((user: User) => {
           const {
             firstName, lastName, profileImgURL, userInformationId,
           } = user
           const isActive = userInformationId === selectedUser?.userInformationId
           return (
-            <Card padding="5" marginBottom="8" boxShadow="md" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
+            <Card padding="3" marginBottom="8" boxShadow="md" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
               <HStack spacing="8">
                 {
                   profileImgURL
-                    ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="70px" height="70px" />
+                    ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="55px" height="55px" />
                     : (
-                      <Circle size="80px" bg="secondary.100">
-                        <Icon name="person" color="secondary.300" fontSize="50px" />
+                      <Circle size="55px" bg="secondary.100">
+                        <Icon name="person" color="secondary.300" fontSize="30px" />
                       </Circle>
                     )
                 }
-                <Text fontSize="xl">{firstName} {lastName}</Text>
+                <Text fontSize="lg">{firstName} {lastName}</Text>
               </HStack>
             </Card>
           )
         })}
       </Box>
-      <Box flex="7" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="10">
+      <Box flex="1" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="10">
         {selectedUser && <UserDetails user={selectedUser} />}
       </Box>
     </Flex>

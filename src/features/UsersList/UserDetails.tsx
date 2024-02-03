@@ -24,9 +24,13 @@ function UserDetails(props: UserDetailsProps) {
   const formattedDateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
   const isMdUp = useBreakpoint('md')
 
+  const validWorkExperiences = JSON.parse(workExperience)
+    .filter((work: { company: string; jobTitle: string; description: string }) => work.company.length && work.jobTitle.length && work.description.length,
+    )
+
   return (
-    <Flex flexDirection="column" minHeight="100vh">
-      <Hide below="md">
+    <Flex flexDirection="column" minHeight="100vh" wrap="wrap" maxWidth="100%">
+      <Hide below="sm">
         <HStack spacing={isMdUp ? '20' : '10'} marginBottom="10">
           {
             profileImgURL
@@ -43,24 +47,25 @@ function UserDetails(props: UserDetailsProps) {
         </HStack>
       </Hide>
       <Flex
-        direction={['column', 'column', 'row']}
+        direction={['column', 'column', 'column', 'row']}
         marginBottom="10"
         marginTop={['10', null, '0']}
         justifyContent="space-between"
+        wrap="wrap"
       >
-        <HStack marginBottom={['8', null, '0']} marginRight="5">
+        <HStack marginBottom={['4', null, null, '0']} marginRight="5">
           <Icon name="calendar_month" color="secondary.300" fontSize="30px" />
           <Text color="secondary.300" fontSize="lg" isTruncated>
             {formattedDateOfBirth}
           </Text>
         </HStack>
-        <HStack marginBottom={['8', null, '0']} marginRight="5">
+        <HStack marginBottom={['4', null, null, '0']} marginRight="5">
           <Icon name={gender === 'M' ? 'man' : 'woman'} color="secondary.300" fontSize="30px" />
           <Text color="secondary.300" fontSize="lg" isTruncated>
             {gender === 'M' ? 'Male' : 'Female'}
           </Text>
         </HStack>
-        <HStack marginBottom={['8', null, '0']} marginRight="5">
+        <HStack marginBottom={['4', null, null, '0']} marginRight="5">
           <Icon name="email" color="secondary.300" fontSize="30px" />
           <Text color="secondary.300" fontSize="lg" isTruncated>
             {email}
@@ -76,15 +81,17 @@ function UserDetails(props: UserDetailsProps) {
       <Divider orientation="horizontal" marginBottom="10" />
       <Box marginBottom="10">
         <Text fontWeight="600" fontSize="xl" marginBottom="3"> Work Experience </Text>
-        {JSON.parse(workExperience).map((work: { company: string; jobTitle: string; description: string; }, index: number) => (
-          <Box marginBottom={index === JSON.parse(workExperience).length - 1 ? '0' : '10'}>
-            <Text marginBottom="2"> {work.company} - {work.jobTitle}</Text>
-            <Text> {work.description} </Text>
+        {validWorkExperiences.length ? validWorkExperiences.map((work: { company: string; jobTitle: string; description: string }, index: number) => (
+          <Box>
+            <Box marginBottom={index === JSON.parse(workExperience).length - 1 ? '0' : '50'}>
+              <Text marginBottom="1"> {work.company} - {work.jobTitle}</Text>
+              <Text> {work.description} </Text>
+            </Box>
           </Box>
-        ))}
+        )) : <Text>No work experience</Text>}
       </Box>
       <Divider orientation="horizontal" marginBottom="10" />
-      <SimpleGrid columns={[1, 2, 3]} spacing="10">
+      <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="10">
         <Box>
           <Text fontWeight="600" fontSize="xl" marginBottom="5">Career Aspirations</Text>
           <Box
