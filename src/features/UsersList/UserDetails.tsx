@@ -42,30 +42,43 @@ function UserDetails(props: UserDetailsProps) {
           </Text>
         </HStack>
       </Hide>
-      <SimpleGrid columns={[1, 2, null, null, 4]} marginBottom="10" spacingY={['20px', null, null, '30px']} marginTop={['20px', null, null, null]}>
-        <HStack>
+      <Flex
+        direction={['column', 'column', 'row']}
+        marginBottom="10"
+        marginTop={['10', null, '0']}
+        justifyContent="space-between"
+      >
+        <HStack marginBottom={['8', null, '0']} marginRight="5">
           <Icon name="calendar_month" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg">{formattedDateOfBirth}</Text>
+          <Text color="secondary.300" fontSize="lg" isTruncated>
+            {formattedDateOfBirth}
+          </Text>
         </HStack>
-        <HStack>
+        <HStack marginBottom={['8', null, '0']} marginRight="5">
           <Icon name={gender === 'M' ? 'man' : 'woman'} color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg">{gender === 'M' ? 'Male' : 'Female'}</Text>
+          <Text color="secondary.300" fontSize="lg" isTruncated>
+            {gender === 'M' ? 'Male' : 'Female'}
+          </Text>
         </HStack>
-        <HStack>
+        <HStack marginBottom={['8', null, '0']} marginRight="5">
           <Icon name="email" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg">{email}</Text>
+          <Text color="secondary.300" fontSize="lg" isTruncated>
+            {email}
+          </Text>
         </HStack>
         <HStack>
           <Icon name="phone_iphone" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg">{phoneNumber}</Text>
+          <Text color="secondary.300" fontSize="lg" isTruncated>
+            {phoneNumber}
+          </Text>
         </HStack>
-      </SimpleGrid>
+      </Flex>
       <Divider orientation="horizontal" marginBottom="10" />
-      <Box marginBottom="20">
-        <Text fontWeight="600" fontSize="xl"> Work Experience </Text>
-        {JSON.parse(workExperience).map((work: { company: string; jobTitle: string; description: string; }) => (
-          <Box>
-            <Text> {work.company} - {work.jobTitle}</Text>
+      <Box marginBottom="10">
+        <Text fontWeight="600" fontSize="xl" marginBottom="3"> Work Experience </Text>
+        {JSON.parse(workExperience).map((work: { company: string; jobTitle: string; description: string; }, index: number) => (
+          <Box marginBottom={index === JSON.parse(workExperience).length - 1 ? '0' : '10'}>
+            <Text marginBottom="2"> {work.company} - {work.jobTitle}</Text>
             <Text> {work.description} </Text>
           </Box>
         ))}
@@ -201,7 +214,6 @@ function UserDetails(props: UserDetailsProps) {
         </Box>
       </SimpleGrid>
     </Flex>
-
   )
 }
 export default UserDetails

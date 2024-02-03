@@ -93,13 +93,13 @@ function UsersListMobile(props: Props) {
     <Box marginX="4">
       <Accordion allowMultiple>
         {users.map((user) => (
-          <AccordionItem marginBottom="8" borderColor="white" boxShadow="md">
+          <AccordionItem marginBottom="8" borderColor="white" boxShadow="md" borderRadius="10">
             {({ isExpanded }) => {
               const bgColor = isExpanded ? 'primary.800' : 'white'
               const textColor = isExpanded ? 'white' : 'black'
               return (
                 <>
-                  <AccordionButton paddingY="4" background={bgColor} _hover={{ background: bgColor }} color={textColor}>
+                  <AccordionButton paddingY="4" background={bgColor} _hover={{ background: bgColor }} color={textColor} borderRadius="10">
                     <Flex justifyContent="space-between" alignItems="center" width="100%">
                       <HStack spacing="5">
                         {
@@ -122,7 +122,7 @@ function UsersListMobile(props: Props) {
                       )}
                     </Flex>
                   </AccordionButton>
-                  <AccordionPanel pb={4}>
+                  <AccordionPanel pb={4} background="white" borderRadius="10">
                     <UserDetails
                       user={user}
                     />
