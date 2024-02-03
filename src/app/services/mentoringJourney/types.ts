@@ -31,3 +31,20 @@ export interface MentoringJourney {
 export interface MentoringJourneysResponse {
   mentoringJourneysAssigned: MentoringJourney[]
 }
+
+export interface MentoringJourneyDetailsResponse {
+  mentorId: number,
+  mentee: {
+    menteeId: number,
+    firstName: string,
+    lastName: string,
+    profileImgUrl: string
+  },
+  mentoringJourneyId: number,
+  title: string,
+  totalSessionsCompleted: number,
+  totalCompletedHours: number,
+  startDate: string,
+  endDate: string,
+  description: string
+}

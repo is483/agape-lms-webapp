@@ -1,5 +1,8 @@
+export { default as BackButton } from './BackButton'
 export { default as Container } from './Container'
 export { default as ControlledSelect } from './ControlledSelect/ControlledSelect'
 export { default as ControlledTextInput } from './ControlledTextInput'
 export { default as Icon } from './Icon'
+export { default as InfographicItem } from './InfographicItem'
 export { default as Link } from './Link'
+export { default as ProfileIcon } from './ProfileIcon'

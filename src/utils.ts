@@ -1,6 +1,6 @@
 export const deepCopy = (obj: object) => JSON.parse(JSON.stringify(obj))
 
-export function formatDate(dateString: string) {
+export function formatDateInput(dateString: string) {
   const date = new Date(dateString)
   const year = date.getFullYear()
   const month = (date.getMonth() + 1).toString().padStart(2, '0')
@@ -17,4 +17,8 @@ export function clearErrors(obj: any) {
       clearErrors(obj[key])
     }
   })
+}
+
+export function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }

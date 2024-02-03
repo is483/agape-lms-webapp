@@ -2,7 +2,7 @@ import {
   Text, Flex, Image, Circle, HStack, Box, SimpleGrid, Divider, Hide,
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
-import { Icon } from '../../components'
+import { Icon, ProfileIcon } from '../../components'
 import useBreakpoint from '../../hooks/useBreakpoint'
 
 interface UserDetailsProps {
@@ -32,15 +32,7 @@ function UserDetails(props: UserDetailsProps) {
     <Flex flexDirection="column" minHeight="100vh" wrap="wrap" maxWidth="100%">
       <Hide below="sm">
         <HStack spacing={isMdUp ? '20' : '10'} marginBottom="10">
-          {
-            profileImgURL
-              ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width={['20px', null, null, '120px']} height={['70px', null, null, '120px']} />
-              : (
-                <Circle size="120px" bg="secondary.100">
-                  <Icon name="person" color="secondary.300" fontSize="80px" />
-                </Circle>
-              )
-          }
+          <ProfileIcon imgUrl={profileImgURL} width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} iconProps={{ fontSize: ['50px', null, null, '80px'] }} />
           <Text fontSize={isMdUp ? '4xl' : '2xl'}>
             {firstName} {lastName}
           </Text>

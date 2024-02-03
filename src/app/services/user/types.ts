@@ -105,6 +105,7 @@ export interface OnboardingResponse {
 
 export interface User {
   userInformationId: number
+  // TODO: This is supposed to be for generic user. not just mentee
   menteeId: number
   firstName: string
   lastName: string

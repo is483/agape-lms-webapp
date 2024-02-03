@@ -1,8 +1,10 @@
 import {
-  Box, Button, Circle, Flex, FlexProps, Tab, TabList, TabPanel, TabPanels, TableContainer, Tabs, Text,
-  Table, Thead, Tbody, Tr, Th, Td, Image, Badge, Spinner,
+  Button, Flex, Tab, TabList, TabPanel, TabPanels, TableContainer, Tabs, Text,
+  Table, Thead, Tbody, Tr, Th, Td, Badge, Spinner,
 } from '@chakra-ui/react'
-import { Container, Icon, Link } from '../../components'
+import {
+  Container, InfographicItem, Link, ProfileIcon,
+} from '../../components'
 import paths from '../../paths'
 import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { MentoringJourney } from '../../app/services/mentoringJourney/types'
@@ -74,31 +76,6 @@ function MentoringJourneys() {
   )
 }
 
-interface InfographicItemProps extends FlexProps {
-  amount: string | number
-  title: string
-  iconName: string
-}
-
-function InfographicItem(props: InfographicItemProps) {
-  const {
-    amount, title, iconName, ...flexProps
-  } = props
-  return (
-    <Flex gap="4" align="center" {...flexProps}>
-      <Box>
-        <Circle size={['40px', null, null, '55px']} bg="red.100">
-          <Icon color="red.700" fontSize={['xl', null, null, '3xl']} name={iconName} />
-        </Circle>
-      </Box>
-      <Box>
-        <Text fontWeight="600">{title}</Text>
-        <Text fontSize={['xl', null, null, '2xl']} color="red.500" lineHeight="1.25" fontWeight="600">{amount}</Text>
-      </Box>
-    </Flex>
-  )
-}
-
 interface MentoringJourneyTableProps {
   type: MentoringJourneyStatus
   data: MentoringJourney[]
@@ -138,15 +115,7 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
               <Tr key={mentoringJourneyId}>
                 <Td>
                   <Flex gap="2" align="center">
-                    {
-                      profileImgURL
-                        ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="24px" height="24px" />
-                        : (
-                          <Circle size="24px" bg="secondary.100">
-                            <Icon name="person" color="secondary.300" fontSize="20px" />
-                          </Circle>
-                        )
-                    }
+                    <ProfileIcon imgUrl={profileImgURL} width="24px" height="24px" iconProps={{ fontSize: '20px' }} />
                     {fullName}
                   </Flex>
                 </Td>
@@ -161,7 +130,11 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
                       )
                   }
                 </Td>
-                <Td><Button>View Details</Button></Td>
+                <Td>
+                  <Link to={`${paths.MentoringJourneys.Details.subPath}/${mentoringJourneyId}`}>
+                    <Button>View Details</Button>
+                  </Link>
+                </Td>
               </Tr>
             )
           })}

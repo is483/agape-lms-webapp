@@ -6,7 +6,7 @@ import {
   UserRequest, UserResponse, UsersResponse, ValuesRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
-import { formatDate } from '../../../utils'
+import { formatDateInput } from '../../../utils'
 import { transformGender } from './utils'
 import { Role } from '../../types'
 
@@ -21,7 +21,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
         const transformedResponse: any = { ...response?.profile }
         transformedResponse.gender = transformGender(response.profile.gender) ?? ''
         transformedResponse.profileImgUrl = response.profile.profileImgURL ?? ''
-        transformedResponse.dateOfBirth = formatDate(response.profile.dateOfBirth) ?? ''
+        transformedResponse.dateOfBirth = formatDateInput(response.profile.dateOfBirth) ?? ''
         transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{}]
         transformedResponse.skills = response.profile.skills?.split(', ') ?? ['']
         transformedResponse.personalValues = response.profile.personalValues?.split(', ') ?? ['']
