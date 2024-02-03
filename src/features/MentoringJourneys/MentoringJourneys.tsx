@@ -1,9 +1,9 @@
 import {
-  Button, Circle, Flex, Tab, TabList, TabPanel, TabPanels, TableContainer, Tabs, Text,
-  Table, Thead, Tbody, Tr, Th, Td, Image, Badge, Spinner,
+  Button, Flex, Tab, TabList, TabPanel, TabPanels, TableContainer, Tabs, Text,
+  Table, Thead, Tbody, Tr, Th, Td, Badge, Spinner,
 } from '@chakra-ui/react'
 import {
-  Container, Icon, InfographicItem, Link, ProfileIcon,
+  Container, InfographicItem, Link, ProfileIcon,
 } from '../../components'
 import paths from '../../paths'
 import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'

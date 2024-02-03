@@ -2,6 +2,7 @@ import {
   Box, Card, Circle, Flex, Text, Image, HStack, Divider, Accordion, AccordionButton, AccordionItem, AccordionPanel, Hide,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import { User } from '../../app/services/user/types'
 import UserDetails from './UserDetails'
@@ -38,16 +39,22 @@ function UsersList(props: UsersListProps) {
 function UsersListDesktop(props: Props) {
   const { users } = props
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
-
+  const { userId } = useParams()
   const handleSelectedUser = (user: User) => {
     setSelectedUser(user)
   }
 
   useEffect(() => {
-    if (users.length > 0) {
+    // TODO: fix logic so this works across different user types
+    if (userId) {
+      const user = users.find((user) => user.menteeId === Number(userId))
+      if (user) {
+        setSelectedUser(user)
+      }
+    } else if (users.length > 0) {
       setSelectedUser(users[0])
     }
-  }, [users])
+  }, [users, userId])
 
   return (
     <Flex minHeight="100vh">

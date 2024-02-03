@@ -33,6 +33,7 @@ function AppLayout() {
               <Route path={paths.MentoringJourneys.Details.fullPath} element={<MentoringJourneyDetails />} />
               <Route path={paths.MentoringJourneys.Create} element={<CreateMentoringJourney />} />
               <Route path={paths.AssignedMentees} element={<AssignedMentees />} />
+              <Route path={`${paths.AssignedMentees}/:userId`} element={<AssignedMentees />} />
             </Routes>
           )}
           {role === 'Mentee' && (
