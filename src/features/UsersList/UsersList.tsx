@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import useBreakpoint from '../../hooks/useBreakpoint'
 import { User } from '../../app/services/user/types'
 import UserDetails from './UserDetails'
-import { Icon } from '../../components'
+import { Icon, ProfileIcon } from '../../components'
 
 interface UsersListProps {
   title: string
@@ -67,15 +67,7 @@ function UsersListDesktop(props: Props) {
           return (
             <Card padding="3" marginBottom="8" boxShadow="md" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
               <HStack spacing="8">
-                {
-                  profileImgURL
-                    ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="55px" height="55px" />
-                    : (
-                      <Circle size="55px" bg="secondary.100">
-                        <Icon name="person" color="secondary.300" fontSize="30px" />
-                      </Circle>
-                    )
-                }
+                <ProfileIcon imgUrl={profileImgURL} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
                 <Text fontSize="lg">{firstName} {lastName}</Text>
               </HStack>
             </Card>
