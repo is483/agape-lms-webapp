@@ -7,7 +7,6 @@ import paths from '../../paths'
 import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { MentoringJourney } from '../../app/services/mentoringJourney/types'
 import { MILESTONES } from './CreateMentoringJourney/redux/constants'
-import useWindowSize from '../../hooks/useWindowSize'
 
 enum MentoringJourneyStatus {
   ONGOING, PAST
@@ -107,11 +106,9 @@ interface MentoringJourneyTableProps {
 
 function MentoringJourneyTable(props: MentoringJourneyTableProps) {
   const { type, data } = props
-  const [x] = useWindowSize()
-  const width = `${x - 379}px`
 
   return (
-    <TableContainer whiteSpace="unset" width={['100%', null, width, '100%']}>
+    <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
