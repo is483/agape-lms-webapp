@@ -75,7 +75,6 @@ function Interests(props: Props) {
     })
   }
   const handleSave = async () => {
-    setErrors(defaultErrors)
     const newErrors = deepCopy(defaultErrors)
     let hasErrors = false
     interests.forEach((interest, index) => {
