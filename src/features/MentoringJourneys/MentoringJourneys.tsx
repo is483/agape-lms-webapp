@@ -164,7 +164,11 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
                       )
                   }
                 </Td>
-                <Td><Button>View Details</Button></Td>
+                <Td>
+                  <Link to={`${paths.MentoringJourneys.Details.subPath}/${mentoringJourneyId}`}>
+                    <Button>View Details</Button>
+                  </Link>
+                </Td>
               </Tr>
             )
           })}
