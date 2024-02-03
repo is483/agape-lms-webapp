@@ -6,6 +6,7 @@ import MilestoneCard from './MilestoneCard'
 import { GoalFormModal, MilestoneInfoModal } from './Modals'
 import { useAppDispatch } from '../../hooks'
 import { setGoalIndex, setMilestoneIndex } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
+import { formatDate } from '../../utils'
 
 interface MilestonesBoardProps {
   data: Milestone[]
@@ -13,7 +14,6 @@ interface MilestonesBoardProps {
   isEditable: boolean
 }
 
-const formatDate = (date: Date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 const colors = ['blue.600', 'green.600', 'yellow.600', 'orange.600', 'red.600', 'purple.600']
 
 function MilestonesBoard(props: MilestonesBoardProps) {
