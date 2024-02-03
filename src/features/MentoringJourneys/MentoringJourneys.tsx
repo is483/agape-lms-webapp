@@ -1,8 +1,10 @@
 import {
-  Box, Button, Circle, Flex, FlexProps, Tab, TabList, TabPanel, TabPanels, TableContainer, Tabs, Text,
+  Button, Circle, Flex, Tab, TabList, TabPanel, TabPanels, TableContainer, Tabs, Text,
   Table, Thead, Tbody, Tr, Th, Td, Image, Badge, Spinner,
 } from '@chakra-ui/react'
-import { Container, Icon, Link } from '../../components'
+import {
+  Container, Icon, InfographicItem, Link,
+} from '../../components'
 import paths from '../../paths'
 import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { MentoringJourney } from '../../app/services/mentoringJourney/types'
@@ -72,31 +74,6 @@ function MentoringJourneys() {
         </Tabs>
       </Container>
     </>
-  )
-}
-
-interface InfographicItemProps extends FlexProps {
-  amount: string | number
-  title: string
-  iconName: string
-}
-
-function InfographicItem(props: InfographicItemProps) {
-  const {
-    amount, title, iconName, ...flexProps
-  } = props
-  return (
-    <Flex gap="4" align="center" {...flexProps}>
-      <Box>
-        <Circle size={['40px', null, null, '55px']} bg="red.100">
-          <Icon color="red.700" fontSize={['xl', null, null, '3xl']} name={iconName} />
-        </Circle>
-      </Box>
-      <Box>
-        <Text fontWeight="600">{title}</Text>
-        <Text fontSize={['xl', null, null, '2xl']} color="red.500" lineHeight="1.25" fontWeight="600">{amount}</Text>
-      </Box>
-    </Flex>
   )
 }
 
