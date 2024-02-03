@@ -8,7 +8,7 @@ import Overview from './Overview'
 
 function MentoringJourneyDetails() {
   return (
-    <Container position="relative">
+    <Container position="relative" minH="calc(100vh - 34px)">
       <BackButton path={paths.MentoringJourneys.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
       <Tabs mt="12" colorScheme="red">
