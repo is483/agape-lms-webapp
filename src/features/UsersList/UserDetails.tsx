@@ -17,16 +17,16 @@ function UserDetails(props: UserDetailsProps) {
   } = props
 
   function mapUserDetails(userDetails: string) {
-    const stringArr = userDetails.split(',').map((detail: string) => detail.trim())
+    const stringArr = userDetails?.split(',').map((detail: string) => detail.trim())
     return stringArr
   }
 
   const formattedDateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
   const isMdUp = useBreakpoint('md')
 
-  const validWorkExperiences = JSON.parse(workExperience)
-    .filter((work: { company: string; jobTitle: string; description: string }) => work.company.length && work.jobTitle.length && work.description.length,
-    )
+  const validWorkExperiences = JSON.parse(workExperience)?.filter(
+    (work: { company: string; jobTitle: string; description: string }) => (work.company.length && work.jobTitle.length && work.description.length),
+  ) ?? []
 
   return (
     <Flex flexDirection="column" minHeight="100vh" wrap="wrap" maxWidth="100%">
@@ -108,7 +108,7 @@ function UserDetails(props: UserDetailsProps) {
 
         <Box>
           <Text fontWeight="600" fontSize="xl" marginBottom="5">Skills Sought</Text>
-          {mapUserDetails(skills).map((skill) => (
+          {mapUserDetails(skills)?.map((skill) => (
             <Box
               borderRadius="10px"
               border="1px"
@@ -127,7 +127,7 @@ function UserDetails(props: UserDetailsProps) {
 
         <Box>
           <Text fontWeight="600" fontSize="xl" marginBottom="5">Personal Values</Text>
-          {mapUserDetails(personalValues).map((value) => (
+          {mapUserDetails(personalValues)?.map((value) => (
             <Box
               borderRadius="10px"
               border="1px"
@@ -160,7 +160,7 @@ function UserDetails(props: UserDetailsProps) {
 
         <Box>
           <Text fontWeight="600" fontSize="xl" marginBottom="5">Preferred Meeting Days</Text>
-          {mapUserDetails(preferredMeetingDays).map((meetingDay) => (
+          {mapUserDetails(preferredMeetingDays)?.map((meetingDay) => (
             <Box
               borderRadius="10px"
               border="1px"
@@ -184,7 +184,7 @@ function UserDetails(props: UserDetailsProps) {
 
         <Box>
           <Text fontWeight="600" fontSize="xl" marginBottom="5">Challenges Faced</Text>
-          {mapUserDetails(challenges).map((challenge) => (
+          {mapUserDetails(challenges)?.map((challenge) => (
             <Box
               borderRadius="10px"
               border="1px"
@@ -203,7 +203,7 @@ function UserDetails(props: UserDetailsProps) {
 
         <Box>
           <Text fontWeight="600" fontSize="xl" marginBottom="5">Interests</Text>
-          {mapUserDetails(interests).map((interest) => (
+          {mapUserDetails(interests)?.map((interest) => (
             <Box
               borderRadius="10px"
               border="1px"
