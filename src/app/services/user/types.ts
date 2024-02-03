@@ -111,6 +111,7 @@ export interface User {
   dateOfBirth: string
   phoneNumber: string
   gender: string
+  email: string
   profileImgURL: string
   skills: string
   personalValues: string

@@ -173,7 +173,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
 
     getAssignedMentees: build.query<UsersResponse, null>({
       query: () => ({
-        url: 'mentor/mentoring-journeys/assigned-mentees',
+        url: 'mentor/mentoring-journey/assigned-mentees',
       }),
       onQueryStarted,
     }),

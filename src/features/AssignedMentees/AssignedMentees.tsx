@@ -23,6 +23,7 @@ function AssignedMentees() {
       description="Get to know more about your assigned mentees"
       users={isLoading ? [] : data?.assignedMentees ?? []}
     />
+
   )
 }
 

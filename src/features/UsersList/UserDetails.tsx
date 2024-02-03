@@ -1,5 +1,5 @@
 import {
-  Text, Flex, Image, Circle, HStack, Box, SimpleGrid, Divider,
+  Text, Flex, Image, Circle, HStack, Box, SimpleGrid, Divider, Hide,
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon } from '../../components'
@@ -12,7 +12,7 @@ interface UserDetailsProps {
 function UserDetails(props: UserDetailsProps) {
   const {
     user: {
-      firstName, lastName, dateOfBirth, gender, phoneNumber, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations,
+      firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations,
     },
   } = props
 
@@ -26,21 +26,23 @@ function UserDetails(props: UserDetailsProps) {
 
   return (
     <Flex flexDirection="column" minHeight="100vh">
-      <HStack spacing={isMdUp ? '20' : '10'} marginBottom="10">
-        {
-          profileImgURL
-            ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} />
-            : (
-              <Circle size="140px" bg="secondary.100">
-                <Icon name="person" color="secondary.300" fontSize="100px" />
-              </Circle>
-            )
-        }
-        <Text fontSize={isMdUp ? '4xl' : '2xl'}>
-          {firstName} {lastName}
-        </Text>
-      </HStack>
-      <SimpleGrid columns={[1, 2, null, null, 4]} marginBottom="10" spacingY={['20px', null, null, '30px']}>
+      <Hide below="md">
+        <HStack spacing={isMdUp ? '20' : '10'} marginBottom="10">
+          {
+            profileImgURL
+              ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width={['20px', null, null, '120px']} height={['70px', null, null, '120px']} />
+              : (
+                <Circle size="120px" bg="secondary.100">
+                  <Icon name="person" color="secondary.300" fontSize="80px" />
+                </Circle>
+              )
+          }
+          <Text fontSize={isMdUp ? '4xl' : '2xl'}>
+            {firstName} {lastName}
+          </Text>
+        </HStack>
+      </Hide>
+      <SimpleGrid columns={[1, 2, null, null, 4]} marginBottom="10" spacingY={['20px', null, null, '30px']} marginTop={['20px', null, null, null]}>
         <HStack>
           <Icon name="calendar_month" color="secondary.300" fontSize="30px" />
           <Text color="secondary.300" fontSize="lg">{formattedDateOfBirth}</Text>
@@ -51,7 +53,7 @@ function UserDetails(props: UserDetailsProps) {
         </HStack>
         <HStack>
           <Icon name="email" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg">Placeholder</Text>
+          <Text color="secondary.300" fontSize="lg">{email}</Text>
         </HStack>
         <HStack>
           <Icon name="phone_iphone" color="secondary.300" fontSize="30px" />
