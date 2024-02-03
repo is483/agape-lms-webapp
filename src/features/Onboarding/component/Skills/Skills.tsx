@@ -81,8 +81,8 @@ function Skills(props: Props) {
         hasErrors = true
       }
     })
+    setErrors(newErrors)
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateSkills = role === 'Mentor' ? updateMentorSkills : updateMenteeSkills

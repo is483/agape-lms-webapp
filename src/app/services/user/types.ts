@@ -104,13 +104,14 @@ export interface OnboardingResponse {
 }
 
 export interface User {
-  userInformationId: number,
-  menteeId: number,
-  firstName: string,
-  lastName: string,
+  userInformationId: number
+  menteeId: number
+  firstName: string
+  lastName: string
   dateOfBirth: string
   phoneNumber: string
   gender: string
+  email: string
   profileImgURL: string
   skills: string
   personalValues: string
@@ -123,7 +124,7 @@ export interface User {
   preferredMentoringApproach?: string
   // Only Mentee
   expectations?: string
-  careerAspirations?: string
+  careerAspiration?: string
 }
 
 export interface UsersResponse {
