@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
+import Overview from './Overview'
 
 function MentoringJourneyDetails() {
   return (
@@ -18,7 +19,7 @@ function MentoringJourneyDetails() {
         </TabList>
         <TabPanels>
           <TabPanel px="0">
-            Overview
+            <Overview />
           </TabPanel>
           <TabPanel px="0">
             Milestones

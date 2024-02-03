@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice'
-import { CreateMentoringJourneyRequest, MentoringJourneysResponse } from './types'
+import { CreateMentoringJourneyRequest, MentoringJourneyDetailsResponse, MentoringJourneysResponse } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiMentoringJourneySlice = apiSlice.injectEndpoints({
@@ -20,8 +20,18 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    getMentoringJourneyOverview: build.query<MentoringJourneyDetailsResponse, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `mentor/mentoring-journey/details/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useCreateMentoringJourneyMutation, useGetAllMentoringJourneyQuery } = apiMentoringJourneySlice
+export const {
+  useCreateMentoringJourneyMutation, useGetAllMentoringJourneyQuery,
+  useGetMentoringJourneyOverviewQuery,
+} = apiMentoringJourneySlice
