@@ -138,7 +138,7 @@ function MentoringStyle(props: Props) {
         }
       })
     } else
-      if (!expectations) {
+      if (!expectations.trim()) {
         (newErrors as MenteeErrors).expectations = 'Expectations required'
         hasErrors = true
       }

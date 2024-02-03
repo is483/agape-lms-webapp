@@ -10,6 +10,7 @@ import { useUpdateMenteeInfoMutation, useUpdateMentorInfoMutation } from '../../
 import { InfoRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { getAuth } from '../../../../app/redux/selectors'
 import { useAppSelector } from '../../../../hooks'
+import { deepCopy } from '../../../../utils'
 
 interface Props extends FlexProps {
   handleNext?: () => void
@@ -118,15 +119,12 @@ function PersonalInformation(props: Props) {
   }
 
   const handleSave = async () => {
-    const newErrors = {
-      ...defaultErrors,
-    }
-
-    if (!firstName) {
+    const newErrors = deepCopy(defaultErrors)
+    if (!firstName.trim()) {
       newErrors.firstName = 'First name is required'
     }
 
-    if (!lastName) {
+    if (!lastName.trim()) {
       newErrors.lastName = 'Last name is required'
     }
     if (!dateOfBirth) {
@@ -135,12 +133,12 @@ function PersonalInformation(props: Props) {
     if (!gender) {
       newErrors.gender = 'Gender is required'
     }
-    if (phoneNumber.length < 8 || phoneNumber.length > 8) {
+    if (phoneNumber.trim().length < 8 || phoneNumber.trim().length > 8) {
       newErrors.phoneNumber = 'Please enter a valid 8 digit phone number'
     }
+    setErrors(newErrors)
     const hasErrors = Object.values(newErrors).some((error) => error !== '')
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateInfo = role === 'Mentor' ? updateMentorInfo : updateMenteeInfo

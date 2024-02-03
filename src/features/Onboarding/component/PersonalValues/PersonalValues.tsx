@@ -83,8 +83,8 @@ function PersonalValues(props: Props) {
         hasErrors = true
       }
     })
+    setErrors(newErrors)
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateValues = role === 'Mentor' ? updateMentorValues : updateMenteeValues

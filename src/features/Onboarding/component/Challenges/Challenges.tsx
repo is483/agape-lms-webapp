@@ -85,8 +85,8 @@ function Challenges(props: Props) {
         hasErrors = true
       }
     })
+    setErrors(newErrors)
     if (hasErrors) {
-      setErrors(newErrors)
       return
     }
     const updateChallenges = role === 'Mentor' ? updateMentorChallenges : updateMenteeChallenges
