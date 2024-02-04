@@ -1,16 +1,22 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import {
-  Box, Flex, Skeleton, SkeletonCircle,
-  SkeletonText, Text,
+  Box, Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton, SkeletonCircle,
+  SkeletonText, Text, Textarea, useDisclosure, useToast,
 } from '@chakra-ui/react'
-import { useGetMentoringJourneyOverviewQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
-import { InfographicItem, ProfileIcon } from '../../../components'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
+import {
+  ControlledTextInput, Icon,
+  InfographicItem, ProfileIcon,
+} from '../../../components'
 import { formatDate } from '../../../utils'
 import paths from '../../../paths'
+import { MentoringJourneyDetailsResponse, UpdateMentoringJourneyRequest } from '../../../app/services/mentoringJourney/types'
 
 function Overview() {
   const { mentoringJourneyId } = useParams()
   const { data, isLoading } = useGetMentoringJourneyOverviewQuery(mentoringJourneyId!)
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const navigate = useNavigate()
 
   const mentee = data?.mentee
@@ -28,9 +34,15 @@ function Overview() {
 
   return (
     <>
-      <Text fontWeight="700" fontSize={['lg', null, null, 'xl']}>
-        Career Transformation with {data?.mentee.firstName}
-      </Text>
+      <Flex justify="space-between">
+        <OverviewModalEditForm data={data} onClose={onClose} isOpen={isOpen} />
+        <Text fontWeight="700" fontSize={['lg', null, null, 'xl']}>
+          Career Transformation with {data?.mentee.firstName}
+        </Text>
+        <Button onClick={onOpen} px="0" rounded="full">
+          <Icon name="edit" fontSize="24px" />
+        </Button>
+      </Flex>
       <Text fontSize="sm" color="secondary.400">
         View all necessary information about your mentoring journey
       </Text>
@@ -95,6 +107,96 @@ function OverviewSkeleton() {
       </Flex>
       <SkeletonText mt="5" noOfLines={4} spacing="2" skeletonHeight="4" />
     </>
+  )
+}
+
+interface OverviewModalEditFormProps {
+  isOpen: boolean
+  onClose: () => void
+  data: MentoringJourneyDetailsResponse | undefined
+}
+
+const defaultErrors = () => ({
+  title: '',
+  description: '',
+})
+
+function OverviewModalEditForm(props: OverviewModalEditFormProps) {
+  const { isOpen, onClose, data } = props
+  const [errors, setErrors] = useState(defaultErrors())
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [updateMentoringJourney] = useUpdateMentoringJourneyOverviewMutation()
+  const toast = useToast()
+
+  useEffect(() => {
+    if (!data) return
+    setTitle(data.title)
+    setDescription(data.description)
+  }, [data])
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+  }
+
+  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(e.target.value)
+  }
+
+  const handleSave = () => {
+    if (!data) return
+    const newErrors = defaultErrors()
+    let hasErrors: boolean = false
+    if (!title.trim().length) {
+      hasErrors = true
+      newErrors.title = 'Title required'
+    }
+    if (!description.trim().length) {
+      hasErrors = true
+      newErrors.description = 'Description required'
+    }
+    setErrors(newErrors)
+    if (hasErrors) return
+    const mentoringJourneyDetails: UpdateMentoringJourneyRequest = {
+      mentoringJourneyId: data.mentoringJourneyId.toString(),
+      description,
+      title,
+    }
+    updateMentoringJourney(mentoringJourneyDetails).unwrap()
+    toast({
+      title: 'Mentoring journey',
+      description: 'Mentoring journey details successfully updated',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+      position: 'bottom-right',
+    })
+    onClose()
+  }
+
+  return (
+    <Modal size="xl" onClose={onClose} isOpen={isOpen} isCentered>
+      <ModalOverlay />
+      <ModalContent mx="4">
+        <ModalHeader fontWeight="700" fontSize="lg">Edit Mentoring Journey</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb="4" pt="8">
+          <ControlledTextInput error={errors.title} label="Title" type="text" inputProps={{ value: title, onChange: handleTitleChange }} />
+          <Text mt="6">Description</Text>
+          <Textarea
+            borderColor={errors.description ? 'red.600' : 'inherit'}
+            borderWidth={errors.description ? '2px' : '1px'}
+            value={description}
+            onChange={handleDescriptionChange}
+          />
+          {!!errors.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.description}</Text>}
+        </ModalBody>
+        <ModalFooter gap="4">
+          <Button colorScheme="red" variant="outline" onClick={onClose}>Cancel</Button>
+          <Button colorScheme="red" onClick={handleSave}>Save</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   )
 }
 

@@ -48,3 +48,9 @@ export interface MentoringJourneyDetailsResponse {
   endDate: string,
   description: string
 }
+
+export interface UpdateMentoringJourneyRequest {
+  mentoringJourneyId: string
+  title: string
+  description: string
+}
