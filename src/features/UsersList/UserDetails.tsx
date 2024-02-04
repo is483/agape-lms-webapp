@@ -1,9 +1,8 @@
 import {
-  Text, Flex, Image, Circle, HStack, Box, SimpleGrid, Divider, Hide,
+  Text, Flex, HStack, Box, SimpleGrid, Divider, Hide, Badge,
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon, ProfileIcon } from '../../components'
-import useBreakpoint from '../../hooks/useBreakpoint'
 
 interface UserDetailsProps {
   user: User
@@ -22,7 +21,6 @@ function UserDetails(props: UserDetailsProps) {
   }
 
   const formattedDateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-  const isMdUp = useBreakpoint('md')
 
   const validWorkExperiences = JSON.parse(workExperience)?.filter(
     (work: { company: string; jobTitle: string; description: string }) => (work.company.length && work.jobTitle.length && work.description.length),
@@ -30,10 +28,10 @@ function UserDetails(props: UserDetailsProps) {
 
   return (
     <Flex flexDirection="column" minHeight="100vh" wrap="wrap" maxWidth="100%">
-      <Hide below="sm">
-        <HStack spacing={isMdUp ? '20' : '10'} marginBottom="10">
+      <Hide below="lg">
+        <HStack spacing={[4, null, null, 8]} marginBottom="10">
           <ProfileIcon imgUrl={profileImgURL} width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} iconProps={{ fontSize: ['50px', null, null, '80px'] }} />
-          <Text fontSize={isMdUp ? '4xl' : '2xl'}>
+          <Text fontSize={['lg', null, 'xl']}>
             {firstName} {lastName}
           </Text>
         </HStack>
@@ -47,30 +45,30 @@ function UserDetails(props: UserDetailsProps) {
       >
         <HStack marginBottom={['4', null, null, '0']} marginRight="5">
           <Icon name="calendar_month" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg" isTruncated>
+          <Text color="secondary.300" fontSize="md" isTruncated>
             {formattedDateOfBirth}
           </Text>
         </HStack>
         <HStack marginBottom={['4', null, null, '0']} marginRight="5">
           <Icon name={gender === 'M' ? 'man' : 'woman'} color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg" isTruncated>
+          <Text color="secondary.300" fontSize="md" isTruncated>
             {gender === 'M' ? 'Male' : 'Female'}
           </Text>
         </HStack>
         <HStack marginBottom={['4', null, null, '0']} marginRight="5">
           <Icon name="email" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg" isTruncated>
+          <Text color="secondary.300" fontSize="md" isTruncated>
             {email}
           </Text>
         </HStack>
         <HStack>
           <Icon name="phone_iphone" color="secondary.300" fontSize="30px" />
-          <Text color="secondary.300" fontSize="lg" isTruncated>
+          <Text color="secondary.300" fontSize="md" isTruncated>
             {phoneNumber}
           </Text>
         </HStack>
       </Flex>
-      <Divider orientation="horizontal" marginBottom="10" />
+      <Divider orientation="horizontal" marginBottom="4" />
       <Box marginBottom="10">
         <Text fontWeight="600" fontSize="xl" marginBottom="3"> Work Experience </Text>
         {validWorkExperiences.length ? validWorkExperiences.map((work: { company: string; jobTitle: string; description: string }, index: number) => (
@@ -82,133 +80,87 @@ function UserDetails(props: UserDetailsProps) {
           </Box>
         )) : <Text>No work experience</Text>}
       </Box>
-      <Divider orientation="horizontal" marginBottom="10" />
-      <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="10">
+      <Divider orientation="horizontal" marginBottom="4" />
+      <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="8">
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Career Aspirations</Text>
-          <Box
-            borderRadius="10px"
-            border="1px"
-            borderColor="red.500"
-            color="red.500"
-            paddingY="2"
-            paddingX="5"
-            display="inline-block"
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
+          <Badge
+            colorScheme="red"
+            mr="2"
           > {careerAspiration}
-          </Box>
+          </Badge>
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Skills Sought</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Skills Sought</Text>
           {mapUserDetails(skills)?.map((skill) => (
-            <Box
-              borderRadius="10px"
-              border="1px"
-              borderColor="red.500"
-              color="red.500"
-              py="2"
-              px="5"
-              display="inline-block"
-              marginRight="2"
-              marginBottom="2"
+            <Badge
+              colorScheme="red"
             >
               {skill}
-            </Box>
+            </Badge>
           ))}
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Personal Values</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Personal Values</Text>
           {mapUserDetails(personalValues)?.map((value) => (
-            <Box
-              borderRadius="10px"
-              border="1px"
-              borderColor="red.500"
-              color="red.500"
-              py="2"
-              px="5"
-              display="inline-block"
-              marginRight="2"
-              marginBottom="2"
+            <Badge
+              colorScheme="red"
+              mr="2"
             >
               {value}
-            </Box>
+            </Badge>
           ))}
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Preferred Communication</Text>
-          <Box
-            borderRadius="10px"
-            border="1px"
-            borderColor="red.500"
-            color="red.500"
-            paddingY="2"
-            paddingX="5"
-            display="inline-block"
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Preferred Communication</Text>
+          <Badge
+            colorScheme="red"
+            mr="2"
           > {preferredCommunication}
-          </Box>
+          </Badge>
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Preferred Meeting Days</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Preferred Meeting Days</Text>
           {mapUserDetails(preferredMeetingDays)?.map((meetingDay) => (
-            <Box
-              borderRadius="10px"
-              border="1px"
-              borderColor="red.500"
-              color="red.500"
-              py="2"
-              px="5"
-              display="inline-block"
-              marginRight="2"
-              marginBottom="2"
+            <Badge
+              colorScheme="red"
+              mr="2"
             >
               {meetingDay}
-            </Box>
+            </Badge>
           ))}
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Mentoring Expectations</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
           <Text> {expectations}</Text>
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Challenges Faced</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Challenges Faced</Text>
           {mapUserDetails(challenges)?.map((challenge) => (
-            <Box
-              borderRadius="10px"
-              border="1px"
-              borderColor="red.500"
-              color="red.500"
-              py="2"
-              px="5"
-              display="inline-block"
-              marginRight="2"
-              marginBottom="2"
+            <Badge
+              colorScheme="red"
+              mr="2"
             >
               {challenge}
-            </Box>
+            </Badge>
           ))}
         </Box>
 
         <Box>
-          <Text fontWeight="600" fontSize="xl" marginBottom="5">Interests</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">Interests</Text>
           {mapUserDetails(interests)?.map((interest) => (
-            <Box
-              borderRadius="10px"
-              border="1px"
-              borderColor="red.500"
-              color="red.500"
-              py="2"
-              px="5"
-              display="inline-block"
-              marginRight="2"
-              marginBottom="2"
+            <Badge
+              colorScheme="red"
+              mr="2"
             >
               {interest}
-            </Box>
+            </Badge>
           ))}
         </Box>
       </SimpleGrid>

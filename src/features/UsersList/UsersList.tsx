@@ -57,16 +57,16 @@ function UsersListDesktop(props: Props) {
   }, [users, userId])
 
   return (
-    <Flex minHeight="100vh">
-      <Box paddingRight="10" paddingTop="10" width="280px">
+    <Flex>
+      <Box paddingRight="4" paddingTop="4" width="280px">
         {users?.map((user: User) => {
           const {
             firstName, lastName, profileImgURL, userInformationId,
           } = user
           const isActive = userInformationId === selectedUser?.userInformationId
           return (
-            <Card padding="3" marginBottom="8" boxShadow="md" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
-              <HStack spacing="8">
+            <Card padding="3" marginBottom="4" boxShadow="md" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
+              <HStack spacing="4">
                 <ProfileIcon imgUrl={profileImgURL} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
                 <Text fontSize="lg">{firstName} {lastName}</Text>
               </HStack>
@@ -74,7 +74,7 @@ function UsersListDesktop(props: Props) {
           )
         })}
       </Box>
-      <Box flex="1" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="10">
+      <Box flex="1" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="8">
         {selectedUser && <UserDetails user={selectedUser} />}
       </Box>
     </Flex>
@@ -87,7 +87,7 @@ function UsersListMobile(props: Props) {
     <Box marginX="4">
       <Accordion allowMultiple>
         {users.map((user) => (
-          <AccordionItem marginBottom="8" borderColor="white" boxShadow="md" borderRadius="10">
+          <AccordionItem marginBottom="2" borderColor="white" boxShadow="md" borderRadius="10">
             {({ isExpanded }) => {
               const bgColor = isExpanded ? 'primary.800' : 'white'
               const textColor = isExpanded ? 'white' : 'black'
