@@ -18,4 +18,7 @@ export interface Milestone {
   milestoneStep: number
   reflection: string
   goals: Goal[]
+  startDate?: string
+  endDate?: string
+  status?: string
 }

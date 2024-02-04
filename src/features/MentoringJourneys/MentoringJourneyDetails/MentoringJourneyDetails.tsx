@@ -1,10 +1,12 @@
 import {
+  Box,
   Divider, Tab, TabList, TabPanel,
   TabPanels, Tabs,
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
 import Overview from './Overview'
+import Milestones from './Milestones'
 
 function MentoringJourneyDetails() {
   return (
@@ -22,7 +24,9 @@ function MentoringJourneyDetails() {
             <Overview />
           </TabPanel>
           <TabPanel px="0">
-            Milestones
+            <Box position="relative" maxW="100%">
+              <Milestones />
+            </Box>
           </TabPanel>
           <TabPanel px="0">
             Feedback
