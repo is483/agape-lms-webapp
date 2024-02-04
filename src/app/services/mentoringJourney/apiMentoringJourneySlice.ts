@@ -1,7 +1,7 @@
 import { apiSlice } from '../apiSlice'
 import {
   CreateMentoringJourneyRequest, MentoringJourneyDetailsResponse, MentoringJourneysResponse,
-  UpdateMentoringJourneyRequest,
+  UpdateMentoringJourneyRequest, MilestonesResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -43,7 +43,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       invalidatesTags: (_result, _error, request) => [{ type: 'MentoringJourney', id: request.mentoringJourneyId }],
       onQueryStarted,
     }),
-    getMilestones: build.query<MentoringJourneyDetailsResponse, string | number>({
+    getMilestones: build.query<MilestonesResponse, string | number>({
       query: (mentoringJourneyId) => ({
         url: `mentor/mentoring-journey/milestones/${mentoringJourneyId}`,
         method: 'GET',

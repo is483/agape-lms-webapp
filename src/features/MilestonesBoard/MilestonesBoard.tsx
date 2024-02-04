@@ -34,7 +34,7 @@ function MilestonesBoard(props: MilestonesBoardProps) {
   }
 
   return (
-    <Box background="blue.50" rounded="md" height="65vh" whiteSpace="nowrap" overflow="scroll" position="relative">
+    <Box background="blue.50" rounded="md" height="65vh" overflow="scroll" position="relative">
       <MilestoneInfoModal isModalOpen={isInfoModalOpen} onModalClose={onInfoModalClose} />
       <GoalFormModal isModalOpen={isGoalModalOpen} onModalClose={onGoalModalClose} />
       {data.map((milestone, index) => {
@@ -47,7 +47,7 @@ function MilestonesBoard(props: MilestonesBoardProps) {
         return (
           <MilestoneCard
             cardColor={colors[index]}
-            display="inline-block"
+            display={['block', null, 'inline-block']}
             milestone={milestone}
             milestoneIndex={index}
             dateStr={dateStr}

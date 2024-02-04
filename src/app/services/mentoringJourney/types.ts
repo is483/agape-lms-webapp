@@ -54,3 +54,9 @@ export interface UpdateMentoringJourneyRequest {
   title: string
   description: string
 }
+
+export interface MilestonesResponse {
+  outcome: string
+  outcomeDescription: string
+  milestones: Milestone[]
+}
