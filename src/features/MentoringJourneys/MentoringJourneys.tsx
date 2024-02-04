@@ -131,9 +131,11 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
                   }
                 </Td>
                 <Td>
-                  <Link to={`${paths.MentoringJourneys.Details.subPath}/${mentoringJourneyId}`}>
-                    <Button>View Details</Button>
-                  </Link>
+                  <Flex justify="end">
+                    <Link to={`${paths.MentoringJourneys.Details.subPath}/${mentoringJourneyId}`}>
+                      <Button>View Details</Button>
+                    </Link>
+                  </Flex>
                 </Td>
               </Tr>
             )
