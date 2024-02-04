@@ -22,7 +22,11 @@ const apiUserSlice = apiSlice.injectEndpoints({
         transformedResponse.gender = transformGender(response.profile.gender) ?? ''
         transformedResponse.profileImgUrl = response.profile.profileImgURL ?? ''
         transformedResponse.dateOfBirth = formatDateInput(response.profile.dateOfBirth) ?? ''
-        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{}]
+        transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{
+          jobTitle: '',
+          company: '',
+          description: '',
+        }]
         transformedResponse.skills = response.profile.skills?.split(', ') ?? ['']
         transformedResponse.personalValues = response.profile.personalValues?.split(', ') ?? ['']
         transformedResponse.preferredMeetingDays = response.profile.preferredMeetingDays?.split(', ').filter((day) => day !== '') ?? []
