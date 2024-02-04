@@ -43,6 +43,14 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       invalidatesTags: (_result, _error, request) => [{ type: 'MentoringJourney', id: request.mentoringJourneyId }],
       onQueryStarted,
     }),
+    getMilestones: build.query<MentoringJourneyDetailsResponse, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `mentor/mentoring-journey/milestones/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      providesTags: ['MentoringJourney'],
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -50,4 +58,5 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
 export const {
   useCreateMentoringJourneyMutation, useGetAllMentoringJourneyQuery,
   useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation,
+  useGetMilestonesQuery,
 } = apiMentoringJourneySlice

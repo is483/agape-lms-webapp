@@ -5,6 +5,7 @@ import {
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
 import Overview from './Overview'
+import Milestones from './Milestones'
 
 function MentoringJourneyDetails() {
   return (
@@ -22,7 +23,7 @@ function MentoringJourneyDetails() {
             <Overview />
           </TabPanel>
           <TabPanel px="0">
-            Milestones
+            <Milestones />
           </TabPanel>
           <TabPanel px="0">
             Feedback
