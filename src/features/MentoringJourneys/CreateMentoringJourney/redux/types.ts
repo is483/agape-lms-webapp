@@ -20,4 +20,5 @@ export interface Milestone {
   goals: Goal[]
   startDate?: string
   endDate?: string
+  status?: string
 }
