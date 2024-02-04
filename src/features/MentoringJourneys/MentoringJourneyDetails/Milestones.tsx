@@ -1,5 +1,7 @@
 import { useParams } from 'react-router-dom'
-import { Box, Flex, Progress, Text } from '@chakra-ui/react'
+import {
+  Box, Flex, Progress, Text,
+} from '@chakra-ui/react'
 import { useGetMilestonesQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { MilestonesBoard } from '../../MilestonesBoard'
 import { Icon } from '../../../components'
