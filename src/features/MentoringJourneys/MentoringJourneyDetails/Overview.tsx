@@ -1,17 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   Box, Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton, SkeletonCircle,
-  SkeletonText, Text, Textarea, useDisclosure,
+  SkeletonText, Text, Textarea, useDisclosure, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useGetMentoringJourneyOverviewQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
+import { useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import {
   ControlledTextInput, Icon,
   InfographicItem, ProfileIcon,
 } from '../../../components'
 import { formatDate } from '../../../utils'
 import paths from '../../../paths'
-import { MentoringJourneyDetailsResponse } from '../../../app/services/mentoringJourney/types'
+import { MentoringJourneyDetailsResponse, UpdateMentoringJourneyRequest } from '../../../app/services/mentoringJourney/types'
 
 function Overview() {
   const { mentoringJourneyId } = useParams()
@@ -126,6 +126,8 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
   const [errors, setErrors] = useState(defaultErrors())
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [updateMentoringJourney] = useUpdateMentoringJourneyOverviewMutation()
+  const toast = useToast()
 
   useEffect(() => {
     if (!data) return
@@ -142,6 +144,7 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
   }
 
   const handleSave = () => {
+    if (!data) return
     const newErrors = defaultErrors()
     let hasErrors: boolean = false
     if (!title.trim().length) {
@@ -154,13 +157,27 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
     }
     setErrors(newErrors)
     if (hasErrors) return
+    const mentoringJourneyDetails: UpdateMentoringJourneyRequest = {
+      mentoringJourneyId: data.mentoringJourneyId.toString(),
+      description,
+      title,
+    }
+    updateMentoringJourney(mentoringJourneyDetails).unwrap()
+    toast({
+      title: 'Mentoring journey',
+      description: 'Mentoring journey details successfully updated',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+      position: 'bottom-right',
+    })
     onClose()
   }
 
   return (
     <Modal size="xl" onClose={onClose} isOpen={isOpen} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent mx="4">
         <ModalHeader fontWeight="700" fontSize="lg">Edit Mentoring Journey</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb="4" pt="8">
@@ -173,7 +190,6 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
             onChange={handleDescriptionChange}
           />
           {!!errors.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.description}</Text>}
-
         </ModalBody>
         <ModalFooter gap="4">
           <Button colorScheme="red" variant="outline" onClick={onClose}>Cancel</Button>

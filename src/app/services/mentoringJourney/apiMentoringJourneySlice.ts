@@ -29,7 +29,9 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: `mentor/mentoring-journey/details/${mentoringJourneyId}`,
         method: 'GET',
       }),
-      providesTags: ['MentoringJourney'],
+      providesTags: (result) => (result
+        ? [{ type: 'MentoringJourney', id: result.mentoringJourneyId }]
+        : ['MentoringJourney']),
       onQueryStarted,
     }),
     updateMentoringJourneyOverview: build.mutation<null, UpdateMentoringJourneyRequest>({
@@ -38,8 +40,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: request,
       }),
-      // TODO: Change to only invalidate specific id
-      invalidatesTags: ['MentoringJourney'],
+      invalidatesTags: (_result, _error, request) => [{ type: 'MentoringJourney', id: request.mentoringJourneyId }],
       onQueryStarted,
     }),
   }),
