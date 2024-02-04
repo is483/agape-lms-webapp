@@ -5,7 +5,10 @@ import {
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useGetMentoringJourneyOverviewQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
-import { ControlledTextInput, Icon, InfographicItem, ProfileIcon } from '../../../components'
+import {
+  ControlledTextInput, Icon,
+  InfographicItem, ProfileIcon,
+} from '../../../components'
 import { formatDate } from '../../../utils'
 import paths from '../../../paths'
 import { MentoringJourneyDetailsResponse } from '../../../app/services/mentoringJourney/types'

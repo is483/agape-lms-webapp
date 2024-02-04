@@ -1,5 +1,8 @@
 import { apiSlice } from '../apiSlice'
-import { CreateMentoringJourneyRequest, MentoringJourneyDetailsResponse, MentoringJourneysResponse } from './types'
+import {
+  CreateMentoringJourneyRequest, MentoringJourneyDetailsResponse, MentoringJourneysResponse,
+  UpdateMentoringJourneyRequest,
+} from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiMentoringJourneySlice = apiSlice.injectEndpoints({
@@ -18,6 +21,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: 'mentor/mentoring-journey/view-mentoring-journeys',
         method: 'GET',
       }),
+      providesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
     getMentoringJourneyOverview: build.query<MentoringJourneyDetailsResponse, string | number>({
@@ -25,6 +29,17 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: `mentor/mentoring-journey/details/${mentoringJourneyId}`,
         method: 'GET',
       }),
+      providesTags: ['MentoringJourney'],
+      onQueryStarted,
+    }),
+    updateMentoringJourneyOverview: build.mutation<null, UpdateMentoringJourneyRequest>({
+      query: (request) => ({
+        url: 'mentor/mentoring-journey/details',
+        method: 'PUT',
+        body: request,
+      }),
+      // TODO: Change to only invalidate specific id
+      invalidatesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
   }),
@@ -33,5 +48,5 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
 
 export const {
   useCreateMentoringJourneyMutation, useGetAllMentoringJourneyQuery,
-  useGetMentoringJourneyOverviewQuery,
+  useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation,
 } = apiMentoringJourneySlice
