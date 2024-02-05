@@ -11,6 +11,7 @@ import { CreateMentoringJourney } from '../features/MentoringJourneys/CreateMent
 import { MentoringJourneyDetails } from '../features/MentoringJourneys/MentoringJourneyDetails'
 import { AssignedMentees } from '../features/AssignedMentees'
 import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
+import Sessions from '../features/Sessions/Sessions'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -33,6 +34,7 @@ function AppLayout() {
               <Route path={paths.MentoringJourneys.ViewAll} element={<MentoringJourneys />} />
               <Route path={paths.MentoringJourneys.Details.fullPath} element={<MentoringJourneyDetails />} />
               <Route path={paths.MentoringJourneys.Create} element={<CreateMentoringJourney />} />
+              <Route path={paths.Sessions} element={<Sessions />} />
               <Route path={paths.AssignedMentees} element={<AssignedMentees />} />
               <Route path={`${paths.AssignedMentees}/:userId`} element={<AssignedMentees />} />
             </Routes>
