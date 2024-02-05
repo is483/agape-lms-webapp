@@ -43,11 +43,17 @@ function GoalFormModal(props: GoalFormModalProps) {
     goalName, measurableObjective, deadline, actionPlans,
   } = goal
   const { milestones, milestoneIndex, goalIndex } = useAppSelector(getMilestones)
-  const goalInfo = milestones[milestoneIndex].goals[goalIndex ?? 0]
   const isEditing = goalIndex !== undefined
 
   useEffect(() => {
-    if (!isEditing) return
+    if (!isEditing) {
+      updateGoal({
+        ...defaultGoal,
+        actionPlans: [{ ...defaultActionPlanStep }],
+      })
+      return
+    }
+    const goalInfo = milestones[milestoneIndex].goals[goalIndex]
     updateGoal((draft) => {
       draft.goalName.value = goalInfo.goalName
       draft.deadline.value = goalInfo.deadline
@@ -62,7 +68,7 @@ function GoalFormModal(props: GoalFormModalProps) {
         })
       })
     })
-  }, [goalIndex, goalInfo, isEditing, updateGoal])
+  }, [goalIndex, isEditing, milestoneIndex, milestones, updateGoal, isModalOpen])
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateGoal((draft) => { draft.goalName.value = e.target.value })
@@ -102,10 +108,6 @@ function GoalFormModal(props: GoalFormModalProps) {
 
   const handleModalCancel = () => {
     onModalClose()
-    updateGoal({
-      ...defaultGoal,
-      actionPlans: [{ ...defaultActionPlanStep }],
-    })
   }
 
   const handleCreate = () => {

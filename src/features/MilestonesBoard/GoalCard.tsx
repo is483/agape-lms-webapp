@@ -10,7 +10,7 @@ import { Goal } from '../MentoringJourneys/CreateMentoringJourney/redux/types'
 import { Icon } from '../../components'
 import ActionPlanStep from './ActionPlanStep'
 import { useAppDispatch } from '../../hooks'
-import { deleteGoal } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
+import { deleteGoal, setGoalIndex } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
 
 interface GoalProps {
   goal: Goal
@@ -31,6 +31,7 @@ function GoalCard(props: GoalProps) {
   } = goal
 
   const handleDeleteGoal = () => {
+    dispatch(setGoalIndex(undefined))
     dispatch(deleteGoal({ milestoneIndex, goalIndex }))
   }
 
