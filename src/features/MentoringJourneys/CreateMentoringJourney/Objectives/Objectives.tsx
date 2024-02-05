@@ -13,7 +13,7 @@ interface ObjectivesProps {
   handlePrevStep: () => void
 }
 
-const mentoringOutcomes: string[] = ['1', '2']
+const mentoringOutcomes: string[] = ['Skill Development', 'Career Advancement', 'Education Advancement', 'Career Transition', 'Personal Development']
 
 function Objectives(props: ObjectivesProps) {
   const { handleNextStep, handlePrevStep } = props
