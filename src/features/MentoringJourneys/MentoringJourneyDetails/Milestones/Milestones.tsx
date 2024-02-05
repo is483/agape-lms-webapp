@@ -1,14 +1,16 @@
-import { useParams } from 'react-router-dom'
 import {
   Box, Flex, Progress, Text,
 } from '@chakra-ui/react'
-import { useGetMilestonesQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
-import { MilestonesBoard } from '../../MilestonesBoard'
-import { Icon } from '../../../components'
+import { MilestonesBoard } from '../../../MilestonesBoard'
+import { Icon } from '../../../../components'
+import { MilestonesResponse } from '../../../../app/services/mentoringJourney/types'
 
-function Milestones() {
-  const { mentoringJourneyId } = useParams()
-  const { data } = useGetMilestonesQuery(mentoringJourneyId!)
+interface MilestonesProps {
+  data: MilestonesResponse | undefined
+}
+
+function Milestones(props: MilestonesProps) {
+  const { data } = props
 
   if (!data) return null
 
@@ -17,7 +19,7 @@ function Milestones() {
 
   return (
     <Box>
-      <Flex gap="3" mb="4">
+      <Flex gap="3" mb="6">
         <Box>
           <Icon name="flag" fontSize="32px" padding="2" backgroundColor="red.100" color="red.600" rounded="full" />
         </Box>

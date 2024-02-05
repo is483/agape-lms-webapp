@@ -10,6 +10,7 @@ import { MentoringJourneys } from '../features/MentoringJourneys'
 import { CreateMentoringJourney } from '../features/MentoringJourneys/CreateMentoringJourney'
 import { MentoringJourneyDetails } from '../features/MentoringJourneys/MentoringJourneyDetails'
 import { AssignedMentees } from '../features/AssignedMentees'
+import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -41,6 +42,7 @@ function AppLayout() {
               <Route path={paths.Introduction} element={<Introduction />} />
               <Route path={paths.MyProfile} element={<MyProfile />} />
               <Route path={paths.MentoringJourneys.ViewAll} element={<MentoringJourneys />} />
+              <Route path={paths.Milestones} element={<MenteeMilestones />} />
             </Routes>
           )}
         </Box>
