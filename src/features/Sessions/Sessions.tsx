@@ -11,6 +11,7 @@ import { setMentee } from '../MentoringJourneys/CreateMentoringJourney/redux/men
 import { getBasicDetails } from '../MentoringJourneys/CreateMentoringJourney/redux/selectors'
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
+import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
 
 function Sessions() {
   // 1.Sessions page will be reused for Mentee and Mentor.
@@ -67,7 +68,9 @@ function Sessions() {
           <TabPanel px="0">
             <UpcomingAndPastSessionsTable />
           </TabPanel>
-          <TabPanel px="0" />
+          <TabPanel px="0">
+            <PendingSessionsTable />
+          </TabPanel>
         </TabPanels>
       </Tabs>
 
