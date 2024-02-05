@@ -1,5 +1,5 @@
 import {
-  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button,
+  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, useDisclosure,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect } from 'react'
 import { getAuth } from '../../app/redux/selectors'
@@ -12,6 +12,7 @@ import { getBasicDetails } from '../MentoringJourneys/CreateMentoringJourney/red
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
+import CreateSessionsModal from './CreateSession/CreateSession'
 
 function Sessions() {
   // 1.Sessions page will be reused for Mentee and Mentor.
@@ -31,6 +32,7 @@ function Sessions() {
   } = useAppSelector(getBasicDetails)
   const { options: assignedMenteeOptions, menteeIdToMenteeName } = useAssignedMenteesOptions()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => dispatch(setMentee({ menteeId: e.target.value, menteeName: menteeIdToMenteeName[e.target.value] }))
+  const { isOpen: isCreateSessionModal, onOpen: onOpenCreateSessionModal, onClose: onCreateSessionModalClose } = useDisclosure()
 
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId.value) {
@@ -41,6 +43,7 @@ function Sessions() {
 
   return (
     <Container minHeight="100vh">
+      <CreateSessionsModal isModalOpen={isCreateSessionModal} onModalClose={onCreateSessionModalClose} />
       <Flex justify="space-between" mb="4">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
@@ -58,7 +61,7 @@ function Sessions() {
             <Tab py="1">Completed</Tab>
             <Tab py="1">Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size={['xs', 'sm', null, 'md']} colorScheme="red">+ Create Session</Button>}
+          {role === 'Mentor' && <Button size={['xs', 'sm', null, 'md']} colorScheme="red" onClick={onOpenCreateSessionModal}>+ Create Session</Button>}
 
         </Flex>
         <TabPanels>
