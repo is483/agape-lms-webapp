@@ -1,7 +1,7 @@
 import {
   Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button,
 } from '@chakra-ui/react'
-import { ChangeEvent, useEffect } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
 import Container from '../../components/Container'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -26,28 +26,26 @@ function Sessions() {
   // a.Inside the folder, we will have two pages: SessionDetails and EditSessionDetails
   const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
-  const {
-    menteeId,
-  } = useAppSelector(getBasicDetails)
-  const { options: assignedMenteeOptions, menteeIdToMenteeName } = useAssignedMenteesOptions()
-  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => dispatch(setMentee({ menteeId: e.target.value, menteeName: menteeIdToMenteeName[e.target.value] }))
+  const [menteeId, setMenteeId] = useState('')
+  const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
+  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
 
   useEffect(() => {
-    if (assignedMenteeOptions.length > 0 && !menteeId.value) {
+    if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
-      dispatch(setMentee({ menteeId: firstMenteeId, menteeName: menteeIdToMenteeName[firstMenteeId] }))
+      setMenteeId(firstMenteeId)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId.value, menteeIdToMenteeName])
+  }, [assignedMenteeOptions, dispatch, menteeId])
 
   return (
-    <Container minHeight="100vh">
+    <Container minHeight="calc(100vh - 32px)">
       <Flex justify="space-between" mb="4">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
           <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
         </Box>
         <Box>
-          {role === 'Mentor' && <ControlledSelect options={assignedMenteeOptions} selectProps={{ value: menteeId.value, onChange: handleMenteeChange }} error="" />}
+          {role === 'Mentor' && <ControlledSelect options={assignedMenteeOptions} selectProps={{ value: menteeId, onChange: handleMenteeChange }} error="" />}
         </Box>
       </Flex>
       <Calendar />
