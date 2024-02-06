@@ -1,7 +1,7 @@
 import { apiSlice } from '../apiSlice'
 import {
   CreateMentoringJourneyRequest, MentoringJourneyDetailsResponse, MentoringJourneysResponse,
-  UpdateMentoringJourneyRequest, MilestonesResponse, MentoringJourneyMetricsResponse
+  UpdateMentoringJourneyRequest, MilestonesResponse, MentoringJourneyMetricsResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
