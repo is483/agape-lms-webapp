@@ -60,3 +60,10 @@ export interface MilestonesResponse {
   outcomeDescription: string
   milestones: Milestone[]
 }
+
+export interface MentoringJourneyMetricsResponse {
+  mentorId: number
+  totalAssignedMentees: number
+  totalCompletedSessions: number
+  totalCompletedHours: number
+}
