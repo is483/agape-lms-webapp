@@ -1,5 +1,5 @@
 import {
-  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack, useBreakpoint,
+  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
@@ -7,8 +7,6 @@ import Container from '../../components/Container'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
-import { setMentee } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
-import { getBasicDetails } from '../MentoringJourneys/CreateMentoringJourney/redux/selectors'
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
@@ -29,7 +27,6 @@ function Sessions() {
   const [menteeId, setMenteeId] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
-  const isSmUp = useBreakpoint('sm')
 
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
