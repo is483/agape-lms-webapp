@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, Divider, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea,
+  Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Radio, RadioGroup, Stack, Text, Textarea,
 } from '@chakra-ui/react'
 import { ControlledTextInput } from '../../../components'
 
@@ -19,11 +19,11 @@ function CreateSessionModal(props: CreateSessionModalProps) {
 
     <Modal isOpen={isModalOpen} onClose={onModalClose} size="3xl">
       <ModalOverlay />
-      <ModalContent p="4" m="4" maxHeight="90vh">
+      <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
         <ModalHeader>Create Mentoring Session</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex flexDir="column" mt="12" gap="8">
+          <Flex flexDir="column" mt="6" gap="8">
             <ControlledTextInput
               label="Title"
               type="text"
@@ -35,15 +35,44 @@ function CreateSessionModal(props: CreateSessionModalProps) {
             </Box>
             <Divider orientation="horizontal" />
             <Text fontWeight="600" fontSize="md"> Meeting Details</Text>
+            <Box marginBottom="3">
+              <Stack direction={['column', 'column', 'row']}>
+                <Box>
+                  <Text marginBottom="1">Start Date & Time</Text>
+                  <Input
+                    size="md"
+                    type="datetime-local"
+                  />
+                </Box>
+                <Box>
+                  <Text marginBottom="1">End Date & Time</Text>
+                  <Input
+                    size="md"
+                    type="datetime-local"
+                  />
+                </Box>
+              </Stack>
+            </Box>
+            <Flex dir="row" alignContent="center" gap="5" marginBottom="8">
+              <Text fontSize="md">Location: </Text>
+              <RadioGroup>
+                <Stack direction="row">
+                  <Radio value="online">Online</Radio>
+                  <Radio value="physical">Physical</Radio>
+                </Stack>
+              </RadioGroup>
+            </Flex>
+            <ControlledTextInput
+              label="Meeting Link"
+              type="text"
+              error=""
+            />
+          </Flex>
+          <Flex gap="4" justify="flex-end" mt="8">
+            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
+            <Button colorScheme="red" size="sm"> Save</Button>
           </Flex>
         </ModalBody>
-
-        <ModalFooter>
-          <Button onClick={handleModalCancel} mr={3}>
-            Close
-          </Button>
-          <Button colorScheme="red">Save</Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   )
