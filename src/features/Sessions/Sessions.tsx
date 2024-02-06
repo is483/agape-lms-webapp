@@ -1,5 +1,5 @@
 import {
-  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button,
+  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack, useBreakpoint,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
@@ -29,6 +29,7 @@ function Sessions() {
   const [menteeId, setMenteeId] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
+  const isSmUp = useBreakpoint('sm')
 
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
@@ -50,15 +51,14 @@ function Sessions() {
       </Flex>
       <Calendar />
       <Tabs variant="solid-rounded" colorScheme="red">
-        <Flex justify="space-between" alignItems="center" mb="4">
-          <TabList gap="6">
+        <Stack justify="space-between" alignItems="center" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
+          <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
             <Tab py="1">Upcoming</Tab>
             <Tab py="1">Completed</Tab>
             <Tab py="1">Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size={['xs', 'sm', null, 'md']} colorScheme="red">+ Create Session</Button>}
-
-        </Flex>
+          {role === 'Mentor' && <Button size={['sm', 'sm', null, 'md']} alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red">+ Create Session</Button>}
+        </Stack>
         <TabPanels>
           <TabPanel px="0">
             <UpcomingAndPastSessionsTable />
