@@ -1,18 +1,18 @@
 import {
   Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, useDisclosure,
 } from '@chakra-ui/react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent, useEffect, useState,
+} from 'react'
 import { getAuth } from '../../app/redux/selectors'
 import Container from '../../components/Container'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppSelector } from '../../hooks'
 import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
-import { setMentee } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
-import { getBasicDetails } from '../MentoringJourneys/CreateMentoringJourney/redux/selectors'
-import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
 import CreateSessionsModal from './CreateSession/CreateSession'
+import Calendar from './Calendar/Calendar'
 
 function Sessions() {
   // 1.Sessions page will be reused for Mentee and Mentor.
@@ -25,8 +25,8 @@ function Sessions() {
   // 2.Create Session will be in a separate folder : CreateSession
   // 3.Session details will also be in a separate folder: Session Details
   // a.Inside the folder, we will have two pages: SessionDetails and EditSessionDetails
-  const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
+  const { isOpen: isCreateSessionModal, onOpen: onOpenCreateSessionModal, onClose: onCreateSessionModalClose } = useDisclosure()
   const [menteeId, setMenteeId] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
@@ -36,10 +36,11 @@ function Sessions() {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId])
+  }, [assignedMenteeOptions, menteeId])
 
   return (
-    <Container minHeight="calc(100vh - 32px)">
+    <Container minHeight="100vh">
+      <CreateSessionsModal isModalOpen={isCreateSessionModal} onModalClose={onCreateSessionModalClose} />
       <Flex justify="space-between" mb="4">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
