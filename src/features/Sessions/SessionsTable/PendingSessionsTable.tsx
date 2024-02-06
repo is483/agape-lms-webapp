@@ -4,15 +4,15 @@ import {
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 
-function PastSessionsTable() {
+function PendingSessionsTable() {
   const { role } = useAppSelector(getAuth)
-  const TableComponent = role === 'Mentor' ? PastSessionsTableMentor : PastSessionsTableMentee
+  const TableComponent = role === 'Mentor' ? PendingSessionsTableMentor : PendingSessionsTableMentee
   return (
     <TableComponent />
   )
 }
 
-function PastSessionsTableMentor() {
+function PendingSessionsTableMentor() {
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -41,7 +41,7 @@ function PastSessionsTableMentor() {
   )
 }
 
-function PastSessionsTableMentee() {
+function PendingSessionsTableMentee() {
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -71,4 +71,4 @@ function PastSessionsTableMentee() {
   )
 }
 
-export default PastSessionsTable
+export default PendingSessionsTable

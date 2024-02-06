@@ -2,7 +2,7 @@ import Container from '../../../components/Container'
 
 function Calendar() {
   return (
-    <Container backgroundColor="secondary.100" height="400px" minWidth="100vh">
+    <Container backgroundColor="secondary.100" height="400px">
       Calendar Placeholder
     </Container>
   )
