@@ -62,7 +62,6 @@ function Sessions() {
             <Tab py="1">Pending</Tab>
           </TabList>
           {role === 'Mentor' && <Button size={['xs', 'sm', null, 'md']} colorScheme="red" onClick={onOpenCreateSessionModal}>+ Create Session</Button>}
-
         </Flex>
         <TabPanels>
           <TabPanel px="0">
