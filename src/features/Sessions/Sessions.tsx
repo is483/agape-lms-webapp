@@ -1,5 +1,5 @@
 import {
-  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, useDisclosure,
+  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack, useDisclosure,
 } from '@chakra-ui/react'
 import {
   ChangeEvent, useEffect, useState,
@@ -52,14 +52,14 @@ function Sessions() {
       </Flex>
       <Calendar />
       <Tabs variant="solid-rounded" colorScheme="red">
-        <Flex justify="space-between" alignItems="center" mb="4">
-          <TabList gap="6">
+        <Stack justify="space-between" alignItems="center" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
+          <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
             <Tab py="1">Upcoming</Tab>
             <Tab py="1">Completed</Tab>
             <Tab py="1">Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size={['xs', 'sm', null, 'md']} colorScheme="red" onClick={onOpenCreateSessionModal}>+ Create Session</Button>}
-        </Flex>
+          {role === 'Mentor' && <Button size={['sm', 'sm', null, 'md']} alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red" onClick={onOpenCreateSessionModal}>+ Create Session</Button>}
+        </Stack>
         <TabPanels>
           <TabPanel px="0">
             <UpcomingAndPastSessionsTable />
