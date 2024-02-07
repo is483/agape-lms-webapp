@@ -4,7 +4,7 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
 import Container from '../../components/Container'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppSelector } from '../../hooks'
 import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
@@ -13,7 +13,6 @@ import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSession
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
 
 function Sessions() {
-  const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
   const [menteeId, setMenteeId] = useState('')
@@ -25,7 +24,7 @@ function Sessions() {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId])
+  }, [assignedMenteeOptions, menteeId])
 
   return (
     <Container minHeight="calc(100vh - 32px)">
