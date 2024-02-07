@@ -6,6 +6,7 @@ import {
 import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
 import { ControlledTextInput } from '../../../components'
+import { clearErrors } from '../../../utils'
 
 interface CreateSessionModalProps {
   isModalOpen: boolean
@@ -18,7 +19,7 @@ const defaultSession = {
   startDate: { value: '', error: '' },
   endDate: { value: '', error: '' },
   location: { value: 'online', error: '' },
-  meetingLink: { value: '', error: '' },
+  meetingArrangement: { value: '', error: '' },
 }
 
 function CreateSessionModal(props: CreateSessionModalProps) {
@@ -41,8 +42,8 @@ function CreateSessionModal(props: CreateSessionModalProps) {
     updateSession((draft) => { draft.endDate.value = e.target.value })
   }
 
-  const handleMeetingLinkChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateSession((draft) => { draft.meetingLink.value = e.target.value })
+  const handleMeetingArrangementChange = (e: ChangeEvent<HTMLInputElement>) => {
+    updateSession((draft) => { draft.meetingArrangement.value = e.target.value })
   }
 
   const handleLocationChange = (nextValue: string) => {
@@ -54,7 +55,51 @@ function CreateSessionModal(props: CreateSessionModalProps) {
   }
 
   const handleCreate = () => {
-    console.log(session)
+    let hasErrors: boolean = false
+    updateSession((draft) => clearErrors(draft))
+    if (!session.title.value.trim()) {
+      updateSession((draft) => { draft.title.error = 'Session title is required' })
+      hasErrors = true
+    }
+
+    if (!session.description.value.trim()) {
+      updateSession((draft) => { draft.description.error = 'Session description is required' })
+      hasErrors = true
+    }
+
+    if (!session.location.value.trim()) {
+      updateSession((draft) => { draft.location.error = 'Session description is required' })
+      hasErrors = true
+    }
+
+    if (!session.meetingArrangement.value.trim()) {
+      updateSession((draft) => { draft.meetingArrangement.error = 'Meeting arrangement is required' })
+      hasErrors = true
+    }
+
+    if (!session.startDate.value) {
+      updateSession((draft) => { draft.startDate.error = 'Start date/time of session is required' })
+      hasErrors = true
+    }
+
+    if (!session.endDate.value) {
+      updateSession((draft) => { draft.endDate.error = 'End date/time of session is required' })
+      hasErrors = true
+    }
+
+    const startDate = new Date(session.startDate.value)
+    const endDate = new Date(session.endDate.value)
+
+    if (startDate >= endDate) {
+      updateSession((draft) => {
+        draft.startDate.error = 'Start date/time must be before the end date/time'
+        hasErrors = true
+      })
+    }
+
+    if (hasErrors) {
+      return
+    }
   }
 
   return (
@@ -116,8 +161,8 @@ function CreateSessionModal(props: CreateSessionModalProps) {
             <ControlledTextInput
               label={session.location.value === 'online' ? 'Meeting Venue' : 'Meeting Link'}
               type="text"
-              error={session.meetingLink.error}
-              inputProps={{ onChange: handleMeetingLinkChange, value: session.meetingLink.value }}
+              error={session.meetingArrangement.error}
+              inputProps={{ onChange: handleMeetingArrangementChange, value: session.meetingArrangement.value }}
             />
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
