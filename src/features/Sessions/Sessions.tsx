@@ -4,7 +4,6 @@ import {
 import {
   ChangeEvent, useEffect, useState,
 } from 'react'
-import { useImmer } from 'use-immer'
 import { getAuth } from '../../app/redux/selectors'
 import Container from '../../components/Container'
 import { useAppSelector } from '../../hooks'
@@ -12,7 +11,7 @@ import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
-import CreateSessionsModal from './CreateSession/CreateSession'
+import CreateSessionsModal from './SessionFormModal/SessionFormModal'
 import Calendar from './Calendar/Calendar'
 
 function Sessions() {
