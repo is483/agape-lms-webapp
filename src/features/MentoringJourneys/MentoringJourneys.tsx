@@ -6,7 +6,7 @@ import {
   Container, InfographicItem, Link, ProfileIcon,
 } from '../../components'
 import paths from '../../paths'
-import { useGetAllMentoringJourneyQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
+import { useGetAllMentoringJourneyQuery, useGetMentoringJourneyMetricsQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { MentoringJourney } from '../../app/services/mentoringJourney/types'
 import { MILESTONES } from './CreateMentoringJourney/redux/constants'
 
@@ -31,22 +31,20 @@ function MentoringJourneys() {
           Organize and keep track of mentoring sessions between each mentee in this platform.
         </Text>
         <Flex mt="8" gap="8" flexWrap="wrap">
-          <InfographicItem title="Assigned Mentees" amount="2" iconName="group" />
-          <InfographicItem title="Total Sessions Completed" amount="20" iconName="handshake" />
-          <InfographicItem title="Total Hours Completed" amount="40" iconName="history" />
+          <MentoringJourneyMetrics />
         </Flex>
       </Container>
       <Container>
         <Flex justify="space-between" mb="4">
           <Text fontWeight="700" fontSize="lg">Mentoring Journeys</Text>
           <Link to={paths.MentoringJourneys.Create}>
-            <Button size={['xs', 'sm', null, 'md']} colorScheme="red">+ Create Journey</Button>
+            <Button size="sm" colorScheme="red">+ Create Journey</Button>
           </Link>
         </Flex>
         <Tabs variant="solid-rounded" colorScheme="red">
           <TabList gap="6">
-            <Tab py="1">Ongoing</Tab>
-            <Tab py="1">Completed</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Ongoing</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
           </TabList>
           <TabPanels>
             <TabPanel px="0">
@@ -72,6 +70,18 @@ function MentoringJourneys() {
           </TabPanels>
         </Tabs>
       </Container>
+    </>
+  )
+}
+
+function MentoringJourneyMetrics() {
+  const { data } = useGetMentoringJourneyMetricsQuery(null)
+
+  return (
+    <>
+      <InfographicItem title="Assigned Mentees" amount={data?.totalAssignedMentees ?? 0} iconName="group" />
+      <InfographicItem title="Total Sessions Completed" amount={data?.totalCompletedSessions ?? 0} iconName="handshake" />
+      <InfographicItem title="Total Hours Completed" amount={data?.totalCompletedHours ?? 0} iconName="history" />
     </>
   )
 }
