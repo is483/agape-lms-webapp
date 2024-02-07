@@ -98,7 +98,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
     }
 
     if (hasErrors) {
-      return
+
     }
   }
 
@@ -152,14 +152,14 @@ function CreateSessionModal(props: CreateSessionModalProps) {
               <Text fontSize="md">Location: </Text>
               <RadioGroup onChange={handleLocationChange} value={session.location.value}>
                 <Stack direction="row">
-                  <Radio value="online">Online</Radio>
-                  <Radio value="physical">Physical</Radio>
+                  <Radio value="online" colorScheme="red">Online</Radio>
+                  <Radio value="physical" colorScheme="red">Physical</Radio>
                 </Stack>
               </RadioGroup>
             </Flex>
             {!!session.location.error && <Text fontSize="xs" color="red.600" marginBottom="8">{session.description.error}</Text>}
             <ControlledTextInput
-              label={session.location.value === 'online' ? 'Meeting Venue' : 'Meeting Link'}
+              label={session.location.value === 'online' ? 'Meeting Link' : 'Meeting Venue'}
               type="text"
               error={session.meetingArrangement.error}
               inputProps={{ onChange: handleMeetingArrangementChange, value: session.meetingArrangement.value }}
