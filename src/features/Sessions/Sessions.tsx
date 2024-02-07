@@ -43,22 +43,22 @@ function Sessions() {
       </Hide>
       <Calendar />
       <Tabs variant="solid-rounded" colorScheme="red">
-        <Stack justify="space-between" alignItems="center" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
+        <Stack justify="space-between" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
             <Tab py="1" fontSize={['xs', 'sm']}>Upcoming</Tab>
             <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
             <Tab py="1" fontSize={['xs', 'sm']}>Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size={['sm', 'sm', null, 'md']} alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red">+ Create Session</Button>}
+          {role === 'Mentor' && <Button size="sm" alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red">+ Create Session</Button>}
         </Stack>
         <TabPanels>
-          <TabPanel px="0">
+          <TabPanel px="0" pt="0">
             <UpcomingAndPastSessionsTable />
           </TabPanel>
-          <TabPanel px="0">
+          <TabPanel px="0" pt="0">
             <UpcomingAndPastSessionsTable />
           </TabPanel>
-          <TabPanel px="0">
+          <TabPanel px="0" pt="0">
             <PendingSessionsTable />
           </TabPanel>
         </TabPanels>

@@ -38,13 +38,13 @@ function MentoringJourneys() {
         <Flex justify="space-between" mb="4">
           <Text fontWeight="700" fontSize="lg">Mentoring Journeys</Text>
           <Link to={paths.MentoringJourneys.Create}>
-            <Button size={['xs', 'sm', null, 'md']} colorScheme="red">+ Create Journey</Button>
+            <Button size="sm" colorScheme="red">+ Create Journey</Button>
           </Link>
         </Flex>
         <Tabs variant="solid-rounded" colorScheme="red">
           <TabList gap="6">
-            <Tab py="1">Ongoing</Tab>
-            <Tab py="1">Completed</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Ongoing</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
           </TabList>
           <TabPanels>
             <TabPanel px="0">
