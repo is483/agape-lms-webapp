@@ -1,5 +1,5 @@
 import {
-  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack,
+  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack, Hide,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
@@ -12,16 +12,6 @@ import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSession
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
 
 function Sessions() {
-  // 1.Sessions page will be reused for Mentee and Mentor.
-  // a.The main Sessions function will be the container handling the whole interface. (ie, we will include the table, calendar inside here but in separate functions)
-  // i.Mentor will need to include dropdown (hide it if its unavailable)
-  // ii.Create session will be inside the Sessions function
-  // b.We will create two mentoringJourney table functions: One for Mentee and One for Mentor
-  // c.we can consider putting calendar in a different page so it wont be so messy
-
-  // 2.Create Session will be in a separate folder : CreateSession
-  // 3.Session details will also be in a separate folder: Session Details
-  // a.Inside the folder, we will have two pages: SessionDetails and EditSessionDetails
   const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
@@ -37,22 +27,27 @@ function Sessions() {
 
   return (
     <Container minHeight="calc(100vh - 32px)">
-      <Flex justify="space-between" mb="4">
+      <Flex justify="space-between" mb="4" gap="2">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
-          <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
+          <Hide below="sm">
+            <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
+          </Hide>
         </Box>
         <Box>
           {role === 'Mentor' && <ControlledSelect options={assignedMenteeOptions} selectProps={{ value: menteeId, onChange: handleMenteeChange }} error="" />}
         </Box>
       </Flex>
+      <Hide above="sm">
+        <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
+      </Hide>
       <Calendar />
       <Tabs variant="solid-rounded" colorScheme="red">
         <Stack justify="space-between" alignItems="center" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
-            <Tab py="1">Upcoming</Tab>
-            <Tab py="1">Completed</Tab>
-            <Tab py="1">Pending</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Upcoming</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
+            <Tab py="1" fontSize={['xs', 'sm']}>Pending</Tab>
           </TabList>
           {role === 'Mentor' && <Button size={['sm', 'sm', null, 'md']} alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red">+ Create Session</Button>}
         </Stack>
