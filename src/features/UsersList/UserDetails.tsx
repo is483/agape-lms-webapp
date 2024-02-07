@@ -137,7 +137,7 @@ function UserDetails(props: UserDetailsProps) {
 
         <Box>
           <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
-          <Text> {expectations}</Text>
+          <Text>{expectations}</Text>
         </Box>
 
         <Box>
