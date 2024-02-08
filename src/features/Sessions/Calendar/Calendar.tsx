@@ -1,6 +1,9 @@
 import ReactCalendar from 'react-calendar'
 import './Calendar.css'
-import { Box, Circle, Flex } from '@chakra-ui/react'
+import {
+  Box, Button, Circle, Flex, Hide,
+} from '@chakra-ui/react'
+import { Icon } from '../../../components'
 
 interface CalendarProps {
   datesWithSessions: string[]
@@ -27,8 +30,34 @@ function Calendar(props: CalendarProps) {
         value={today}
         onClickDay={onClickDay}
         tileContent={({ date, view }) => TileContent({ date, view, datesWithSessions: dates })}
+        nextLabel={<Button p="0" rounded="full" variant="ghost"><Icon name="chevron_right" /></Button>}
+        prevLabel={<Button p="0" rounded="full" variant="ghost"><Icon name="chevron_left" /></Button>}
+        next2Label={null}
+        prev2Label={null}
+        minDetail="month"
+        navigationLabel={NavigationLabel}
       />
     </Box>
+  )
+}
+
+interface NavigationLabelProps {
+  label: string
+  date: Date
+}
+
+function NavigationLabel(props: NavigationLabelProps) {
+  const { label, date } = props
+  const formattedDate = date.toLocaleString('en-US', { month: 'short', year: 'numeric' })
+  return (
+    <Flex w="300px" maxW="100%" height="44px" borderBottom="2px solid" borderColor="red.600" justify="center" align="center">
+      <Hide below="sm">
+        {label}
+      </Hide>
+      <Hide above="sm">
+        {formattedDate}
+      </Hide>
+    </Flex>
   )
 }
 
