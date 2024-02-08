@@ -1,10 +1,12 @@
-import Container from '../../../components/Container'
+import ReactCalendar from 'react-calendar'
+import './Calendar.css'
+import { Box } from '@chakra-ui/react'
 
 function Calendar() {
   return (
-    <Container backgroundColor="secondary.100" height="400px">
-      Calendar Placeholder
-    </Container>
+    <Box my="8">
+      <ReactCalendar />
+    </Box>
   )
 }
 export default Calendar
