@@ -3,22 +3,26 @@ import {
   Input as ChakraInput,
   BoxProps,
   InputProps,
+  TextProps,
 } from '@chakra-ui/react'
 import { HTMLInputTypeAttribute, forwardRef } from 'react'
 import Icon from './Icon'
 
 interface Props {
   error: string
+  errorProps?: TextProps
   iconProps?: { name: string } & BoxProps
   type: HTMLInputTypeAttribute | 'select'
   placeholder?: string
   boxProps?: BoxProps
   inputProps?: InputProps
   label?: string
+  labelProps?: TextProps
 }
 
 const ControlledTextInput = forwardRef<HTMLInputElement, Props>(({
   error, type, placeholder, iconProps, boxProps, inputProps, label,
+  labelProps, errorProps,
 }, ref) => {
   const errorStyleProps = {
     ...(error && { borderColor: 'red.600', borderWidth: '2px' }),
@@ -33,8 +37,8 @@ const ControlledTextInput = forwardRef<HTMLInputElement, Props>(({
       {...inputProps}
     />
   )
-  const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600">{error}</Text>
-  const LabelComponent = <Text fontSize="md" position="absolute" top="-7">{label}</Text>
+  const ErrorComponent = <Text position="absolute" fontSize="xs" color="red.600" {...errorProps}>{error}</Text>
+  const LabelComponent = <Text fontSize="md" position="absolute" top="-7" {...labelProps}>{label}</Text>
 
   if (!iconProps) {
     return (
@@ -66,6 +70,8 @@ ControlledTextInput.defaultProps = {
   inputProps: {},
   label: undefined,
   placeholder: '',
+  labelProps: {},
+  errorProps: {},
 }
 
 export default ControlledTextInput
