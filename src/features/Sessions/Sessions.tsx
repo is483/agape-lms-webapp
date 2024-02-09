@@ -10,30 +10,44 @@ import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
-import { useLazyGetMenteeSessionsQuery } from '../../app/services/session/apiSessionSlice'
+import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
   const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
+  const [menteeName, setMenteeName] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
-  const [getMenteeSessions, result] = useLazyGetMenteeSessionsQuery()
-  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
-  const { data } = result
+  const [getMenteeSessions, menteeResult] = useLazyGetMenteeSessionsQuery()
+  const [getSessions, sessionResult] = useLazyGetSessionsQuery()
+  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedMenteeId = e.target.value
+    setMenteeId(selectedMenteeId)
+    const selectedMentee = assignedMenteeOptions.find((option) => option.value === selectedMenteeId)
+    if (selectedMentee) {
+      setMenteeName(selectedMentee.children)
+    }
+  }
+  const { data } = role === 'Mentor' ? menteeResult : sessionResult
 
   // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
+      setMenteeName(menteeName)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId])
+  }, [assignedMenteeOptions, dispatch, menteeId, menteeName])
 
   // Get mentee sessions when mentee ID is set
   useEffect(() => {
-    if (!menteeId) return
-    getMenteeSessions(menteeId)
-  }, [menteeId, getMenteeSessions])
+    if (role === 'Mentor') {
+      if (!menteeId) return
+      getMenteeSessions(menteeId)
+    } else {
+      getSessions(null)
+    }
+  }, [menteeId, getMenteeSessions, getSessions, role])
 
   const sessions = data ?? []
   const todayDate = new Date()
@@ -47,6 +61,7 @@ function Sessions() {
   })
   const pendingSessions = sessions.filter(({ status }) => status === 'pending_confirmation' || status === 'pending_rejected')
   const calendarDates = sessions.map((session) => session.fromDateTime)
+
   return (
     <Container minHeight="calc(100vh - 32px)">
       <Flex justify="space-between" mb="4" gap="2">
