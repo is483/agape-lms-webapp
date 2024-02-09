@@ -35,6 +35,9 @@ function Sessions() {
     getMenteeSessions(menteeId)
   }, [menteeId, getMenteeSessions])
 
+  const sessions = data ?? []
+  const pendingSessions = sessions.filter(({ status }) => status === 'pending_confirmation' || status === 'pending_rejected')
+
   return (
     <Container minHeight="calc(100vh - 32px)">
       <Flex justify="space-between" mb="4" gap="2">
@@ -69,7 +72,7 @@ function Sessions() {
             <UpcomingAndPastSessionsTable />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <PendingSessionsTable />
+            <PendingSessionsTable data={pendingSessions} />
           </TabPanel>
         </TabPanels>
       </Tabs>

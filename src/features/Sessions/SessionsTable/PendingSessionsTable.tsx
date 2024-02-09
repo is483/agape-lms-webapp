@@ -3,16 +3,25 @@ import {
 } from '@chakra-ui/react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
+import { SessionResponse } from '../../../app/services/session/types'
 
-function PendingSessionsTable() {
+interface PendingSessionsTableProps {
+  data: SessionResponse
+}
+
+function PendingSessionsTable(props: PendingSessionsTableProps) {
+  const { data } = props
   const { role } = useAppSelector(getAuth)
-  const TableComponent = role === 'Mentor' ? PendingSessionsTableMentor : PendingSessionsTableMentee
-  return (
-    <TableComponent />
+  return role === 'Mentor' ? (
+    <PendingSessionsTableMentor data={data} />
+  ) : (
+    <PendingSessionsTableMentee data={data} />
   )
 }
 
-function PendingSessionsTableMentor() {
+function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+  const { data } = props
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -41,7 +50,9 @@ function PendingSessionsTableMentor() {
   )
 }
 
-function PendingSessionsTableMentee() {
+function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
+  const { data } = props
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
