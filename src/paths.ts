@@ -11,7 +11,11 @@ const paths = {
   MentorProfile: '/mentor-profile',
   Milestones: '/milestones',
 
-  Sessions: '/sessions',
+  Sessions: {
+    ViewAll: '/sessions',
+    // Lance: To change again
+    Details: '/sessions/details',
+  },
   AssignedMentees: '/assigned-mentees',
   Training: '/training',
   MyProfile: '/profile',

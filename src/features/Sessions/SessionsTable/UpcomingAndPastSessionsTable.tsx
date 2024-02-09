@@ -1,6 +1,8 @@
 import {
   Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
+import { Link } from '../../../components'
+import paths from '../../../paths'
 
 function UpcomingAndPastSessionsTable() {
   return (
@@ -23,7 +25,9 @@ function UpcomingAndPastSessionsTable() {
             <Td />
             <Td>
               <Flex justify="end">
-                <Button>View Details</Button>
+                <Link to={paths.Sessions.Details}>
+                  <Button>View Details</Button>
+                </Link>
               </Flex>
             </Td>
           </Tr>
