@@ -13,8 +13,7 @@ const paths = {
 
   Sessions: {
     ViewAll: '/sessions',
-    // Lance: To change again
-    Details: '/sessions/details',
+    Details: { fullPath: '/sessions/:sessionId', subPath: '/sessions' },
   },
   AssignedMentees: '/assigned-mentees',
   Training: '/training',
