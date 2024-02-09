@@ -10,20 +10,30 @@ import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
+import { useLazyGetMenteeSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
   const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
+  const [getMenteeSessions, result] = useLazyGetMenteeSessionsQuery()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
+  const { data } = result
 
+  // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
     }
   }, [assignedMenteeOptions, dispatch, menteeId])
+
+  // Get mentee sessions when mentee ID is set
+  useEffect(() => {
+    if (!menteeId) return
+    getMenteeSessions(menteeId)
+  }, [menteeId, getMenteeSessions])
 
   return (
     <Container minHeight="calc(100vh - 32px)">
