@@ -16,7 +16,7 @@ function PendingSessionsTable(props: PendingSessionsTableProps) {
   return role === 'Mentor' ? (
     <PendingSessionsTableMentor data={data} />
   ) : (
-    <PendingSessionsTableMentee data={data} />
+    <PendingSessionsTableMentee />
   )
 }
 
@@ -79,9 +79,7 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
   )
 }
 
-function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
-  const { data } = props
-
+function PendingSessionsTableMentee() {
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -97,7 +95,7 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
         <Tbody>
           <Tr>
             <Td>
-              <Flex gap="2" align="center" />
+              Hello
             </Td>
             <Td />
             <Td />

@@ -36,6 +36,15 @@ function Sessions() {
   }, [menteeId, getMenteeSessions])
 
   const sessions = data ?? []
+  const todayDate = new Date()
+  const upcomingSessions = sessions.filter(({ status, fromDateTime }) => {
+    const sessionDate = new Date(fromDateTime)
+    return status === 'confirmed' && sessionDate > todayDate
+  })
+  const pastSessions = sessions.filter(({ status, fromDateTime }) => {
+    const sessionDate = new Date(fromDateTime)
+    return status === 'confirmed' && sessionDate <= todayDate
+  })
   const pendingSessions = sessions.filter(({ status }) => status === 'pending_confirmation' || status === 'pending_rejected')
 
   return (
@@ -66,10 +75,10 @@ function Sessions() {
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable />
+            <UpcomingAndPastSessionsTable data={upcomingSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable />
+            <UpcomingAndPastSessionsTable data={pastSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
             <PendingSessionsTable data={pendingSessions} />

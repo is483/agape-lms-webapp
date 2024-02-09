@@ -1,8 +1,14 @@
 import {
   Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
+import { SessionResponse } from '../../../app/services/session/types'
 
-function UpcomingAndPastSessionsTable() {
+interface UpcomingandPastSessionProps {
+  data: SessionResponse
+}
+
+function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
+  const { data } = props
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
