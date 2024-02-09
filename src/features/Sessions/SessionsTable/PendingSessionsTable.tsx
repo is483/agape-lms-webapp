@@ -57,7 +57,7 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
                   {title}
                 </Td>
                 <Td>
-                  {sessionType}
+                  {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
                 </Td>
                 <Td>
                   <Badge
