@@ -16,18 +16,26 @@ function Sessions() {
   const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
+  const [menteeName, setMenteeName] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const [getMenteeSessions, result] = useLazyGetMenteeSessionsQuery()
-  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
+  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedMenteeId = e.target.value
+    setMenteeId(selectedMenteeId)
+    const selectedMentee = assignedMenteeOptions.find((option) => option.value === selectedMenteeId)
+    if (selectedMentee) {
+      setMenteeName(selectedMentee.children)
+    }
+  }
   const { data } = result
 
   // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
-      const firstMenteeId = assignedMenteeOptions[0].value
-      setMenteeId(firstMenteeId)
+      setMenteeId(assignedMenteeOptions[0].value)
+      setMenteeName(assignedMenteeOptions[0].children)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId])
+  }, [assignedMenteeOptions, dispatch, menteeId, menteeName])
 
   // Get mentee sessions when mentee ID is set
   useEffect(() => {
@@ -47,6 +55,7 @@ function Sessions() {
   })
   const pendingSessions = sessions.filter(({ status }) => status === 'pending_confirmation' || status === 'pending_rejected')
   const calendarDates = sessions.map((session) => session.fromDateTime)
+
   return (
     <Container minHeight="calc(100vh - 32px)">
       <Flex justify="space-between" mb="4" gap="2">

@@ -11,6 +11,7 @@ interface UpcomingandPastSessionProps {
 
 function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
   const { data } = props
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -48,7 +49,7 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
                 </Td>
                 <Td>
                   <Flex justify="end">
-                    <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`} state={{ session }}>
+                    <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
                       <Button>View Details</Button>
                     </Link>
                   </Flex>

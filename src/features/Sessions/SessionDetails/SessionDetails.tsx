@@ -1,30 +1,31 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
-import {
-  Box, Divider, Text, Flex, HStack, Button,
-} from '@chakra-ui/react'
-import { BackButton, Container, Icon } from '../../../components'
-import paths from '../../../paths'
+// import { useLocation, useNavigate } from 'react-router-dom'
+// import {
+//   Box, Divider, Text, Flex, HStack, Button,
+// } from '@chakra-ui/react'
+// import { BackButton, Container, Icon } from '../../../components'
+// import paths from '../../../paths'
+import { Container } from '../../../components'
 
 function SessionDetails() {
-  const locationReact = useLocation()
-  const sessionDetails = locationReact.state.session
-  const {
-    title, description, fromDateTime, toDateTime, location,
-  } = sessionDetails
+  // const {
+  //   title, description, fromDateTime, toDateTime, location,
+  // } = session
 
-  const startDateObject = new Date(fromDateTime)
-  const startDate = startDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-  const startTime = startDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+  // const startDateObject = new Date(fromDateTime)
+  // const startDate = startDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  // const startTime = startDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
-  const endDateObject = new Date(toDateTime)
-  const endTime = endDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+  // const endDateObject = new Date(toDateTime)
+  // const endTime = endDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
-  const differenceInHours = (endDateObject.getTime() - startDateObject.getTime()) / (1000 * 60 * 60)
+  // const differenceInHours = (endDateObject.getTime() - startDateObject.getTime()) / (1000 * 60 * 60)
 
+  // const handleViewMentee = () => {
+  //   navigate(`${paths.AssignedMentees}/${menteeId}`)
+  // }
   return (
     <Container position="relative" minH="calc(100vh - 34px)">
-      <BackButton path={paths.Sessions.ViewAll} />
+      {/* <BackButton path={paths.Sessions.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
       <Flex justifyContent="space-between" flexDir={['column-reverse', 'column-reverse', 'row']} mt="12">
         <Text fontSize="lg" fontWeight="600"> {title} </Text>
@@ -63,8 +64,8 @@ function SessionDetails() {
       <Box mt="10">
         <Text fontWeight="600" fontSize="lg">Mentee</Text>
         <Flex mt="4">
-          <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2">
-            Mentee Placeholder Name
+          <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentee}>
+            {menteeName}
           </Box>
         </Flex>
       </Box>
@@ -73,7 +74,7 @@ function SessionDetails() {
         <Text color="secondary.500">
           {description}
         </Text>
-      </Box>
+      </Box> */}
     </Container>
   )
 }
