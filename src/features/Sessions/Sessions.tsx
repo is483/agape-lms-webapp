@@ -46,7 +46,7 @@ function Sessions() {
     return status === 'confirmed' && sessionDate <= todayDate
   })
   const pendingSessions = sessions.filter(({ status }) => status === 'pending_confirmation' || status === 'pending_rejected')
-
+  const calendarDates = sessions.map((session) => session.fromDateTime)
   return (
     <Container minHeight="calc(100vh - 32px)">
       <Flex justify="space-between" mb="4" gap="2">
@@ -63,7 +63,7 @@ function Sessions() {
       <Hide above="sm">
         <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
       </Hide>
-      <Calendar datesWithSessions={[]} />
+      <Calendar datesWithSessions={calendarDates} />
       <Tabs variant="solid-rounded" colorScheme="red">
         <Stack justify="space-between" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
