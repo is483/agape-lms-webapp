@@ -48,6 +48,7 @@ function AppLayout() {
               <Route path={paths.MentoringJourneys.ViewAll} element={<MentoringJourneys />} />
               <Route path={paths.Milestones} element={<MenteeMilestones />} />
               <Route path={paths.Sessions.ViewAll} element={<Sessions />} />
+              <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
             </Routes>
           )}
         </Box>

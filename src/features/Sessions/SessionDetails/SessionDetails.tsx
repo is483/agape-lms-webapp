@@ -53,14 +53,16 @@ function SessionDetails() {
       <Divider position="absolute" left="0" mt="6" />
       <Flex justifyContent="space-between" flexDir={['column-reverse', 'column-reverse', 'row']} mt="12">
         <Text fontSize="lg" fontWeight="600"> {title} </Text>
-        <HStack alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']}>
-          <Button px="0" rounded="full">
-            <Icon name="edit" fontSize="24px" />
-          </Button>
-          <Button px="0" rounded="full">
-            <Icon name="delete" fontSize="30px" />
-          </Button>
-        </HStack>
+        {role === 'Mentor' && (
+          <HStack alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']}>
+            <Button px="0" rounded="full">
+              <Icon name="edit" fontSize="24px" />
+            </Button>
+            <Button px="0" rounded="full">
+              <Icon name="delete" fontSize="30px" />
+            </Button>
+          </HStack>
+        )}
       </Flex>
 
       <Flex gap={['3', '3', '10']} flexDir={['column', 'column', 'row']} mt={['5', '5', '2']}>
