@@ -116,21 +116,30 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
                   {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
                 </Td>
                 <Td>
-                  {/* Lance: to check with kc how we want to do this */}
-                  <HStack display="flex" justifyContent="start">
-                    <Button colorScheme="red">
-                      <HStack>
-                        <Icon name="done" color="white" />
-                        <Text> Accept</Text>
-                      </HStack>
-                    </Button>
-                    <Button colorScheme="red" variant="outline">
-                      <HStack>
-                        <Icon name="close" color="primary.700" />
-                        <Text> Decline</Text>
-                      </HStack>
-                    </Button>
-                  </HStack>
+                  {status === 'Pending' && (
+                    <HStack display="flex" justifyContent="start">
+                      <Button colorScheme="red" size="sm">
+                        <HStack>
+                          <Icon name="done" color="white" />
+                          <Text> Accept</Text>
+                        </HStack>
+                      </Button>
+                      <Button colorScheme="red" variant="outline" size="sm">
+                        <HStack>
+                          <Icon name="close" color="primary.700" />
+                          <Text> Decline</Text>
+                        </HStack>
+                      </Button>
+                    </HStack>
+                  )}
+                  {status === 'Rejected' && (
+                    <Badge
+                      colorScheme="yellow"
+                    >
+                      Awaiting Confirmation
+                    </Badge>
+                  )}
+
                 </Td>
               </Tr>
             )
