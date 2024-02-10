@@ -10,7 +10,7 @@ import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
-import { useLazyGetMenteeSessionsQuery } from '../../app/services/session/apiSessionSlice'
+import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
   const dispatch = useAppDispatch()
@@ -18,7 +18,8 @@ function Sessions() {
   const [menteeId, setMenteeId] = useState('')
   const [menteeName, setMenteeName] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
-  const [getMenteeSessions, result] = useLazyGetMenteeSessionsQuery()
+  const [getMenteeSessions, menteeResult] = useLazyGetMenteeSessionsQuery()
+  const [getSessions, sessionResult] = useLazyGetSessionsQuery()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedMenteeId = e.target.value
     setMenteeId(selectedMenteeId)
@@ -27,21 +28,26 @@ function Sessions() {
       setMenteeName(selectedMentee.children)
     }
   }
-  const { data } = result
+  const { data } = role === 'Mentor' ? menteeResult : sessionResult
 
   // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
-      setMenteeId(assignedMenteeOptions[0].value)
-      setMenteeName(assignedMenteeOptions[0].children)
+      const firstMenteeId = assignedMenteeOptions[0].value
+      setMenteeId(firstMenteeId)
+      setMenteeName(menteeName)
     }
   }, [assignedMenteeOptions, dispatch, menteeId, menteeName])
 
   // Get mentee sessions when mentee ID is set
   useEffect(() => {
-    if (!menteeId) return
-    getMenteeSessions(menteeId)
-  }, [menteeId, getMenteeSessions])
+    if (role === 'Mentor') {
+      if (!menteeId) return
+      getMenteeSessions(menteeId)
+    } else {
+      getSessions(null)
+    }
+  }, [menteeId, getMenteeSessions, getSessions, role])
 
   const sessions = data ?? []
   const todayDate = new Date()

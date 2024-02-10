@@ -1,5 +1,5 @@
 import {
-  Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Badge, Text, VStack,
+  Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Badge, Text, VStack, Button, HStack,
 } from '@chakra-ui/react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
@@ -16,7 +16,7 @@ function PendingSessionsTable(props: PendingSessionsTableProps) {
   return role === 'Mentor' ? (
     <PendingSessionsTableMentor data={data} />
   ) : (
-    <PendingSessionsTableMentee />
+    <PendingSessionsTableMentee data={data} />
   )
 }
 
@@ -32,13 +32,13 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
             <Th>Title</Th>
             <Th> Type </Th>
             <Th> Status </Th>
-            <Th> Reason </Th>
+            <Th> <Flex justifyContent="center">Reason </Flex></Th>
           </Tr>
         </Thead>
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, status, reason,
+              fromDateTime, title, sessionType, status,
             } = session
 
             const dateObject = new Date(fromDateTime)
@@ -61,14 +61,13 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
                 </Td>
                 <Td>
                   <Badge
-                    colorScheme={status === 'pending_confirmation' ? 'yellow' : 'red'}
+                    colorScheme={status === 'Pending' ? 'yellow' : 'red'}
                   >
-                    {status === 'pending_confirmation' ? 'Awaiting Confirmation' : 'Rejected'}
+                    {status === 'Pending' ? 'Awaiting Confirmation' : 'Rejected'}
                   </Badge>
                 </Td>
                 <Td>
-                  {reason && <Icon name="info" />}
-
+                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" /></Flex>}
                 </Td>
               </Tr>
             )
@@ -79,7 +78,8 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
   )
 }
 
-function PendingSessionsTableMentee() {
+function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
+  const { data } = props
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -88,21 +88,53 @@ function PendingSessionsTableMentee() {
             <Th>Date & Time</Th>
             <Th>Title</Th>
             <Th> Type </Th>
-            <Th> Status </Th>
-            <Th />
+            <Th><Flex display="flex" justifyContent="start">Status</Flex>  </Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>
-              Hello
-            </Td>
-            <Td />
-            <Td />
-            <Td>
-              <Flex justify="end" />
-            </Td>
-          </Tr>
+          {data.map((session) => {
+            const {
+              fromDateTime, title, sessionType, status,
+            } = session
+
+            const dateObject = new Date(fromDateTime)
+            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            return (
+              <Tr>
+                <Td>
+                  <VStack alignItems="start">
+                    <Text color="primary.800"> {date}</Text>
+                    <Text> {time}</Text>
+                  </VStack>
+                </Td>
+                <Td>
+                  {title}
+                </Td>
+                <Td>
+                  {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
+                </Td>
+                <Td>
+                  {/* Lance: to check with kc how we want to do this */}
+                  <HStack display="flex" justifyContent="start">
+                    <Button colorScheme="red">
+                      <HStack>
+                        <Icon name="done" color="white" />
+                        <Text> Accept</Text>
+                      </HStack>
+                    </Button>
+                    <Button colorScheme="red" variant="outline">
+                      <HStack>
+                        <Icon name="close" color="primary.700" />
+                        <Text> Decline</Text>
+                      </HStack>
+                    </Button>
+                  </HStack>
+                </Td>
+              </Tr>
+            )
+          })}
         </Tbody>
       </Table>
     </TableContainer>
