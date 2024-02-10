@@ -12,4 +12,16 @@ export interface Session {
   reason: string
 }
 
+export interface CreateSessionRequest {
+  mentoringJourneyId: number
+  body: {
+    title: string
+    description: string
+    fromDateTime: string
+    toDateTime: string
+    sessionType: string
+    location: string
+  }
+}
+
 export type SessionResponse = Session[]

@@ -17,17 +17,12 @@ function Sessions() {
   const { role } = useAppSelector(getAuth)
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
   const [menteeId, setMenteeId] = useState('')
-  const [menteeName, setMenteeName] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const [getMenteeSessions, menteeResult] = useLazyGetMenteeSessionsQuery()
   const [getSessions, sessionResult] = useLazyGetSessionsQuery()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedMenteeId = e.target.value
     setMenteeId(selectedMenteeId)
-    const selectedMentee = assignedMenteeOptions.find((option) => option.value === selectedMenteeId)
-    if (selectedMentee) {
-      setMenteeName(selectedMentee.children)
-    }
   }
   const { data } = role === 'Mentor' ? menteeResult : sessionResult
 
@@ -36,9 +31,8 @@ function Sessions() {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
-      setMenteeName(menteeName)
     }
-  }, [assignedMenteeOptions, menteeId, menteeName])
+  }, [assignedMenteeOptions, menteeId])
 
   // Get mentee sessions when mentee ID is set
   useEffect(() => {
@@ -65,7 +59,7 @@ function Sessions() {
 
   return (
     <Container minHeight="calc(100vh - 32px)">
-      <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} />
+      <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} mentoringJourneyId={sessions[0]?.mentoringJourneyId} />
       <Flex justify="space-between" mb="4" gap="2">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>

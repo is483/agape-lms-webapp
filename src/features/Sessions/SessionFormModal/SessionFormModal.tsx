@@ -1,30 +1,35 @@
 /* eslint-disable no-param-reassign */
 import {
   Box,
-  Button, Divider, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, Textarea,
+  Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, Textarea, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
 import { ControlledTextInput } from '../../../components'
 import { clearErrors } from '../../../utils'
+import { useCreateSessionMutation } from '../../../app/services/session/apiSessionSlice'
+import { CreateSessionRequest } from '../../../app/services/session/types'
 
 interface CreateSessionModalProps {
   isModalOpen: boolean
   onModalClose: () => void
+  mentoringJourneyId: number
 }
 
 const defaultSession = {
   title: { value: '', error: '' },
   description: { value: '', error: '' },
-  startDate: { value: '', error: '' },
-  endDate: { value: '', error: '' },
-  location: { value: 'online', error: '' },
-  meetingArrangement: { value: '', error: '' },
+  fromDateTime: { value: '', error: '' },
+  toDateTime: { value: '', error: '' },
+  sessionType: { value: 'online', error: '' },
+  location: { value: '', error: '' },
 }
 
 function CreateSessionModal(props: CreateSessionModalProps) {
-  const { isModalOpen, onModalClose } = props
+  const { isModalOpen, onModalClose, mentoringJourneyId } = props
   const [session, updateSession] = useImmer(defaultSession)
+  const toast = useToast()
+  const [createSession, { isLoading }] = useCreateSessionMutation()
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateSession((draft) => { draft.title.value = e.target.value })
@@ -34,20 +39,20 @@ function CreateSessionModal(props: CreateSessionModalProps) {
     updateSession((draft) => { draft.description.value = e.target.value })
   }
 
-  const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateSession((draft) => { draft.startDate.value = e.target.value })
+  const handleFromDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    updateSession((draft) => { draft.fromDateTime.value = e.target.value })
   }
 
-  const handleEndDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateSession((draft) => { draft.endDate.value = e.target.value })
+  const handleToDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    updateSession((draft) => { draft.toDateTime.value = e.target.value })
   }
 
-  const handleMeetingArrangementChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateSession((draft) => { draft.meetingArrangement.value = e.target.value })
+  const handleSessionTypeChange = (nextValue: string) => {
+    updateSession((draft) => { draft.sessionType.value = nextValue })
   }
 
-  const handleLocationChange = (nextValue: string) => {
-    updateSession((draft) => { draft.location.value = nextValue })
+  const handleLocationChange = (e: ChangeEvent<HTMLInputElement>) => {
+    updateSession((draft) => { draft.location.value = e.target.value })
   }
 
   const handleModalCancel = () => {
@@ -55,7 +60,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
     onModalClose()
   }
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     let hasErrors: boolean = false
     updateSession((draft) => clearErrors(draft))
     if (!session.title.value.trim()) {
@@ -67,38 +72,63 @@ function CreateSessionModal(props: CreateSessionModalProps) {
       updateSession((draft) => { draft.description.error = 'Session description is required' })
       hasErrors = true
     }
+    if (!session.sessionType.value.trim()) {
+      updateSession((draft) => { draft.sessionType.error = 'Meeting arrangement is required' })
+      hasErrors = true
+    }
 
     if (!session.location.value.trim()) {
-      updateSession((draft) => { draft.location.error = 'Session description is required' })
+      updateSession((draft) => { draft.location.error = 'Location is required' })
       hasErrors = true
     }
 
-    if (!session.meetingArrangement.value.trim()) {
-      updateSession((draft) => { draft.meetingArrangement.error = 'Meeting arrangement is required' })
+    if (!session.fromDateTime.value) {
+      updateSession((draft) => { draft.fromDateTime.error = 'Start date/time of session is required' })
       hasErrors = true
     }
 
-    if (!session.startDate.value) {
-      updateSession((draft) => { draft.startDate.error = 'Start date/time of session is required' })
+    if (!session.toDateTime.value) {
+      updateSession((draft) => { draft.toDateTime.error = 'End date/time of session is required' })
       hasErrors = true
     }
 
-    if (!session.endDate.value) {
-      updateSession((draft) => { draft.endDate.error = 'End date/time of session is required' })
-      hasErrors = true
-    }
-
-    const startDate = new Date(session.startDate.value)
-    const endDate = new Date(session.endDate.value)
+    const startDate = new Date(session.fromDateTime.value)
+    const endDate = new Date(session.toDateTime.value)
 
     if (startDate >= endDate) {
       updateSession((draft) => {
-        draft.startDate.error = 'Start date/time must be before the end date/time'
+        draft.fromDateTime.error = 'Start date/time must be before the end date/time'
         hasErrors = true
       })
     }
 
     if (hasErrors) {
+      return
+    }
+    const request: CreateSessionRequest = {
+      mentoringJourneyId,
+      body: {
+        title: session.title.value,
+        description: session.title.value,
+        fromDateTime: session.fromDateTime.value,
+        toDateTime: session.toDateTime.value,
+        sessionType: session.sessionType.value,
+        location: session.location.value,
+      },
+    }
+    try {
+      await createSession(request).unwrap()
+      toast({
+        title: 'New Session',
+        description: 'New session has been successfully created! You may now view your new session under Pending Sessions',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      onModalClose()
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -123,7 +153,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
               <Textarea placeholder="Include your meeting agenda here..." value={session.description.value} onChange={handleDescriptionChange} />
               {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
             </Box>
-            <Divider orientation="horizontal" />
+            <Divider orientation="horizontal" marginTop="4" />
             <Text fontWeight="600" fontSize="md"> Meeting Details</Text>
             <SimpleGrid columns={[1, 1, 2]} spacing={10} marginBottom="3">
               <Box>
@@ -131,10 +161,10 @@ function CreateSessionModal(props: CreateSessionModalProps) {
                 <Input
                   size="md"
                   type="datetime-local"
-                  onChange={handleStartDateChange}
-                  value={session.startDate.value}
+                  onChange={handleFromDateTimeChange}
+                  value={session.fromDateTime.value}
                 />
-                {!!session.startDate.error && <Text fontSize="xs" color="red.600">{session.startDate.error}</Text>}
+                {!!session.fromDateTime.error && <Text fontSize="xs" color="red.600">{session.fromDateTime.error}</Text>}
               </Box>
 
               <Box>
@@ -142,36 +172,36 @@ function CreateSessionModal(props: CreateSessionModalProps) {
                 <Input
                   size="md"
                   type="datetime-local"
-                  onChange={handleEndDateChange}
-                  value={session.endDate.value}
+                  onChange={handleToDateTimeChange}
+                  value={session.toDateTime.value}
                 />
-                {!!session.endDate.error && <Text fontSize="xs" color="red.600">{session.endDate.error}</Text>}
+                {!!session.toDateTime.error && <Text fontSize="xs" color="red.600">{session.toDateTime.error}</Text>}
               </Box>
             </SimpleGrid>
-            <Flex dir="row" alignContent="center" gap="5" marginBottom={session.location.error ? '0' : '3'}>
-              <Text fontSize="md">Location: </Text>
-              <RadioGroup onChange={handleLocationChange} value={session.location.value}>
+            <Flex dir="row" alignContent="center" gap="5" marginBottom={session.sessionType.error ? '0' : '3'}>
+              <Text fontSize="md">Session Type: </Text>
+              <RadioGroup onChange={handleSessionTypeChange} value={session.sessionType.value}>
                 <Stack direction="row">
                   <Radio value="online" colorScheme="red">Online</Radio>
                   <Radio value="physical" colorScheme="red">Physical</Radio>
                 </Stack>
               </RadioGroup>
             </Flex>
-            {!!session.location.error && <Text fontSize="xs" color="red.600" marginBottom="8">{session.description.error}</Text>}
+            {!!session.location.error && <Text fontSize="xs" color="red.600">{session.sessionType.error}</Text>}
             <Flex alignItems={['start', 'start', 'center']} gap="3" flexDir={['column', 'column', 'row']} width="100%">
               <Text> {session.location.value === 'online' ? 'Meeting Link:' : 'Address:'}  </Text>
               <Box flex="1" w="100%">
                 <ControlledTextInput
                   type="text"
-                  error={session.meetingArrangement.error}
-                  inputProps={{ onChange: handleMeetingArrangementChange, value: session.meetingArrangement.value }}
+                  error={session.location.error}
+                  inputProps={{ onChange: handleLocationChange, value: session.location.value }}
                 />
               </Box>
             </Flex>
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
-            <Button colorScheme="red" size="sm" onClick={handleCreate}> Create </Button>
+            <Button colorScheme="red" size="sm" onClick={handleCreate} isLoading={isLoading}> Create </Button>
           </Flex>
         </ModalBody>
       </ModalContent>
