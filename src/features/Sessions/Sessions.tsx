@@ -11,20 +11,57 @@ import Calendar from './Calendar/Calendar'
 import SessionFormModal from './SessionFormModal/SessionFormModal'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
+import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
   const { role } = useAppSelector(getAuth)
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
   const [menteeId, setMenteeId] = useState('')
+  const [menteeName, setMenteeName] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
-  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
+  const [getMenteeSessions, menteeResult] = useLazyGetMenteeSessionsQuery()
+  const [getSessions, sessionResult] = useLazyGetSessionsQuery()
+  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedMenteeId = e.target.value
+    setMenteeId(selectedMenteeId)
+    const selectedMentee = assignedMenteeOptions.find((option) => option.value === selectedMenteeId)
+    if (selectedMentee) {
+      setMenteeName(selectedMentee.children)
+    }
+  }
+  const { data } = role === 'Mentor' ? menteeResult : sessionResult
 
+  // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
+      setMenteeName(menteeName)
     }
-  }, [assignedMenteeOptions, menteeId])
+  }, [assignedMenteeOptions, menteeId, menteeName])
+
+  // Get mentee sessions when mentee ID is set
+  useEffect(() => {
+    if (role === 'Mentor') {
+      if (!menteeId) return
+      getMenteeSessions(menteeId)
+    } else {
+      getSessions(null)
+    }
+  }, [menteeId, getMenteeSessions, getSessions, role])
+
+  const sessions = data ?? []
+  const todayDate = new Date()
+  const upcomingSessions = sessions.filter(({ status, fromDateTime }) => {
+    const sessionDate = new Date(fromDateTime)
+    return status === 'Confirmed' && sessionDate > todayDate
+  })
+  const pastSessions = sessions.filter(({ status, fromDateTime }) => {
+    const sessionDate = new Date(fromDateTime)
+    return status === 'Confirmed' && sessionDate <= todayDate
+  })
+  const pendingSessions = sessions.filter(({ status }) => status === 'Pending' || status === 'Rejected')
+  const calendarDates = sessions.map((session) => session.fromDateTime)
 
   return (
     <Container minHeight="calc(100vh - 32px)">
@@ -43,7 +80,7 @@ function Sessions() {
       <Hide above="sm">
         <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
       </Hide>
-      <Calendar datesWithSessions={[]} />
+      <Calendar datesWithSessions={calendarDates} />
       <Tabs variant="solid-rounded" colorScheme="red">
         <Stack justify="space-between" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
@@ -55,13 +92,13 @@ function Sessions() {
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable />
+            <UpcomingAndPastSessionsTable data={upcomingSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable />
+            <UpcomingAndPastSessionsTable data={pastSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <PendingSessionsTable />
+            <PendingSessionsTable data={pendingSessions} />
           </TabPanel>
         </TabPanels>
       </Tabs>
