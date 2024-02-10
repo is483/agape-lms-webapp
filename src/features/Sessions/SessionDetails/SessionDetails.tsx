@@ -13,6 +13,7 @@ import { getAuth } from '../../../app/redux/selectors'
 
 function SessionDetails() {
   const { sessionId } = useParams()
+  const navigate = useNavigate()
   const { role } = useAppSelector(getAuth)
   const [getMenteeSessionDetails, menteeSessionDetailsResult] = useLazyGetSessionDetailsMenteeQuery()
   const [getMentorSessionDetails, mentorSessionDetailsResult] = useLazyGetSessionDetailsMentorQuery()
@@ -26,7 +27,10 @@ function SessionDetails() {
   }, [sessionId, role, getMenteeSessionDetails, getMentorSessionDetails])
 
   const { data } = role === 'Mentor' ? mentorSessionDetailsResult : menteeSessionDetailsResult
-  const { firstName, lastName, profileImgUrl } = data?.mentee ?? {}
+  const {
+    firstName, lastName, profileImgUrl, menteeId,
+  } = data?.mentee ?? {}
+
   const {
     title, description, fromDateTime, toDateTime, location,
   } = data?.sessionDetails ?? {}
@@ -40,9 +44,9 @@ function SessionDetails() {
 
   const differenceInHours = (endDateObject.getTime() - startDateObject.getTime()) / (1000 * 60 * 60)
 
-  // const handleViewMentee = () => {
-  //   navigate(`${paths.AssignedMentees}/${menteeId}`)
-  // }
+  const handleViewMentee = () => {
+    navigate(`${paths.AssignedMentees}/${menteeId}`)
+  }
   return (
     <Container position="relative" minH="calc(100vh - 34px)">
       <BackButton path={paths.Sessions.ViewAll} />
@@ -83,17 +87,17 @@ function SessionDetails() {
 
       {role === 'Mentor'
         && (
-        <Box mt="10">
-          <Text fontWeight="600" fontSize="lg">Mentee</Text>
-          <Flex mt="4">
-            <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2">
-              <HStack spacing="4">
-                <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
-                <Text fontSize="lg">{firstName} {lastName}</Text>
-              </HStack>
-            </Box>
-          </Flex>
-        </Box>
+          <Box mt="10">
+            <Text fontWeight="600" fontSize="lg">Mentee</Text>
+            <Flex mt="4">
+              <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentee}>
+                <HStack spacing="4">
+                  <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
+                  <Text fontSize="lg">{firstName} {lastName}</Text>
+                </HStack>
+              </Box>
+            </Flex>
+          </Box>
         )}
 
       <Box mt="10">

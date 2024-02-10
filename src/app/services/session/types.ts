@@ -17,6 +17,7 @@ export interface SessionDetailsResponse {
     firstName: string
     lastName: string
     profileImgUrl: string
+    menteeId: number
   };
   sessionDetails: {
     title: string
