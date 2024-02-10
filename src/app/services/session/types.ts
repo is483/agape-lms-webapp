@@ -12,4 +12,21 @@ export interface Session {
   reason: string
 }
 
+export interface SessionDetailsResponse {
+  mentee: {
+    firstName: string
+    lastName: string
+    profileImgUrl: string
+  };
+  sessionDetails: {
+    title: string
+    description: string
+    fromDateTime: string
+    toDateTime: string
+    sessionType: string
+    location: string
+    notes?: string
+  };
+}
+
 export type SessionResponse = Session[]
