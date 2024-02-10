@@ -13,7 +13,7 @@ export interface Session {
 }
 
 export interface SessionDetailsResponse {
-  mentee: {
+  mentee?: {
     firstName: string
     lastName: string
     profileImgUrl: string

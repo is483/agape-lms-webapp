@@ -3,7 +3,9 @@ import {
   Box, Divider, Text, Flex, HStack, Button,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
-import { BackButton, Container, Icon, ProfileIcon } from '../../../components'
+import {
+  BackButton, Container, Icon, ProfileIcon,
+} from '../../../components'
 import paths from '../../../paths'
 import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery } from '../../../app/services/session/apiSessionSlice'
 import { useAppSelector } from '../../../hooks'
@@ -79,17 +81,21 @@ function SessionDetails() {
         <Text color="secondary.500" isTruncated>{location}</Text>
       </HStack>
 
-      <Box mt="10">
-        <Text fontWeight="600" fontSize="lg">Mentee</Text>
-        <Flex mt="4">
-          <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2">
-            <HStack spacing="4">
-              <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
-              <Text fontSize="lg">{firstName} {lastName}</Text>
-            </HStack>
-          </Box>
-        </Flex>
-      </Box>
+      {role === 'Mentor'
+        && (
+        <Box mt="10">
+          <Text fontWeight="600" fontSize="lg">Mentee</Text>
+          <Flex mt="4">
+            <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2">
+              <HStack spacing="4">
+                <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
+                <Text fontSize="lg">{firstName} {lastName}</Text>
+              </HStack>
+            </Box>
+          </Flex>
+        </Box>
+        )}
+
       <Box mt="10">
         <Text fontWeight="600" fontSize="lg">Description </Text>
         <Text color="secondary.500">
