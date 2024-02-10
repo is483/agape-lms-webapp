@@ -53,13 +53,13 @@ function Sessions() {
   const todayDate = new Date()
   const upcomingSessions = sessions.filter(({ status, fromDateTime }) => {
     const sessionDate = new Date(fromDateTime)
-    return status === 'confirmed' && sessionDate > todayDate
+    return status === 'Confirmed' && sessionDate > todayDate
   })
   const pastSessions = sessions.filter(({ status, fromDateTime }) => {
     const sessionDate = new Date(fromDateTime)
-    return status === 'confirmed' && sessionDate <= todayDate
+    return status === 'Confirmed' && sessionDate <= todayDate
   })
-  const pendingSessions = sessions.filter(({ status }) => status === 'pending_confirmation' || status === 'pending_rejected')
+  const pendingSessions = sessions.filter(({ status }) => status === 'Pending' || status === 'Rejected')
   const calendarDates = sessions.map((session) => session.fromDateTime)
 
   return (
