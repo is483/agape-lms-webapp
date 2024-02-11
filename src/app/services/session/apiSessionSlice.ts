@@ -9,6 +9,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       query: (menteeId) => ({
         url: `/session/${menteeId}`,
         method: 'GET',
+        providesTags: ['Sessions'],
       }),
       onQueryStarted,
     }),
@@ -17,6 +18,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/session',
         method: 'GET',
+        providesTags: ['Sessions'],
       }),
       onQueryStarted,
     }),
@@ -24,6 +26,8 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       query: (sessionId) => ({
         url: `/session/pending/confirm/${sessionId}`,
         method: 'PUT',
+        invalidatesTags: ['Sessions'],
+
       }),
       onQueryStarted,
     }),

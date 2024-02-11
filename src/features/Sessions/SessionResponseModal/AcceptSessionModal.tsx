@@ -12,7 +12,7 @@ interface AcceptSessionModalProps {
 
 function AcceptSessionModal(props: AcceptSessionModalProps) {
   const { isModalOpen, onModalClose, sessionId } = props
-  const [ acceptSessionMutation, { isLoading }] = useAcceptSessionMutation()
+  const [acceptSessionMutation, { isLoading }] = useAcceptSessionMutation()
   const toast = useToast()
 
   const handleModalCancel = () => {
