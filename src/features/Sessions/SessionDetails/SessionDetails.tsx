@@ -52,6 +52,7 @@ function SessionDetails() {
   }
   return (
     <Container position="relative" minH="calc(100vh - 34px)">
+      {/* TODO: Add SessionFormModal here */}
       <BackButton path={paths.Sessions.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
       <Flex justifyContent="space-between" flexDir={['column-reverse', 'column-reverse', 'row']} mt="12">

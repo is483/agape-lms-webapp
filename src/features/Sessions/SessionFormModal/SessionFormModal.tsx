@@ -15,6 +15,7 @@ interface CreateSessionModalProps {
   onModalClose: () => void
   mentoringJourneyId: number
   refetchSessions: () => void
+  // TODO: Add a new optional prop for sessionDetails
 }
 
 const defaultSession = {
@@ -33,6 +34,8 @@ function SessionFormModal(props: CreateSessionModalProps) {
   const [session, updateSession] = useImmer(defaultSession)
   const toast = useToast()
   const [createSession, { isLoading }] = useCreateSessionMutation()
+
+  // TODO: Add use effect to set the default values if sessionDetails in the prop exists
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateSession((draft) => { draft.title.value = e.target.value })
