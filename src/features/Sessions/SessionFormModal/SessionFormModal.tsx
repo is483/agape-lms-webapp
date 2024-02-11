@@ -6,7 +6,7 @@ import {
 import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
 import { ControlledTextInput } from '../../../components'
-import { clearErrors } from '../../../utils'
+import { clearErrors, clearValues } from '../../../utils'
 import { useCreateSessionMutation } from '../../../app/services/session/apiSessionSlice'
 import { CreateSessionRequest } from '../../../app/services/session/types'
 
@@ -55,8 +55,9 @@ function CreateSessionModal(props: CreateSessionModalProps) {
     updateSession((draft) => { draft.location.value = e.target.value })
   }
 
-  const handleModalCancel = () => {
+  const handleModalClose = () => {
     updateSession((draft) => clearErrors(draft))
+    updateSession((draft) => clearValues(draft))
     onModalClose()
   }
 
@@ -94,12 +95,20 @@ function CreateSessionModal(props: CreateSessionModalProps) {
 
     const startDate = new Date(session.fromDateTime.value)
     const endDate = new Date(session.toDateTime.value)
+    const todayDate = new Date()
 
     if (startDate >= endDate) {
       updateSession((draft) => {
         draft.fromDateTime.error = 'Start date/time must be before the end date/time'
-        hasErrors = true
       })
+      hasErrors = true
+    }
+
+    if (startDate < todayDate) {
+      updateSession((draft) => {
+        draft.fromDateTime.error = 'Start date/time cannot be earlier than today'
+      })
+      hasErrors = true
     }
 
     if (hasErrors) {
@@ -134,7 +143,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
 
   return (
 
-    <Modal isOpen={isModalOpen} onClose={onModalClose} size="3xl">
+    <Modal isOpen={isModalOpen} onClose={handleModalClose} size="3xl">
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
         <ModalHeader>Create Mentoring Session
@@ -200,7 +209,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
             </Flex>
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
-            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
+            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalClose}>Cancel</Button>
             <Button colorScheme="red" size="sm" onClick={handleCreate} isLoading={isLoading}> Create </Button>
           </Flex>
         </ModalBody>
