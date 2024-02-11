@@ -26,7 +26,7 @@ export interface SessionDetailsResponse {
     toDateTime: string
     sessionType: string
     location: string
-    notes?: string
+    notes: string | null
   };
 }
 
