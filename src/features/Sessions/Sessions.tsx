@@ -46,12 +46,12 @@ function Sessions() {
 
   const sessions = data ?? []
   const todayDate = new Date()
-  const upcomingSessions = sessions.filter(({ status, fromDateTime }) => {
-    const sessionDate = new Date(fromDateTime)
+  const upcomingSessions = sessions.filter(({ status, toDateTime }) => {
+    const sessionDate = new Date(toDateTime)
     return status === 'Confirmed' && sessionDate > todayDate
   })
-  const pastSessions = sessions.filter(({ status, fromDateTime }) => {
-    const sessionDate = new Date(fromDateTime)
+  const pastSessions = sessions.filter(({ status, toDateTime }) => {
+    const sessionDate = new Date(toDateTime)
     return status === 'Confirmed' && sessionDate <= todayDate
   })
   const pendingSessions = sessions.filter(({ status }) => status === 'Pending' || status === 'Rejected')
