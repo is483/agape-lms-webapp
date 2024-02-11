@@ -14,6 +14,7 @@ interface CreateSessionModalProps {
   isModalOpen: boolean
   onModalClose: () => void
   mentoringJourneyId: number
+  refetchSessions: () => void
 }
 
 const defaultSession = {
@@ -25,8 +26,10 @@ const defaultSession = {
   location: { value: '', error: '' },
 }
 
-function CreateSessionModal(props: CreateSessionModalProps) {
-  const { isModalOpen, onModalClose, mentoringJourneyId } = props
+function SessionFormModal(props: CreateSessionModalProps) {
+  const {
+    isModalOpen, onModalClose, mentoringJourneyId, refetchSessions,
+  } = props
   const [session, updateSession] = useImmer(defaultSession)
   const toast = useToast()
   const [createSession, { isLoading }] = useCreateSessionMutation()
@@ -135,6 +138,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
+      refetchSessions()
       onModalClose()
     } catch (e) {
       console.error(e)
@@ -143,7 +147,7 @@ function CreateSessionModal(props: CreateSessionModalProps) {
 
   return (
 
-    <Modal isOpen={isModalOpen} onClose={handleModalClose} size="3xl">
+    <Modal isOpen={isModalOpen} onClose={handleModalClose} size="3xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
         <ModalHeader>Create Mentoring Session
@@ -217,4 +221,4 @@ function CreateSessionModal(props: CreateSessionModalProps) {
     </Modal>
   )
 }
-export default CreateSessionModal
+export default SessionFormModal

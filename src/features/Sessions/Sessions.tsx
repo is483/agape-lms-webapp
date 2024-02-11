@@ -63,7 +63,12 @@ function Sessions() {
 
   return (
     <Container minHeight="calc(100vh - 32px)">
-      <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} mentoringJourneyId={sessions[0]?.mentoringJourneyId} />
+      <SessionFormModal
+        isModalOpen={isSessionFormModalOpen}
+        onModalClose={onSessionFormModalClose}
+        mentoringJourneyId={sessions[0]?.mentoringJourneyId}
+        refetchSessions={() => getSessionsByMenteeId(menteeId)}
+      />
       <Flex justify="space-between" mb="4" gap="2">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
