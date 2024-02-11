@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice'
-import { CreateSessionRequest, SessionResponse } from './types'
+import { CreateSessionRequest, SessionDetailsResponse, SessionResponse } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiSessionSlice = apiSlice.injectEndpoints({
@@ -20,7 +20,6 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-
     createSession: build.mutation<null, CreateSessionRequest>({
       query: (request) => ({
         url: `/session/create/${request.mentoringJourneyId}`,
@@ -29,12 +28,28 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-
+    getSessionDetailsMentor: build.query<SessionDetailsResponse, string | number>({
+      query: (sessionId) => ({
+        url: `/session/mentor/details/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    getSessionDetailsMentee: build.query<SessionDetailsResponse, string | number>({
+      query: (sessionId) => ({
+        url: `/session/mentee/details/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
 export const {
-  useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery,
+  useLazyGetMenteeSessionsQuery,
   useCreateSessionMutation,
+  useLazyGetSessionDetailsMentorQuery,
+  useLazyGetSessionDetailsMenteeQuery,
+  useLazyGetSessionsQuery,
 } = apiSessionSlice

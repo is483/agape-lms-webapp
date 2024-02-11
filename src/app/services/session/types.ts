@@ -24,4 +24,22 @@ export interface CreateSessionRequest {
   }
 }
 
+export interface SessionDetailsResponse {
+  mentee?: {
+    firstName: string
+    lastName: string
+    profileImgUrl: string
+    menteeId: number
+  }
+  sessionDetails: {
+    title: string
+    description: string
+    fromDateTime: string
+    toDateTime: string
+    sessionType: string
+    location: string
+    notes: string | null
+  }
+}
+
 export type SessionResponse = Session[]

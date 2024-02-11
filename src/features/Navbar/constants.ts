@@ -66,7 +66,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         {
           name: 'Sessions',
           iconName: 'schedule',
-          path: paths.Sessions,
+          path: paths.Sessions.ViewAll,
         },
         {
           name: 'Assigned Mentees',
@@ -100,7 +100,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         {
           name: 'Session',
           iconName: 'schedule',
-          path: paths.Sessions,
+          path: paths.Sessions.ViewAll,
         },
         {
           name: 'Milestones',
