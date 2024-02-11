@@ -1,5 +1,6 @@
 import {
-  Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Badge, Text, VStack, Button, HStack,
+  Flex, Table, TableContainer, Tbody, Td,
+  Th, Thead, Tr, Badge, Text, VStack, Button, HStack,
 } from '@chakra-ui/react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
@@ -30,8 +31,8 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
           <Tr>
             <Th>Date & Time</Th>
             <Th>Title</Th>
-            <Th> Type </Th>
-            <Th> Status </Th>
+            <Th>Type</Th>
+            <Th>Status</Th>
             <Th> <Flex justifyContent="center">Reason </Flex></Th>
           </Tr>
         </Thead>
@@ -49,15 +50,15 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
               <Tr>
                 <Td>
                   <VStack alignItems="start">
-                    <Text color="primary.800"> {date}</Text>
+                    <Text color="primary.800" fontSize="sm"> {date}</Text>
                     <Text> {time}</Text>
                   </VStack>
                 </Td>
                 <Td>
                   {title}
                 </Td>
-                <Td>
-                  {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
+                <Td textTransform="capitalize">
+                  {sessionType}
                 </Td>
                 <Td>
                   <Badge
@@ -87,8 +88,8 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
           <Tr>
             <Th>Date & Time</Th>
             <Th>Title</Th>
-            <Th> Type </Th>
-            <Th><Flex display="flex" justifyContent="start">Status</Flex>  </Th>
+            <Th>Type</Th>
+            <Th><Flex justifyContent="start">Status</Flex></Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -105,37 +106,35 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
               <Tr>
                 <Td>
                   <VStack alignItems="start">
-                    <Text color="primary.800"> {date}</Text>
-                    <Text> {time}</Text>
+                    <Text color="primary.800" fontSize="sm">{date}</Text>
+                    <Text>{time}</Text>
                   </VStack>
                 </Td>
                 <Td>
                   {title}
                 </Td>
-                <Td>
-                  {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
+                <Td textTransform="capitalize">
+                  {sessionType}
                 </Td>
                 <Td>
                   {status === 'Pending' && (
-                    <HStack display="flex" justifyContent="start">
+                    <HStack justifyContent="start">
                       <Button colorScheme="red" size="sm">
                         <HStack>
                           <Icon name="done" color="white" />
-                          <Text> Accept</Text>
+                          <Text>Accept</Text>
                         </HStack>
                       </Button>
                       <Button colorScheme="red" variant="outline" size="sm">
                         <HStack>
                           <Icon name="close" color="primary.700" />
-                          <Text> Decline</Text>
+                          <Text>Decline</Text>
                         </HStack>
                       </Button>
                     </HStack>
                   )}
                   {status === 'Rejected' && (
-                    <Badge
-                      colorScheme="yellow"
-                    >
+                    <Badge colorScheme="yellow">
                       Awaiting Confirmation
                     </Badge>
                   )}
