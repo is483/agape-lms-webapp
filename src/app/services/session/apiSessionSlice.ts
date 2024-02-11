@@ -28,6 +28,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
     getSessionDetailsMentor: build.query<SessionDetailsResponse, string | number>({
       query: (sessionId) => ({
         url: `/session/mentor/details/${sessionId}`,
@@ -35,6 +36,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
     getSessionDetailsMentee: build.query<SessionDetailsResponse, string | number>({
       query: (sessionId) => ({
         url: `/session/mentee/details/${sessionId}`,
