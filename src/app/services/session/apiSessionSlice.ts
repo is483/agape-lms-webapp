@@ -12,7 +12,6 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-
     // for Mentee
     getSessions: build.query<SessionResponse, null>({
       query: () => ({

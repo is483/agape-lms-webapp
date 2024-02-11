@@ -37,15 +37,15 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
               <Tr>
                 <Td>
                   <VStack alignItems="start">
-                    <Text color="primary.800"> {date}</Text>
+                    <Text color="primary.800" fontSize="sm"> {date}</Text>
                     <Text> {time}</Text>
                   </VStack>
                 </Td>
                 <Td>
                   {title}
                 </Td>
-                <Td>
-                  {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
+                <Td textTransform="capitalize">
+                  {sessionType}
                 </Td>
                 <Td>
                   <Flex justify="end">
