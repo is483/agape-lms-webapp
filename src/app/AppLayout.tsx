@@ -11,8 +11,8 @@ import { CreateMentoringJourney } from '../features/MentoringJourneys/CreateMent
 import { MentoringJourneyDetails } from '../features/MentoringJourneys/MentoringJourneyDetails'
 import { AssignedMentees } from '../features/AssignedMentees'
 import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
-import Sessions from '../features/Sessions/Sessions'
-import SessionDetails from '../features/Sessions/SessionDetails/SessionDetails'
+import { Sessions } from '../features/Sessions'
+import { SessionDetails } from '../features/Sessions/SessionDetails'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
