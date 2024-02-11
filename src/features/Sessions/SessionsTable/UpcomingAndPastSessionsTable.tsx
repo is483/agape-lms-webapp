@@ -2,6 +2,8 @@ import {
   Flex, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
 } from '@chakra-ui/react'
 import { SessionResponse } from '../../../app/services/session/types'
+import { Link } from '../../../components'
+import paths from '../../../paths'
 
 interface UpcomingandPastSessionProps {
   data: SessionResponse
@@ -9,6 +11,7 @@ interface UpcomingandPastSessionProps {
 
 function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
   const { data } = props
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -23,7 +26,7 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType,
+              fromDateTime, title, sessionType, sessionId,
             } = session
 
             const dateObject = new Date(fromDateTime)
@@ -46,7 +49,9 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
                 </Td>
                 <Td>
                   <Flex justify="end">
-                    <Button>View Details</Button>
+                    <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
+                      <Button>View Details</Button>
+                    </Link>
                   </Flex>
                 </Td>
               </Tr>

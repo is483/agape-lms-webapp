@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice'
-import { SessionResponse } from './types'
+import { SessionDetailsResponse, SessionResponse } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiSessionSlice = apiSlice.injectEndpoints({
@@ -20,8 +20,29 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    getSessionDetailsMentor: build.query<SessionDetailsResponse, string | number>({
+      query: (sessionId) => ({
+        url: `/session/mentor/details/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+
+    getSessionDetailsMentee: build.query<SessionDetailsResponse, string | number>({
+      query: (sessionId) => ({
+        url: `/session/mentee/details/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } = apiSessionSlice
+export const {
+  useLazyGetMenteeSessionsQuery,
+  useLazyGetSessionDetailsMentorQuery,
+  useLazyGetSessionDetailsMenteeQuery,
+  useLazyGetSessionsQuery,
+} = apiSessionSlice
