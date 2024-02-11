@@ -1,10 +1,11 @@
 import {
-  Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Badge, Text, VStack, Button, HStack,
+  Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Badge, Text, VStack, Button, HStack, useDisclosure,
 } from '@chakra-ui/react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import { SessionResponse } from '../../../app/services/session/types'
 import { Icon } from '../../../components'
+import AcceptSessionModal from '../SessionResponseModal/AcceptSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
@@ -80,8 +81,10 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
 
 function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
   const { data } = props
+  const { isOpen: isAcceptSessionModalOpen, onOpen: onOpenAcceptSessionModal, onClose: onAcceptSessionModalClose } = useDisclosure()
   return (
     <TableContainer whiteSpace="unset" width="100%">
+      <AcceptSessionModal isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -118,7 +121,7 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
                 <Td>
                   {status === 'Pending' && (
                     <HStack display="flex" justifyContent="start">
-                      <Button colorScheme="red" size="sm">
+                      <Button colorScheme="red" size="sm" onClick={onOpenAcceptSessionModal}>
                         <HStack>
                           <Icon name="done" color="white" />
                           <Text> Accept</Text>
