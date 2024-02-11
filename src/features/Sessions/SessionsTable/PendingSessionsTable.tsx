@@ -1,18 +1,29 @@
 import {
-  Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+  Flex, Table, TableContainer, Tbody, Td,
+  Th, Thead, Tr, Badge, Text, VStack, Button, HStack,
 } from '@chakra-ui/react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
+import { SessionResponse } from '../../../app/services/session/types'
+import { Icon } from '../../../components'
 
-function PendingSessionsTable() {
+interface PendingSessionsTableProps {
+  data: SessionResponse
+}
+
+function PendingSessionsTable(props: PendingSessionsTableProps) {
+  const { data } = props
   const { role } = useAppSelector(getAuth)
-  const TableComponent = role === 'Mentor' ? PendingSessionsTableMentor : PendingSessionsTableMentee
-  return (
-    <TableComponent />
+  return role === 'Mentor' ? (
+    <PendingSessionsTableMentor data={data} />
+  ) : (
+    <PendingSessionsTableMentee data={data} />
   )
 }
 
-function PendingSessionsTableMentor() {
+function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+  const { data } = props
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -20,28 +31,56 @@ function PendingSessionsTableMentor() {
           <Tr>
             <Th>Date & Time</Th>
             <Th>Title</Th>
-            <Th> Type </Th>
-            <Th> Status </Th>
-            <Th> Reason </Th>
+            <Th>Type</Th>
+            <Th>Status</Th>
+            <Th> <Flex justifyContent="center">Reason </Flex></Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>
-              <Flex gap="2" align="center" />
-            </Td>
-            <Td />
-            <Td />
-            <Td />
-            <Td />
-          </Tr>
+          {data.map((session) => {
+            const {
+              fromDateTime, title, sessionType, status,
+            } = session
+
+            const dateObject = new Date(fromDateTime)
+            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            return (
+              <Tr>
+                <Td>
+                  <VStack alignItems="start">
+                    <Text color="primary.800" fontSize="sm"> {date}</Text>
+                    <Text> {time}</Text>
+                  </VStack>
+                </Td>
+                <Td>
+                  {title}
+                </Td>
+                <Td textTransform="capitalize">
+                  {sessionType}
+                </Td>
+                <Td>
+                  <Badge
+                    colorScheme={status === 'Pending' ? 'yellow' : 'red'}
+                  >
+                    {status === 'Pending' ? 'Awaiting Confirmation' : 'Rejected'}
+                  </Badge>
+                </Td>
+                <Td>
+                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" /></Flex>}
+                </Td>
+              </Tr>
+            )
+          })}
         </Tbody>
       </Table>
     </TableContainer>
   )
 }
 
-function PendingSessionsTableMentee() {
+function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
+  const { data } = props
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -49,22 +88,61 @@ function PendingSessionsTableMentee() {
           <Tr>
             <Th>Date & Time</Th>
             <Th>Title</Th>
-            <Th> Type </Th>
-            <Th> Status </Th>
-            <Th />
+            <Th>Type</Th>
+            <Th><Flex justifyContent="start">Status</Flex></Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>
-              <Flex gap="2" align="center" />
-            </Td>
-            <Td />
-            <Td />
-            <Td>
-              <Flex justify="end" />
-            </Td>
-          </Tr>
+          {data.map((session) => {
+            const {
+              fromDateTime, title, sessionType, status,
+            } = session
+
+            const dateObject = new Date(fromDateTime)
+            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            return (
+              <Tr>
+                <Td>
+                  <VStack alignItems="start">
+                    <Text color="primary.800" fontSize="sm">{date}</Text>
+                    <Text>{time}</Text>
+                  </VStack>
+                </Td>
+                <Td>
+                  {title}
+                </Td>
+                <Td textTransform="capitalize">
+                  {sessionType}
+                </Td>
+                <Td>
+                  {status === 'Pending' && (
+                    <HStack justifyContent="start">
+                      <Button colorScheme="red" size="sm">
+                        <HStack>
+                          <Icon name="done" color="white" />
+                          <Text>Accept</Text>
+                        </HStack>
+                      </Button>
+                      <Button colorScheme="red" variant="outline" size="sm">
+                        <HStack>
+                          <Icon name="close" color="primary.700" />
+                          <Text>Decline</Text>
+                        </HStack>
+                      </Button>
+                    </HStack>
+                  )}
+                  {status === 'Rejected' && (
+                    <Badge colorScheme="yellow">
+                      Awaiting Confirmation
+                    </Badge>
+                  )}
+
+                </Td>
+              </Tr>
+            )
+          })}
         </Tbody>
       </Table>
     </TableContainer>

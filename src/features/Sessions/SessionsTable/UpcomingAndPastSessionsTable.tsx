@@ -1,8 +1,14 @@
 import {
-  Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+  Flex, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
 } from '@chakra-ui/react'
+import { SessionResponse } from '../../../app/services/session/types'
 
-function UpcomingAndPastSessionsTable() {
+interface UpcomingandPastSessionProps {
+  data: SessionResponse
+}
+
+function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
+  const { data } = props
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -15,18 +21,37 @@ function UpcomingAndPastSessionsTable() {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>
-              <Flex gap="2" align="center" />
-            </Td>
-            <Td />
-            <Td />
-            <Td>
-              <Flex justify="end">
-                <Button>View Details</Button>
-              </Flex>
-            </Td>
-          </Tr>
+          {data.map((session) => {
+            const {
+              fromDateTime, title, sessionType,
+            } = session
+
+            const dateObject = new Date(fromDateTime)
+            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            return (
+              <Tr>
+                <Td>
+                  <VStack alignItems="start">
+                    <Text color="primary.800" fontSize="sm"> {date}</Text>
+                    <Text> {time}</Text>
+                  </VStack>
+                </Td>
+                <Td>
+                  {title}
+                </Td>
+                <Td textTransform="capitalize">
+                  {sessionType}
+                </Td>
+                <Td>
+                  <Flex justify="end">
+                    <Button>View Details</Button>
+                  </Flex>
+                </Td>
+              </Tr>
+            )
+          })}
         </Tbody>
       </Table>
     </TableContainer>

@@ -4,26 +4,60 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
 import Container from '../../components/Container'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppSelector } from '../../hooks'
 import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
+import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
-  const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
-  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => setMenteeId(e.target.value)
+  const [getSessionsByMenteeId, sessionByMenteeIdResult] = useLazyGetMenteeSessionsQuery()
+  const [getSessions, sessionResult] = useLazyGetSessionsQuery()
+  const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedMenteeId = e.target.value
+    setMenteeId(selectedMenteeId)
+  }
+  const { data } = role === 'Mentor' ? sessionByMenteeIdResult : sessionResult
 
+  // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId])
+  }, [assignedMenteeOptions, menteeId])
+
+  // Get mentee sessions when mentee ID is set
+  useEffect(() => {
+    if (role === 'Mentor' && !!menteeId) {
+      getSessionsByMenteeId(menteeId)
+    }
+  }, [getSessionsByMenteeId, menteeId, role])
+
+  // Get mentee's session if user is mentee
+  useEffect(() => {
+    if (role === 'Mentee') {
+      getSessions(null)
+    }
+  }, [getSessions, role])
+
+  const sessions = data ?? []
+  const todayDate = new Date()
+  const upcomingSessions = sessions.filter(({ status, toDateTime }) => {
+    const sessionDate = new Date(toDateTime)
+    return status === 'Confirmed' && sessionDate > todayDate
+  })
+  const pastSessions = sessions.filter(({ status, toDateTime }) => {
+    const sessionDate = new Date(toDateTime)
+    return status === 'Confirmed' && sessionDate <= todayDate
+  })
+  const pendingSessions = sessions.filter(({ status }) => status !== 'Confirmed')
+  const datesWithSessions = sessions.map((session) => session.fromDateTime)
 
   return (
     <Container minHeight="calc(100vh - 32px)">
@@ -41,7 +75,7 @@ function Sessions() {
       <Hide above="sm">
         <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
       </Hide>
-      <Calendar datesWithSessions={[]} />
+      <Calendar datesWithSessions={datesWithSessions} />
       <Tabs variant="solid-rounded" colorScheme="red">
         <Stack justify="space-between" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
@@ -53,13 +87,13 @@ function Sessions() {
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable />
+            <UpcomingAndPastSessionsTable data={upcomingSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable />
+            <UpcomingAndPastSessionsTable data={pastSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <PendingSessionsTable />
+            <PendingSessionsTable data={pendingSessions} />
           </TabPanel>
         </TabPanels>
       </Tabs>
