@@ -20,8 +20,18 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    acceptSession: build.mutation<null, string | number>({
+      query: (sessionId) => ({
+        url: `/session/pending/confirm/${sessionId}`,
+        method: 'PUT',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } = apiSessionSlice
+export const {
+  useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery,
+  useAcceptSessionMutation,
+} = apiSessionSlice

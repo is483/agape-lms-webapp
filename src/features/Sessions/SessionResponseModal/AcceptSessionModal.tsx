@@ -1,21 +1,39 @@
 import {
-  Modal, ModalBody, ModalCloseButton, ModalOverlay, ModalHeader, ModalContent, Flex, Button, Image,
+  Modal, ModalBody, ModalCloseButton, ModalOverlay, ModalHeader, ModalContent, Flex, Button, Image, useToast,
 } from '@chakra-ui/react'
 import acceptSession from '../../../assets/accept_session.png'
+import { useAcceptSessionMutation } from '../../../app/services/session/apiSessionSlice'
 
 interface AcceptSessionModalProps {
   isModalOpen: boolean
   onModalClose: () => void
+  sessionId: number | string
 }
 
 function AcceptSessionModal(props: AcceptSessionModalProps) {
-  const { isModalOpen, onModalClose } = props
+  const { isModalOpen, onModalClose, sessionId } = props
+  const [ acceptSessionMutation, { isLoading }] = useAcceptSessionMutation()
+  const toast = useToast()
 
   const handleModalCancel = () => {
     onModalClose()
   }
 
   const handleAccept = () => {
+    try {
+      acceptSessionMutation(sessionId).unwrap()
+      toast({
+        title: 'Accept Session',
+        description: 'You may now view your accepted session under Upcoming Sessions',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      onModalClose()
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
@@ -32,7 +50,7 @@ function AcceptSessionModal(props: AcceptSessionModalProps) {
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
-            <Button colorScheme="red" size="sm" onClick={handleAccept}> Accept </Button>
+            <Button colorScheme="red" size="sm" onClick={handleAccept} isLoading={isLoading}> Accept </Button>
           </Flex>
         </ModalBody>
       </ModalContent>

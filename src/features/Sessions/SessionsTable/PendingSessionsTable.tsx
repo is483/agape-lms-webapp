@@ -1,6 +1,7 @@
 import {
   Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Badge, Text, VStack, Button, HStack, useDisclosure,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import { SessionResponse } from '../../../app/services/session/types'
@@ -81,10 +82,16 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
 
 function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
   const { data } = props
+  const [acceptedSessionId, setAcceptedSessionId] = useState<number | string>('')
   const { isOpen: isAcceptSessionModalOpen, onOpen: onOpenAcceptSessionModal, onClose: onAcceptSessionModalClose } = useDisclosure()
+
+  const handleOpenAcceptModal = (sessionId: number | string) => {
+    setAcceptedSessionId(sessionId)
+    onOpenAcceptSessionModal()
+  }
   return (
     <TableContainer whiteSpace="unset" width="100%">
-      <AcceptSessionModal isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} />
+      <AcceptSessionModal isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} sessionId={acceptedSessionId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -97,7 +104,7 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, status,
+              fromDateTime, title, sessionType, status, sessionId,
             } = session
 
             const dateObject = new Date(fromDateTime)
@@ -121,7 +128,7 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
                 <Td>
                   {status === 'Pending' && (
                     <HStack display="flex" justifyContent="start">
-                      <Button colorScheme="red" size="sm" onClick={onOpenAcceptSessionModal}>
+                      <Button colorScheme="red" size="sm" onClick={() => handleOpenAcceptModal(sessionId)}>
                         <HStack>
                           <Icon name="done" color="white" />
                           <Text> Accept</Text>
