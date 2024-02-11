@@ -4,7 +4,7 @@ import {
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
 import Container from '../../components/Container'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppSelector } from '../../hooks'
 import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
@@ -13,20 +13,14 @@ import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
 import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
-  const dispatch = useAppDispatch()
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
-  const [menteeName, setMenteeName] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const [getMenteeSessions, menteeResult] = useLazyGetMenteeSessionsQuery()
   const [getSessions, sessionResult] = useLazyGetSessionsQuery()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedMenteeId = e.target.value
     setMenteeId(selectedMenteeId)
-    const selectedMentee = assignedMenteeOptions.find((option) => option.value === selectedMenteeId)
-    if (selectedMentee) {
-      setMenteeName(selectedMentee.children)
-    }
   }
   const { data } = role === 'Mentor' ? menteeResult : sessionResult
 
@@ -35,9 +29,8 @@ function Sessions() {
     if (assignedMenteeOptions.length > 0 && !menteeId) {
       const firstMenteeId = assignedMenteeOptions[0].value
       setMenteeId(firstMenteeId)
-      setMenteeName(menteeName)
     }
-  }, [assignedMenteeOptions, dispatch, menteeId, menteeName])
+  }, [assignedMenteeOptions, menteeId])
 
   // Get mentee sessions when mentee ID is set
   useEffect(() => {
