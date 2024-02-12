@@ -2,11 +2,13 @@
 // TODO: This will be moved into the same folder with Delete Session Modal
 
 import {
-  Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Box, Text, Input, Textarea,
+  Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Box, Text, Input, Textarea, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
 import { clearErrors } from '../../../utils'
+import { useDeclineSessionMutation } from '../../../app/services/session/apiSessionSlice'
+
 
 interface DeclineSessionModalProps {
   isModalOpen: boolean
@@ -23,6 +25,8 @@ const defaultSession = {
 function DeclineSessionModal(props: DeclineSessionModalProps) {
   const { isModalOpen, onModalClose, sessionId } = props
   const [session, updateSession] = useImmer(defaultSession)
+  const toast = useToast()
+  const [declineSessionMutation, { isLoading }] = useDeclineSessionMutation()
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     updateSession((draft) => { draft.description.value = e.target.value })
@@ -75,6 +79,22 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
     }
 
     if (hasErrors) {
+      return
+    }
+
+    try {
+      declineSessionMutation(sessionId).unwrap()
+      toast({
+        title: 'Decline Session',
+        description: 'You have successfully declined the session, your mentor will be informed of your decision',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      onModalClose()
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -122,7 +142,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
 
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
-            <Button colorScheme="red" size="sm" onClick={handleAccept}> Confirm </Button>
+            <Button colorScheme="red" size="sm" onClick={handleAccept} isLoading={isLoading}> Confirm </Button>
           </Flex>
         </ModalBody>
       </ModalContent>

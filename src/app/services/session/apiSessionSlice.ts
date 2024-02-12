@@ -31,11 +31,21 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    declineSession: build.mutation<null, string | number>({
+      query: (sessionId) => ({
+        url: `/session/pending/reject/${sessionId}`,
+        method: 'PUT',
+        invalidatesTags: ['Sessions'],
+
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
 export const {
   useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery,
-  useAcceptSessionMutation,
+  useAcceptSessionMutation, useDeclineSessionMutation,
 } = apiSessionSlice
