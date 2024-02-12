@@ -2,7 +2,7 @@
 // TODO: This will be moved into the same folder with Delete Session Modal
 
 import {
-  Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Box, Text, Input, Textarea, useToast,
+  Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Box, Text, Input, Textarea, useToast, Divider,
 } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
@@ -114,7 +114,8 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
               <Textarea placeholder="Include your reason here..." value={session.description.value} onChange={handleDescriptionChange} />
               {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
             </Box>
-
+            <Divider orientation="horizontal" />
+            <Text fontWeight="500"> Alternate Date</Text>
             <SimpleGrid columns={[1, 1, 2]} spacing={10} marginBottom="3">
               <Box>
                 <Text marginBottom="1">Start Date & Time</Text>
