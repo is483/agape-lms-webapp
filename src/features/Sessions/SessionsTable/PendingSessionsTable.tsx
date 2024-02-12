@@ -7,6 +7,7 @@ import { getAuth } from '../../../app/redux/selectors'
 import { SessionResponse } from '../../../app/services/session/types'
 import { Icon } from '../../../components'
 import AcceptSessionModal from '../SessionResponseModal/AcceptSessionModal'
+import DeclineSessionModal from '../SessionResponseModal/DeclineSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
@@ -84,14 +85,21 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
   const { data } = props
   const [acceptedSessionId, setAcceptedSessionId] = useState<number | string>('')
   const { isOpen: isAcceptSessionModalOpen, onOpen: onOpenAcceptSessionModal, onClose: onAcceptSessionModalClose } = useDisclosure()
+  const { isOpen: isDeclineSessionModalOpen, onOpen: onOpenDeclineSessionModal, onClose: onDeclineSessionModalClose } = useDisclosure()
 
   const handleOpenAcceptModal = (sessionId: number | string) => {
     setAcceptedSessionId(sessionId)
     onOpenAcceptSessionModal()
   }
+
+  const handleOpenDeclineModal = (sessionId: number | string) => {
+    setAcceptedSessionId(sessionId)
+    onOpenDeclineSessionModal()
+  }
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <AcceptSessionModal isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} sessionId={acceptedSessionId} />
+      <DeclineSessionModal isModalOpen={isDeclineSessionModalOpen} onModalClose={onDeclineSessionModalClose} sessionId={acceptedSessionId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -134,7 +142,7 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
                           <Text> Accept</Text>
                         </HStack>
                       </Button>
-                      <Button colorScheme="red" variant="outline" size="sm">
+                      <Button colorScheme="red" variant="outline" size="sm" onClick={() => handleOpenDeclineModal(sessionId)}>
                         <HStack>
                           <Icon name="close" color="primary.700" />
                           <Text> Decline</Text>
