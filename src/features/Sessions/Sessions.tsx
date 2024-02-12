@@ -66,7 +66,7 @@ function Sessions() {
       <SessionFormModal
         isModalOpen={isSessionFormModalOpen}
         onModalClose={onSessionFormModalClose}
-        mentoringJourneyId={sessions[0]?.mentoringJourneyId}
+        menteeId={menteeId}
         refetchSessions={() => getSessionsByMenteeId(menteeId)}
       />
       <Flex justify="space-between" mb="4" gap="2">

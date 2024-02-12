@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice'
-import { CreateSessionRequest, SessionDetailsResponse, SessionResponse } from './types'
+import { CreateSessionRequest, EditSessionRequest, SessionDetailsResponse, SessionResponse } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiSessionSlice = apiSlice.injectEndpoints({
@@ -22,7 +22,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
     }),
     createSession: build.mutation<null, CreateSessionRequest>({
       query: (request) => ({
-        url: `/session/create/${request.mentoringJourneyId}`,
+        url: `/session/create/${request.menteeId}`,
         method: 'POST',
         body: request.body,
       }),
@@ -44,6 +44,16 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    editSession: build.mutation<null, EditSessionRequest>({
+      query: (request) => ({
+        url: `/session/mentor/details/${request.sessionId}`,
+        method: 'PUT',
+        body: request.body,
+      }),
+      onQueryStarted,
+    }),
+
   }),
   overrideExisting: false,
 })
@@ -54,4 +64,5 @@ export const {
   useLazyGetSessionDetailsMentorQuery,
   useLazyGetSessionDetailsMenteeQuery,
   useLazyGetSessionsQuery,
+  useEditSessionMutation,
 } = apiSessionSlice

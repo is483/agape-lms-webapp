@@ -3,19 +3,24 @@ import {
   Box,
   Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, Textarea, useToast,
 } from '@chakra-ui/react'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { ControlledTextInput } from '../../../components'
 import { clearErrors, clearValues } from '../../../utils'
-import { useCreateSessionMutation } from '../../../app/services/session/apiSessionSlice'
-import { CreateSessionRequest } from '../../../app/services/session/types'
+import { useCreateSessionMutation, useEditSessionMutation } from '../../../app/services/session/apiSessionSlice'
+import { CreateSessionRequest, EditSessionRequest, SessionDetailsResponse } from '../../../app/services/session/types'
 
-interface CreateSessionModalProps {
+interface SessionModalProps {
   isModalOpen: boolean
   onModalClose: () => void
-  mentoringJourneyId: number
-  refetchSessions: () => void
-  // TODO: Add a new optional prop for sessionDetails
+  menteeId?: number | string
+  refetchSessions?: () => void
+  sessionDetails?: SessionDetailsResponse
+}
+SessionFormModal.defaultProps = {
+  sessionDetails: undefined,
+  refetchSessions: undefined,
+  menteeId: undefined,
 }
 
 const defaultSession = {
@@ -27,15 +32,31 @@ const defaultSession = {
   location: { value: '', error: '' },
 }
 
-function SessionFormModal(props: CreateSessionModalProps) {
+function SessionFormModal(props: SessionModalProps) {
   const {
-    isModalOpen, onModalClose, mentoringJourneyId, refetchSessions,
+    isModalOpen, onModalClose, menteeId, refetchSessions, sessionDetails,
   } = props
   const [session, updateSession] = useImmer(defaultSession)
   const toast = useToast()
-  const [createSession, { isLoading }] = useCreateSessionMutation()
+  const [editSession, { isLoading: isEditSessionLoading }] = useEditSessionMutation();
+  const [createSession, { isLoading: isCreateSessionLoading }] = useCreateSessionMutation();
+  const isEdit = !!sessionDetails
 
-  // TODO: Add use effect to set the default values if sessionDetails in the prop exists
+  useEffect(() => {
+    if (!sessionDetails) return
+    updateSession((draft) => {
+      draft.title.value = sessionDetails.sessionDetails.title
+      draft.description.value = sessionDetails.sessionDetails.description
+      draft.fromDateTime.value = new Date(sessionDetails.sessionDetails.fromDateTime).toLocaleString('sv-SE', {
+        timeZone: 'Asia/Singapore', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+      }).replace(' ', 'T')
+      draft.toDateTime.value = new Date(sessionDetails.sessionDetails.toDateTime).toLocaleString('sv-SE', {
+        timeZone: 'Asia/Singapore', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+      }).replace(' ', 'T')
+      draft.sessionType.value = sessionDetails.sessionDetails.sessionType
+      draft.location.value = sessionDetails.sessionDetails.location
+    })
+  }, [sessionDetails, updateSession])
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateSession((draft) => { draft.title.value = e.target.value })
@@ -62,9 +83,13 @@ function SessionFormModal(props: CreateSessionModalProps) {
   }
 
   const handleModalClose = () => {
-    updateSession((draft) => clearErrors(draft))
-    updateSession((draft) => clearValues(draft))
-    onModalClose()
+    if (isEdit) {
+      onModalClose()
+    } else {
+      updateSession((draft) => clearErrors(draft))
+      updateSession((draft) => clearValues(draft))
+      onModalClose()
+    }
   }
 
   const handleCreate = async () => {
@@ -120,31 +145,34 @@ function SessionFormModal(props: CreateSessionModalProps) {
     if (hasErrors) {
       return
     }
-    const request: CreateSessionRequest = {
-      mentoringJourneyId,
-      body: {
-        title: session.title.value,
-        description: session.title.value,
-        fromDateTime: session.fromDateTime.value,
-        toDateTime: session.toDateTime.value,
-        sessionType: session.sessionType.value,
-        location: session.location.value,
-      },
-    }
-    try {
-      await createSession(request).unwrap()
-      toast({
-        title: 'New Session',
-        description: 'New session has been successfully created! You may now view your new session under Pending Sessions',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom-right',
-      })
-      refetchSessions()
-      onModalClose()
-    } catch (e) {
-      console.error(e)
+
+    if (!!isEdit && menteeId && refetchSessions) {
+      const createRequest: CreateSessionRequest = {
+        menteeId,
+        body: {
+          title: session.title.value,
+          description: session.title.value,
+          fromDateTime: session.fromDateTime.value,
+          toDateTime: session.toDateTime.value,
+          sessionType: session.sessionType.value,
+          location: session.location.value,
+        },
+      }
+      try {
+        await createSession(createRequest).unwrap()
+        toast({
+          title: 'New Session',
+          description: 'New session has been successfully created! You may now view your new session under Pending Sessions',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+        refetchSessions()
+        onModalClose()
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 
@@ -217,7 +245,7 @@ function SessionFormModal(props: CreateSessionModalProps) {
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalClose}>Cancel</Button>
-            <Button colorScheme="red" size="sm" onClick={handleCreate} isLoading={isLoading}> Create </Button>
+            <Button colorScheme="red" size="sm" onClick={handleCreate} isLoading={isEdit ? isEditSessionLoading : isCreateSessionLoading}> {isEdit ? 'Save' : 'Create'} </Button>
           </Flex>
         </ModalBody>
       </ModalContent>

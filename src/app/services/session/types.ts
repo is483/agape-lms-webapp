@@ -13,7 +13,19 @@ export interface Session {
 }
 
 export interface CreateSessionRequest {
-  mentoringJourneyId: number
+  menteeId: number | string
+  body: {
+    title: string
+    description: string
+    fromDateTime: string
+    toDateTime: string
+    sessionType: string
+    location: string
+  }
+}
+
+export interface EditSessionRequest {
+  sessionId: number | string
   body: {
     title: string
     description: string
