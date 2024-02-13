@@ -1,5 +1,8 @@
 import { apiSlice } from '../apiSlice'
-import { CreateSessionRequest, EditSessionRequest, SessionDetailsResponse, SessionResponse } from './types'
+import {
+  CreateSessionRequest, EditSessionRequest,
+  SessionDetailsResponse, SessionResponse,
+} from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiSessionSlice = apiSlice.injectEndpoints({
