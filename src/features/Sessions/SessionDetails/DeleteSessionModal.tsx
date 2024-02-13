@@ -1,8 +1,10 @@
 import {
   Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Image, useToast,
 } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 import warningIllustration from '../../../assets/warning_illustration.png'
 import { useDeleteSessionMutation } from '../../../app/services/session/apiSessionSlice'
+import paths from '../../../paths'
 
 interface DeleteSessionModalProps {
   isModalOpen: boolean
@@ -12,6 +14,7 @@ interface DeleteSessionModalProps {
 
 function DeleteSessionModal(props: DeleteSessionModalProps) {
   const { isModalOpen, onModalClose, sessionId } = props
+  const navigate = useNavigate()
   const [deleteSession, { isLoading }] = useDeleteSessionMutation()
   const toast = useToast()
 
@@ -30,7 +33,7 @@ function DeleteSessionModal(props: DeleteSessionModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
-      onModalClose()
+      navigate(paths.Sessions.ViewAll)
     } catch (e) {
       console.error(e)
     }

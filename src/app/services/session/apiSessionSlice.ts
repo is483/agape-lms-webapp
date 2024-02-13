@@ -59,7 +59,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
 
     deleteSession: build.mutation<null, string | number>({
       query: (sessionId) => ({
-        url: `/session/mentee/details/${sessionId}`,
+        url: `/session/mentor/details/${sessionId}`,
         method: 'DELETE',
       }),
       onQueryStarted,
