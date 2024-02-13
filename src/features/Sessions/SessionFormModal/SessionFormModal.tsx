@@ -146,9 +146,9 @@ function SessionFormModal(props: SessionModalProps) {
       return
     }
 
-    if (isEdit && menteeId) {
+    if (!isEdit) {
       const createRequest: CreateSessionRequest = {
-        menteeId,
+        menteeId: menteeId!,
         body: {
           title: session.title.value,
           description: session.title.value,
