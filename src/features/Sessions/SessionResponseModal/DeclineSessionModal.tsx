@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
-import { clearErrors } from '../../../utils'
+import { clearErrors, clearValues } from '../../../utils'
 import { useDeclineSessionMutation } from '../../../app/services/session/apiSessionSlice'
 import { DeclineSessionRequest } from '../../../app/services/session/types'
 
@@ -42,7 +42,9 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
   const handleToDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateSession((draft) => { draft.toDateTime.value = e.target.value })
   }
-  const handleModalCancel = () => {
+  const handleModalClose = () => {
+    updateSession((draft) => clearErrors(draft))
+    updateSession((draft) => clearValues(draft))
     onModalClose()
   }
   const handleAccept = async () => {
@@ -103,7 +105,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
-      onModalClose()
+      handleModalClose()
       refetchSessions()
     } catch (e) {
       console.error(e)
@@ -111,7 +113,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
   }
 
   return (
-    <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl" isCentered>
+    <Modal isOpen={isModalOpen} onClose={handleModalClose} size="2xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="70vh">
         <ModalHeader> Decline Mentoring Session</ModalHeader>
@@ -154,7 +156,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
           </Flex>
 
           <Flex gap="4" justify="flex-end" mt="8">
-            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
+            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalClose}>Cancel</Button>
             <Button colorScheme="red" size="sm" onClick={handleAccept} isLoading={isLoading}> Confirm </Button>
           </Flex>
         </ModalBody>
