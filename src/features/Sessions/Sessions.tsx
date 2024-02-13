@@ -16,13 +16,13 @@ function Sessions() {
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
-  const [getMenteeSessions, menteeResult] = useLazyGetMenteeSessionsQuery()
+  const [getSessionsByMenteeId, sessionByMenteeIdResult] = useLazyGetMenteeSessionsQuery()
   const [getSessions, sessionResult] = useLazyGetSessionsQuery()
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedMenteeId = e.target.value
     setMenteeId(selectedMenteeId)
   }
-  const { data } = role === 'Mentor' ? menteeResult : sessionResult
+  const { data } = role === 'Mentor' ? sessionByMenteeIdResult : sessionResult
 
   // Set mentee ID after assigned mentee have been fetched
   useEffect(() => {
@@ -34,13 +34,17 @@ function Sessions() {
 
   // Get mentee sessions when mentee ID is set
   useEffect(() => {
-    if (role === 'Mentor') {
-      if (!menteeId) return
-      getMenteeSessions(menteeId)
-    } else {
+    if (role === 'Mentor' && !!menteeId) {
+      getSessionsByMenteeId(menteeId)
+    }
+  }, [getSessionsByMenteeId, menteeId, role])
+
+  // Get mentee's session if user is mentee
+  useEffect(() => {
+    if (role === 'Mentee') {
       getSessions(null)
     }
-  }, [menteeId, getMenteeSessions, getSessions, role])
+  }, [getSessions, role])
 
   const sessions = data ?? []
   const todayDate = new Date()
@@ -52,8 +56,8 @@ function Sessions() {
     const sessionDate = new Date(toDateTime)
     return status === 'Confirmed' && sessionDate <= todayDate
   })
-  const pendingSessions = sessions.filter(({ status }) => status === 'Pending' || status === 'Rejected')
-  const calendarDates = sessions.map((session) => session.fromDateTime)
+  const pendingSessions = sessions.filter(({ status }) => status !== 'Confirmed')
+  const datesWithSessions = sessions.map((session) => session.fromDateTime)
 
   return (
     <Container minHeight="calc(100vh - 32px)">
@@ -71,7 +75,7 @@ function Sessions() {
       <Hide above="sm">
         <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
       </Hide>
-      <Calendar datesWithSessions={calendarDates} />
+      <Calendar datesWithSessions={datesWithSessions} />
       <Tabs variant="solid-rounded" colorScheme="red">
         <Stack justify="space-between" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
@@ -93,7 +97,6 @@ function Sessions() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-
     </Container>
   )
 }
