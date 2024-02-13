@@ -15,6 +15,7 @@ import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../ap
 function Sessions() {
   const { role } = useAppSelector(getAuth)
   const [menteeId, setMenteeId] = useState('')
+  const [tabIndex, setTabIndex] = useState(0)
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
   const [getSessionsByMenteeId, sessionByMenteeIdResult] = useLazyGetMenteeSessionsQuery()
   const [getSessions, sessionResult] = useLazyGetSessionsQuery()
@@ -46,6 +47,10 @@ function Sessions() {
     }
   }, [getSessions, role])
 
+  const handleTabsChange = (index: number) => {
+    setTabIndex(index)
+  }
+
   const sessions = data ?? []
   const todayDate = new Date()
   const upcomingSessions = sessions.filter(({ status, toDateTime }) => {
@@ -57,7 +62,6 @@ function Sessions() {
     return status === 'Confirmed' && sessionDate <= todayDate
   })
   const pendingSessions = sessions.filter(({ status }) => status !== 'Confirmed')
-  const datesWithSessions = sessions.map((session) => session.fromDateTime)
 
   return (
     <Container minHeight="calc(100vh - 32px)">
@@ -75,8 +79,8 @@ function Sessions() {
       <Hide above="sm">
         <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
       </Hide>
-      <Calendar datesWithSessions={datesWithSessions} />
-      <Tabs variant="solid-rounded" colorScheme="red">
+      <Calendar sessions={data ?? []} goToPendingTab={() => setTabIndex(2)} />
+      <Tabs index={tabIndex} onChange={handleTabsChange} variant="solid-rounded" colorScheme="red">
         <Stack justify="space-between" mb="4" direction={['column-reverse', 'column-reverse', 'row']}>
           <TabList gap={['1', '1', '6']} w="max-content" overflowX="auto">
             <Tab py="1" fontSize={['xs', 'sm']}>Upcoming</Tab>
