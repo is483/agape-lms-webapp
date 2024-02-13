@@ -169,6 +169,33 @@ function SessionFormModal(props: SessionModalProps) {
       } catch (e) {
         console.error(e)
       }
+    } else {
+      const editRequest: EditSessionRequest = {
+        sessionId: sessionDetails.sessionDetails.sessionId!,
+        body: {
+          title: session.title.value,
+          description: session.title.value,
+          fromDateTime: session.fromDateTime.value,
+          toDateTime: session.toDateTime.value,
+          sessionType: session.sessionType.value,
+          location: session.location.value,
+        },
+      }
+      try {
+        await editSession(editRequest).unwrap()
+        toast({
+          title: 'Edit Session',
+          description: 'Session has been successfully edited!',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-right',
+        })
+        refetchSessions && refetchSessions()
+        onModalClose()
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 
@@ -176,7 +203,7 @@ function SessionFormModal(props: SessionModalProps) {
     <Modal isOpen={isModalOpen} onClose={handleModalClose} size="3xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
-        <ModalHeader>Create Mentoring Session
+        <ModalHeader>{isEdit ? 'Edit Session' : 'Create Session'}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

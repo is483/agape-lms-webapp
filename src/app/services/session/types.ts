@@ -44,6 +44,7 @@ export interface SessionDetailsResponse {
     menteeId: number
   }
   sessionDetails: {
+    sessionId: number | string
     title: string
     description: string
     fromDateTime: string
