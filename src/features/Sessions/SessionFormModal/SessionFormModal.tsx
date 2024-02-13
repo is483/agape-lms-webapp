@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import {
-  Box,
-  Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, Textarea, useToast,
+  Box, Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent,
+  ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, Textarea, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect } from 'react'
 import { useImmer } from 'use-immer'
@@ -38,8 +38,8 @@ function SessionFormModal(props: SessionModalProps) {
   } = props
   const [session, updateSession] = useImmer(defaultSession)
   const toast = useToast()
-  const [editSession, { isLoading: isEditSessionLoading }] = useEditSessionMutation();
-  const [createSession, { isLoading: isCreateSessionLoading }] = useCreateSessionMutation();
+  const [editSession, { isLoading: isEditSessionLoading }] = useEditSessionMutation()
+  const [createSession, { isLoading: isCreateSessionLoading }] = useCreateSessionMutation()
   const isEdit = !!sessionDetails
 
   useEffect(() => {
@@ -146,7 +146,7 @@ function SessionFormModal(props: SessionModalProps) {
       return
     }
 
-    if (!!isEdit && menteeId && refetchSessions) {
+    if (isEdit && menteeId) {
       const createRequest: CreateSessionRequest = {
         menteeId,
         body: {
@@ -168,7 +168,7 @@ function SessionFormModal(props: SessionModalProps) {
           isClosable: true,
           position: 'bottom-right',
         })
-        refetchSessions()
+        refetchSessions && refetchSessions()
         onModalClose()
       } catch (e) {
         console.error(e)
@@ -177,7 +177,6 @@ function SessionFormModal(props: SessionModalProps) {
   }
 
   return (
-
     <Modal isOpen={isModalOpen} onClose={handleModalClose} size="3xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
