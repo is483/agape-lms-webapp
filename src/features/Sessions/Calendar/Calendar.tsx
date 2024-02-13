@@ -56,10 +56,10 @@ function Calendar(props: CalendarProps) {
       <Flex justify="end">
         <Box border="1px solid" borderColor="gray.200" rounded="md" p="2">
           <Flex align="center" gap="1">
-            <Circle size="6px" bgColor="red.600" /> <Text fontSize="xs" color="gray.400">Upcoming/Completed</Text>
+            <Circle size="6px" bgColor="red.600" /> <Text fontSize="xs" color="gray.500">Upcoming / Completed</Text>
           </Flex>
           <Flex align="center" gap="1">
-            <Circle size="6px" bgColor="yellow.400" /> <Text fontSize="xs" color="gray.400">Action Required</Text>
+            <Circle size="6px" bgColor="yellow.400" /> <Text fontSize="xs" color="gray.500">Action Required</Text>
           </Flex>
         </Box>
       </Flex>

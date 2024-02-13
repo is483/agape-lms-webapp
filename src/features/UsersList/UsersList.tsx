@@ -58,14 +58,14 @@ function UsersListDesktop(props: Props) {
 
   return (
     <Flex>
-      <Box paddingRight="4" paddingTop="4" width="280px">
+      <Box width="280px">
         {users?.map((user: User) => {
           const {
             firstName, lastName, profileImgURL, userInformationId,
           } = user
           const isActive = userInformationId === selectedUser?.userInformationId
           return (
-            <Card padding="3" marginBottom="4" boxShadow="md" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
+            <Card m="2" ml="0" padding="3" rounded="0" border="1px solid" borderColor="secondary.100" shadow="none" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
               <HStack spacing="4">
                 <ProfileIcon imgUrl={profileImgURL} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
                 <Text fontSize="lg">{firstName} {lastName}</Text>
