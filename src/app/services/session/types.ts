@@ -30,4 +30,13 @@ export interface SessionDetailsResponse {
   };
 }
 
+export interface DeclineSessionRequest {
+  sessionId: string | number
+  body: {
+    reason: string
+    fromDateTime: string
+    toDateTime: string
+  }
+}
+
 export type SessionResponse = Session[]

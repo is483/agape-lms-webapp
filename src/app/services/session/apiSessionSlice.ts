@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiSlice'
-import { SessionDetailsResponse, SessionResponse } from './types'
+import { DeclineSessionRequest, SessionDetailsResponse, SessionResponse } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiSessionSlice = apiSlice.injectEndpoints({
@@ -32,11 +32,12 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       onQueryStarted,
     }),
 
-    declineSession: build.mutation<null, string | number>({
-      query: (sessionId) => ({
-        url: `/session/pending/reject/${sessionId}`,
+    declineSession: build.mutation<null, DeclineSessionRequest>({
+      query: (request) => ({
+        url: `/session/pending/reject/${request.sessionId}`,
         method: 'PUT',
         invalidatesTags: ['Sessions'],
+        body: request.body,
       }),
       onQueryStarted,
     }),

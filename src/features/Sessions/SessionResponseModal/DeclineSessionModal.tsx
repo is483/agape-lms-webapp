@@ -8,6 +8,7 @@ import { ChangeEvent } from 'react'
 import { useImmer } from 'use-immer'
 import { clearErrors } from '../../../utils'
 import { useDeclineSessionMutation } from '../../../app/services/session/apiSessionSlice'
+import { DeclineSessionRequest } from '../../../app/services/session/types'
 
 interface DeclineSessionModalProps {
   isModalOpen: boolean
@@ -17,7 +18,7 @@ interface DeclineSessionModalProps {
 }
 
 const defaultSession = {
-  description: { value: '', error: '' },
+  reason: { value: '', error: '' },
   fromDateTime: { value: '', error: '' },
   toDateTime: { value: '', error: '' },
 }
@@ -30,8 +31,8 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
   const toast = useToast()
   const [declineSessionMutation, { isLoading }] = useDeclineSessionMutation()
 
-  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    updateSession((draft) => { draft.description.value = e.target.value })
+  const handleReasonChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    updateSession((draft) => { draft.reason.value = e.target.value })
   }
 
   const handleFromDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,8 +49,8 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
     let hasErrors: boolean = false
     updateSession((draft) => clearErrors(draft))
 
-    if (!session.description.value.trim()) {
-      updateSession((draft) => { draft.description.error = 'Session description is required' })
+    if (!session.reason.value.trim()) {
+      updateSession((draft) => { draft.reason.error = 'Session description is required' })
       hasErrors = true
     }
     if (!session.fromDateTime.value) {
@@ -85,7 +86,15 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
     }
 
     try {
-      await declineSessionMutation(sessionId).unwrap()
+      const declineSessionRequest: DeclineSessionRequest = {
+        sessionId,
+        body: {
+          reason: session.reason.value,
+          fromDateTime: session.fromDateTime.value,
+          toDateTime: session.toDateTime.value,
+        },
+      }
+      await declineSessionMutation(declineSessionRequest).unwrap()
       toast({
         title: 'Decline Session',
         description: 'You have successfully declined the session, your mentor will be informed of your decision',
@@ -112,10 +121,10 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
             <Text color="secondary.500">
               Kindly let your mentor know why you are unable to attend the planned session and suggest another date.
             </Text>
-            <Box marginBottom={session.description.error ? '5' : '0'}>
+            <Box marginBottom={session.reason.error ? '5' : '0'}>
               <Text marginBottom="2"> Description </Text>
-              <Textarea placeholder="Include your reason here..." value={session.description.value} onChange={handleDescriptionChange} />
-              {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
+              <Textarea placeholder="Include your reason here..." value={session.reason.value} onChange={handleReasonChange} />
+              {!!session.reason.error && <Text position="absolute" fontSize="xs" color="red.600">{session.reason.error}</Text>}
             </Box>
             <Divider orientation="horizontal" />
             <Text fontWeight="500"> Alternate Date</Text>
