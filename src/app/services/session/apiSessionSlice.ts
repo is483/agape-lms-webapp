@@ -57,6 +57,13 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       onQueryStarted,
     }),
 
+    deleteSession: build.mutation<null, string | number>({
+      query: (sessionId) => ({
+        url: `/session/mentee/details/${sessionId}`,
+        method: 'DELETE',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -68,4 +75,5 @@ export const {
   useLazyGetSessionDetailsMenteeQuery,
   useLazyGetSessionsQuery,
   useEditSessionMutation,
+  useDeleteSessionMutation,
 } = apiSessionSlice
