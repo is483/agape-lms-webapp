@@ -8,10 +8,13 @@ interface AcceptSessionModalProps {
   isModalOpen: boolean
   onModalClose: () => void
   sessionId: number | string
+  refetchSessions: () => void
 }
 
 function AcceptSessionModal(props: AcceptSessionModalProps) {
-  const { isModalOpen, onModalClose, sessionId } = props
+  const {
+    isModalOpen, onModalClose, sessionId, refetchSessions,
+  } = props
   const [acceptSessionMutation, { isLoading }] = useAcceptSessionMutation()
   const toast = useToast()
 
@@ -19,9 +22,9 @@ function AcceptSessionModal(props: AcceptSessionModalProps) {
     onModalClose()
   }
 
-  const handleAccept = () => {
+  const handleAccept = async () => {
     try {
-      acceptSessionMutation(sessionId).unwrap()
+      await acceptSessionMutation(sessionId).unwrap()
       toast({
         title: 'Accept Session',
         description: 'You may now view your accepted session under Upcoming Sessions',
@@ -30,6 +33,7 @@ function AcceptSessionModal(props: AcceptSessionModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
+      refetchSessions()
       onModalClose()
     } catch (e) {
       console.error(e)

@@ -9,11 +9,11 @@ import { useImmer } from 'use-immer'
 import { clearErrors } from '../../../utils'
 import { useDeclineSessionMutation } from '../../../app/services/session/apiSessionSlice'
 
-
 interface DeclineSessionModalProps {
   isModalOpen: boolean
   onModalClose: () => void
   sessionId: string | number
+  refetchSessions: () => void
 }
 
 const defaultSession = {
@@ -23,7 +23,9 @@ const defaultSession = {
 }
 
 function DeclineSessionModal(props: DeclineSessionModalProps) {
-  const { isModalOpen, onModalClose, sessionId } = props
+  const {
+    isModalOpen, onModalClose, sessionId, refetchSessions,
+  } = props
   const [session, updateSession] = useImmer(defaultSession)
   const toast = useToast()
   const [declineSessionMutation, { isLoading }] = useDeclineSessionMutation()
@@ -42,7 +44,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
   const handleModalCancel = () => {
     onModalClose()
   }
-  const handleAccept = () => {
+  const handleAccept = async () => {
     let hasErrors: boolean = false
     updateSession((draft) => clearErrors(draft))
 
@@ -83,7 +85,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
     }
 
     try {
-      declineSessionMutation(sessionId).unwrap()
+      await declineSessionMutation(sessionId).unwrap()
       toast({
         title: 'Decline Session',
         description: 'You have successfully declined the session, your mentor will be informed of your decision',
@@ -93,6 +95,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
         position: 'bottom-right',
       })
       onModalClose()
+      refetchSessions()
     } catch (e) {
       console.error(e)
     }

@@ -12,19 +12,20 @@ import DeclineSessionModal from '../SessionResponseModal/DeclineSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
+  refetchSessions: () => void
 }
 
 function PendingSessionsTable(props: PendingSessionsTableProps) {
-  const { data } = props
+  const { data, refetchSessions } = props
   const { role } = useAppSelector(getAuth)
   return role === 'Mentor' ? (
     <PendingSessionsTableMentor data={data} />
   ) : (
-    <PendingSessionsTableMentee data={data} />
+    <PendingSessionsTableMentee refetchSessions={refetchSessions} data={data} />
   )
 }
 
-function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refetchSessions'>) {
   const { data } = props
 
   return (
@@ -83,7 +84,7 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
 }
 
 function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
-  const { data } = props
+  const { data, refetchSessions } = props
   const [sessionId, setSessionId] = useState<number | string>('')
   const { isOpen: isAcceptSessionModalOpen, onOpen: onOpenAcceptSessionModal, onClose: onAcceptSessionModalClose } = useDisclosure()
   const { isOpen: isDeclineSessionModalOpen, onOpen: onOpenDeclineSessionModal, onClose: onDeclineSessionModalClose } = useDisclosure()
@@ -99,8 +100,8 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
   }
   return (
     <TableContainer whiteSpace="unset" width="100%">
-      <AcceptSessionModal isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} sessionId={sessionId} />
-      <DeclineSessionModal isModalOpen={isDeclineSessionModalOpen} onModalClose={onDeclineSessionModalClose} sessionId={sessionId} />
+      <AcceptSessionModal refetchSessions={refetchSessions} isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} sessionId={sessionId} />
+      <DeclineSessionModal refetchSessions={refetchSessions} isModalOpen={isDeclineSessionModalOpen} onModalClose={onDeclineSessionModalClose} sessionId={sessionId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
