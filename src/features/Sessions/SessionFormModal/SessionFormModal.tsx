@@ -43,7 +43,7 @@ function SessionFormModal(props: SessionModalProps) {
   const isEdit = !!sessionDetails
 
   useEffect(() => {
-    if (!sessionDetails) return
+    if (!sessionDetails || !isModalOpen) return
     updateSession((draft) => {
       draft.title.value = sessionDetails.sessionDetails.title
       draft.description.value = sessionDetails.sessionDetails.description
@@ -56,7 +56,7 @@ function SessionFormModal(props: SessionModalProps) {
       draft.sessionType.value = sessionDetails.sessionDetails.sessionType
       draft.location.value = sessionDetails.sessionDetails.location
     })
-  }, [sessionDetails, updateSession])
+  }, [sessionDetails, updateSession, isModalOpen])
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     updateSession((draft) => { draft.title.value = e.target.value })
@@ -83,13 +83,9 @@ function SessionFormModal(props: SessionModalProps) {
   }
 
   const handleModalClose = () => {
-    if (isEdit) {
-      onModalClose()
-    } else {
-      updateSession((draft) => clearErrors(draft))
-      updateSession((draft) => clearValues(draft))
-      onModalClose()
-    }
+    updateSession((draft) => clearErrors(draft))
+    updateSession((draft) => clearValues(draft))
+    onModalClose()
   }
 
   const handleCreate = async () => {
