@@ -38,6 +38,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         invalidatesTags: ['Sessions'],
       }),
+      onQueryStarted,
     }),
 
     getSessionDetailsMentor: build.query<SessionDetailsResponse, string | number>({
