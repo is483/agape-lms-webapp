@@ -2,6 +2,7 @@ import ReactCalendar from 'react-calendar'
 import './Calendar.css'
 import {
   Box, Button, Circle, Flex, Hide,
+  Text,
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -52,6 +53,16 @@ function Calendar(props: CalendarProps) {
 
   return (
     <Box my="8">
+      <Flex justify="end">
+        <Box border="1px solid" borderColor="gray.200" rounded="md" p="2">
+          <Flex align="center" gap="1">
+            <Circle size="6px" bgColor="red.600" /> <Text fontSize="xs" color="gray.400">Upcoming/Completed</Text>
+          </Flex>
+          <Flex align="center" gap="1">
+            <Circle size="6px" bgColor="yellow.400" /> <Text fontSize="xs" color="gray.400">Action Required</Text>
+          </Flex>
+        </Box>
+      </Flex>
       <ReactCalendar
         value={today}
         tileContent={({ date, view }) => TileContent({ date, view, datesMap })}
