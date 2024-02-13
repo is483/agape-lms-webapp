@@ -19,6 +19,17 @@ export function clearErrors(obj: any) {
   })
 }
 
+export function clearValues(obj: any) {
+  Object.keys(obj).forEach((key) => {
+    if (key === 'value') {
+      // eslint-disable-next-line no-param-reassign
+      obj[key] = ''
+    } else if (typeof obj[key] === 'object') {
+      clearValues(obj[key])
+    }
+  })
+}
+
 export function formatDate(date: Date) {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }

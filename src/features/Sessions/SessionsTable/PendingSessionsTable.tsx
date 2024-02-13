@@ -1,27 +1,31 @@
 import {
   Flex, Table, TableContainer, Tbody, Td,
-  Th, Thead, Tr, Badge, Text, VStack, Button, HStack,
+  Th, Thead, Tr, Badge, Text, VStack, Button, HStack, useDisclosure,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import { SessionResponse } from '../../../app/services/session/types'
 import { Icon } from '../../../components'
+import AcceptSessionModal from '../SessionResponseModal/AcceptSessionModal'
+import DeclineSessionModal from '../SessionResponseModal/DeclineSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
+  refetchSessions: () => void
 }
 
 function PendingSessionsTable(props: PendingSessionsTableProps) {
-  const { data } = props
+  const { data, refetchSessions } = props
   const { role } = useAppSelector(getAuth)
   return role === 'Mentor' ? (
     <PendingSessionsTableMentor data={data} />
   ) : (
-    <PendingSessionsTableMentee data={data} />
+    <PendingSessionsTableMentee refetchSessions={refetchSessions} data={data} />
   )
 }
 
-function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refetchSessions'>) {
   const { data } = props
 
   return (
@@ -80,9 +84,24 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
 }
 
 function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
-  const { data } = props
+  const { data, refetchSessions } = props
+  const [sessionId, setSessionId] = useState<number | string>('')
+  const { isOpen: isAcceptSessionModalOpen, onOpen: onOpenAcceptSessionModal, onClose: onAcceptSessionModalClose } = useDisclosure()
+  const { isOpen: isDeclineSessionModalOpen, onOpen: onOpenDeclineSessionModal, onClose: onDeclineSessionModalClose } = useDisclosure()
+
+  const handleOpenAcceptModal = (sessionId: number | string) => {
+    setSessionId(sessionId)
+    onOpenAcceptSessionModal()
+  }
+
+  const handleOpenDeclineModal = (sessionId: number | string) => {
+    setSessionId(sessionId)
+    onOpenDeclineSessionModal()
+  }
   return (
     <TableContainer whiteSpace="unset" width="100%">
+      <AcceptSessionModal refetchSessions={refetchSessions} isModalOpen={isAcceptSessionModalOpen} onModalClose={onAcceptSessionModalClose} sessionId={sessionId} />
+      <DeclineSessionModal refetchSessions={refetchSessions} isModalOpen={isDeclineSessionModalOpen} onModalClose={onDeclineSessionModalClose} sessionId={sessionId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -95,7 +114,7 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, status,
+              fromDateTime, title, sessionType, status, sessionId,
             } = session
 
             const dateObject = new Date(fromDateTime)
@@ -119,13 +138,13 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
                 <Td>
                   {status === 'Pending' && (
                     <HStack justifyContent="start">
-                      <Button colorScheme="red" size="sm">
+                      <Button colorScheme="red" size="sm" onClick={() => handleOpenAcceptModal(sessionId)}>
                         <HStack>
                           <Icon name="done" color="white" />
                           <Text>Accept</Text>
                         </HStack>
                       </Button>
-                      <Button colorScheme="red" variant="outline" size="sm">
+                      <Button colorScheme="red" variant="outline" size="sm" onClick={() => handleOpenDeclineModal(sessionId)}>
                         <HStack>
                           <Icon name="close" color="primary.700" />
                           <Text>Decline</Text>
