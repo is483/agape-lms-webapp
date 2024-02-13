@@ -3,33 +3,58 @@ import './Calendar.css'
 import {
   Box, Button, Circle, Flex, Hide,
 } from '@chakra-ui/react'
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Icon } from '../../../components'
+import { Session } from '../../../app/services/session/types'
+import { useAppSelector } from '../../../hooks'
+import { getAuth } from '../../../app/redux/selectors'
+import paths from '../../../paths'
 
 interface CalendarProps {
-  datesWithSessions: string[]
+  sessions: Session[]
+  goToPendingTab: () => void
 }
 
 const todayDateStr = new Date().toDateString()
 
+const checkActionRequired: Record<'Mentor' | 'Mentee', Record<string, string>> = {
+  Mentor: { Rejected: 'actionRequired' },
+  Mentee: { Pending: 'actionRequired' },
+} as const
+
 function Calendar(props: CalendarProps) {
-  const { datesWithSessions } = props
+  const { sessions, goToPendingTab } = props
+  const { role } = useAppSelector(getAuth)
+  const navigate = useNavigate()
   const today = new Date()
 
-  const dates = datesWithSessions.map((date) => new Date(date).toDateString())
+  const datesMap = useMemo(() => {
+    const datesMap: Map<string, { status: string, onClick: () => void }> = new Map()
 
-  const onClickDay = (value: Date) => {
-    const dateStr = value.toDateString()
-    if (dates.includes(dateStr)) {
-      // TODO: add modal here or navigate to session
-    }
-  }
+    if (!role || role === 'Admin') return datesMap
+
+    sessions.forEach(({ fromDateTime, status, sessionId }) => {
+      datesMap.set(new Date(fromDateTime).toDateString(), {
+        status: checkActionRequired[role][status] ?? 'Confirmed',
+        onClick: () => {
+          if (!checkActionRequired[role][status]) {
+            navigate(`${paths.Sessions.Details.subPath}/${sessionId}`)
+          } else {
+            goToPendingTab()
+          }
+        },
+      })
+    })
+
+    return datesMap
+  }, [goToPendingTab, navigate, role, sessions])
 
   return (
     <Box my="8">
       <ReactCalendar
         value={today}
-        onClickDay={onClickDay}
-        tileContent={({ date, view }) => TileContent({ date, view, datesWithSessions: dates })}
+        tileContent={({ date, view }) => TileContent({ date, view, datesMap })}
         nextLabel={<Button p="0" rounded="full" variant="ghost"><Icon name="chevron_right" /></Button>}
         prevLabel={<Button p="0" rounded="full" variant="ghost"><Icon name="chevron_left" /></Button>}
         next2Label={null}
@@ -64,18 +89,21 @@ function NavigationLabel(props: NavigationLabelProps) {
 interface TileContentProps {
   date: Date
   view: string
-  datesWithSessions: string[]
+  datesMap: Map<string, { status: string, onClick: () => void }>
 }
 
 function TileContent(props: TileContentProps) {
-  const { date, view, datesWithSessions } = props
+  const { date, view, datesMap } = props
   const dateStr = date.toDateString()
   const dateDay = date.getDate()
-  if (view === 'month' && datesWithSessions.includes(dateStr)) {
+  const status = datesMap.get(dateStr)?.status
+  const onClick = datesMap.get(dateStr)?.onClick
+
+  if (view === 'month' && (status === 'Confirmed' || status === 'actionRequired')) {
     return (
-      <Flex flexDir="column" align="center">
+      <Flex p="2" rounded="full" flexDir="column" align="center" onClick={onClick} _hover={{ background: 'gray.100' }}>
         {dateDay}
-        <Circle size="6px" bgColor="red.600" />
+        <Circle size="6px" bgColor={status === 'Confirmed' ? 'red.600' : 'yellow.400'} />
       </Flex>
     )
   }
