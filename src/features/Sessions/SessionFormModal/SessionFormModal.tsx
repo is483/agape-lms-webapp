@@ -147,7 +147,7 @@ function SessionFormModal(props: SessionModalProps) {
         menteeId: menteeId!,
         body: {
           title: session.title.value,
-          description: session.title.value,
+          description: session.description.value,
           fromDateTime: session.fromDateTime.value,
           toDateTime: session.toDateTime.value,
           sessionType: session.sessionType.value,
@@ -174,7 +174,7 @@ function SessionFormModal(props: SessionModalProps) {
         sessionId: sessionDetails.sessionDetails.sessionId!,
         body: {
           title: session.title.value,
-          description: session.title.value,
+          description: session.description.value,
           fromDateTime: session.fromDateTime.value,
           toDateTime: session.toDateTime.value,
           sessionType: session.sessionType.value,

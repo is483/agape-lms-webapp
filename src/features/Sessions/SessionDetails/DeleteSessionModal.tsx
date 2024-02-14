@@ -40,7 +40,7 @@ function DeleteSessionModal(props: DeleteSessionModalProps) {
   }
 
   return (
-    <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl">
+    <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="70vh">
         <ModalHeader> Delete Mentoring Session</ModalHeader>
