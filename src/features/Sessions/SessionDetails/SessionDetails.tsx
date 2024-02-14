@@ -57,7 +57,7 @@ function SessionDetails() {
   }
   return (
     <Container position="relative" minH="calc(100vh - 34px)">
-      <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} />
+      <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} refetchSessions={() => getMentorSessionDetails(sessionId!)} />
       <DeleteSessionModal isModalOpen={isDeleteSessionModalOpen} onModalClose={onDeleteSessionModalClose} sessionId={data?.sessionDetails.sessionId} />
       <BackButton path={paths.Sessions.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
