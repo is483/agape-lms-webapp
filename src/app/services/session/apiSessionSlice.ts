@@ -2,6 +2,7 @@ import { apiSlice } from '../apiSlice'
 import {
   CreateSessionRequest, EditSessionRequest,
   SessionDetailsResponse, SessionResponse,
+  DeclineSessionRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -12,6 +13,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       query: (menteeId) => ({
         url: `/session/${menteeId}`,
         method: 'GET',
+        providesTags: ['Sessions'],
       }),
       onQueryStarted,
     }),
@@ -20,6 +22,26 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/session',
         method: 'GET',
+        providesTags: ['Sessions'],
+      }),
+      onQueryStarted,
+    }),
+    acceptSession: build.mutation<null, string | number>({
+      query: (sessionId) => ({
+        url: `/session/pending/confirm/${sessionId}`,
+        method: 'PUT',
+        invalidatesTags: ['Sessions'],
+
+      }),
+      onQueryStarted,
+    }),
+
+    declineSession: build.mutation<null, DeclineSessionRequest>({
+      query: (request) => ({
+        url: `/session/pending/reject/${request.sessionId}`,
+        method: 'PUT',
+        invalidatesTags: ['Sessions'],
+        body: request.body,
       }),
       onQueryStarted,
     }),
@@ -71,6 +93,8 @@ const apiSessionSlice = apiSlice.injectEndpoints({
 export const {
   useLazyGetMenteeSessionsQuery,
   useCreateSessionMutation,
+  useAcceptSessionMutation,
+  useDeclineSessionMutation,
   useLazyGetSessionDetailsMentorQuery,
   useLazyGetSessionDetailsMenteeQuery,
   useLazyGetSessionsQuery,
