@@ -1,5 +1,5 @@
 import {
-  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack, Hide,
+  Flex, Text, Box, TabPanels, Tab, TabList, Tabs, TabPanel, Button, Stack, Hide, useDisclosure,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { getAuth } from '../../app/redux/selectors'
@@ -8,12 +8,14 @@ import { useAppSelector } from '../../hooks'
 import { ControlledSelect } from '../../components'
 import useAssignedMenteesOptions from '../../hooks/useAssignedMenteesOptions'
 import Calendar from './Calendar/Calendar'
+import SessionFormModal from './SessionFormModal/SessionFormModal'
 import UpcomingAndPastSessionsTable from './SessionsTable/UpcomingAndPastSessionsTable'
 import PendingSessionsTable from './SessionsTable/PendingSessionsTable'
 import { useLazyGetMenteeSessionsQuery, useLazyGetSessionsQuery } from '../../app/services/session/apiSessionSlice'
 
 function Sessions() {
   const { role } = useAppSelector(getAuth)
+  const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
   const [menteeId, setMenteeId] = useState('')
   const [tabIndex, setTabIndex] = useState(0)
   const { options: assignedMenteeOptions } = useAssignedMenteesOptions()
@@ -65,6 +67,12 @@ function Sessions() {
 
   return (
     <Container minHeight="calc(100vh - 32px)">
+      <SessionFormModal
+        isModalOpen={isSessionFormModalOpen}
+        onModalClose={onSessionFormModalClose}
+        menteeId={menteeId}
+        refetchSessions={() => getSessionsByMenteeId(menteeId)}
+      />
       <Flex justify="space-between" mb="4" gap="2">
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
@@ -87,7 +95,7 @@ function Sessions() {
             <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
             <Tab py="1" fontSize={['xs', 'sm']}>Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size="sm" alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red">+ Create Session</Button>}
+          {role === 'Mentor' && <Button size="sm" alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red" onClick={onOpenSessionFormModal}>+ Create Session</Button>}
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">

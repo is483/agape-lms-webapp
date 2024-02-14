@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button,
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import {
@@ -10,6 +10,8 @@ import paths from '../../../paths'
 import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery } from '../../../app/services/session/apiSessionSlice'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
+import SessionFormModal from '../SessionFormModal/SessionFormModal'
+import DeleteSessionModal from './DeleteSessionModal'
 
 function SessionDetails() {
   const { sessionId } = useParams()
@@ -26,6 +28,8 @@ function SessionDetails() {
     }
   }, [sessionId, role, getMenteeSessionDetails, getMentorSessionDetails])
 
+  const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
+
   const { data } = role === 'Mentor' ? mentorSessionDetailsResult : menteeSessionDetailsResult
   const {
     firstName, lastName, profileImgUrl, menteeId,
@@ -35,6 +39,7 @@ function SessionDetails() {
     title, description, fromDateTime, toDateTime, location,
   } = data?.sessionDetails ?? {}
 
+  const { isOpen: isDeleteSessionModalOpen, onOpen: onOpenDeleteSessionModal, onClose: onDeleteSessionModalClose } = useDisclosure()
   const todayDate = new Date()
   const startDateObject = new Date(fromDateTime as string)
   const startDate = startDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -52,16 +57,18 @@ function SessionDetails() {
   }
   return (
     <Container position="relative" minH="calc(100vh - 34px)">
+      <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} refetchSessions={() => getMentorSessionDetails(sessionId!)} />
+      <DeleteSessionModal isModalOpen={isDeleteSessionModalOpen} onModalClose={onDeleteSessionModalClose} sessionId={data?.sessionDetails.sessionId} />
       <BackButton path={paths.Sessions.ViewAll} />
       <Divider position="absolute" left="0" mt="6" />
       <Flex justifyContent="space-between" flexDir={['column-reverse', 'column-reverse', 'row']} mt="12">
         <Text fontSize="lg" fontWeight="600"> {title} </Text>
         {role === 'Mentor' && !isPast && (
           <HStack alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']}>
-            <Button px="0" rounded="full">
+            <Button px="0" rounded="full" onClick={onOpenSessionFormModal}>
               <Icon name="edit" fontSize="24px" />
             </Button>
-            <Button px="0" rounded="full">
+            <Button px="0" rounded="full" onClick={onOpenDeleteSessionModal}>
               <Icon name="delete" fontSize="30px" />
             </Button>
           </HStack>

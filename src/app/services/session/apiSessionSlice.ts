@@ -1,5 +1,9 @@
 import { apiSlice } from '../apiSlice'
-import { DeclineSessionRequest, SessionDetailsResponse, SessionResponse } from './types'
+import {
+  CreateSessionRequest, EditSessionRequest,
+  SessionDetailsResponse, SessionResponse,
+  DeclineSessionRequest,
+} from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
 const apiSessionSlice = apiSlice.injectEndpoints({
@@ -41,6 +45,14 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    createSession: build.mutation<null, CreateSessionRequest>({
+      query: (request) => ({
+        url: `/session/create/${request.menteeId}`,
+        method: 'POST',
+        body: request.body,
+      }),
+      onQueryStarted,
+    }),
 
     getSessionDetailsMentor: build.query<SessionDetailsResponse, string | number>({
       query: (sessionId) => ({
@@ -57,14 +69,35 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    editSession: build.mutation<null, EditSessionRequest>({
+      query: (request) => ({
+        url: `/session/mentor/details/${request.sessionId}`,
+        method: 'PUT',
+        body: request.body,
+      }),
+      onQueryStarted,
+    }),
+
+    deleteSession: build.mutation<null, string | number>({
+      query: (sessionId) => ({
+        url: `/session/mentor/details/${sessionId}`,
+        method: 'DELETE',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
 
 export const {
   useLazyGetMenteeSessionsQuery,
-  useAcceptSessionMutation, useDeclineSessionMutation,
+  useCreateSessionMutation,
+  useAcceptSessionMutation,
+  useDeclineSessionMutation,
   useLazyGetSessionDetailsMentorQuery,
   useLazyGetSessionDetailsMenteeQuery,
   useLazyGetSessionsQuery,
+  useEditSessionMutation,
+  useDeleteSessionMutation,
 } = apiSessionSlice

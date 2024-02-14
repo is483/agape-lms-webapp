@@ -12,14 +12,39 @@ export interface Session {
   reason: string
 }
 
+export interface CreateSessionRequest {
+  menteeId: number | string
+  body: {
+    title: string
+    description: string
+    fromDateTime: string
+    toDateTime: string
+    sessionType: string
+    location: string
+  }
+}
+
+export interface EditSessionRequest {
+  sessionId: number | string
+  body: {
+    title: string
+    description: string
+    fromDateTime: string
+    toDateTime: string
+    sessionType: string
+    location: string
+  }
+}
+
 export interface SessionDetailsResponse {
   mentee?: {
     firstName: string
     lastName: string
     profileImgUrl: string
     menteeId: number
-  };
+  }
   sessionDetails: {
+    sessionId: number | string
     title: string
     description: string
     fromDateTime: string
@@ -27,7 +52,7 @@ export interface SessionDetailsResponse {
     sessionType: string
     location: string
     notes: string | null
-  };
+  }
 }
 
 export interface DeclineSessionRequest {
