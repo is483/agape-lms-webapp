@@ -17,13 +17,14 @@ interface GoalProps {
   milestoneIndex: number
   goalIndex: number
   isEditable: boolean
+  isCreated: boolean
   handleOpenFormModal: (milestoneIndex: number, goalIndex?: number) => void
 }
 
 function GoalCard(props: GoalProps) {
   const {
     goal, milestoneIndex, goalIndex, isEditable,
-    handleOpenFormModal,
+    isCreated, handleOpenFormModal,
   } = props
   const dispatch = useAppDispatch()
   const {
@@ -69,7 +70,7 @@ function GoalCard(props: GoalProps) {
           </AccordionButton>
           <AccordionPanel p="0" pt="2">
             {actionPlans.map((actionPlanStep, index) => (
-              <ActionPlanStep actionPlanStep={actionPlanStep} index={index} />
+              <ActionPlanStep actionPlanStep={actionPlanStep} index={index} isCreated={isCreated} />
             ))}
           </AccordionPanel>
         </AccordionItem>

@@ -8,21 +8,25 @@ import { getAuth } from '../../app/redux/selectors'
 interface ActionPlanStepProps {
   actionPlanStep: ActionPlan
   index: number
+  isCreated: boolean
 }
 
 function ActionPlanStep(props: ActionPlanStepProps) {
   const { role } = useAppSelector(getAuth)
-  const { actionPlanStep, index } = props
+  const { actionPlanStep, index, isCreated } = props
   const {
     deadline, resourcesRequired, progressIndicator, byWho,
   } = actionPlanStep
 
   const stepNumber = index + 1
   // TODO: Add by who indicator
+  const handleIsDoneChange = () => {
+    if (!isCreated) return
+  }
 
   return (
     <Flex align="start" mb="2">
-      <Checkbox m="2" mt="1" ml="0" disabled={role === 'Mentee'} />
+      <Checkbox m="2" mt="1" ml="0" disabled={role === 'Mentee'} onChange={handleIsDoneChange} />
       <Box flexGrow="1" px="1">
         <Flex justify="space-between" mb="1">
           <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">Step {stepNumber}</Text>

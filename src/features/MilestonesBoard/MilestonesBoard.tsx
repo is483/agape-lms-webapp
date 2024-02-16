@@ -12,12 +12,15 @@ interface MilestonesBoardProps {
   data: Milestone[]
   startDate: string
   isEditable: boolean
+  isCreated: boolean
 }
 
 const colors = ['blue.600', 'green.600', 'yellow.600', 'orange.600', 'red.600', 'purple.600']
 
 function MilestonesBoard(props: MilestonesBoardProps) {
-  const { data, startDate, isEditable } = props
+  const {
+    data, startDate, isEditable, isCreated,
+  } = props
   const { isOpen: isInfoModalOpen, onOpen: onInfoModalOpen, onClose: onInfoModalClose } = useDisclosure()
   const { isOpen: isGoalModalOpen, onOpen: onGoalModalOpen, onClose: onGoalModalClose } = useDisclosure()
   const dispatch = useAppDispatch()
@@ -54,6 +57,7 @@ function MilestonesBoard(props: MilestonesBoardProps) {
             isEditable={isEditable}
             handleOpenInfoModal={handleOpenInfoModal}
             handleOpenFormModal={handleOpenFormModal}
+            isCreated={isCreated}
           />
         )
       })}
