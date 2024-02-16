@@ -13,6 +13,7 @@ import { setAuth } from '../../app/redux/appSlice'
 import paths from '../../paths'
 import { useGetUserInfoQuery } from '../../app/services/user/apiUserSlice'
 import { clearMentoringJourneyForm } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
+import { apiSlice } from '../../app/services/apiSlice'
 
 interface Props {
   role: Role
@@ -40,6 +41,7 @@ function Navbar(props: Props) {
     localStorage.removeItem('token')
     navigate(paths.Login)
     dispatch(clearMentoringJourneyForm())
+    dispatch(apiSlice.util.resetApiState())
   }
 
   const NavbarComponent = isLgUp ? DesktopSideNavbar : MobileNavbar

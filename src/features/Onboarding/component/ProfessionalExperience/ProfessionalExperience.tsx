@@ -102,7 +102,7 @@ function ProfessionalExperience(props: Props) {
 
   const handleSave = async () => {
     const newErrors: Errors = deepCopy(defaultErrors)
-    newErrors.careerAspiration = ''
+    newErrors.workExperience = workExperiences.map(() => ({ ...defaultWorkExperience }))
     let hasErrors: boolean = false
 
     if (role === 'Mentee' && !careerAspiration) {
