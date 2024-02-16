@@ -15,8 +15,8 @@ export const MILESTONES = [
     goal: 'Explore new opportunities and strategies for personal development.',
     duration: 'Month 3-4 of mentoring journey',
     success: {
-      mentor: 'Tailor opportunities to the mentee\'s interests and strengths andcollaborate on exploring new avenues for personal development.',
-      mentee: 'Gradually introduce new opportunities, provide support, and break down larger goals into manageable steps.',
+      mentor: 'Regularly assess progress, maintain open dialogue, and be vigilant about any red flags, offering additional support when needed.',
+      mentee: 'Emphasize the normalcy of setbacks, highlight previous successes, and work collaboratively to adjust goals if necessary.',
     },
   },
   {
