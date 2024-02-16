@@ -67,3 +67,11 @@ export interface MentoringJourneyMetricsResponse {
   totalCompletedSessions: number
   totalCompletedHours: number
 }
+
+export interface UpdateActionPlanIsDoneRequest {
+  actionPlanStepId: string | number
+  mentoringJourneyId: string | number
+  body: {
+    isDone: boolean
+  }
+}

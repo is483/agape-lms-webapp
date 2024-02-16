@@ -1,9 +1,11 @@
 import {
   Box, Checkbox, Flex, Text,
 } from '@chakra-ui/react'
+import { useParams } from 'react-router-dom'
 import { ActionPlan } from '../MentoringJourneys/CreateMentoringJourney/redux/types'
 import { useAppSelector } from '../../hooks'
 import { getAuth } from '../../app/redux/selectors'
+import { useUpdateActionPlanIsDoneMutation } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 
 interface ActionPlanStepProps {
   actionPlanStep: ActionPlan
@@ -12,21 +14,30 @@ interface ActionPlanStepProps {
 }
 
 function ActionPlanStep(props: ActionPlanStepProps) {
-  const { role } = useAppSelector(getAuth)
   const { actionPlanStep, index, isCreated } = props
+  const { role } = useAppSelector(getAuth)
+  const { mentoringJourneyId } = useParams()
   const {
-    deadline, resourcesRequired, progressIndicator, byWho,
+    deadline, resourcesRequired, progressIndicator,
+    isDone, actionPlanStepId, byWho,
   } = actionPlanStep
+
+  const [updateActionPlanIsDone] = useUpdateActionPlanIsDoneMutation()
 
   const stepNumber = index + 1
   // TODO: Add by who indicator
   const handleIsDoneChange = () => {
-    if (!isCreated) return
+    if (!isCreated || !actionPlanStepId || !mentoringJourneyId || isDone === undefined) return
+    updateActionPlanIsDone({
+      actionPlanStepId,
+      mentoringJourneyId,
+      body: { isDone: !isDone },
+    }).unwrap()
   }
 
   return (
     <Flex align="start" mb="2">
-      <Checkbox m="2" mt="1" ml="0" disabled={role === 'Mentee'} onChange={handleIsDoneChange} />
+      <Checkbox isChecked={isDone} m="2" mt="1" ml="0" disabled={role === 'Mentee'} onChange={handleIsDoneChange} />
       <Box flexGrow="1" px="1">
         <Flex justify="space-between" mb="1">
           <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">Step {stepNumber}</Text>
