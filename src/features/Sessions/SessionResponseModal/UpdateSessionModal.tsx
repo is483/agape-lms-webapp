@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 import {
   Box,
-  Button, Divider, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Text,
+  Button, Divider, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Text, useToast,
 } from '@chakra-ui/react'
 import { useImmer } from 'use-immer'
 import { ChangeEvent } from 'react'
 import { clearErrors, clearValues } from '../../../utils'
-import { useGetDeclineReasonQuery } from '../../../app/services/session/apiSessionSlice'
+import { useGetDeclineReasonQuery, useUpdateSessionMutation } from '../../../app/services/session/apiSessionSlice'
+import { UpdateSessionRequest } from '../../../app/services/session/types'
 
 const defaultSession = {
   proposedFromDateTime: { value: '', error: '' },
@@ -24,7 +25,9 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
   const {
     isModalOpen, onModalClose, sessionId, refetchSessions,
   } = props
-  const { data, isLoading } = useGetDeclineReasonQuery(sessionId)
+  const { data } = useGetDeclineReasonQuery(sessionId)
+  const [updateSessionMutation, { isLoading }] = useUpdateSessionMutation()
+  const toast = useToast()
 
   const handleModalCancel = () => {
     updateSession((draft) => clearErrors(draft))
@@ -54,6 +57,56 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
       hour12: true,
     })
     return `${dateString} ${timeString}`
+  }
+
+  const handleSave = async () => {
+    let hasErrors: boolean = false
+    updateSession((draft) => clearErrors(draft))
+
+    const startDate = new Date(session.proposedFromDateTime.value)
+    const endDate = new Date(session.proposedToDateTime.value)
+    const todayDate = new Date()
+
+    if (startDate >= endDate) {
+      updateSession((draft) => {
+        draft.proposedFromDateTime.error = 'Start date/time must be before the end date/time'
+      })
+      hasErrors = true
+    }
+
+    if (startDate < todayDate) {
+      updateSession((draft) => {
+        draft.proposedFromDateTime.error = 'Start date/time cannot be earlier than today'
+      })
+      hasErrors = true
+    }
+
+    if (hasErrors) {
+      return
+    }
+
+    try {
+      const updateSessionRequest: UpdateSessionRequest = {
+        sessionId,
+        body: {
+          proposedFromDateTime: session.proposedFromDateTime.value,
+          proposedToDateTime: session.proposedToDateTime.value,
+        },
+      }
+      await updateSessionMutation(updateSessionRequest).unwrap()
+      toast({
+        title: 'Update Session',
+        description: 'You have successfully updated the session date!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      handleModalCancel()
+      refetchSessions()
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
@@ -103,7 +156,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
-            <Button colorScheme="red" size="sm" isLoading={isLoading}> Save </Button>
+            <Button colorScheme="red" size="sm" isLoading={isLoading} onClick={handleSave}> Save </Button>
           </Flex>
         </ModalBody>
       </ModalContent>

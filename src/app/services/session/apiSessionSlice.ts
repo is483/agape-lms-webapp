@@ -4,6 +4,7 @@ import {
   SessionDetailsResponse, SessionResponse,
   DeclineSessionRequest,
   DeclineReasonResponse,
+  UpdateSessionRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -95,6 +96,15 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    updateSession: build.mutation<null, UpdateSessionRequest>({
+      query: (request) => ({
+        url: `/session/pending/reject/reason/${request.sessionId}`,
+        method: 'PUT',
+        body: request.body,
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -110,4 +120,5 @@ export const {
   useEditSessionMutation,
   useDeleteSessionMutation,
   useGetDeclineReasonQuery,
+  useUpdateSessionMutation,
 } = apiSessionSlice

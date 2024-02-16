@@ -70,4 +70,12 @@ export interface DeclineReasonResponse {
   proposedToDateTime: string
 }
 
+export interface UpdateSessionRequest {
+  sessionId: number | string
+  body: {
+    proposedFromDateTime: string
+    proposedToDateTime: string
+  }
+}
+
 export type SessionResponse = Session[]
