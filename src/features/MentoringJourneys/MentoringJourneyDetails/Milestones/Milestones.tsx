@@ -33,7 +33,7 @@ function Milestones(props: MilestonesProps) {
         <Text fontWeight="500" fontSize="sm">{numAchieved}/6</Text>
       </Flex>
       <Progress mb="6" rounded="full" value={(numAchieved / 6) * 100} />
-      <MilestonesBoard data={milestones} startDate={milestones[0]?.startDate ?? ''} isEditable={false} />
+      <MilestonesBoard data={milestones} startDate={milestones[0]?.startDate ?? ''} isEditable={false} isCreated />
     </Box>
   )
 }

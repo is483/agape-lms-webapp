@@ -4,6 +4,8 @@ export interface ActionPlan {
   resourcesRequired: string
   progressIndicator: string
   step: number
+  isDone?: boolean
+  actionPlanStepId?: number | string
 }
 
 export interface Goal {

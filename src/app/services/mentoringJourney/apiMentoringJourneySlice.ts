@@ -2,6 +2,7 @@ import { apiSlice } from '../apiSlice'
 import {
   CreateMentoringJourneyRequest, MentoringJourneyDetailsResponse, MentoringJourneysResponse,
   UpdateMentoringJourneyRequest, MilestonesResponse, MentoringJourneyMetricsResponse,
+  UpdateActionPlanIsDoneRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -15,6 +16,15 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['MentoringJourney'],
       onQueryStarted,
+    }),
+    updateActionPlanIsDone: build.mutation<null, UpdateActionPlanIsDoneRequest>({
+      query: (request) => ({
+        url: `mentor/mentoring-journey/milestones/actionPlanSteps/${request.actionPlanStepId}`,
+        method: 'PUT',
+        body: request.body,
+      }),
+      onQueryStarted,
+      invalidatesTags: ['Milestone'],
     }),
     getAllMentoringJourney: build.query<MentoringJourneysResponse, null>({
       query: () => ({
@@ -49,7 +59,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: `mentor/mentoring-journey/milestones/${mentoringJourneyId}`,
         method: 'GET',
       }),
-      providesTags: ['MentoringJourney'],
+      providesTags: ['Milestone'],
       onQueryStarted,
     }),
     // Mentee
@@ -58,7 +68,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: 'mentee/mentoring-journey/milestones',
         method: 'GET',
       }),
-      providesTags: ['MentoringJourney'],
+      providesTags: ['Milestone'],
       onQueryStarted,
     }),
     getMentoringJourneyMetrics: build.query<MentoringJourneyMetricsResponse, null>({
@@ -76,4 +86,5 @@ export const {
   useCreateMentoringJourneyMutation, useGetAllMentoringJourneyQuery,
   useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation,
   useGetMilestonesQuery, useGetMilestoneQuery, useGetMentoringJourneyMetricsQuery,
+  useUpdateActionPlanIsDoneMutation,
 } = apiMentoringJourneySlice

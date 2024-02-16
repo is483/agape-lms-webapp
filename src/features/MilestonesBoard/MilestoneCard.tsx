@@ -12,16 +12,19 @@ interface MilestoneCardProps extends BoxProps {
   cardColor: string
   dateStr: string
   isEditable: boolean
+  isCreated: boolean
   handleOpenInfoModal: (index: number) => void
   handleOpenFormModal: (milestoneIndex: number, goalIndex?: number) => void
 }
 
 function MilestoneCard(props: MilestoneCardProps) {
   const {
-    milestone, milestoneIndex, dateStr, isEditable,
+    milestone, milestoneIndex, dateStr, isEditable, isCreated,
     handleOpenInfoModal, handleOpenFormModal, cardColor, ...boxProps
   } = props
-  const { milestoneStep, goals } = milestone
+  const {
+    milestoneStep, goals, startDate, endDate,
+  } = milestone
 
   return (
     <Box maxWidth="100%" width="360px" {...boxProps}>
@@ -42,7 +45,16 @@ function MilestoneCard(props: MilestoneCardProps) {
           </Text>
         </Box>
         {goals.map((goal, goalIndex) => (
-          <GoalCard goal={goal} goalIndex={goalIndex} milestoneIndex={milestoneIndex} isEditable={isEditable} handleOpenFormModal={handleOpenFormModal} />
+          <GoalCard
+            goal={goal}
+            goalIndex={goalIndex}
+            milestoneIndex={milestoneIndex}
+            isEditable={isEditable}
+            handleOpenFormModal={handleOpenFormModal}
+            isCreated={isCreated}
+            startDate={startDate}
+            endDate={endDate}
+          />
         ))}
         {isEditable && (
           <Button onClick={() => handleOpenFormModal(milestoneIndex)} size="xs" variant="ghost" color="gray.500" w="min-content">

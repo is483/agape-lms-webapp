@@ -17,13 +17,16 @@ interface GoalProps {
   milestoneIndex: number
   goalIndex: number
   isEditable: boolean
+  isCreated: boolean
   handleOpenFormModal: (milestoneIndex: number, goalIndex?: number) => void
+  startDate: string | undefined
+  endDate: string | undefined
 }
 
 function GoalCard(props: GoalProps) {
   const {
     goal, milestoneIndex, goalIndex, isEditable,
-    handleOpenFormModal,
+    isCreated, handleOpenFormModal, startDate, endDate,
   } = props
   const dispatch = useAppDispatch()
   const {
@@ -34,6 +37,9 @@ function GoalCard(props: GoalProps) {
     dispatch(setGoalIndex(undefined))
     dispatch(deleteGoal({ milestoneIndex, goalIndex }))
   }
+
+  const numIsDone = actionPlans.map((actionPlan) => Number(actionPlan.isDone ?? 0)).reduce((accumulator, currentValue) => accumulator + currentValue)
+  const progressValue = isCreated ? (numIsDone * 100) / goal.actionPlans.length : 0
 
   return (
     <Box p="2" background="white" rounded="md" shadow="sm">
@@ -54,9 +60,9 @@ function GoalCard(props: GoalProps) {
       <Text fontSize="sm">{goalName}</Text>
       <Flex justify="space-between" mt="1">
         <Text fontSize="sm" color="gray.500" fontWeight="bold" mb="1">Progress</Text>
-        <Text fontSize="sm" color="gray.700">0/{goal.actionPlans.length}</Text>
+        <Text fontSize="sm" color="gray.700">{numIsDone}/{goal.actionPlans.length}</Text>
       </Flex>
-      <Progress value={0} rounded="sm" />
+      <Progress value={progressValue} rounded="sm" />
       <Flex mt="2" gap="1" align="center">
         <Text fontSize="sm" color="gray.500" fontWeight="bold">Deadline:</Text>
         <Text fontSize="xs" color="gray.700">{deadline}</Text>
@@ -69,7 +75,7 @@ function GoalCard(props: GoalProps) {
           </AccordionButton>
           <AccordionPanel p="0" pt="2">
             {actionPlans.map((actionPlanStep, index) => (
-              <ActionPlanStep actionPlanStep={actionPlanStep} index={index} />
+              <ActionPlanStep actionPlanStep={actionPlanStep} index={index} isCreated={isCreated} startDate={startDate} endDate={endDate} />
             ))}
           </AccordionPanel>
         </AccordionItem>
