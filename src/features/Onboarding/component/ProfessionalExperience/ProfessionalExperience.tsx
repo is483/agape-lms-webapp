@@ -112,9 +112,6 @@ function ProfessionalExperience(props: Props) {
 
     if (role === 'Mentor') {
       workExperiences.forEach(({ company, description, jobTitle }, i) => {
-        newErrors.workExperience[i].company = ''
-        newErrors.workExperience[i].description = ''
-        newErrors.workExperience[i].jobTitle = ''
         if (!company.trim()) {
           newErrors.workExperience[i].company = 'Company is required'
           hasErrors = true
