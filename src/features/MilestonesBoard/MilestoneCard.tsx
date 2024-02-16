@@ -22,7 +22,9 @@ function MilestoneCard(props: MilestoneCardProps) {
     milestone, milestoneIndex, dateStr, isEditable, isCreated,
     handleOpenInfoModal, handleOpenFormModal, cardColor, ...boxProps
   } = props
-  const { milestoneStep, goals } = milestone
+  const {
+    milestoneStep, goals, startDate, endDate,
+  } = milestone
 
   return (
     <Box maxWidth="100%" width="360px" {...boxProps}>
@@ -50,6 +52,8 @@ function MilestoneCard(props: MilestoneCardProps) {
             isEditable={isEditable}
             handleOpenFormModal={handleOpenFormModal}
             isCreated={isCreated}
+            startDate={startDate}
+            endDate={endDate}
           />
         ))}
         {isEditable && (

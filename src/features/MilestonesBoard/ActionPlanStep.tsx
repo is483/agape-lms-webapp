@@ -12,23 +12,30 @@ interface ActionPlanStepProps {
   actionPlanStep: ActionPlan
   index: number
   isCreated: boolean
+  startDate: string | undefined
+  endDate: string | undefined
 }
 
 function ActionPlanStep(props: ActionPlanStepProps) {
-  const { actionPlanStep, index, isCreated } = props
+  const {
+    actionPlanStep, index, isCreated,
+    startDate, endDate,
+  } = props
   const { role } = useAppSelector(getAuth)
   const { mentoringJourneyId } = useParams()
   const {
     deadline, resourcesRequired, progressIndicator,
     isDone, actionPlanStepId, byWho,
   } = actionPlanStep
-
   const [updateActionPlanIsDone] = useUpdateActionPlanIsDoneMutation()
-
+  const currDatetime = new Date()
   const stepNumber = index + 1
-  // TODO: Add by who indicator
+
   const handleIsDoneChange = () => {
-    if (!isCreated || !actionPlanStepId || !mentoringJourneyId || isDone === undefined) return
+    if (
+      !isCreated || !actionPlanStepId || !mentoringJourneyId || isDone === undefined || !startDate || !endDate
+      || currDatetime > new Date(endDate) || currDatetime < new Date(startDate)
+    ) return
     updateActionPlanIsDone({
       actionPlanStepId,
       mentoringJourneyId,
