@@ -3,6 +3,7 @@ import {
   CreateSessionRequest, EditSessionRequest,
   SessionDetailsResponse, SessionResponse,
   DeclineSessionRequest,
+  DeclineReasonResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -86,6 +87,14 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    getDeclineReason: build.query<DeclineReasonResponse, string | number>({
+      query: (sessionId) => ({
+        url: `/session/pending/reject/reason/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -100,4 +109,5 @@ export const {
   useLazyGetSessionsQuery,
   useEditSessionMutation,
   useDeleteSessionMutation,
+  useGetDeclineReasonQuery,
 } = apiSessionSlice

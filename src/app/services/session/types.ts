@@ -64,4 +64,10 @@ export interface DeclineSessionRequest {
   }
 }
 
+export interface DeclineReasonResponse {
+  declineReason: string
+  proposedFromDateTime: string
+  proposedToDateTime: string
+}
+
 export type SessionResponse = Session[]

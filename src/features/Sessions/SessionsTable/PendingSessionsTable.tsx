@@ -9,6 +9,7 @@ import { SessionResponse } from '../../../app/services/session/types'
 import { Icon } from '../../../components'
 import AcceptSessionModal from '../SessionResponseModal/AcceptSessionModal'
 import DeclineSessionModal from '../SessionResponseModal/DeclineSessionModal'
+import UpdateSessionModal from '../SessionResponseModal/UpdateSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
@@ -19,17 +20,25 @@ function PendingSessionsTable(props: PendingSessionsTableProps) {
   const { data, refetchSessions } = props
   const { role } = useAppSelector(getAuth)
   return role === 'Mentor' ? (
-    <PendingSessionsTableMentor data={data} />
+    <PendingSessionsTableMentor refetchSessions={refetchSessions} data={data} />
   ) : (
     <PendingSessionsTableMentee refetchSessions={refetchSessions} data={data} />
   )
 }
 
-function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refetchSessions'>) {
-  const { data } = props
+function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+  const { data, refetchSessions } = props
+  const [sessionId, setSessionId] = useState<number | string>('')
+  const { isOpen: isUpdateSessionModalOpen, onOpen: onOpenUpdateSessionModal, onClose: onAcceptUpdateModalClose } = useDisclosure()
+  const handleOpenUpdateSessionModal = (sessionId: number | string) => {
+    setSessionId(sessionId)
+    onOpenUpdateSessionModal()
+    console.log(sessionId)
+  }
 
   return (
     <TableContainer whiteSpace="unset" width="100%">
+      <UpdateSessionModal refetchSessions={refetchSessions} isModalOpen={isUpdateSessionModalOpen} onModalClose={onAcceptUpdateModalClose} sessionId={sessionId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -43,7 +52,7 @@ function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refe
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, status,
+              fromDateTime, title, sessionType, status, sessionId,
             } = session
 
             const dateObject = new Date(fromDateTime)
@@ -72,7 +81,7 @@ function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refe
                   </Badge>
                 </Td>
                 <Td>
-                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" /></Flex>}
+                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" _hover={{ cursor: 'pointer' }} onClick={() => handleOpenUpdateSessionModal(sessionId)} /></Flex>}
                 </Td>
               </Tr>
             )
