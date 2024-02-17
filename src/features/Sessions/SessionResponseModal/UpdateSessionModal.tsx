@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import {
   Box,
-  Button, Divider, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Text, useToast,
+  Button, Divider, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, SimpleGrid, Switch, Text, useToast,
 } from '@chakra-ui/react'
 import { useImmer } from 'use-immer'
 import { ChangeEvent } from 'react'
@@ -10,6 +10,7 @@ import { useGetDeclineReasonQuery, useUpdateSessionMutation } from '../../../app
 import { UpdateSessionRequest } from '../../../app/services/session/types'
 
 const defaultSession = {
+  isProposed: { value: false },
   proposedFromDateTime: { value: '', error: '' },
   proposedToDateTime: { value: '', error: '' },
 }
@@ -29,7 +30,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
   const [updateSessionMutation, { isLoading }] = useUpdateSessionMutation()
   const toast = useToast()
 
-  const handleModalCancel = () => {
+  const handleModalClose = () => {
     updateSession((draft) => clearErrors(draft))
     updateSession((draft) => clearValues(draft))
     onModalClose()
@@ -59,6 +60,26 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
     return `${dateString} ${timeString}`
   }
 
+  const handleToggleChange = () => {
+    updateSession((draft) => clearValues(draft))
+    updateSession((draft) => {
+      draft.isProposed.value = !draft.isProposed.value
+
+      if (draft.isProposed.value && data?.proposedFromDateTime && data?.proposedToDateTime) {
+        const formatDateTimeForInput = (dateTime: string) => {
+          const date = new Date(dateTime)
+          const offset = date.getTimezoneOffset() * 60000
+          const localISOTime = (new Date(date.getTime() - offset)).toISOString().slice(0, -1)
+          return localISOTime.substring(0, 16)
+        }
+
+        updateSession((draft) => {
+          draft.proposedFromDateTime.value = formatDateTimeForInput(data.proposedFromDateTime)
+          draft.proposedToDateTime.value = formatDateTimeForInput(data.proposedToDateTime)
+        })
+      }
+    })
+  }
   const handleSave = async () => {
     let hasErrors: boolean = false
     updateSession((draft) => clearErrors(draft))
@@ -102,7 +123,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
-      handleModalCancel()
+      handleModalClose()
       refetchSessions()
     } catch (e) {
       console.error(e)
@@ -110,7 +131,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
   }
 
   return (
-    <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl" isCentered>
+    <Modal isOpen={isModalOpen} onClose={handleModalClose} size="2xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="70vh">
         <ModalHeader> View Decline Reason</ModalHeader>
@@ -131,6 +152,11 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
             <Divider orientation="horizontal" />
             <Text fontWeight="600" fontSize="md"> Set New Date & Time </Text>
 
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text>Accept Proposed Date & Time</Text>
+              <Switch size="md" colorScheme="red" isChecked={session.isProposed.value} onChange={handleToggleChange} />
+            </Flex>
+
             <SimpleGrid columns={[1, 1, 2]} spacing={10} marginBottom="3">
               <Box>
                 <Text marginBottom="1">Start Date & Time</Text>
@@ -138,6 +164,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
                   size="md"
                   type="datetime-local"
                   onChange={handleFromDateTimeChange}
+                  isDisabled={session.isProposed.value}
                   value={session.proposedFromDateTime.value}
                 />
                 {!!session.proposedFromDateTime.error && <Text fontSize="xs" color="red.600">{session.proposedFromDateTime.error}</Text>}
@@ -148,6 +175,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
                   size="md"
                   type="datetime-local"
                   onChange={handleToDateTimeChange}
+                  isDisabled={session.isProposed.value}
                   value={session.proposedToDateTime.value}
                 />
                 {!!session.proposedToDateTime.error && <Text fontSize="xs" color="red.600">{session.proposedToDateTime.error}</Text>}
@@ -155,7 +183,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
             </SimpleGrid>
           </Flex>
           <Flex gap="4" justify="flex-end" mt="8">
-            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
+            <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalClose}>Cancel</Button>
             <Button colorScheme="red" size="sm" isLoading={isLoading} onClick={handleSave}> Save </Button>
           </Flex>
         </ModalBody>
