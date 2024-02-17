@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button, useDisclosure,
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import {
@@ -36,7 +36,7 @@ function SessionDetails() {
   } = data?.mentee ?? {}
 
   const {
-    title, description, fromDateTime, toDateTime, location,
+    title, description, fromDateTime, toDateTime, location, sessionType,
   } = data?.sessionDetails ?? {}
 
   const { isOpen: isDeleteSessionModalOpen, onOpen: onOpenDeleteSessionModal, onClose: onDeleteSessionModalClose } = useDisclosure()
@@ -46,12 +46,22 @@ function SessionDetails() {
   const startTime = startDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
   const endDateObject = new Date(toDateTime as string)
+  const endDate = endDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   const endTime = endDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
   const differenceInHours = (endDateObject.getTime() - startDateObject.getTime()) / (1000 * 60 * 60)
 
   const isPast = endDateObject <= todayDate
 
+  function ensureProtocol(url: string | undefined) {
+    if (!url) {
+      return ''
+    }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return `https://${url}`
+    }
+    return url
+  }
   const handleViewMentee = () => {
     navigate(`${paths.AssignedMentees}/${menteeId}`)
   }
@@ -78,7 +88,7 @@ function SessionDetails() {
       <Flex gap={['3', '3', '10']} flexDir={['column', 'column', 'row']} mt={['5', '5', '2']}>
         <HStack>
           <Icon name="calendar_today" fontSize="25px" />
-          <Text color="secondary.500">{startDate}</Text>
+          <Text color="secondary.500">{startDate === endDate ? startDate : `${startDate} - ${endDate}`}</Text>
         </HStack>
 
         <HStack>
@@ -94,7 +104,8 @@ function SessionDetails() {
 
       <HStack mt="3">
         <Icon name="location_on" fontSize="25px" />
-        <Text color="secondary.500" isTruncated>{location}</Text>
+        {sessionType === 'Online' && <Link color="secondary.500" href={ensureProtocol(location)}>{location}</Link>}
+        {sessionType === 'Physical' && <Text color="secondary.500" isTruncated>{location}</Text>}
       </HStack>
 
       {role === 'Mentor'
