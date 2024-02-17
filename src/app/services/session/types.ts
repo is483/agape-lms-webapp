@@ -73,8 +73,8 @@ export interface DeclineReasonResponse {
 export interface UpdateSessionRequest {
   sessionId: number | string
   body: {
-    proposedFromDateTime: string
-    proposedToDateTime: string
+    fromDateTime: string
+    toDateTime: string
   }
 }
 

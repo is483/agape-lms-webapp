@@ -89,8 +89,8 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
       const updateSessionRequest: UpdateSessionRequest = {
         sessionId,
         body: {
-          proposedFromDateTime: session.proposedFromDateTime.value,
-          proposedToDateTime: session.proposedToDateTime.value,
+          fromDateTime: session.proposedFromDateTime.value,
+          toDateTime: session.proposedToDateTime.value,
         },
       }
       await updateSessionMutation(updateSessionRequest).unwrap()

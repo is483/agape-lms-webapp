@@ -26,19 +26,23 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, sessionId,
+              fromDateTime, toDateTime, title, sessionType, sessionId,
             } = session
 
-            const dateObject = new Date(fromDateTime)
-            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+            const fromDateObject = new Date(fromDateTime)
+            const fromDate = fromDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const fromTime = fromDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            const toDateObject = new Date(toDateTime)
+            const toDate = toDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const toTime = toDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
             return (
               <Tr>
                 <Td>
                   <VStack alignItems="start">
-                    <Text color="primary.800" fontSize="sm"> {date}</Text>
-                    <Text> {time}</Text>
+                    <Text color="primary.800" fontSize="sm"> {fromDate === toDate ? fromDate : `${fromDate} - ${toDate}`}</Text>
+                    <Text> {`${fromTime} to ${toTime}`}</Text>
                   </VStack>
                 </Td>
                 <Td>
