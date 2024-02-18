@@ -3,6 +3,8 @@ import {
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon, ProfileIcon } from '../../components'
+import { getAuth } from '../../app/redux/selectors'
+import { useAppSelector } from '../../hooks'
 
 interface UserDetailsProps {
   user: User
@@ -11,9 +13,10 @@ interface UserDetailsProps {
 function UserDetails(props: UserDetailsProps) {
   const {
     user: {
-      firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations,
+      firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
     },
   } = props
+  const { role } = useAppSelector(getAuth)
 
   function mapUserDetails(userDetails: string) {
     const stringArr = userDetails?.split(',').map((detail: string) => detail.trim())
@@ -82,17 +85,20 @@ function UserDetails(props: UserDetailsProps) {
       </Box>
       <Divider orientation="horizontal" marginBottom="4" />
       <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="8">
-        <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
-          <Badge
-            colorScheme="red"
-            mr="2"
-          > {careerAspiration}
-          </Badge>
-        </Box>
+        {role === 'Mentor'
+          && (
+            <Box>
+              <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
+              <Badge
+                colorScheme="red"
+                mr="2"
+              > {careerAspiration}
+              </Badge>
+            </Box>
+          )}
 
         <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Skills Sought</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">{role === 'Mentor' ? 'Skills Sought' : 'Specailized Skills'}</Text>
           {mapUserDetails(skills)?.map((skill) => (
             <Badge
               colorScheme="red"
@@ -135,13 +141,29 @@ function UserDetails(props: UserDetailsProps) {
           ))}
         </Box>
 
-        <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
-          <Text>{expectations}</Text>
-        </Box>
+        {role === 'Mentor' && (
+          <Box>
+            <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
+            <Text>{expectations}</Text>
+          </Box>
+        )}
+
+        {role === 'Mentee' && (
+          <Box>
+            <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Style</Text>
+            {mapUserDetails(preferredMentoringApproach!).map((mentoringApproach) => (
+              <Badge
+                colorScheme="red"
+                mr="2"
+              >
+                {mentoringApproach}
+              </Badge>
+            ))}
+          </Box>
+        )}
 
         <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Challenges Faced</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">{role === 'Mentor' ? 'Challenges Faced' : 'Challenges Overcame'}</Text>
           {mapUserDetails(challenges)?.map((challenge) => (
             <Badge
               colorScheme="red"

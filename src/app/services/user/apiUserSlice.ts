@@ -2,7 +2,7 @@ import { apiSlice } from '../apiSlice'
 import {
   ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
   MenteeExperienceRequest, MenteeMentoringRequest,
-  MentorMentoringRequest, RoleResponse, SkillsRequest, TransformedUserResponse,
+  MentorMentoringRequest, MentorResponse, RoleResponse, SkillsRequest, TransformedUserResponse,
   UserRequest, UserResponse, UsersResponse, ValuesRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
@@ -181,6 +181,13 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    getAssignedMentor: build.query<MentorResponse, null>({
+      query: () => ({
+        url: 'mentee/mentoring-journey/assigned-mentor',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -194,5 +201,5 @@ export const {
   useUpdateMentorChallengesMutation, useUpdateMenteeChallengesMutation,
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
   useGetUserInfoQuery, useGetUserRoleQuery,
-  useGetAssignedMenteesQuery,
+  useGetAssignedMenteesQuery, useGetAssignedMentorQuery,
 } = apiUserSlice

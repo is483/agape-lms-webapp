@@ -131,3 +131,7 @@ export interface User {
 export interface UsersResponse {
   assignedMentees: User[]
 }
+
+export interface MentorResponse {
+  assignedMentor: User
+}
