@@ -104,8 +104,8 @@ function SessionDetails() {
 
       <HStack mt="3">
         <Icon name="location_on" fontSize="25px" />
-        {sessionType === 'Online' && <Link color="secondary.500" href={ensureProtocol(location)}>{location}</Link>}
-        {sessionType === 'Physical' && <Text color="secondary.500" isTruncated>{location}</Text>}
+        {sessionType === 'online' && <Link color="secondary.500" href={ensureProtocol(location)}>{location}</Link>}
+        {sessionType === 'physical' && <Text color="secondary.500" isTruncated>{location}</Text>}
       </HStack>
 
       {role === 'Mentor'
