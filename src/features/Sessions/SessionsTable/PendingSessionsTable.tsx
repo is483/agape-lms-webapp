@@ -13,20 +13,26 @@ import UpdateSessionModal from '../SessionResponseModal/UpdateSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
-  refetchSessions: () => void
+  refetchMentorSessions: () => void
+  refetchMenteeSessions: () => void
 }
 
 function PendingSessionsTable(props: PendingSessionsTableProps) {
-  const { data, refetchSessions } = props
+  const { data, refetchMentorSessions, refetchMenteeSessions } = props
   const { role } = useAppSelector(getAuth)
   return role === 'Mentor' ? (
-    <PendingSessionsTableMentor refetchSessions={refetchSessions} data={data} />
+    <PendingSessionsTableMentor refetchSessions={refetchMentorSessions} data={data} />
   ) : (
-    <PendingSessionsTableMentee refetchSessions={refetchSessions} data={data} />
+    <PendingSessionsTableMentee refetchSessions={refetchMenteeSessions} data={data} />
   )
 }
 
-function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+interface PendingSessionsTableMentorProps {
+  data: SessionResponse
+  refetchSessions: () => void
+}
+
+function PendingSessionsTableMentor(props: PendingSessionsTableMentorProps) {
   const { data, refetchSessions } = props
   const [sessionId, setSessionId] = useState<number | string>('')
   const { isOpen: isUpdateSessionModalOpen, onOpen: onOpenUpdateSessionModal, onClose: onAcceptUpdateModalClose } = useDisclosure()
@@ -95,7 +101,12 @@ function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
   )
 }
 
-function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
+interface PendingSessionsTableMenteeProps {
+  data: SessionResponse
+  refetchSessions: () => void
+}
+
+function PendingSessionsTableMentee(props: PendingSessionsTableMenteeProps) {
   const { data, refetchSessions } = props
   const [sessionId, setSessionId] = useState<number | string>('')
   const { isOpen: isAcceptSessionModalOpen, onOpen: onOpenAcceptSessionModal, onClose: onAcceptSessionModalClose } = useDisclosure()
