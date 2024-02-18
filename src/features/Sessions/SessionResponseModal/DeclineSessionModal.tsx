@@ -99,7 +99,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
       await declineSessionMutation(declineSessionRequest).unwrap()
       toast({
         title: 'Decline Session',
-        description: 'You have successfully declined the session, your mentor will be informed of your decision',
+        description: 'You have successfully declined the session and your proposed date has been sent to your mentor for review',
         status: 'success',
         duration: 5000,
         isClosable: true,

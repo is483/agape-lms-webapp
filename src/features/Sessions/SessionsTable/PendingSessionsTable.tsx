@@ -9,6 +9,7 @@ import { SessionResponse } from '../../../app/services/session/types'
 import { Icon } from '../../../components'
 import AcceptSessionModal from '../SessionResponseModal/AcceptSessionModal'
 import DeclineSessionModal from '../SessionResponseModal/DeclineSessionModal'
+import UpdateSessionModal from '../SessionResponseModal/UpdateSessionModal'
 
 interface PendingSessionsTableProps {
   data: SessionResponse
@@ -19,17 +20,24 @@ function PendingSessionsTable(props: PendingSessionsTableProps) {
   const { data, refetchSessions } = props
   const { role } = useAppSelector(getAuth)
   return role === 'Mentor' ? (
-    <PendingSessionsTableMentor data={data} />
+    <PendingSessionsTableMentor refetchSessions={refetchSessions} data={data} />
   ) : (
     <PendingSessionsTableMentee refetchSessions={refetchSessions} data={data} />
   )
 }
 
-function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refetchSessions'>) {
-  const { data } = props
+function PendingSessionsTableMentor(props: PendingSessionsTableProps) {
+  const { data, refetchSessions } = props
+  const [sessionId, setSessionId] = useState<number | string>('')
+  const { isOpen: isUpdateSessionModalOpen, onOpen: onOpenUpdateSessionModal, onClose: onAcceptUpdateModalClose } = useDisclosure()
+  const handleOpenUpdateSessionModal = (sessionId: number | string) => {
+    setSessionId(sessionId)
+    onOpenUpdateSessionModal()
+  }
 
   return (
     <TableContainer whiteSpace="unset" width="100%">
+      <UpdateSessionModal refetchSessions={refetchSessions} isModalOpen={isUpdateSessionModalOpen} onModalClose={onAcceptUpdateModalClose} sessionId={sessionId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -43,19 +51,23 @@ function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refe
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, status,
+              fromDateTime, toDateTime, title, sessionType, status, sessionId,
             } = session
 
-            const dateObject = new Date(fromDateTime)
-            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+            const fromDateObject = new Date(fromDateTime)
+            const fromDate = fromDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const fromTime = fromDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            const toDateObject = new Date(toDateTime)
+            const toDate = toDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const toTime = toDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
             return (
               <Tr>
                 <Td>
                   <VStack alignItems="start">
-                    <Text color="primary.800" fontSize="sm"> {date}</Text>
-                    <Text> {time}</Text>
+                    <Text color="primary.800" fontSize="sm"> {fromDate === toDate ? fromDate : `${fromDate} - ${toDate}`}</Text>
+                    <Text> {`${fromTime} to ${toTime}`}</Text>
                   </VStack>
                 </Td>
                 <Td>
@@ -72,7 +84,7 @@ function PendingSessionsTableMentor(props: Omit<PendingSessionsTableProps, 'refe
                   </Badge>
                 </Td>
                 <Td>
-                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" /></Flex>}
+                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" _hover={{ cursor: 'pointer' }} onClick={() => handleOpenUpdateSessionModal(sessionId)} /></Flex>}
                 </Td>
               </Tr>
             )
@@ -114,19 +126,23 @@ function PendingSessionsTableMentee(props: PendingSessionsTableProps) {
         <Tbody>
           {data.map((session) => {
             const {
-              fromDateTime, title, sessionType, status, sessionId,
+              fromDateTime, toDateTime, title, sessionType, status, sessionId,
             } = session
 
-            const dateObject = new Date(fromDateTime)
-            const date = dateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            const time = dateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+            const fromDateObject = new Date(fromDateTime)
+            const fromDate = fromDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const fromTime = fromDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+            const toDateObject = new Date(toDateTime)
+            const toDate = toDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const toTime = toDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
             return (
               <Tr>
                 <Td>
                   <VStack alignItems="start">
-                    <Text color="primary.800" fontSize="sm">{date}</Text>
-                    <Text>{time}</Text>
+                    <Text color="primary.800" fontSize="sm"> {fromDate === toDate ? fromDate : `${fromDate} - ${toDate}`}</Text>
+                    <Text> {`${fromTime} to ${toTime}`}</Text>
                   </VStack>
                 </Td>
                 <Td>
