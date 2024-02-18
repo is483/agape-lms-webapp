@@ -61,22 +61,19 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
   }
 
   const handleToggleChange = () => {
-    updateSession((draft) => clearValues(draft))
     updateSession((draft) => {
       draft.isProposed.value = !draft.isProposed.value
-
-      if (draft.isProposed.value && data?.proposedFromDateTime && data?.proposedToDateTime) {
+      if (!draft.isProposed.value) {
+        clearValues(draft)
+      } else if (draft.isProposed.value && data?.proposedFromDateTime && data?.proposedToDateTime) {
         const formatDateTimeForInput = (dateTime: string) => {
           const date = new Date(dateTime)
           const offset = date.getTimezoneOffset() * 60000
           const localISOTime = (new Date(date.getTime() - offset)).toISOString().slice(0, -1)
           return localISOTime.substring(0, 16)
         }
-
-        updateSession((draft) => {
-          draft.proposedFromDateTime.value = formatDateTimeForInput(data.proposedFromDateTime)
-          draft.proposedToDateTime.value = formatDateTimeForInput(data.proposedToDateTime)
-        })
+        draft.proposedFromDateTime.value = formatDateTimeForInput(data.proposedFromDateTime)
+        draft.proposedToDateTime.value = formatDateTimeForInput(data.proposedToDateTime)
       }
     })
   }
@@ -117,7 +114,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
       await updateSessionMutation(updateSessionRequest).unwrap()
       toast({
         title: 'Update Session',
-        description: 'You have successfully updated the session date!',
+        description: 'Session date updated! If not based on your mentee\'s suggestion, it awaits their approval before confirmation',
         status: 'success',
         duration: 5000,
         isClosable: true,
