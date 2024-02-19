@@ -75,7 +75,7 @@ function UsersListDesktop(props: Props) {
         })}
       </Box>
       <Box flex="1" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="8">
-        {selectedUser && <UserDetails user={selectedUser} />}
+        {selectedUser && <UserDetails user={selectedUser} userRole="Mentee" />}
       </Box>
     </Flex>
   )
@@ -119,6 +119,7 @@ function UsersListMobile(props: Props) {
                   <AccordionPanel pb={4} background="white" borderRadius="10">
                     <UserDetails
                       user={user}
+                      userRole="Mentee"
                     />
                   </AccordionPanel>
                 </>

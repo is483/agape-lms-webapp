@@ -1,11 +1,12 @@
-import { Box, Hide, Text, Divider } from '@chakra-ui/react'
+import {
+  Box, Hide, Text, Divider,
+} from '@chakra-ui/react'
 import { useGetAssignedMentorQuery } from '../../app/services/user/apiUserSlice'
 import { Container } from '../../components'
 import UserDetails from '../UsersList/UserDetails'
 
 function AssignedMentors() {
   const { data } = useGetAssignedMentorQuery(null)
-  console.log(data)
   return (
     <Container>
       <Box marginBottom="5">
@@ -17,7 +18,7 @@ function AssignedMentors() {
           <Divider orientation="horizontal" />
         </Hide>
       </Box>
-      { data && <UserDetails user={data.assignedMentor} /> }
+      {data && <UserDetails user={data.assignedMentor} userRole="Mentor" />}
     </Container>
   )
 }
