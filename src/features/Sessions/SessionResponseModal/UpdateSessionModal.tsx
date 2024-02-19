@@ -85,6 +85,16 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
     const endDate = new Date(session.proposedToDateTime.value)
     const todayDate = new Date()
 
+    if (!session.proposedFromDateTime.value) {
+      updateSession((draft) => { draft.proposedFromDateTime.error = 'Start date/time of session is required' })
+      hasErrors = true
+    }
+
+    if (!session.proposedToDateTime.value) {
+      updateSession((draft) => { draft.proposedToDateTime.error = 'End date/time of session is required' })
+      hasErrors = true
+    }
+
     if (startDate >= endDate) {
       updateSession((draft) => {
         draft.proposedFromDateTime.error = 'Start date/time must be before the end date/time'
