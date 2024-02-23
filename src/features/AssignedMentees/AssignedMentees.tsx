@@ -13,7 +13,7 @@ function AssignedMentees() {
           title="Assigned Mentees"
           description="Get to know more about your assigned mentees"
           users={isLoading ? [] : data?.assignedMentees ?? []}
-          userRole="Mentor"
+          userRole="Mentee"
         />
       </Container>
     )
@@ -23,7 +23,7 @@ function AssignedMentees() {
       title="Assigned Mentees"
       description="Get to know more about your assigned mentees"
       users={isLoading ? [] : data?.assignedMentees ?? []}
-      userRole="Mentor"
+      userRole="Mentee"
     />
 
   )
