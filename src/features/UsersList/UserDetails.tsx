@@ -3,10 +3,11 @@ import {
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon, ProfileIcon } from '../../components'
+import { Role } from '../../app/types'
 
 interface UserDetailsProps {
   user: User
-  userRole: string
+  userRole: Role
 }
 
 function UserDetails(props: UserDetailsProps) {
@@ -84,7 +85,7 @@ function UserDetails(props: UserDetailsProps) {
       </Box>
       <Divider orientation="horizontal" marginBottom="4" />
       <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="8">
-        {userRole === 'Mentee'
+        {userRole === 'Mentor'
           && (
             <Box>
               <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
@@ -140,14 +141,14 @@ function UserDetails(props: UserDetailsProps) {
           ))}
         </Box>
 
-        {userRole === 'Mentee' && (
+        {userRole === 'Mentor' && (
           <Box>
             <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
             <Text>{expectations}</Text>
           </Box>
         )}
 
-        {userRole === 'Mentor' && (
+        {userRole === 'Mentee' && (
           <Box>
             <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Style</Text>
             {mapUserDetails(preferredMentoringApproach!).map((mentoringApproach) => (

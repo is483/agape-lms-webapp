@@ -5,7 +5,7 @@ import { useGetAssignedMentorQuery } from '../../app/services/user/apiUserSlice'
 import { Container } from '../../components'
 import UserDetails from '../UsersList/UserDetails'
 
-function AssignedMentors() {
+function Mentor() {
   const { data } = useGetAssignedMentorQuery(null)
   return (
     <Container>
@@ -22,4 +22,4 @@ function AssignedMentors() {
     </Container>
   )
 }
-export default AssignedMentors
+export default Mentor

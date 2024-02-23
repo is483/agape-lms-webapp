@@ -1,1 +1,1 @@
-export { default as AssignedMentors } from './AssignedMentors'
+export { default as AssignedMentors } from './Mentor'
