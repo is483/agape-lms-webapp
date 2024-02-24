@@ -31,8 +31,9 @@ function Login() {
     }
 
     try {
-      await login(loginRequest).unwrap()
+      const loginResponse = await login(loginRequest).unwrap()
       const { onboardingComplete, onboardingStep } = await verifyOnboardingStatus(null).unwrap()
+
       if (!onboardingComplete) {
         if (onboardingStep === '1') {
           navigate(`${paths.Introduction}`)
@@ -40,7 +41,15 @@ function Login() {
         }
         navigate(`${paths.Onboarding}/${onboardingStep}`)
       } else {
-        // TODO: navigate to main page for role
+        if (loginResponse.role === 'Mentee') {
+          navigate(paths.Sessions.ViewAll)
+        }
+        if (loginResponse.role === 'Mentor') {
+          navigate(paths.MentoringJourneys.ViewAll)
+        }
+        if (loginResponse.role === 'Admin') {
+          // TODO: navigate to main page Admin
+        }
       }
     } catch (e: any) {
       console.error(e)
