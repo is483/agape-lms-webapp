@@ -1,11 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { useImmer } from 'use-immer'
+import { Box, Text } from '@chakra-ui/react'
 import Question from './Question'
 import { Question as QuestionType } from './types'
 
 interface QuestionListProps {
   isView: boolean
-  questions: QuestionType[]
+  sections: {
+    sectionTitle: string
+    questions: QuestionType[]
+  }[]
 }
 
 type QuestionState = QuestionType & {
@@ -13,33 +17,47 @@ type QuestionState = QuestionType & {
   error: string
 }
 
-const createQuestionsState = (questions: QuestionType[]): QuestionState[] => questions.map((question) => ({ ...question, answer: '', error: '' }))
+const createQuestionsState = (sections: {
+  sectionTitle: string
+  questions: QuestionType[]
+}[]): {
+  sectionTitle: string
+  questions: QuestionState[]
+}[] => sections.map((section) => ({
+  sectionTitle: section.sectionTitle,
+  questions: section.questions.map((question) => ({ ...question, answer: '', error: '' })),
+}))
 
 function QuestionList(props: QuestionListProps) {
-  const { questions, isView } = props
-  const [questionsState, updateQuestionsState] = useImmer<QuestionState[]>(createQuestionsState(questions))
+  const { sections, isView } = props
+  const [questionsState, updateQuestionsState] = useImmer(createQuestionsState(sections))
 
-  const handleAnswerChange = (index: number, value: string) => {
+  const handleAnswerChange = (sectionIndex: number, questionIndex: number, value: string) => {
     updateQuestionsState((draft) => {
-      draft[index].answer = value
+      draft[sectionIndex].questions[questionIndex].answer = value
     })
   }
 
-  return questionsState.map(({ question, type, answer }, index: number) => {
-    const onChange = (value: string) => {
-      handleAnswerChange(index, value)
-    }
+  return questionsState.map(({ sectionTitle, questions }, sectionIndex: number) => (
+    <Box>
+      <Text>{sectionTitle}</Text>
+      {questions.map(({ question, type, answer }, questionIndex: number) => {
+        const onChange = (value: string) => {
+          handleAnswerChange(sectionIndex, questionIndex, value)
+        }
 
-    return (
-      <Question
-        isView={isView}
-        question={question}
-        value={answer}
-        type={type}
-        onChange={onChange}
-      />
-    )
-  })
+        return (
+          <Question
+            isView={isView}
+            question={question}
+            value={answer}
+            type={type}
+            onChange={onChange}
+          />
+        )
+      })}
+    </Box>
+  ))
 }
 
 export default QuestionList
