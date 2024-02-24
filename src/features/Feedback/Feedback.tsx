@@ -1,17 +1,22 @@
 import {
-  Box,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from '@chakra-ui/react'
-import Container from '../../components/Container'
 import SessionFeedback from './SessionFeedback'
 import QuarterlyFeedback from './QuarterlyFeedback'
+import { QuarterlyFeedback as QuarterlyFeedbackType, SessionFeedback as SessionFeedbackType } from '../../app/services/feedback/type'
 
-function Feedback() {
+interface FeedbackProps {
+  sessionFeedbackData: SessionFeedbackType[] | undefined
+  quarterlyFeedbackData: QuarterlyFeedbackType[] | undefined
+}
+
+function Feedback(props: FeedbackProps) {
+  const { sessionFeedbackData, quarterlyFeedbackData } = props
+
   return (
     <Tabs mt="5" colorScheme="red" variant="solid-rounded">
       <TabList gap="10">
@@ -20,10 +25,10 @@ function Feedback() {
       </TabList>
       <TabPanels>
         <TabPanel px="0">
-          <SessionFeedback />
+          <SessionFeedback data={sessionFeedbackData} />
         </TabPanel>
         <TabPanel px="0">
-          <QuarterlyFeedback />
+          <QuarterlyFeedback data={quarterlyFeedbackData} />
         </TabPanel>
       </TabPanels>
     </Tabs>

@@ -9,7 +9,7 @@ function MenteeFeedback() {
         <Text fontSize="2xl" fontWeight="600"> Feedback </Text>
         <Text color="secondary.500">Manage your feedback for each session and quarter of each milestone</Text>
       </Box>
-      <Feedback />
+      <Feedback userRole="Mentee" />
     </Container>
   )
 }
