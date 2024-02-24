@@ -85,7 +85,7 @@ function UserDetails(props: UserDetailsProps) {
       </Box>
       <Divider orientation="horizontal" marginBottom="4" />
       <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="8">
-        {userRole === 'Mentor'
+        {userRole === 'Mentee'
           && (
             <Box>
               <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
@@ -98,10 +98,11 @@ function UserDetails(props: UserDetailsProps) {
           )}
 
         <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">{userRole === 'Mentee' ? 'Skills Sought' : 'Specailized Skills'}</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">{userRole === 'Mentee' ? 'Skills Sought' : 'Specialized Skills'}</Text>
           {mapUserDetails(skills)?.map((skill) => (
             <Badge
               colorScheme="red"
+              mr="2"
             >
               {skill}
             </Badge>
@@ -141,17 +142,17 @@ function UserDetails(props: UserDetailsProps) {
           ))}
         </Box>
 
-        {userRole === 'Mentor' && (
+        {userRole === 'Mentee' && (
           <Box>
             <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
             <Text>{expectations}</Text>
           </Box>
         )}
 
-        {userRole === 'Mentee' && (
+        {userRole === 'Mentor' && (
           <Box>
             <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Style</Text>
-            {mapUserDetails(preferredMentoringApproach!).map((mentoringApproach) => (
+            {mapUserDetails(preferredMentoringApproach!)?.map((mentoringApproach) => (
               <Badge
                 colorScheme="red"
                 mr="2"

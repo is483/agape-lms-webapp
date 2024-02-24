@@ -25,7 +25,6 @@ function AssignedMentees() {
       users={isLoading ? [] : data?.assignedMentees ?? []}
       userRole="Mentee"
     />
-
   )
 }
 
