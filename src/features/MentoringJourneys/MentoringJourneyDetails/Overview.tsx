@@ -54,7 +54,7 @@ function Overview() {
           padding="4"
           rounded="md"
           title="Total Sessions Completed"
-          amount={data?.totalCompletedHours ?? 0}
+          amount={data?.totalSessionsCompleted ?? 0}
           iconName="handshake"
         />
         <InfographicItem
@@ -64,7 +64,7 @@ function Overview() {
           padding="4"
           rounded="md"
           title="Total Hours Completed"
-          amount={data?.totalSessionsCompleted ?? 0}
+          amount={data?.totalCompletedHours ?? 0}
           iconName="history"
         />
       </Flex>
