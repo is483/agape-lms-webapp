@@ -71,7 +71,7 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
           <Icon
             name="star"
             onClick={() => handleInputChange(rating)}
-            color={Number(value) <= rating ? 'yellow' : 'gray'}
+            color={Number(value) < rating ? 'gray' : 'yellow.300'}
             _hover={{ cursor: 'pointer' }}
           />
         ))}

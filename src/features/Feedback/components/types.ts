@@ -5,3 +5,8 @@ export type Question = {
     type: QuestionType
     options?: string[]
 }
+
+export type Section = {
+    sectionTitle: string
+    questions: Question[]
+}

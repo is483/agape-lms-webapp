@@ -28,6 +28,8 @@ const paths = {
     Details: { fullPath: '/mentoring-journeys/:mentoringJourneyId', subPath: '/mentoring-journeys' },
     Create: '/mentoring-journeys/create',
   },
+
+  QuarterlyFeedback: { fullPath: '/quarterly-feedback/:quarterFeedbackId', subPath: '/quarterly-feedback' },
 }
 
 export default paths

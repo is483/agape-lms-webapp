@@ -2,7 +2,7 @@
 import { useImmer } from 'use-immer'
 import { Box, Text } from '@chakra-ui/react'
 import Question from './Question'
-import { Question as QuestionType } from './types'
+import { Question as QuestionType, Section } from './types'
 
 type QuestionState = QuestionType & {
   answer: string
@@ -14,16 +14,10 @@ interface QuestionListProps {
     sectionTitle: string
     questions: QuestionState[]
   }[]
-  sections?: {
-    sectionTitle: string
-    questions: QuestionType[]
-  }[]
+  sections?: Section[]
 }
 
-const createQuestionsState = (sections: {
-  sectionTitle: string
-  questions: QuestionType[]
-}[]): {
+const createQuestionsState = (sections: Section[]): {
   sectionTitle: string
   questions: QuestionState[]
 }[] => sections.map((section) => ({

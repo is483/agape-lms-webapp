@@ -1,3 +1,5 @@
+import { Section } from './components/types'
+
 const relevanceOptions = ['Not Relevant', 'Somewhat Relevant', 'Moderately Relevant', 'Very Relevant', 'Extremely Relevant']
 
 const engagementOptions = ['Not Engaged', 'Somewhat Engaged', 'Moderately Engaged', 'Very Engaged', 'Extremely Engaged']
@@ -30,8 +32,8 @@ const opportunitiesForImprovementOptions = ['Not Apparent', 'A Few Areas', 'Some
 
 const overallSatisfactionOptionsMentor = ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied']
 
-export const MENTOR_SESSION_QUESTIONS = [{
-  sectionName: 'Section 1: Please rate the following aspects of the mentoring session using the options provided for each question. Choose the option that best reflects your assessment for each aspect.',
+export const MENTOR_SESSION_QUESTIONS: Section[] = [{
+  sectionTitle: 'Section 1: Please rate the following aspects of the mentoring session using the options provided for each question. Choose the option that best reflects your assessment for each aspect.',
   questions: [
     { question: 'How effective was this ad hoc mentoring session in addressing the mentee\'s needs or concerns?', type: 'radio', options: sessionEffectivenessOptions },
     { question: 'To what extent did the mentee actively engage and participate in the discussion during this session?', type: 'radio', options: menteeEngagementOptions },
@@ -44,8 +46,8 @@ export const MENTOR_SESSION_QUESTIONS = [{
   ],
 }]
 
-export const MENTOR_QUARTERLY_QUESTIONS = [{
-  sectionName: 'Section 1: Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree)',
+export const MENTOR_QUARTERLY_QUESTIONS: Section[] = [{
+  sectionTitle: 'Section 1: Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree)',
   questions: [
     { question: 'Programme Structure: The programme activities are well-organized and easy to follow.', type: 'rating' },
     { question: 'Goal Achievement: I feel confident in helping my mentee achieve their goals.', type: 'rating' },
@@ -55,7 +57,7 @@ export const MENTOR_QUARTERLY_QUESTIONS = [{
     { question: 'Overall Satisfaction: Overall, I am satisfied with my experience as a mentor in this programme.', type: 'rating' },
   ],
 }, {
-  sectionName: 'Section 2: Qualitative questions',
+  sectionTitle: 'Section 2: Qualitative questions',
   questions: [
     { question: 'What aspects of the programme do you find most beneficial in supporting your mentee? Please explain.', type: 'freeform' },
     { question: 'Can you share any specific challenges you\'ve encountered in your mentoring role? How did you address them?', type: 'freeform' },
@@ -64,8 +66,8 @@ export const MENTOR_QUARTERLY_QUESTIONS = [{
   ],
 }]
 
-export const MENTEE_SESSION_QUESTIONS = [{
-  sectionName: 'Section 1: Please rate the following aspects of the mentoring session using the options provided for each question. Choose the option that best reflects your assessment for each aspect.',
+export const MENTEE_SESSION_QUESTIONS: Section[] = [{
+  sectionTitle: 'Section 1: Please rate the following aspects of the mentoring session using the options provided for each question. Choose the option that best reflects your assessment for each aspect.',
   questions: [
     { question: 'How relevant was the content discussed during this ad hoc session to your current needs or challenges?', type: 'radio', options: relevanceOptions },
     { question: 'To what extent did the mentor actively engage and respond to your queries or concerns during this session?', type: 'radio', options: engagementOptions },
@@ -78,8 +80,8 @@ export const MENTEE_SESSION_QUESTIONS = [{
   ],
 }]
 
-export const MENTEE_QUARTERLY_QUESTIONS = [{
-  sectionName: 'Section 1: Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree)',
+export const MENTEE_QUARTERLY_QUESTIONS: Section[] = [{
+  sectionTitle: 'Section 1: Rate the following statements from 1 (Strongly Disagree) to 5 (Strongly Agree)',
   questions: [
     { question: 'Goal Clarity: I have a clear understanding of the goals set in the programme.', type: 'rating' },
     { question: 'Mentor Support: My mentor provides valuable support and guidance.', type: 'rating' },
@@ -89,7 +91,7 @@ export const MENTEE_QUARTERLY_QUESTIONS = [{
     { question: 'Overall Satisfaction: Overall, I am satisfied with my experience as a mentee in this programme.', type: 'rating' },
   ],
 }, {
-  sectionName: 'Section 2: Qualitative questions',
+  sectionTitle: 'Section 2: Qualitative questions',
   questions: [
     { question: 'What specific support or guidance have you found most valuable from your mentor?', type: 'freeform' },
     { question: 'Describe any challenges you\'ve faced during the programme. How have you worked to overcome them?', type: 'freeform' },
