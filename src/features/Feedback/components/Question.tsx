@@ -1,5 +1,5 @@
 import {
-  Box, Radio, RadioGroup, Stack, Text, Textarea,
+  Box, Flex, Radio, RadioGroup, Stack, Text, Textarea,
 } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 import { QuestionType } from './types'
@@ -44,8 +44,8 @@ function FreeformQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   }
 
   return (
-    <Box my="2">
-      <Text>{question}</Text>
+    <Box my="8">
+      <Text mb="2" fontSize="sm">{question}</Text>
       <Textarea isDisabled={isView} value={value} onChange={handleInputChange} />
     </Box>
   )
@@ -64,18 +64,21 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   }
 
   return (
-    <Box my="2">
-      <Text>{question}</Text>
-      <Stack direction="row">
-        {[1, 2, 3, 4, 5].map((rating) => (
-          <Icon
-            name="star"
-            onClick={() => handleInputChange(rating)}
-            color={Number(value) < rating ? 'gray' : 'yellow.300'}
-            _hover={{ cursor: 'pointer' }}
-          />
-        ))}
-      </Stack>
+    <Box my="8">
+      <Flex justify="space-between" gap={[2, 4, 8]}>
+        <Text fontSize="sm">{question}</Text>
+        <Stack direction="row">
+          {[1, 2, 3, 4, 5].map((rating) => (
+            <Icon
+              name="star"
+              onClick={() => handleInputChange(rating)}
+              color={Number(value) < rating ? 'gray.200' : 'yellow.300'}
+              style={{ fontVariationSettings: "'FILL' 1" }}
+              _hover={{ cursor: 'pointer' }}
+            />
+          ))}
+        </Stack>
+      </Flex>
     </Box>
   )
 }
@@ -92,7 +95,7 @@ function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 
   return (
     <Box my="2">
-      <Text>{question}</Text>
+      <Text fontSize="sm">{question}</Text>
       <RadioGroup onChange={handleInputChange} value={value} isDisabled={isView}>
         <Stack direction="column">
           {options!.map((option) => <Radio value={option}>{option}</Radio>)}

@@ -37,7 +37,7 @@ function QuestionList(props: QuestionListProps) {
 
   return questionsState.map(({ sectionTitle, questions }, sectionIndex: number) => (
     <Box>
-      <Text>{sectionTitle}</Text>
+      <Text fontWeight="600" mt="12" mb="8" align="center">{sectionTitle}</Text>
       {questions.map(({
         question, type, answer, options,
       }, questionIndex: number) => {
