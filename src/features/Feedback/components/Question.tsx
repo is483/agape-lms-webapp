@@ -7,6 +7,7 @@ interface QuestionProps {
   question: string
   value: string
   type: QuestionType
+  options: string[] | undefined
   onChange: (value: string) => void
 }
 
@@ -21,6 +22,10 @@ function Question(questionProps: QuestionProps) {
 
   if (type === 'rating') {
     return <RatingQuestion {...rest} />
+  }
+
+  if (type === 'radio') {
+    return <RadioQuestion {...rest} />
   }
 
   return null
@@ -47,6 +52,19 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isView, question, value, onChange,
+  } = questionProps
+
+  return (
+    <Box my="2">
+      <Text>{question}</Text>
+    </Box>
+  )
+}
+
+function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isView, question, value, onChange, options,
   } = questionProps
 
   return (
