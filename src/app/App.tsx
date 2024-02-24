@@ -58,8 +58,6 @@ function App() {
           }
         }
       })
-    } else {
-      navigate(paths.Login)
     }
   }, [data, dispatch, initialPath, navigate, verifyOnboardingStatus])
 
