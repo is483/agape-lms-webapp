@@ -14,6 +14,7 @@ import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDeta
 import { Sessions } from '../features/Sessions'
 import { SessionDetails } from '../features/Sessions/SessionDetails'
 import SessionFeedback from '../features/Feedback/Feedback'
+import MenteeFeedback from '../features/Feedback/MenteeFeedback'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -50,7 +51,7 @@ function AppLayout() {
               <Route path={paths.Milestones} element={<MenteeMilestones />} />
               <Route path={paths.Sessions.ViewAll} element={<Sessions />} />
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
-              <Route path={paths.Feedback} element={<SessionFeedback />} />
+              <Route path={paths.Feedback} element={<MenteeFeedback />} />
             </Routes>
           )}
         </Box>
