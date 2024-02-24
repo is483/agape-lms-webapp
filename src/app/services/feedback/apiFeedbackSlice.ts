@@ -1,6 +1,6 @@
 import { apiSlice } from '../apiSlice'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
-import { MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse } from './type'
+import { MenteeQuarterlyFeedbackResponse, MenteeSessionFeedbackResponse, MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse } from './type'
 
 const apiFeedbackSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -18,16 +18,16 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    getMenteeSessionFeedback: build.query<MentorSessionFeedbackResponse, null>({
+    getMenteeSessionFeedback: build.query<MenteeSessionFeedbackResponse, null>({
       query: () => ({
-        url: '',
+        url: 'session/mentee/feedback',
         method: 'GET',
       }),
       onQueryStarted,
     }),
-    getMenteeQuarterlyFeedback: build.query<MentorSessionFeedbackResponse, null>({
+    getMenteeQuarterlyFeedback: build.query<MenteeQuarterlyFeedbackResponse, null>({
       query: () => ({
-        url: '',
+        url: 'mentee/mentoring-journey/feedbacks/quarterly',
         method: 'GET',
       }),
       onQueryStarted,
@@ -39,4 +39,6 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
 export const {
   useGetMentorSessionFeedbackQuery,
   useGetMentorQuarterlyFeedbackQuery,
+  useGetMenteeSessionFeedbackQuery,
+  useGetMenteeQuarterlyFeedbackQuery,
 } = apiFeedbackSlice

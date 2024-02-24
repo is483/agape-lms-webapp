@@ -27,3 +27,7 @@ export interface MenteeSessionFeedbackResponse {
 export interface MentorQuarterlyFeedbackResponse {
   mentorQuarterlyFeedbacks: QuarterlyFeedback[]
 }
+
+export interface MenteeQuarterlyFeedbackResponse {
+  menteeQuarterlyFeedbacks: QuarterlyFeedback[]
+}
