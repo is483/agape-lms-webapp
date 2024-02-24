@@ -4,17 +4,20 @@ import { Box, Text } from '@chakra-ui/react'
 import Question from './Question'
 import { Question as QuestionType } from './types'
 
-interface QuestionListProps {
-  isView: boolean
-  sections: {
-    sectionTitle: string
-    questions: QuestionType[]
-  }[]
-}
-
 type QuestionState = QuestionType & {
   answer: string
   error: string
+}
+interface QuestionListProps {
+  isView: boolean
+  sectionsWithAnswers?: {
+    sectionTitle: string
+    questions: QuestionState[]
+  }[]
+  sections?: {
+    sectionTitle: string
+    questions: QuestionType[]
+  }[]
 }
 
 const createQuestionsState = (sections: {
@@ -29,8 +32,8 @@ const createQuestionsState = (sections: {
 }))
 
 function QuestionList(props: QuestionListProps) {
-  const { sections, isView } = props
-  const [questionsState, updateQuestionsState] = useImmer(createQuestionsState(sections))
+  const { sections, sectionsWithAnswers, isView } = props
+  const [questionsState, updateQuestionsState] = useImmer(isView ? sectionsWithAnswers! : createQuestionsState(sections!))
 
   const handleAnswerChange = (sectionIndex: number, questionIndex: number, value: string) => {
     updateQuestionsState((draft) => {
