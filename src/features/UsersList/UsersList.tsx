@@ -7,19 +7,22 @@ import useBreakpoint from '../../hooks/useBreakpoint'
 import { User } from '../../app/services/user/types'
 import UserDetails from './UserDetails'
 import { Icon, ProfileIcon } from '../../components'
+import { Role } from '../../app/types'
 
 interface UsersListProps {
   title: string
   description: string
   users: User[]
+  userRole: Role
 }
 
 interface Props {
   users: User[]
+  userRole: Role
 }
 
 function UsersList(props: UsersListProps) {
-  const { title, description, users } = props
+  const { title, description, users, userRole } = props
   const isMdUp = useBreakpoint('md')
   const UsersListComponent = isMdUp ? UsersListDesktop : UsersListMobile
   return (
@@ -31,13 +34,13 @@ function UsersList(props: UsersListProps) {
       <Hide below="md">
         <Divider orientation="horizontal" />
       </Hide>
-      {users.length > 0 && <UsersListComponent users={users} />}
+      {users.length > 0 && <UsersListComponent users={users} userRole={userRole} />}
     </Box>
   )
 }
 
 function UsersListDesktop(props: Props) {
-  const { users } = props
+  const { users, userRole } = props
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const { userId } = useParams()
   const handleSelectedUser = (user: User) => {
@@ -75,14 +78,14 @@ function UsersListDesktop(props: Props) {
         })}
       </Box>
       <Box flex="1" paddingLeft="10" borderLeft="1px" borderColor="secondary.100" paddingTop="8">
-        {selectedUser && <UserDetails user={selectedUser} />}
+        {selectedUser && <UserDetails user={selectedUser} userRole={userRole} />}
       </Box>
     </Flex>
   )
 }
 
 function UsersListMobile(props: Props) {
-  const { users } = props
+  const { users, userRole } = props
   return (
     <Box marginX="4">
       <Accordion allowMultiple>
@@ -119,6 +122,7 @@ function UsersListMobile(props: Props) {
                   <AccordionPanel pb={4} background="white" borderRadius="10">
                     <UserDetails
                       user={user}
+                      userRole={userRole}
                     />
                   </AccordionPanel>
                 </>

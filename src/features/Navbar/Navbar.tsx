@@ -89,7 +89,7 @@ const DesktopSideNavbar = memo(({
         <Box key={title} display="flex" gap="2" flexDirection="column">
           <Text fontWeight="bold" marginLeft="5" fontSize="xs" textTransform="uppercase">{title}</Text>
           {links.map(({ name, iconName, path }) => {
-            const isPath = path === pathname.toLowerCase()
+            const isPath = pathname.toLowerCase().includes(path)
             const color = {
               color: isPath ? 'white' : 'secondary.500',
             }
@@ -170,7 +170,7 @@ const MobileNavbar = memo(({ navbarLinks, handleNavClick, pathname }: NavbarProp
       {flattenLinks.map(({
         name, mobileName, iconName, path,
       }) => {
-        const isPath = path === pathname.toLowerCase()
+        const isPath = pathname.toLowerCase().includes(path)
         const color = {
           ...(isPath && { color: 'red.600' }),
         }
