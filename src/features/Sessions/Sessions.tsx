@@ -105,7 +105,11 @@ function Sessions() {
             <UpcomingAndPastSessionsTable data={pastSessions} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <PendingSessionsTable refetchSessions={() => getSessions(null)} data={pendingSessions} />
+            <PendingSessionsTable
+              refetchMenteeSessions={() => getSessions(null)}
+              refetchMentorSessions={() => getSessionsByMenteeId(menteeId)}
+              data={pendingSessions}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

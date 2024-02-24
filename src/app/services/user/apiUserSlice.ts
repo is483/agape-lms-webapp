@@ -1,9 +1,11 @@
 import { apiSlice } from '../apiSlice'
 import {
+  AssignedMenteesResponse,
   ChallengesRequest, ExperienceRequest, InfoRequest, InterestsRequest,
   MenteeExperienceRequest, MenteeMentoringRequest,
   MentorMentoringRequest, MentorResponse, RoleResponse, SkillsRequest, TransformedUserResponse,
-  UserRequest, UserResponse, UsersResponse, ValuesRequest,
+  UserRequest, UserResponse, ValuesRequest,
+  UnassignedMenteesResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDateInput } from '../../../utils'
@@ -175,16 +177,21 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    getAssignedMentees: build.query<UsersResponse, null>({
+    getAssignedMentees: build.query<AssignedMenteesResponse, null>({
       query: () => ({
         url: 'mentor/mentoring-journey/assigned-mentees',
       }),
       onQueryStarted,
     }),
-
     getAssignedMentor: build.query<MentorResponse, null>({
       query: () => ({
         url: 'mentee/mentoring-journey/assigned-mentor',
+      }),
+      onQueryStarted,
+    }),
+    getUnassignedMentees: build.query<UnassignedMenteesResponse, null>({
+      query: () => ({
+        url: 'mentor/mentoring-journey/unassigned-mentees',
       }),
       onQueryStarted,
     }),
@@ -202,4 +209,5 @@ export const {
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
   useGetUserInfoQuery, useGetUserRoleQuery,
   useGetAssignedMenteesQuery, useGetAssignedMentorQuery,
+  useGetUnassignedMenteesQuery,
 } = apiUserSlice

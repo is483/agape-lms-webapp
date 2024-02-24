@@ -128,8 +128,12 @@ export interface User {
   careerAspiration?: string
 }
 
-export interface UsersResponse {
+export interface AssignedMenteesResponse {
   assignedMentees: User[]
+}
+
+export interface UnassignedMenteesResponse {
+  unassignedMentees: User[]
 }
 
 export interface MentorResponse {
