@@ -3,16 +3,19 @@ import {
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon, ProfileIcon } from '../../components'
+import { Role } from '../../app/types'
 
 interface UserDetailsProps {
   user: User
+  userRole: Role
 }
 
 function UserDetails(props: UserDetailsProps) {
   const {
     user: {
-      firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations,
+      firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
     },
+    userRole,
   } = props
 
   function mapUserDetails(userDetails: string) {
@@ -82,20 +85,24 @@ function UserDetails(props: UserDetailsProps) {
       </Box>
       <Divider orientation="horizontal" marginBottom="4" />
       <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="8">
-        <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
-          <Badge
-            colorScheme="red"
-            mr="2"
-          > {careerAspiration}
-          </Badge>
-        </Box>
+        {userRole === 'Mentee'
+          && (
+            <Box>
+              <Text fontWeight="600" fontSize="md" marginBottom="2">Career Aspirations</Text>
+              <Badge
+                colorScheme="red"
+                mr="2"
+              > {careerAspiration}
+              </Badge>
+            </Box>
+          )}
 
         <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Skills Sought</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">{userRole === 'Mentee' ? 'Skills Sought' : 'Specialized Skills'}</Text>
           {mapUserDetails(skills)?.map((skill) => (
             <Badge
               colorScheme="red"
+              mr="2"
             >
               {skill}
             </Badge>
@@ -135,13 +142,29 @@ function UserDetails(props: UserDetailsProps) {
           ))}
         </Box>
 
-        <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
-          <Text>{expectations}</Text>
-        </Box>
+        {userRole === 'Mentee' && (
+          <Box>
+            <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Expectations</Text>
+            <Text>{expectations}</Text>
+          </Box>
+        )}
+
+        {userRole === 'Mentor' && (
+          <Box>
+            <Text fontWeight="600" fontSize="md" marginBottom="2">Mentoring Style</Text>
+            {mapUserDetails(preferredMentoringApproach!)?.map((mentoringApproach) => (
+              <Badge
+                colorScheme="red"
+                mr="2"
+              >
+                {mentoringApproach}
+              </Badge>
+            ))}
+          </Box>
+        )}
 
         <Box>
-          <Text fontWeight="600" fontSize="md" marginBottom="2">Challenges Faced</Text>
+          <Text fontWeight="600" fontSize="md" marginBottom="2">{userRole === 'Mentee' ? 'Challenges Faced' : 'Challenges Overcame'}</Text>
           {mapUserDetails(challenges)?.map((challenge) => (
             <Badge
               colorScheme="red"
