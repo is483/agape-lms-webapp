@@ -74,11 +74,6 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
           iconName: 'group',
           path: paths.AssignedMentees,
         },
-        {
-          name: 'Training',
-          iconName: 'exercise',
-          path: paths.Training,
-        },
       ],
     },
     {
