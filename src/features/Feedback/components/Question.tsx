@@ -11,6 +11,7 @@ interface QuestionProps {
   value: string
   type: QuestionType
   options: string[] | undefined
+  error: string
   onChange: (value: string) => void
 }
 
@@ -36,25 +37,29 @@ function Question(questionProps: QuestionProps) {
 
 function FreeformQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
-    isView, question, value, onChange,
+    isView, question, value, onChange, error,
   } = questionProps
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value)
   }
 
+  const errorStyling = {
+    ...(error && { borderColor: 'red.500', borderWidth: 2 }),
+  }
+
   return (
     <Box my="8">
       <Text mb="2" fontSize="sm">{question}</Text>
-      <Textarea isDisabled={isView} value={value} onChange={handleInputChange} />
+      <Textarea isDisabled={isView} value={value} onChange={handleInputChange} {...errorStyling} />
+      <Text color="red.500" fontSize="xs">{error}</Text>
     </Box>
   )
 }
 
 function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    isView, question, value, onChange,
+    isView, question, value, onChange, error,
   } = questionProps
 
   const handleInputChange = (value: number) => {
@@ -79,6 +84,7 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
           ))}
         </Stack>
       </Flex>
+      <Text color="red.500" fontSize="xs">{error}</Text>
     </Box>
   )
 }
@@ -86,7 +92,7 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    isView, question, value, onChange, options,
+    isView, question, value, onChange, options, error,
   } = questionProps
 
   const handleInputChange = (nextValue: string) => {
@@ -101,6 +107,7 @@ function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
           {options!.map((option) => <Radio value={option}>{option}</Radio>)}
         </Stack>
       </RadioGroup>
+      <Text color="red.500" fontSize="xs">{error}</Text>
     </Box>
   )
 }
