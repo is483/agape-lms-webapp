@@ -13,6 +13,7 @@ import { AssignedMentees } from '../features/AssignedMentees'
 import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
 import { Sessions } from '../features/Sessions'
 import { SessionDetails } from '../features/Sessions/SessionDetails'
+import MenteeFeedback from '../features/Feedback/MenteeFeedback'
 import { AssignedMentors } from '../features/AssignedMentors'
 
 function AppLayout() {
@@ -50,6 +51,7 @@ function AppLayout() {
               <Route path={paths.Milestones} element={<MenteeMilestones />} />
               <Route path={paths.Sessions.ViewAll} element={<Sessions />} />
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
+              <Route path={paths.Feedback} element={<MenteeFeedback />} />
               <Route path={paths.MentorProfile} element={<AssignedMentors />} />
             </Routes>
           )}

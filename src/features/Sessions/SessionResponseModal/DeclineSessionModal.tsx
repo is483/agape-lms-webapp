@@ -115,7 +115,7 @@ function DeclineSessionModal(props: DeclineSessionModalProps) {
   return (
     <Modal isOpen={isModalOpen} onClose={handleModalClose} size="2xl" isCentered>
       <ModalOverlay />
-      <ModalContent p="4" m="4" maxHeight="70vh">
+      <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
         <ModalHeader> Decline Mentoring Session</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

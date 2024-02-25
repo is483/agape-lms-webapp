@@ -33,3 +33,13 @@ export function clearValues(obj: any) {
 export function formatDate(date: Date) {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
+
+export function ensureProtocol(url: string | undefined) {
+  if (!url) {
+    return ''
+  }
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return `https://${url}`
+  }
+  return url
+}

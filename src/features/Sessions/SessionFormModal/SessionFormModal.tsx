@@ -255,7 +255,7 @@ function SessionFormModal(props: SessionModalProps) {
             </Flex>
             {!!session.location.error && <Text fontSize="xs" color="red.600">{session.sessionType.error}</Text>}
             <Flex alignItems={['start', 'start', 'center']} gap="3" flexDir={['column', 'column', 'row']} width="100%">
-              <Text> {session.location.value === 'online' ? 'Meeting Link:' : 'Address:'}  </Text>
+              <Text> {session.sessionType.value === 'online' ? 'Meeting Link:' : 'Address:'}  </Text>
               <Box flex="1" w="100%">
                 <ControlledTextInput
                   type="text"
