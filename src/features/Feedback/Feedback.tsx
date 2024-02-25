@@ -20,8 +20,8 @@ function Feedback(props: FeedbackProps) {
   return (
     <Tabs mt="5" colorScheme="red" variant="solid-rounded">
       <TabList gap="10">
-        <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Session Feedback</Tab>
-        <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Quarterly Feedback</Tab>
+        <Tab py="1" px={[2, 4]} fontSize={['xs', 'sm', 'md']}>Session Feedback</Tab>
+        <Tab py="1" px={[2, 4]} fontSize={['xs', 'sm', 'md']}>Quarterly Feedback</Tab>
       </TabList>
       <TabPanels>
         <TabPanel px="0">

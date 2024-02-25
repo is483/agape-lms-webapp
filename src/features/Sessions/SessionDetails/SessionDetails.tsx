@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link,
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import {
-  BackButton, Container, Icon, ProfileIcon,
+  BackButton, Container, Icon, Link, ProfileIcon,
 } from '../../../components'
 import paths from '../../../paths'
 import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery } from '../../../app/services/session/apiSessionSlice'
@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
+import { ensureProtocol } from '../../../utils'
 
 function SessionDetails() {
   const { sessionId } = useParams()
@@ -53,15 +54,6 @@ function SessionDetails() {
 
   const isPast = endDateObject <= todayDate
 
-  function ensureProtocol(url: string | undefined) {
-    if (!url) {
-      return ''
-    }
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      return `https://${url}`
-    }
-    return url
-  }
   const handleViewMentee = () => {
     navigate(`${paths.AssignedMentees}/${menteeId}`)
   }
@@ -104,7 +96,7 @@ function SessionDetails() {
 
       <HStack mt="3">
         <Icon name="location_on" fontSize="25px" />
-        {sessionType === 'online' && <Link color="secondary.500" href={ensureProtocol(location)}>{location}</Link>}
+        {sessionType === 'online' && <Link color="secondary.500" target="_blank" to={ensureProtocol(location)}>{location}</Link>}
         {sessionType === 'physical' && <Text color="secondary.500" isTruncated>{location}</Text>}
       </HStack>
 

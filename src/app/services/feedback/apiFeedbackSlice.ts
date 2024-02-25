@@ -1,6 +1,9 @@
 import { apiSlice } from '../apiSlice'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
-import { MenteeQuarterlyFeedbackResponse, MenteeSessionFeedbackResponse, MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse } from './type'
+import {
+  MenteeQuarterlyFeedbackResponse, MenteeSessionFeedbackResponse,
+  MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse,
+} from './type'
 
 const apiFeedbackSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({

@@ -6,10 +6,12 @@ import {
 import { QuarterlyFeedback as QuarterlyFeedbackType } from '../../app/services/feedback/type'
 import { Link } from '../../components'
 import paths from '../../paths'
+import { getStatus } from './utils'
 
 interface QuarterlyFeedbackProps {
   data: QuarterlyFeedbackType[] | undefined
 }
+
 function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
   const { data } = props
   return (
@@ -26,9 +28,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
         </Thead>
         <Tbody>
           {data?.map((feedback, index) => {
-            const {
-              date, status,
-            } = feedback
+            const { date, status } = feedback
 
             const quarterDateObject = new Date(date)
             const todayDateObject = new Date()
@@ -36,16 +36,9 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
             const quarterDate = quarterDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
             const dateDifference = Math.round((quarterDateObject.getTime() - todayDateObject.getTime()) / (1000 * 60 * 60 * 24))
+            const formattedStatus = getStatus(status, dateDifference)
+            const isUnavailable = formattedStatus === 'Unavailable'
 
-            function getStatus(status: string) {
-              if (status === 'Not Completed' && dateDifference <= 0) {
-                return 'Pending'
-              }
-              if (status === 'Not Completed' && dateDifference > 0) {
-                return 'Unavailable'
-              }
-              return 'Complete'
-            }
             return (
               <Tr>
                 <Td>
@@ -55,7 +48,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                   {quarterDate}
                 </Td>
                 <Td textTransform="capitalize">
-                  {getStatus(status)}
+                  {formattedStatus}
                 </Td>
                 <Td>
                   {dateDifference} days
@@ -65,7 +58,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                     {/* TODO: Khye chun add integration  */}
                     {status === 'Not Completed' && (
                       <Link to={paths.Introduction}>
-                        <Button size="sm" colorScheme="red" isDisabled={getStatus(status) === 'Unavailable'}>Submit Feedback</Button>
+                        <Button size="sm" colorScheme="red" isDisabled={isUnavailable}>Submit Feedback</Button>
                       </Link>
                     )}
                     {/* TODO: Khye chun add integration  */}

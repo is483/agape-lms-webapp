@@ -13,7 +13,6 @@ import { AssignedMentees } from '../features/AssignedMentees'
 import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
 import { Sessions } from '../features/Sessions'
 import { SessionDetails } from '../features/Sessions/SessionDetails'
-import SessionFeedback from '../features/Feedback/Feedback'
 import MenteeFeedback from '../features/Feedback/MenteeFeedback'
 
 function AppLayout() {

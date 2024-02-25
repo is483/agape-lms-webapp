@@ -52,7 +52,7 @@ function SessionFeedback(props: SessionFeedbackProps) {
                   {sessionType}
                 </Td>
                 <Td>
-                  <Flex justify="end" gap="5">
+                  <Flex justify="end" gap="2">
                     {/* TODO: Khye chun add integration  */}
                     {status === 'Not Completed' && (
                       <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
