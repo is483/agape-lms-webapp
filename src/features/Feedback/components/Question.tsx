@@ -91,7 +91,6 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 
 function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isView, question, value, onChange, options, error,
   } = questionProps
 
@@ -100,11 +99,11 @@ function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   }
 
   return (
-    <Box my="2">
-      <Text fontSize="sm">{question}</Text>
+    <Box my="6">
+      <Text fontSize="sm" mb="2">{question}</Text>
       <RadioGroup onChange={handleInputChange} value={value} isDisabled={isView}>
         <Stack direction="column">
-          {options!.map((option) => <Radio value={option}>{option}</Radio>)}
+          {options!.map((option) => <Radio size="sm" value={option}>{option}</Radio>)}
         </Stack>
       </RadioGroup>
       <Text color="red.500" fontSize="xs">{error}</Text>
