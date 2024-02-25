@@ -206,8 +206,8 @@ function GoalFormModal(props: GoalFormModalProps) {
             inputProps={{
               onChange: handleDeadlineChange,
               value: deadline.value,
-              min: minDeadlineDate.toISOString().split('T')[0],
-              max: maxDeadlineDate.toISOString().split('T')[0],
+              min: minDeadlineDate.split('T')[0],
+              max: maxDeadlineDate.split('T')[0],
             }}
           />
         </Flex>

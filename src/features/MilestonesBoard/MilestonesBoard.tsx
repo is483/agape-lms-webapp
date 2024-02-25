@@ -36,8 +36,8 @@ function MilestonesBoard(props: MilestonesBoardProps) {
   const handleOpenFormModal = (milestoneIndex: number, goalIndex?: number, minDeadlineDate?: Date, maxDeadlineDate?: Date) => {
     dispatch(setMilestoneIndex(milestoneIndex))
     dispatch(setGoalIndex(goalIndex))
-    dispatch(setMinDeadlineDate(minDeadlineDate ?? new Date()))
-    dispatch(setMaxDeadlineDate(maxDeadlineDate ?? new Date()))
+    dispatch(setMinDeadlineDate(minDeadlineDate?.toISOString() ?? new Date()?.toISOString()))
+    dispatch(setMaxDeadlineDate(maxDeadlineDate?.toISOString() ?? new Date()?.toISOString()))
     onGoalModalOpen()
   }
 

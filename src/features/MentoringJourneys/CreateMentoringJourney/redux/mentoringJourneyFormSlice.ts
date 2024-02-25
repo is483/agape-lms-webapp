@@ -39,8 +39,8 @@ export interface MentoringJourneyFormState {
     error: string
     milestoneIndex: number
     goalIndex: number | undefined
-    minDeadlineDate: Date
-    maxDeadlineDate: Date
+    minDeadlineDate: string
+    maxDeadlineDate: string
   },
 }
 
@@ -81,8 +81,8 @@ const createDefaultState = (): MentoringJourneyFormState => ({
     error: '',
     milestoneIndex: 0,
     goalIndex: undefined,
-    minDeadlineDate: new Date(),
-    maxDeadlineDate: new Date(),
+    minDeadlineDate: '',
+    maxDeadlineDate: '',
   },
 })
 
@@ -167,10 +167,10 @@ export const mentoringJourneyFormSlice = createSlice({
       state.objectives = defaultState.objectives
       state.milestones = defaultState.milestones
     },
-    setMinDeadlineDate: (state: MentoringJourneyFormState, action: PayloadAction<Date>) => {
+    setMinDeadlineDate: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.milestones.minDeadlineDate = action.payload
     },
-    setMaxDeadlineDate: (state: MentoringJourneyFormState, action: PayloadAction<Date>) => {
+    setMaxDeadlineDate: (state: MentoringJourneyFormState, action: PayloadAction<string>) => {
       state.milestones.maxDeadlineDate = action.payload
     },
   },
