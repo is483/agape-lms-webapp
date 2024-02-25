@@ -105,7 +105,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         {
           name: 'Feedback',
           iconName: 'rate_review',
-          path: paths.Feedback,
+          path: paths.Feedback.ViewAll,
         },
         {
           name: 'Mentor Profile',

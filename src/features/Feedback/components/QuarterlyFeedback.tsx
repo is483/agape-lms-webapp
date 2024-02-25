@@ -3,10 +3,10 @@ import {
   Flex,
   Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
-import { QuarterlyFeedback as QuarterlyFeedbackType } from '../../app/services/feedback/type'
-import { Link } from '../../components'
-import paths from '../../paths'
-import { getStatus } from './utils'
+import { QuarterlyFeedback as QuarterlyFeedbackType } from '../../../app/services/feedback/type'
+import { Link } from '../../../components'
+import paths from '../../../paths'
+import { getStatus } from '../utils'
 
 interface QuarterlyFeedbackProps {
   data: QuarterlyFeedbackType[] | undefined

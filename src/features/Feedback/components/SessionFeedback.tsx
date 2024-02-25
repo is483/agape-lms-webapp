@@ -3,9 +3,9 @@ import {
   Flex,
   Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
 } from '@chakra-ui/react'
-import { SessionFeedback as SessionFeedbackType } from '../../app/services/feedback/type'
-import paths from '../../paths'
-import { Link } from '../../components'
+import { SessionFeedback as SessionFeedbackType } from '../../../app/services/feedback/type'
+import paths from '../../../paths'
+import { Link } from '../../../components'
 
 interface SessionFeedbackProps {
   data: SessionFeedbackType[] | undefined

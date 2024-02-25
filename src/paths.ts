@@ -9,7 +9,8 @@ const paths = {
 
   Feedback: {
     ViewAll: '/feedback',
-    QuarterlyFeedback: { fullPath: 'feedback/quarterly/:quarterFeedbackId', subPath: 'feedback/quarterly' },
+    QuarterlyFeedbackQuestionnaire: { fullPath: 'feedback/quarterly/:quarterFeedbackId', subPath: 'feedback/quarterly' },
+    SessionFeedbackQuestionnaire: { fullPath: 'feedback/session/:sessionFeedbackId', subPath: 'feedback/session' },
   },
 
   MentorProfile: '/mentor-profile',

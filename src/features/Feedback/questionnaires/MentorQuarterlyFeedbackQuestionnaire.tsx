@@ -1,8 +1,8 @@
-import { Container } from '../../components'
-import QuestionList from './components/QuestionList'
-import { MENTOR_QUARTERLY_QUESTIONS } from './constants'
+import { Container } from '../../../components'
+import QuestionList from '../components/QuestionList'
+import { MENTOR_QUARTERLY_QUESTIONS } from '../constants'
 
-function MentorQuarterlyFeedback() {
+function MentorQuarterlyFeedbackQuestionnaire() {
   // TODO: Check whether it is view only or it is submitting feedback
   // If query returns feedback as null => !isView
   const onSubmit = (answers: any) => {
@@ -17,4 +17,4 @@ function MentorQuarterlyFeedback() {
   )
 }
 
-export default MentorQuarterlyFeedback
+export default MentorQuarterlyFeedbackQuestionnaire

@@ -5,8 +5,8 @@ import {
   TabPanels,
   Tabs,
 } from '@chakra-ui/react'
-import SessionFeedback from './SessionFeedback'
-import QuarterlyFeedback from './QuarterlyFeedback'
+import SessionFeedback from './components/SessionFeedback'
+import QuarterlyFeedback from './components/QuarterlyFeedback'
 import { QuarterlyFeedback as QuarterlyFeedbackType, SessionFeedback as SessionFeedbackType } from '../../app/services/feedback/type'
 
 interface FeedbackProps {
