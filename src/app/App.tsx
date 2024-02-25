@@ -46,6 +46,16 @@ function App() {
             return
           }
           navigate(`${paths.Onboarding}/${onboardingStep}`)
+        } else if (initialPath.current === '/') {
+          if (data.role === 'Mentee') {
+            navigate(paths.Sessions.ViewAll)
+          }
+          if (data.role === 'Mentor') {
+            navigate(paths.MentoringJourneys.ViewAll)
+          }
+          if (data.role === 'Admin') {
+            // TODO: navigate to main page Admin
+          }
         }
       })
     }
