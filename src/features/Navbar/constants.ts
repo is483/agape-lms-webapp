@@ -72,7 +72,7 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
           name: 'Assigned Mentees',
           mobileName: 'Mentees',
           iconName: 'group',
-          path: paths.AssignedMentees,
+          path: paths.AssignedMentees.subPath,
         },
       ],
     },

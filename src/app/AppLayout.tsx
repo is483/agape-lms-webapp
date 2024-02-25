@@ -13,8 +13,7 @@ import { AssignedMentees } from '../features/AssignedMentees'
 import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
 import { Sessions } from '../features/Sessions'
 import { SessionDetails } from '../features/Sessions/SessionDetails'
-import { MentorQuarterlyFeedback } from '../features/Feedback'
-import MenteeFeedback from '../features/Feedback/MenteeFeedback'
+import { MentorQuarterlyFeedback, MenteeFeedback } from '../features/Feedback'
 import { AssignedMentors } from '../features/AssignedMentors'
 
 function AppLayout() {
@@ -40,8 +39,8 @@ function AppLayout() {
               <Route path={paths.MentoringJourneys.Create} element={<CreateMentoringJourney />} />
               <Route path={paths.Sessions.ViewAll} element={<Sessions />} />
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
-              <Route path={paths.AssignedMentees} element={<AssignedMentees />} />
-              <Route path={`${paths.AssignedMentees}/:userId`} element={<AssignedMentees />} />
+              <Route path={paths.AssignedMentees.subPath} element={<AssignedMentees />} />
+              <Route path={paths.AssignedMentees.fullPath} element={<AssignedMentees />} />
               <Route path={paths.QuarterlyFeedback.fullPath} element={<MentorQuarterlyFeedback />} />
             </Routes>
           )}

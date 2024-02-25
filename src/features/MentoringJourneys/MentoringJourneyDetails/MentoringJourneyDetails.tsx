@@ -7,7 +7,7 @@ import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
 import Overview from './Overview'
 import MentorMilestones from './Milestones/MentorMilestones'
-import MentorFeedback from '../../Feedback/MentorFeedback'
+import { MentorFeedback } from '../../Feedback'
 
 function MentoringJourneyDetails() {
   return (

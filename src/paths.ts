@@ -15,7 +15,7 @@ const paths = {
     ViewAll: '/sessions',
     Details: { fullPath: '/sessions/:sessionId', subPath: '/sessions' },
   },
-  AssignedMentees: '/assigned-mentees',
+  AssignedMentees: { subPath: '/assigned-mentees', fullPath: '/assigned-mentees/:userId' },
   Training: '/training',
   MyProfile: '/profile',
 
