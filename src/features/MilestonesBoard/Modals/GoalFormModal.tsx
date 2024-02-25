@@ -42,7 +42,10 @@ function GoalFormModal(props: GoalFormModalProps) {
   const {
     goalName, measurableObjective, deadline, actionPlans,
   } = goal
-  const { milestones, milestoneIndex, goalIndex } = useAppSelector(getMilestones)
+  const {
+    milestones, milestoneIndex, goalIndex,
+    minDeadlineDate, maxDeadlineDate,
+  } = useAppSelector(getMilestones)
   const isEditing = goalIndex !== undefined
 
   useEffect(() => {
@@ -200,7 +203,12 @@ function GoalFormModal(props: GoalFormModalProps) {
             placeholder="Select a date"
             error={deadline.error}
             type="date"
-            inputProps={{ onChange: handleDeadlineChange, value: deadline.value }}
+            inputProps={{
+              onChange: handleDeadlineChange,
+              value: deadline.value,
+              min: minDeadlineDate.toISOString().split('T')[0],
+              max: maxDeadlineDate.toISOString().split('T')[0],
+            }}
           />
         </Flex>
         <Text textTransform="uppercase" mt="4" fontSize="xs" fontWeight="600">Action Plan</Text>

@@ -5,7 +5,10 @@ import { Milestone } from '../MentoringJourneys/CreateMentoringJourney/redux/typ
 import MilestoneCard from './MilestoneCard'
 import { GoalFormModal, MilestoneInfoModal } from './Modals'
 import { useAppDispatch } from '../../hooks'
-import { setGoalIndex, setMilestoneIndex } from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
+import {
+  setMinDeadlineDate, setGoalIndex,
+  setMilestoneIndex, setMaxDeadlineDate,
+} from '../MentoringJourneys/CreateMentoringJourney/redux/mentoringJourneyFormSlice'
 import { formatDate } from '../../utils'
 
 interface MilestonesBoardProps {
@@ -30,9 +33,11 @@ function MilestonesBoard(props: MilestonesBoardProps) {
     onInfoModalOpen()
   }
 
-  const handleOpenFormModal = (milestoneIndex: number, goalIndex?: number) => {
+  const handleOpenFormModal = (milestoneIndex: number, goalIndex?: number, minDeadlineDate?: Date, maxDeadlineDate?: Date) => {
     dispatch(setMilestoneIndex(milestoneIndex))
     dispatch(setGoalIndex(goalIndex))
+    dispatch(setMinDeadlineDate(minDeadlineDate ?? new Date()))
+    dispatch(setMaxDeadlineDate(maxDeadlineDate ?? new Date()))
     onGoalModalOpen()
   }
 
@@ -58,6 +63,8 @@ function MilestonesBoard(props: MilestonesBoardProps) {
             handleOpenInfoModal={handleOpenInfoModal}
             handleOpenFormModal={handleOpenFormModal}
             isCreated={isCreated}
+            minDeadlineDate={fromDate}
+            maxDeadlineDate={toDate}
           />
         )
       })}
