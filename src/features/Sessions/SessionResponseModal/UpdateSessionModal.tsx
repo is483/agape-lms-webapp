@@ -140,7 +140,7 @@ function UpdateSessionModal(props: UpdateSessionModalProps) {
   return (
     <Modal isOpen={isModalOpen} onClose={handleModalClose} size="2xl" isCentered>
       <ModalOverlay />
-      <ModalContent p="4" m="4" maxHeight="70vh">
+      <ModalContent p="4" m="4" maxHeight="90vh" overflowY="auto">
         <ModalHeader> View Decline Reason</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
