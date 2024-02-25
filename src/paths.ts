@@ -7,7 +7,11 @@ const paths = {
   Introduction: '/onboarding/introduction',
   Onboarding: '/onboarding',
 
-  Feedback: '/feedback',
+  Feedback: {
+    ViewAll: '/feedback',
+    QuarterlyFeedback: { fullPath: 'feedback/quarterly/:quarterFeedbackId', subPath: 'feedback/quarterly' },
+  },
+
   MentorProfile: '/mentor-profile',
   Milestones: '/milestones',
 
@@ -28,8 +32,6 @@ const paths = {
     Details: { fullPath: '/mentoring-journeys/:mentoringJourneyId', subPath: '/mentoring-journeys' },
     Create: '/mentoring-journeys/create',
   },
-
-  QuarterlyFeedback: { fullPath: '/quarterly-feedback/:quarterFeedbackId', subPath: '/quarterly-feedback' },
 }
 
 export default paths
