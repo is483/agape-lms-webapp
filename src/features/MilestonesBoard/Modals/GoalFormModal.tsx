@@ -208,6 +208,8 @@ function GoalFormModal(props: GoalFormModalProps) {
               value: deadline.value,
               min: minDeadlineDate.split('T')[0],
               max: maxDeadlineDate.split('T')[0],
+              onKeyDown: (e) => e.preventDefault(),
+              onFocus: (e) => e.preventDefault(),
             }}
           />
         </Flex>
@@ -318,6 +320,8 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
                 min: minDeadlineDate.split('T')[0],
                 max: maxDeadlineDate.split('T')[0],
                 isDisabled: isDeadlineDisabled,
+                onKeyDown: (e) => e.preventDefault(),
+                onFocus: (e) => e.preventDefault(),
               }}
             />
           </Flex>
