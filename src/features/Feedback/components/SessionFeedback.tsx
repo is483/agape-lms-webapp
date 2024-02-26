@@ -27,7 +27,8 @@ function SessionFeedback(props: SessionFeedbackProps) {
         <Tbody>
           {data?.map((session) => {
             const {
-              fromDateTime, toDateTime, title, sessionType, sessionId, status,
+              fromDateTime, toDateTime, title, sessionType,
+              sessionId, status, sessionFeedbackId,
             } = session
 
             const fromDateObject = new Date(fromDateTime)
@@ -53,15 +54,13 @@ function SessionFeedback(props: SessionFeedbackProps) {
                 </Td>
                 <Td>
                   <Flex justify="end" gap="2">
-                    {/* TODO: Khye chun add integration  */}
                     {status === 'Not Completed' && (
-                      <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionFeedbackId}`}>
                         <Button size="sm" colorScheme="red">Rate Session</Button>
                       </Link>
                     )}
-                    {/* TODO: Khye chun add integration  */}
                     {status === 'Completed' && (
-                      <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionFeedbackId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
                       </Link>
                     )}

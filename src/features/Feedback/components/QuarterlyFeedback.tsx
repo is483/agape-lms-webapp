@@ -28,7 +28,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
         </Thead>
         <Tbody>
           {data?.map((feedback, index) => {
-            const { date, status } = feedback
+            const { date, status, quarterlyFeedbackId } = feedback
 
             const quarterDateObject = new Date(date)
             const todayDateObject = new Date()
@@ -57,13 +57,13 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                   <Flex justify="end" gap="5">
                     {/* TODO: Khye chun add integration  */}
                     {status === 'Not Completed' && (
-                      <Link to={paths.Introduction}>
+                      <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         <Button size="sm" colorScheme="red" isDisabled={isUnavailable}>Submit Feedback</Button>
                       </Link>
                     )}
                     {/* TODO: Khye chun add integration  */}
                     {status === 'Completed' && (
-                      <Link to={paths.Introduction}>
+                      <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
                       </Link>
                     )}
