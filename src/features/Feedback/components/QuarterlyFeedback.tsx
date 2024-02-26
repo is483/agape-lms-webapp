@@ -55,13 +55,11 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                 </Td>
                 <Td>
                   <Flex justify="end" gap="5">
-                    {/* TODO: Khye chun add integration  */}
                     {status === 'Not Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         <Button size="sm" colorScheme="red" isDisabled={isUnavailable}>Submit Feedback</Button>
                       </Link>
                     )}
-                    {/* TODO: Khye chun add integration  */}
                     {status === 'Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
