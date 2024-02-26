@@ -55,6 +55,15 @@ function PendingSessionsTableMentor(props: PendingSessionsTableMentorProps) {
           </Tr>
         </Thead>
         <Tbody>
+          {data.length === 0 && (
+            <Tr>
+              <Td colSpan={5}>
+                <Flex height="40px" justify="center" align="center">
+                  No sessions
+                </Flex>
+              </Td>
+            </Tr>
+          )}
           {data.map((session) => {
             const {
               fromDateTime, toDateTime, title, sessionType, status, sessionId,
@@ -135,6 +144,15 @@ function PendingSessionsTableMentee(props: PendingSessionsTableMenteeProps) {
           </Tr>
         </Thead>
         <Tbody>
+          {data.length === 0 && (
+            <Tr>
+              <Td colSpan={5}>
+                <Flex height="40px" justify="center" align="center">
+                  No sessions
+                </Flex>
+              </Td>
+            </Tr>
+          )}
           {data.map((session) => {
             const {
               fromDateTime, toDateTime, title, sessionType, status, sessionId,

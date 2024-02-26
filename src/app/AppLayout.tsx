@@ -13,7 +13,10 @@ import { AssignedMentees } from '../features/AssignedMentees'
 import MenteeMilestones from '../features/MentoringJourneys/MentoringJourneyDetails/Milestones/MenteeMilestones'
 import { Sessions } from '../features/Sessions'
 import { SessionDetails } from '../features/Sessions/SessionDetails'
-import MenteeFeedback from '../features/Feedback/MenteeFeedback'
+import {
+  MentorQuarterlyFeedbackQuestionnaire, MenteeQuarterlyFeedbackQuestionnaire,
+  MenteeFeedback, MentorSessionFeedbackQuestionnaire, MenteeSessionFeedbackQuestionnaire,
+} from '../features/Feedback'
 import { AssignedMentors } from '../features/AssignedMentors'
 
 function AppLayout() {
@@ -22,10 +25,10 @@ function AppLayout() {
   return (
     <Box background="gray.50" minHeight="100vh">
       <Flex gap="0">
-        <Box width={[0, null, null, 280]} minHeight="100vh">
+        <Box width={[0, null, null, 250]} position={['relative', null, null, 'fixed']}>
           {role && <Navbar role={role} />}
         </Box>
-        <Box width="100%" marginBottom={['48px', null, 0]}>
+        <Box width="100%" marginBottom={['48px', null, null, 0]} ml={[0, null, null, 250]}>
           {role === 'Admin' && (
             <>
             </>
@@ -39,8 +42,10 @@ function AppLayout() {
               <Route path={paths.MentoringJourneys.Create} element={<CreateMentoringJourney />} />
               <Route path={paths.Sessions.ViewAll} element={<Sessions />} />
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
-              <Route path={paths.AssignedMentees} element={<AssignedMentees />} />
-              <Route path={`${paths.AssignedMentees}/:userId`} element={<AssignedMentees />} />
+              <Route path={paths.AssignedMentees.subPath} element={<AssignedMentees />} />
+              <Route path={paths.AssignedMentees.fullPath} element={<AssignedMentees />} />
+              <Route path={paths.Feedback.QuarterlyFeedbackQuestionnaire.fullPath} element={<MentorQuarterlyFeedbackQuestionnaire />} />
+              <Route path={paths.Feedback.SessionFeedbackQuestionnaire.fullPath} element={<MentorSessionFeedbackQuestionnaire />} />
             </Routes>
           )}
           {role === 'Mentee' && (
@@ -51,8 +56,10 @@ function AppLayout() {
               <Route path={paths.Milestones} element={<MenteeMilestones />} />
               <Route path={paths.Sessions.ViewAll} element={<Sessions />} />
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
-              <Route path={paths.Feedback} element={<MenteeFeedback />} />
+              <Route path={paths.Feedback.ViewAll} element={<MenteeFeedback />} />
               <Route path={paths.MentorProfile} element={<AssignedMentors />} />
+              <Route path={paths.Feedback.QuarterlyFeedbackQuestionnaire.fullPath} element={<MenteeQuarterlyFeedbackQuestionnaire />} />
+              <Route path={paths.Feedback.SessionFeedbackQuestionnaire.fullPath} element={<MenteeSessionFeedbackQuestionnaire />} />
             </Routes>
           )}
         </Box>
