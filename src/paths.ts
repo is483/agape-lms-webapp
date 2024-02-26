@@ -7,7 +7,12 @@ const paths = {
   Introduction: '/onboarding/introduction',
   Onboarding: '/onboarding',
 
-  Feedback: '/feedback',
+  Feedback: {
+    ViewAll: '/feedback',
+    QuarterlyFeedbackQuestionnaire: { fullPath: '/feedback/quarterly/:quarterFeedbackId', subPath: '/feedback/quarterly' },
+    SessionFeedbackQuestionnaire: { fullPath: '/feedback/session/:sessionFeedbackId', subPath: '/feedback/session' },
+  },
+
   MentorProfile: '/mentor-profile',
   Milestones: '/milestones',
 
@@ -15,7 +20,7 @@ const paths = {
     ViewAll: '/sessions',
     Details: { fullPath: '/sessions/:sessionId', subPath: '/sessions' },
   },
-  AssignedMentees: '/assigned-mentees',
+  AssignedMentees: { subPath: '/assigned-mentees', fullPath: '/assigned-mentees/:userId' },
   Training: '/training',
   MyProfile: '/profile',
 

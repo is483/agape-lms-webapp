@@ -55,7 +55,7 @@ function SessionDetails() {
   const isPast = endDateObject <= todayDate
 
   const handleViewMentee = () => {
-    navigate(`${paths.AssignedMentees}/${menteeId}`)
+    navigate(`${paths.AssignedMentees.subPath}/${menteeId}`)
   }
   return (
     <Container position="relative" minH="calc(100vh - 34px)">
