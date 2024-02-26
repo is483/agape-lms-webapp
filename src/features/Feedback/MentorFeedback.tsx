@@ -9,7 +9,10 @@ function MentorFeedback() {
   const { data: mentorQuarterlyFeedbackData } = useGetMentorQuarterlyFeedbackQuery(mentoringJourneyId!)
   return (
     <Box>
-      <Text marginBottom="7" marginTop="2" color="secondary.500">Manage your feedback for each session and quarter of each milestone</Text>
+      <Text marginBottom="7" marginTop="2" color="secondary.500">
+        Manage your feedback for each session and quarter of each milestone.
+        <b> Note that session feedback is only available for completed sessions.</b>
+      </Text>
       <Feedback sessionFeedbackData={mentorSessionFeedbackData?.mentorSessionFeedbacks} quarterlyFeedbackData={mentorQuarterlyFeedbackData?.mentorQuarterlyFeedbacks} />
     </Box>
   )
