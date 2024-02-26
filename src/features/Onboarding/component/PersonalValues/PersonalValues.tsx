@@ -8,6 +8,7 @@ import { TransformedUserResponse, ValuesRequest } from '../../../../app/services
 import { useAppSelector } from '../../../../hooks'
 import { getAuth } from '../../../../app/redux/selectors'
 import { deepCopy } from '../../../../utils'
+import { valueOptions } from '../../constants'
 
 interface Props extends FlexProps {
   handleBack?: () => void
@@ -22,8 +23,6 @@ interface Errors {
 const defaultErrors: Errors = {
   personalValues: [],
 }
-
-const valueOptions = ['Integrity', 'Humility', 'Open Mindedness', 'Independence']
 
 function PersonalValues(props: Props) {
   const {

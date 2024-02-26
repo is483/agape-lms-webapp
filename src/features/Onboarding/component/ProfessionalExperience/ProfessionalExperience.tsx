@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../../hooks'
 import { deepCopy } from '../../../../utils'
 import { useUpdateMenteeExperienceMutation, useUpdateMentorExperienceMutation } from '../../../../app/services/user/apiUserSlice'
 import { ExperienceRequest, MenteeExperienceRequest, TransformedUserResponse } from '../../../../app/services/user/types'
+import { careerOptions } from '../../constants'
 
 interface Props extends FlexProps {
   handleBack?: () => void
@@ -38,8 +39,6 @@ const defaultErrors: Errors = {
   careerAspiration: '',
   workExperience: [{ ...defaultWorkExperience }],
 }
-
-const careerOptions = ['IT Technician', 'Video Producer', 'Content Creator']
 
 const defaultWorkExperiences: WorkExperience[] = [{ ...defaultWorkExperience }]
 
