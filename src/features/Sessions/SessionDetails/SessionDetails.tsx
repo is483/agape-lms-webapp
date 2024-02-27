@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link, useToast, 
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link, useToast,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import ReactQuill from 'react-quill'
@@ -26,11 +26,16 @@ function SessionDetails() {
   const { sessionId } = useParams()
   const navigate = useNavigate()
   const { role } = useAppSelector(getAuth)
-  const [notes, updateNotes] = useImmer(defaultNotes)
+  const [sessionNotes, updateSessionNotes] = useImmer(defaultNotes)
   const toast = useToast()
   const [getMenteeSessionDetails, menteeSessionDetailsResult] = useLazyGetSessionDetailsMenteeQuery()
   const [getMentorSessionDetails, mentorSessionDetailsResult] = useLazyGetSessionDetailsMentorQuery()
   const [updateSessionNotesMutation, { isLoading }] = useUpdateSessionNotesMutation()
+
+  const { data } = role === 'Mentor' ? mentorSessionDetailsResult : menteeSessionDetailsResult
+  const {
+    firstName, lastName, profileImgUrl, menteeId,
+  } = data?.mentee ?? {}
 
   useEffect(() => {
     if (role === 'Mentor' && sessionId) {
@@ -40,15 +45,18 @@ function SessionDetails() {
     }
   }, [sessionId, role, getMenteeSessionDetails, getMentorSessionDetails])
 
+  useEffect(() => {
+    if (data?.sessionDetails?.notes) {
+      updateSessionNotes((draft) => {
+        draft.notes.value = data.sessionDetails.notes ?? ''
+      })
+    }
+  }, [data?.sessionDetails.notes, updateSessionNotes])
+
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
 
-  const { data } = role === 'Mentor' ? mentorSessionDetailsResult : menteeSessionDetailsResult
   const {
-    firstName, lastName, profileImgUrl, menteeId,
-  } = data?.mentee ?? {}
-
-  const {
-    title, description, fromDateTime, toDateTime, location, sessionType,
+    title, description, fromDateTime, toDateTime, location, sessionType, notes,
   } = data?.sessionDetails ?? {}
 
   const { isOpen: isDeleteSessionModalOpen, onOpen: onOpenDeleteSessionModal, onClose: onDeleteSessionModalClose } = useDisclosure()
@@ -79,7 +87,7 @@ function SessionDetails() {
   }
 
   const handleNotesChange = (e: string) => {
-    updateNotes((draft) => { draft.notes.value = e })
+    updateSessionNotes((draft) => { draft.notes.value = e })
   }
 
   const handleSaveNotes = async () => {
@@ -87,7 +95,7 @@ function SessionDetails() {
       const updateSessionNotesRequest: UpdateSessionNotesRequest = {
         sessionId: sessionId!,
         body: {
-          notes: notes.notes.value,
+          notes: sessionNotes.notes.value,
         },
       }
       await updateSessionNotesMutation(updateSessionNotesRequest).unwrap()
@@ -179,7 +187,7 @@ function SessionDetails() {
         <ReactQuill
           theme="snow"
           className="react-quill-notes"
-          value={notes.notes.value}
+          value={sessionNotes.notes.value}
           onChange={handleNotesChange}
         />
       </Box>
