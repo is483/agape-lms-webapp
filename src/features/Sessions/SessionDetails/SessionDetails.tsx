@@ -37,6 +37,11 @@ function SessionDetails() {
     firstName, lastName, profileImgUrl, menteeId,
   } = data?.mentee ?? {}
 
+  
+  const {
+    title, description, fromDateTime, toDateTime, location, sessionType, notes,
+  } = data?.sessionDetails ?? {}
+
   useEffect(() => {
     if (role === 'Mentor' && sessionId) {
       getMentorSessionDetails(sessionId)
@@ -46,18 +51,14 @@ function SessionDetails() {
   }, [sessionId, role, getMenteeSessionDetails, getMentorSessionDetails])
 
   useEffect(() => {
-    if (data?.sessionDetails?.notes) {
+    if (notes) {
       updateSessionNotes((draft) => {
-        draft.notes.value = data.sessionDetails.notes ?? ''
+        draft.notes.value = notes ?? ''
       })
     }
-  }, [data?.sessionDetails.notes, updateSessionNotes])
+  }, [notes, updateSessionNotes])
 
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
-
-  const {
-    title, description, fromDateTime, toDateTime, location, sessionType, notes,
-  } = data?.sessionDetails ?? {}
 
   const { isOpen: isDeleteSessionModalOpen, onOpen: onOpenDeleteSessionModal, onClose: onDeleteSessionModalClose } = useDisclosure()
   const todayDate = new Date()
