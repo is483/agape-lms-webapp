@@ -3,6 +3,7 @@ import {
   Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
+import ReactQuill from 'react-quill'
 import {
   BackButton, Container, Icon, ProfileIcon,
 } from '../../../components'
@@ -12,6 +13,7 @@ import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
+import './SessionDetails.css'
 
 function SessionDetails() {
   const { sessionId } = useParams()
@@ -94,7 +96,7 @@ function SessionDetails() {
         <HStack>
           <Icon name="schedule" fontSize="25px" />
           <Text color="secondary.500">{startTime} - {endTime}</Text>
-        </HStack>
+        </HStack>aa
 
         <HStack>
           <Icon name="hourglass_top" fontSize="25px" />
@@ -124,10 +126,13 @@ function SessionDetails() {
         )}
 
       <Box mt="10">
-        <Text fontWeight="600" fontSize="lg">Description </Text>
-        <Text color="secondary.500">
-          {description}
-        </Text>
+        <Text fontWeight="600" fontSize="lg" marginBottom="5">Description </Text>
+        <ReactQuill
+          value={description}
+          readOnly
+          theme="snow"
+          className="react-quill"
+        />
       </Box>
     </Container>
   )
