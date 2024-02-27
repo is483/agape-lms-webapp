@@ -1,26 +1,36 @@
+/* eslint-disable no-param-reassign */
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link,
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link, useToast, 
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import ReactQuill from 'react-quill'
+import { useImmer } from 'use-immer'
 import {
   BackButton, Container, Icon, ProfileIcon,
 } from '../../../components'
 import paths from '../../../paths'
-import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery } from '../../../app/services/session/apiSessionSlice'
+import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery, useUpdateSessionNotesMutation } from '../../../app/services/session/apiSessionSlice'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
 import './SessionDetails.css'
+import { UpdateSessionNotesRequest } from '../../../app/services/session/types'
+
+const defaultNotes = {
+  notes: { value: '', error: '' },
+}
 
 function SessionDetails() {
   const { sessionId } = useParams()
   const navigate = useNavigate()
   const { role } = useAppSelector(getAuth)
+  const [notes, updateNotes] = useImmer(defaultNotes)
+  const toast = useToast()
   const [getMenteeSessionDetails, menteeSessionDetailsResult] = useLazyGetSessionDetailsMenteeQuery()
   const [getMentorSessionDetails, mentorSessionDetailsResult] = useLazyGetSessionDetailsMentorQuery()
+  const [updateSessionNotesMutation, { isLoading }] = useUpdateSessionNotesMutation()
 
   useEffect(() => {
     if (role === 'Mentor' && sessionId) {
@@ -67,8 +77,35 @@ function SessionDetails() {
   const handleViewMentee = () => {
     navigate(`${paths.AssignedMentees}/${menteeId}`)
   }
+
+  const handleNotesChange = (e: string) => {
+    updateNotes((draft) => { draft.notes.value = e })
+  }
+
+  const handleSaveNotes = async () => {
+    try {
+      const updateSessionNotesRequest: UpdateSessionNotesRequest = {
+        sessionId: sessionId!,
+        body: {
+          notes: notes.notes.value,
+        },
+      }
+      await updateSessionNotesMutation(updateSessionNotesRequest).unwrap()
+      toast({
+        title: 'Update Session',
+        description: 'Session notes have been updated!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
-    <Container position="relative" minH="calc(100vh - 34px)">
+    <Container position="relative" minH="calc(100vh - 34px)" overflowY="auto">
       <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} refetchSessions={() => getMentorSessionDetails(sessionId!)} />
       <DeleteSessionModal isModalOpen={isDeleteSessionModalOpen} onModalClose={onDeleteSessionModalClose} sessionId={data?.sessionDetails.sessionId} />
       <BackButton path={paths.Sessions.ViewAll} />
@@ -96,7 +133,7 @@ function SessionDetails() {
         <HStack>
           <Icon name="schedule" fontSize="25px" />
           <Text color="secondary.500">{startTime} - {endTime}</Text>
-        </HStack>aa
+        </HStack>
 
         <HStack>
           <Icon name="hourglass_top" fontSize="25px" />
@@ -126,14 +163,29 @@ function SessionDetails() {
         )}
 
       <Box mt="10">
-        <Text fontWeight="600" fontSize="lg" marginBottom="5">Description </Text>
+        <Text fontWeight="600" fontSize="lg" marginBottom="2">Description </Text>
         <ReactQuill
           value={description}
           readOnly
           theme="snow"
-          className="react-quill"
+          className="react-quill-description"
         />
       </Box>
+
+      <Divider orientation="horizontal" marginBottom="10" />
+
+      <Box>
+        <Text fontWeight="600" fontSize="lg" marginBottom="2">Notes </Text>
+        <ReactQuill
+          theme="snow"
+          className="react-quill-notes"
+          value={notes.notes.value}
+          onChange={handleNotesChange}
+        />
+      </Box>
+      <Flex gap="4" justify="flex-end" mt="8">
+        <Button colorScheme="red" size="sm" onClick={handleSaveNotes} isLoading={isLoading}>Save Notes</Button>
+      </Flex>
     </Container>
   )
 }

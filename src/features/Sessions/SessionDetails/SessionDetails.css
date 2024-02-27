@@ -1,4 +1,4 @@
-.react-quill .ql-toolbar {
+.react-quill-description .ql-toolbar {
     /* Custom styles for the toolbar */
     background-color: #f8f9fa;
     border: 1px solid #e0e5ebe3;
@@ -6,9 +6,23 @@
     display: none;
   }
   
-  .react-quill .ql-container {
+  .react-quill-description .ql-container {
     /* Custom styles for the editor container */
     border: 0px;
     font-size: 16px;
+    min-height: 100px;
+  }
+
+  .react-quill-notes .ql-toolbar {
+    /* Custom styles for the toolbar */
+    background-color: #f8f9fa;
+    border: 1px solid #e0e5ebe3;
+    border-radius: 0.375rem 0.375rem 0 0;
+  }
+  
+  .react-quill-notes .ql-container {
+    /* Custom styles for the editor container */
+    border: 1px solid #e0e5ebe3;
+    border-radius: 0 0 0.375rem 0.375rem;
     min-height: 100px;
   }

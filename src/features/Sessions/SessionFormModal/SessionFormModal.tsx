@@ -225,7 +225,6 @@ function SessionFormModal(props: SessionModalProps) {
                 onChange={handleDescriptionChange}
                 className="react-quill"
               />
-              {/* <Textarea placeholder="Include your meeting agenda here..." value={session.description.value} onChange={handleDescriptionChange} /> */}
               {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
             </Box>
             <Divider orientation="horizontal" marginTop="4" />
