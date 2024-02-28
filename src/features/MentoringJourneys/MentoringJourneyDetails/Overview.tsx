@@ -4,6 +4,7 @@ import {
   SkeletonText, Text, Textarea, useDisclosure, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
+import ReactQuill from 'react-quill'
 import { useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import {
   ControlledTextInput, Icon,
@@ -82,8 +83,13 @@ function Overview() {
         <Text color="secondary.400">{formattedStartDate} To {formattedEndDate}</Text>
       </Box>
       <Box mt="10">
-        <Text fontWeight="600" fontSize="lg">Description</Text>
-        <Text color="secondary.400">{data?.description ? data.description : '-'}</Text>
+        <Text fontWeight="600" fontSize="lg" marginBottom="2">Description</Text>
+        <ReactQuill
+          value={data?.description ? data.description : '-'}
+          readOnly
+          theme="snow"
+          className="react-quill-view-custom-color"
+        />
       </Box>
     </>
   )

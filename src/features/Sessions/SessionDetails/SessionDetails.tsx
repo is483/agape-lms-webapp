@@ -207,7 +207,7 @@ function SessionDetails() {
 
       {(role === 'Mentee' || role === 'Admin') && (
         <Box>
-          <Text fontWeight="600" fontSize="lg" marginBottom="">Notes </Text>
+          <Text fontWeight="600" fontSize="lg" marginBottom="2">Notes </Text>
           <ReactQuill
             theme="snow"
             className="react-quill-view"
