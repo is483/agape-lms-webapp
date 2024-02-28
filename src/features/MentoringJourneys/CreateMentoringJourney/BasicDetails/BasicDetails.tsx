@@ -1,7 +1,8 @@
 import {
-  Box, Flex, Textarea, Text, Button, Alert, AlertIcon,
+  Box, Flex, Text, Button, Alert, AlertIcon,
 } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
+import ReactQuill from 'react-quill'
 import { ControlledSelect, ControlledTextInput } from '../../../../components'
 import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { getBasicDetails } from '../redux/selectors'
@@ -9,6 +10,7 @@ import {
   setDate, setDescription, setMentee, setTitle,
 } from '../redux/mentoringJourneyFormSlice'
 import useUnassignedMenteesOptions from '../../../../hooks/useUnassignedMenteesOptions'
+import '../../../../../styles/custom-quill-style.css'
 
 interface BasicDetailsProps {
   handleNextStep: (toStep: number) => void
@@ -25,7 +27,7 @@ function BasicDetails(props: BasicDetailsProps) {
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => dispatch(setMentee({ menteeId: e.target.value, menteeName: menteeIdToMenteeName[e.target.value] }))
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => dispatch(setTitle(e.target.value))
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => dispatch(setDate(e.target.value))
-  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => dispatch(setDescription(e.target.value))
+  const handleDescriptionChange = (description: string) => dispatch(setDescription(description))
 
   return (
     <>
@@ -49,7 +51,12 @@ function BasicDetails(props: BasicDetailsProps) {
         </Box>
         <Box mb="8">
           <Text>Description</Text>
-          <Textarea value={description.value} onChange={handleDescriptionChange} />
+          <ReactQuill
+            theme="snow"
+            className="react-quill-update"
+            value={description.value}
+            onChange={handleDescriptionChange}
+          />
         </Box>
         <Flex justify="flex-end">
           <Button colorScheme="red" onClick={() => handleNextStep(2)}>Next</Button>

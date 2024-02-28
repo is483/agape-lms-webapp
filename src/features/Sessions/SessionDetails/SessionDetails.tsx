@@ -152,7 +152,7 @@ function SessionDetails() {
         && (
           <Box mt="10">
             <Text fontWeight="600" fontSize="lg">Mentee</Text>
-            <Flex mt="4">
+            <Flex mt="2">
               <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentee}>
                 <HStack spacing="4">
                   <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
@@ -167,9 +167,9 @@ function SessionDetails() {
         <Text fontWeight="600" fontSize="lg" marginBottom="2">Description </Text>
         <ReactQuill
           value={description}
-          readOnly
           theme="snow"
-          className="react-quill-read-only"
+          className="react-quill-view"
+          readOnly
         />
       </Box>
 
@@ -177,7 +177,7 @@ function SessionDetails() {
 
       {role === 'Mentor' && (
         <Box>
-          <Text fontWeight="600" fontSize="lg" marginBottom="5">Notes </Text>
+          <Text fontWeight="600" fontSize="lg" marginBottom="2">Notes </Text>
           <ReactQuill
             theme="snow"
             className="react-quill-update"
@@ -192,10 +192,10 @@ function SessionDetails() {
 
       {(role === 'Mentee' || role === 'Admin') && (
         <Box>
-          <Text fontWeight="600" fontSize="lg" marginBottom="5">Notes </Text>
+          <Text fontWeight="600" fontSize="lg" marginBottom="">Notes </Text>
           <ReactQuill
             theme="snow"
-            className="react-quill-read-only"
+            className="react-quill-view"
             value={sessionNotes}
             readOnly
           />
