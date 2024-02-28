@@ -88,7 +88,7 @@ function Overview() {
           value={data?.description ? data.description : '-'}
           readOnly
           theme="snow"
-          className="react-quill-view-custom-color"
+          className="react-quill-view"
         />
       </Box>
     </>
