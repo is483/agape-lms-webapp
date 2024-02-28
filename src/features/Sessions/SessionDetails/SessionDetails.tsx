@@ -188,7 +188,7 @@ function SessionDetails() {
         />
       </Box>
 
-      <Divider orientation="horizontal" marginBottom="10" />
+      <Divider orientation="horizontal" marginY="10" />
 
       {role === 'Mentor' && (
         <Box>

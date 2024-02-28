@@ -1,43 +1,44 @@
-.react-quill-view .ql-toolbar{
+.react-quill-view .ql-toolbar {
     display: none;
 }
 
-.react-quill-view .ql-container{
-    border: none !important;
+.react-quill-view .ql-container {
+    border: 1px solid #e0e5ebe3 !important;
+    background-color: #f5f7f850;
+    border-radius: 0.375rem 0.375rem 0.375rem 0.375rem;
     font-size: 1rem;
     min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
-.react-quill-view .ql-editor{
-    padding: 0 !important
-}
 
-
-.react-quill-view-custom-color .ql-toolbar{
+.react-quill-view-custom-color .ql-toolbar {
     display: none;
 }
 
 
-.react-quill-view-custom-color .ql-container{
-    border: none !important;
+.react-quill-view-custom-color .ql-container {
+    border: 1px solid #e0e5ebe3 !important;
+    background-color: #f5f7f850;
+    border-radius: 0.375rem 0.375rem 0.375rem 0.375rem;
     font-size: 1rem;
     min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
     color: #969697;
 }
 
-.react-quill-view-custom-color .ql-editor{
-    padding: 0 !important
-}
 
-
-.react-quill-update .ql-toolbar{
+.react-quill-update .ql-toolbar {
     background-color: #f8f9fa;
     border: 1px solid #e0e5ebe3 !important;
     border-radius: 0.375rem 0.375rem 0 0;
 }
 
-.react-quill-update .ql-container{
+.react-quill-update .ql-container {
     border: 1px solid #e0e5ebe3 !important;
     border-radius: 0 0 0.375rem 0.375rem;
     min-height: 100px;
-}
+    max-height: 400px;
+    overflow-y: auto;}
