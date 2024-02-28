@@ -16,7 +16,6 @@
     "@reduxjs/toolkit": "^2.0.1",
     "framer-motion": "^10.16.16",
     "material-symbols": "^0.14.3",
-    "quill": "^2.0.0-rc.2",
     "react": "^18.2.0",
     "react-calendar": "^4.8.0",
     "react-dom": "^18.2.0",

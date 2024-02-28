@@ -1,28 +1,28 @@
-.react-quill-description .ql-toolbar {
+.react-quill-read-only .ql-toolbar {
     /* Custom styles for the toolbar */
     background-color: #f8f9fa;
     border: 1px solid #e0e5ebe3;
     border-radius: 0.375rem 0.375rem 0 0;
     display: none;
-  }
-  
-  .react-quill-description .ql-container {
+}
+
+.react-quill-read-only .ql-container {
     /* Custom styles for the editor container */
     border: 0px;
     font-size: 16px;
     min-height: 100px;
-  }
+}
 
-  .react-quill-notes .ql-toolbar {
+.react-quill-update .ql-toolbar {
     /* Custom styles for the toolbar */
     background-color: #f8f9fa;
     border: 1px solid #e0e5ebe3;
     border-radius: 0.375rem 0.375rem 0 0;
-  }
-  
-  .react-quill-notes .ql-container {
+}
+
+.react-quill-update .ql-container {
     /* Custom styles for the editor container */
     border: 1px solid #e0e5ebe3;
     border-radius: 0 0 0.375rem 0.375rem;
     min-height: 100px;
-  }
+}

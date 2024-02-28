@@ -3,9 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
   Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link, useToast,
 } from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
-import { useImmer } from 'use-immer'
 import {
   BackButton, Container, Icon, ProfileIcon,
 } from '../../../components'
@@ -15,18 +14,13 @@ import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
-import './SessionDetails.css'
 import { UpdateSessionNotesRequest } from '../../../app/services/session/types'
-
-const defaultNotes = {
-  notes: { value: '', error: '' },
-}
+import '../../../../styles/custom-quill-style.css'
 
 function SessionDetails() {
   const { sessionId } = useParams()
   const navigate = useNavigate()
   const { role } = useAppSelector(getAuth)
-  const [sessionNotes, updateSessionNotes] = useImmer(defaultNotes)
   const toast = useToast()
   const [getMenteeSessionDetails, menteeSessionDetailsResult] = useLazyGetSessionDetailsMenteeQuery()
   const [getMentorSessionDetails, mentorSessionDetailsResult] = useLazyGetSessionDetailsMentorQuery()
@@ -37,11 +31,11 @@ function SessionDetails() {
     firstName, lastName, profileImgUrl, menteeId,
   } = data?.mentee ?? {}
 
-  
   const {
     title, description, fromDateTime, toDateTime, location, sessionType, notes,
   } = data?.sessionDetails ?? {}
 
+  const [sessionNotes, updateSessionNotes] = useState(notes)
   useEffect(() => {
     if (role === 'Mentor' && sessionId) {
       getMentorSessionDetails(sessionId)
@@ -52,11 +46,9 @@ function SessionDetails() {
 
   useEffect(() => {
     if (notes) {
-      updateSessionNotes((draft) => {
-        draft.notes.value = notes ?? ''
-      })
+      updateSessionNotes(notes)
     }
-  }, [notes, updateSessionNotes])
+  }, [notes])
 
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
 
@@ -88,7 +80,7 @@ function SessionDetails() {
   }
 
   const handleNotesChange = (e: string) => {
-    updateSessionNotes((draft) => { draft.notes.value = e })
+    updateSessionNotes(e)
   }
 
   const handleSaveNotes = async () => {
@@ -96,7 +88,7 @@ function SessionDetails() {
       const updateSessionNotesRequest: UpdateSessionNotesRequest = {
         sessionId: sessionId!,
         body: {
-          notes: sessionNotes.notes.value,
+          notes: sessionNotes!,
         },
       }
       await updateSessionNotesMutation(updateSessionNotesRequest).unwrap()
@@ -177,24 +169,38 @@ function SessionDetails() {
           value={description}
           readOnly
           theme="snow"
-          className="react-quill-description"
+          className="react-quill-read-only"
         />
       </Box>
 
       <Divider orientation="horizontal" marginBottom="10" />
 
-      <Box>
-        <Text fontWeight="600" fontSize="lg" marginBottom="2">Notes </Text>
-        <ReactQuill
-          theme="snow"
-          className="react-quill-notes"
-          value={sessionNotes.notes.value}
-          onChange={handleNotesChange}
-        />
-      </Box>
-      <Flex gap="4" justify="flex-end" mt="8">
-        <Button colorScheme="red" size="sm" onClick={handleSaveNotes} isLoading={isLoading}>Save Notes</Button>
-      </Flex>
+      {role === 'Mentor' && (
+        <Box>
+          <Text fontWeight="600" fontSize="lg" marginBottom="5">Notes </Text>
+          <ReactQuill
+            theme="snow"
+            className="react-quill-update"
+            value={sessionNotes}
+            onChange={handleNotesChange}
+          />
+          <Flex gap="4" justify="flex-end" mt="8">
+            <Button colorScheme="red" size="sm" onClick={handleSaveNotes} isLoading={isLoading}>Save Notes</Button>
+          </Flex>
+        </Box>
+      )}
+
+      {(role === 'Mentee' || role === 'Admin') && (
+        <Box>
+          <Text fontWeight="600" fontSize="lg" marginBottom="5">Notes </Text>
+          <ReactQuill
+            theme="snow"
+            className="react-quill-read-only"
+            value={sessionNotes}
+            readOnly
+          />
+        </Box>
+      )}
     </Container>
   )
 }

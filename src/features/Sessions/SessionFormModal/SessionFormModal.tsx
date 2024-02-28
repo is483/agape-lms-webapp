@@ -11,7 +11,7 @@ import { clearErrors, clearValues } from '../../../utils'
 import { useCreateSessionMutation, useEditSessionMutation } from '../../../app/services/session/apiSessionSlice'
 import { CreateSessionRequest, EditSessionRequest, SessionDetailsResponse } from '../../../app/services/session/types'
 import 'react-quill/dist/quill.snow.css'
-import './SessionFormModal.css'
+import '../../../../styles/custom-quill-style.css'
 
 interface SessionModalProps {
   isModalOpen: boolean
@@ -65,8 +65,8 @@ function SessionFormModal(props: SessionModalProps) {
     updateSession((draft) => { draft.title.value = e.target.value })
   }
 
-  const handleDescriptionChange = (e: string) => {
-    updateSession((draft) => { draft.description.value = e })
+  const handleDescriptionChange = (description: string) => {
+    updateSession((draft) => { draft.description.value = description })
   }
 
   const handleFromDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -223,7 +223,7 @@ function SessionFormModal(props: SessionModalProps) {
                 theme="snow"
                 value={session.description.value}
                 onChange={handleDescriptionChange}
-                className="react-quill"
+                className="react-quill-read-only"
               />
               {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
             </Box>
