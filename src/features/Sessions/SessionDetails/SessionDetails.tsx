@@ -62,7 +62,22 @@ function SessionDetails() {
   const endDate = endDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   const endTime = endDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
-  const differenceInHours = (endDateObject.getTime() - startDateObject.getTime()) / (1000 * 60 * 60)
+  function getSessionDuration(startDateObject: Date, endDateObject: Date) {
+    const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
+    const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60))
+    const differenceInHours = Math.floor(differenceInMinutes / 60)
+    const remainingMinutes = differenceInMinutes % 60
+
+    let durationDisplay
+    if (differenceInHours === 0) {
+      durationDisplay = `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`
+    } else if (remainingMinutes === 0) {
+      durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''}`
+    } else {
+      durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`
+    }
+    return durationDisplay
+  }
 
   const isPast = endDateObject <= todayDate
 
@@ -138,7 +153,7 @@ function SessionDetails() {
 
         <HStack>
           <Icon name="hourglass_top" fontSize="25px" />
-          <Text color="secondary.500"> {differenceInHours} hour</Text>
+          <Text color="secondary.500"> {getSessionDuration(startDateObject, endDateObject)}</Text>
         </HStack>
       </Flex>
 
@@ -167,9 +182,9 @@ function SessionDetails() {
         <Text fontWeight="600" fontSize="lg" marginBottom="2">Description </Text>
         <ReactQuill
           value={description}
+          readOnly
           theme="snow"
           className="react-quill-view"
-          readOnly
         />
       </Box>
 

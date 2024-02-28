@@ -223,7 +223,7 @@ function SessionFormModal(props: SessionModalProps) {
                 theme="snow"
                 value={session.description.value}
                 onChange={handleDescriptionChange}
-                className="react-quill-read-only"
+                className="react-quill-update"
               />
               {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
             </Box>
