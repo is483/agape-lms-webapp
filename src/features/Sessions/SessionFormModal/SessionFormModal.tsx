@@ -10,8 +10,6 @@ import { ControlledTextInput } from '../../../components'
 import { clearErrors, clearValues } from '../../../utils'
 import { useCreateSessionMutation, useEditSessionMutation } from '../../../app/services/session/apiSessionSlice'
 import { CreateSessionRequest, EditSessionRequest, SessionDetailsResponse } from '../../../app/services/session/types'
-import 'react-quill/dist/quill.snow.css'
-import '../../../../styles/custom-quill-style.css'
 
 interface SessionModalProps {
   isModalOpen: boolean

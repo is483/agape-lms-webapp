@@ -9,6 +9,7 @@ import store from './app/store'
 import theme from './theme'
 import 'material-symbols/outlined.css'
 import 'react-quill/dist/quill.snow.css'
+import '../styles/custom-quill-style.css'
 
 export const router = createBrowserRouter([
   // match everything with "*"

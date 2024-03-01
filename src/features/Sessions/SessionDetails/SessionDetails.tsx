@@ -15,7 +15,23 @@ import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
 import { UpdateSessionNotesRequest } from '../../../app/services/session/types'
-import '../../../../styles/custom-quill-style.css'
+
+function getSessionDuration(startDateObject: Date, endDateObject: Date) {
+  const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
+  const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60))
+  const differenceInHours = Math.floor(differenceInMinutes / 60)
+  const remainingMinutes = differenceInMinutes % 60
+
+  let durationDisplay
+  if (differenceInHours === 0) {
+    durationDisplay = `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`
+  } else if (remainingMinutes === 0) {
+    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''}`
+  } else {
+    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`
+  }
+  return durationDisplay
+}
 
 function SessionDetails() {
   const { sessionId } = useParams()
@@ -61,23 +77,6 @@ function SessionDetails() {
   const endDateObject = new Date(toDateTime as string)
   const endDate = endDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   const endTime = endDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-
-  function getSessionDuration(startDateObject: Date, endDateObject: Date) {
-    const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
-    const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60))
-    const differenceInHours = Math.floor(differenceInMinutes / 60)
-    const remainingMinutes = differenceInMinutes % 60
-
-    let durationDisplay
-    if (differenceInHours === 0) {
-      durationDisplay = `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`
-    } else if (remainingMinutes === 0) {
-      durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''}`
-    } else {
-      durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`
-    }
-    return durationDisplay
-  }
 
   const isPast = endDateObject <= todayDate
 
