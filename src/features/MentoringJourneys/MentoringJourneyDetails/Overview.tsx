@@ -30,7 +30,7 @@ function Overview() {
   const formattedEndDate = formatDate(new Date(data?.endDate ?? ''))
 
   const handleViewMentee = () => {
-    navigate(`${paths.AssignedMentees}/${mentee?.menteeId}`)
+    navigate(`${paths.AssignedMentees.subPath}/${mentee?.menteeId}`)
   }
 
   return (

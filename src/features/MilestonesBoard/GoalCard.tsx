@@ -18,15 +18,18 @@ interface GoalProps {
   goalIndex: number
   isEditable: boolean
   isCreated: boolean
-  handleOpenFormModal: (milestoneIndex: number, goalIndex?: number) => void
+  handleOpenFormModal: (milestoneIndex: number, goalIndex?: number, minDeadlineDate?: Date, maxDeadlineDate?: Date) => void
   startDate: string | undefined
   endDate: string | undefined
+  minDeadlineDate: Date
+  maxDeadlineDate: Date
 }
 
 function GoalCard(props: GoalProps) {
   const {
     goal, milestoneIndex, goalIndex, isEditable,
-    isCreated, handleOpenFormModal, startDate, endDate,
+    isCreated, handleOpenFormModal, startDate,
+    endDate, minDeadlineDate, maxDeadlineDate,
   } = props
   const dispatch = useAppDispatch()
   const {
@@ -51,7 +54,7 @@ function GoalCard(props: GoalProps) {
               <Icon name="more_horiz" fontSize="xl" color="black" _hover={{ cursor: 'pointer' }} />
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={() => handleOpenFormModal(milestoneIndex, goalIndex)}>Edit</MenuItem>
+              <MenuItem onClick={() => handleOpenFormModal(milestoneIndex, goalIndex, minDeadlineDate, maxDeadlineDate)}>Edit</MenuItem>
               <MenuItem onClick={handleDeleteGoal}>Delete</MenuItem>
             </MenuList>
           </Menu>

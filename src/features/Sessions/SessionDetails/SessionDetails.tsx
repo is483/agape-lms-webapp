@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button, useDisclosure, Link, useToast,
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure, useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import {
-  BackButton, Container, Icon, ProfileIcon,
+  BackButton, Container, Icon, Link, ProfileIcon,
 } from '../../../components'
 import paths from '../../../paths'
 import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery, useUpdateSessionNotesMutation } from '../../../app/services/session/apiSessionSlice'
@@ -15,6 +15,7 @@ import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
 import { UpdateSessionNotesRequest } from '../../../app/services/session/types'
+import { ensureProtocol } from '../../../utils'
 
 function getSessionDuration(startDateObject: Date, endDateObject: Date) {
   const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
@@ -80,17 +81,8 @@ function SessionDetails() {
 
   const isPast = endDateObject <= todayDate
 
-  function ensureProtocol(url: string | undefined) {
-    if (!url) {
-      return ''
-    }
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      return `https://${url}`
-    }
-    return url
-  }
   const handleViewMentee = () => {
-    navigate(`${paths.AssignedMentees}/${menteeId}`)
+    navigate(`${paths.AssignedMentees.subPath}/${menteeId}`)
   }
 
   const handleNotesChange = (e: string) => {
@@ -158,7 +150,7 @@ function SessionDetails() {
 
       <HStack mt="3">
         <Icon name="location_on" fontSize="25px" />
-        {sessionType === 'online' && <Link color="secondary.500" href={ensureProtocol(location)}>{location}</Link>}
+        {sessionType === 'online' && <Link color="secondary.500" target="_blank" to={ensureProtocol(location)}>{location}</Link>}
         {sessionType === 'physical' && <Text color="secondary.500" isTruncated>{location}</Text>}
       </HStack>
 

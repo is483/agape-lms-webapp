@@ -8,6 +8,7 @@ import { ControlledSelect, Icon } from '../../../../components'
 import { useUpdateMentorSkillsMutation, useUpdateMenteeSkillsMutation } from '../../../../app/services/user/apiUserSlice'
 import { SkillsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
+import { skillOptions } from '../../constants'
 
 interface Props extends FlexProps {
   handleBack?: () => void
@@ -22,8 +23,6 @@ interface Errors {
 const defaultErrors: Errors = {
   skills: [],
 }
-
-const skillOptions = ['Effective Communication', 'Teamwork', 'Negotiation', 'Emotional Intelligence']
 
 function Skills(props: Props) {
   const {

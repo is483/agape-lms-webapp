@@ -1,17 +1,18 @@
 import {
-  Flex, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
+  Button,
+  Flex,
+  Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
 } from '@chakra-ui/react'
-import { SessionResponse } from '../../../app/services/session/types'
-import { Link } from '../../../components'
+import { SessionFeedback as SessionFeedbackType } from '../../../app/services/feedback/type'
 import paths from '../../../paths'
+import { Link } from '../../../components'
 
-interface UpcomingandPastSessionProps {
-  data: SessionResponse
+interface SessionFeedbackProps {
+  data: SessionFeedbackType[] | undefined
 }
 
-function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
+function SessionFeedback(props: SessionFeedbackProps) {
   const { data } = props
-
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -19,23 +20,15 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
           <Tr>
             <Th>Date & Time</Th>
             <Th>Title</Th>
-            <Th> Type </Th>
+            <Th>Type</Th>
             <Th />
           </Tr>
         </Thead>
         <Tbody>
-          {data.length === 0 && (
-            <Tr>
-              <Td colSpan={4}>
-                <Flex height="40px" justify="center" align="center">
-                  No sessions
-                </Flex>
-              </Td>
-            </Tr>
-          )}
-          {data.map((session) => {
+          {data?.map((session) => {
             const {
-              fromDateTime, toDateTime, title, sessionType, sessionId,
+              fromDateTime, toDateTime, title, sessionType,
+              sessionId, status, sessionFeedbackId,
             } = session
 
             const fromDateObject = new Date(fromDateTime)
@@ -45,7 +38,6 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
             const toDateObject = new Date(toDateTime)
             const toDate = toDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             const toTime = toDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-
             return (
               <Tr>
                 <Td>
@@ -61,9 +53,19 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
                   {sessionType}
                 </Td>
                 <Td>
-                  <Flex justify="end">
+                  <Flex justify="end" gap="2">
+                    {status === 'Not Completed' && (
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionFeedbackId}`}>
+                        <Button size="sm" colorScheme="red">Rate Session</Button>
+                      </Link>
+                    )}
+                    {status === 'Completed' && (
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionFeedbackId}`}>
+                        <Button size="sm" colorScheme="red">View Feedback</Button>
+                      </Link>
+                    )}
                     <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
-                      <Button>View Details</Button>
+                      <Button size="sm" colorScheme="red" variant="outline">Session Details</Button>
                     </Link>
                   </Flex>
                 </Td>
@@ -75,4 +77,4 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
     </TableContainer>
   )
 }
-export default UpcomingAndPastSessionsTable
+export default SessionFeedback
