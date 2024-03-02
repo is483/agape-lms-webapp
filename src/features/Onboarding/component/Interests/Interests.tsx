@@ -9,6 +9,7 @@ import { getAuth } from '../../../../app/redux/selectors'
 import { InterestsRequest, TransformedUserResponse } from '../../../../app/services/user/types'
 import { deepCopy } from '../../../../utils'
 import { setOnboardingStatus } from '../../../../app/redux/appSlice'
+import { interestOptions } from '../../constants'
 
 interface Props extends FlexProps {
   handleBack?: () => void
@@ -23,8 +24,6 @@ interface Errors {
 const defaultErrors: Errors = {
   interests: [],
 }
-
-const interestOptions = ['Volleyball', 'Basketball', 'Soccer', 'Running', 'Outdoor Activities']
 
 function Interests(props: Props) {
   const {

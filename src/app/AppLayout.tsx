@@ -25,10 +25,10 @@ function AppLayout() {
   return (
     <Box background="gray.50" minHeight="100vh">
       <Flex gap="0">
-        <Box width={[0, null, null, 280]} minHeight="100vh">
+        <Box width={[0, null, null, 250]} position={['relative', null, null, 'fixed']}>
           {role && <Navbar role={role} />}
         </Box>
-        <Box width="100%" marginBottom={['48px', null, 0]}>
+        <Box width="100%" marginBottom={['48px', null, null, 0]} ml={[0, null, null, 250]}>
           {role === 'Admin' && (
             <>
             </>

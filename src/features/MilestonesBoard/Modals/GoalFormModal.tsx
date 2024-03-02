@@ -42,7 +42,10 @@ function GoalFormModal(props: GoalFormModalProps) {
   const {
     goalName, measurableObjective, deadline, actionPlans,
   } = goal
-  const { milestones, milestoneIndex, goalIndex } = useAppSelector(getMilestones)
+  const {
+    milestones, milestoneIndex, goalIndex,
+    minDeadlineDate, maxDeadlineDate,
+  } = useAppSelector(getMilestones)
   const isEditing = goalIndex !== undefined
 
   useEffect(() => {
@@ -94,8 +97,8 @@ function GoalFormModal(props: GoalFormModalProps) {
     updateGoal((draft) => { draft.actionPlans[index].byWho.value = e.target.value })
   }
 
-  const handleStepDeadlineChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    updateGoal((draft) => { draft.actionPlans[index].deadline.value = e.target.value })
+  const handleStepDeadlineChange = (value: string, index: number) => {
+    updateGoal((draft) => { draft.actionPlans[index].deadline.value = value })
   }
 
   const handleResourceRequiredChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
@@ -200,7 +203,14 @@ function GoalFormModal(props: GoalFormModalProps) {
             placeholder="Select a date"
             error={deadline.error}
             type="date"
-            inputProps={{ onChange: handleDeadlineChange, value: deadline.value }}
+            inputProps={{
+              onChange: handleDeadlineChange,
+              value: deadline.value,
+              min: minDeadlineDate.split('T')[0],
+              max: maxDeadlineDate.split('T')[0],
+              onKeyDown: (e) => e.preventDefault(),
+              onFocus: (e) => e.preventDefault(),
+            }}
           />
         </Flex>
         <Text textTransform="uppercase" mt="4" fontSize="xs" fontWeight="600">Action Plan</Text>
@@ -220,6 +230,10 @@ function GoalFormModal(props: GoalFormModalProps) {
             index={index}
             actionPlanStep={actionPlanStep}
             showRemoveIcon={actionPlans.length > 1}
+            minDeadlineDate={index === 0 ? minDeadlineDate : actionPlans[index - 1].deadline.value}
+            maxDeadlineDate={deadline.value}
+            isDeadlineDisabled={index === 0 ? deadline.value === '' : actionPlans[index - 1].deadline.value === ''}
+            actionPlanStepLength={actionPlans.length}
           />
         ))}
         <Button onClick={addActionPlan} size="sm" mt="4" variant="ghost" colorScheme="red" width="fit-content">+ Add Step</Button>
@@ -234,13 +248,17 @@ function GoalFormModal(props: GoalFormModalProps) {
 
 interface ActionPlanStepFormProps {
   handleByWhoChange: (e: ChangeEvent<HTMLSelectElement>, index: number) => void
-  handleStepDeadlineChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void
+  handleStepDeadlineChange: (value: string, index: number) => void
   handleResourceRequiredChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void
   handleProgressIndicatorChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void
   removeActionPlan: (index: number) => void
   index: number
   actionPlanStep: typeof defaultActionPlanStep
   showRemoveIcon: boolean
+  minDeadlineDate: string
+  maxDeadlineDate: string
+  isDeadlineDisabled: boolean
+  actionPlanStepLength: number
 }
 
 function ActionPlanStepForm(props: ActionPlanStepFormProps) {
@@ -248,7 +266,8 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
     handleByWhoChange, handleStepDeadlineChange,
     handleResourceRequiredChange, handleProgressIndicatorChange,
     index, actionPlanStep, removeActionPlan,
-    showRemoveIcon,
+    showRemoveIcon, minDeadlineDate, maxDeadlineDate,
+    isDeadlineDisabled, actionPlanStepLength,
   } = props
 
   const { menteeName } = useAppSelector(getBasicDetails)
@@ -261,7 +280,13 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
   } = actionPlanStep
 
   const updateByWho = (e: ChangeEvent<HTMLSelectElement>) => handleByWhoChange(e, index)
-  const updateStepDeadline = (e: ChangeEvent<HTMLInputElement>) => handleStepDeadlineChange(e, index)
+  const updateStepDeadline = (e: ChangeEvent<HTMLInputElement>) => {
+    handleStepDeadlineChange(e.target.value, index)
+    // reset deadlines for subsequent deadlines
+    for (let i = index + 1; i < actionPlanStepLength; i += 1) {
+      handleStepDeadlineChange('', i)
+    }
+  }
   const updateResourcesRequired = (e: ChangeEvent<HTMLInputElement>) => handleResourceRequiredChange(e, index)
   const updateProgressIndicator = (e: ChangeEvent<HTMLInputElement>) => handleProgressIndicatorChange(e, index)
 
@@ -289,7 +314,15 @@ function ActionPlanStepForm(props: ActionPlanStepFormProps) {
               error={deadline.error}
               type="date"
               boxProps={{ flex: '1' }}
-              inputProps={{ onChange: updateStepDeadline, value: deadline.value }}
+              inputProps={{
+                onChange: updateStepDeadline,
+                value: deadline.value,
+                min: minDeadlineDate.split('T')[0],
+                max: maxDeadlineDate.split('T')[0],
+                isDisabled: isDeadlineDisabled,
+                onKeyDown: (e) => e.preventDefault(),
+                onFocus: (e) => e.preventDefault(),
+              }}
             />
           </Flex>
           <ControlledTextInput
