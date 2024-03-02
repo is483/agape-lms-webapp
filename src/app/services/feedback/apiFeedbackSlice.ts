@@ -62,7 +62,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         ? [{ type: 'Feedback', id: result.sessionId }]
         : ['Feedback']),
     }),
-    getMenteeQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, AnswerFeedbackRequest>({
+    getMenteeQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, string | number>({
       query: (quarterlyFeedbackId) => ({
         url: `mentee/mentoring-journey/feedbacks/quarterly/feedback/${quarterlyFeedbackId}`,
         method: 'GET',
