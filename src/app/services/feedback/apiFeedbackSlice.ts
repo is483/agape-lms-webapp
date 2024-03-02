@@ -2,7 +2,8 @@ import { apiSlice } from '../apiSlice'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import {
   AnswerFeedbackRequest,
-  FeedbackResponse,
+  QuarterlyFeedbackResponse,
+  SessionFeedbackResponse,
   MenteeQuarterlyFeedbackResponse, MenteeSessionFeedbackResponse,
   MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse,
 } from './type'
@@ -37,31 +38,63 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    getMentorQuarterlyFeedback: build.query<FeedbackResponse, string | number>({
+    getMentorQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, string | number>({
       query: (quarterlyFeedbackId) => ({
         url: `mentor/mentoring-journey/feedbacks/quarterly/feedback/${quarterlyFeedbackId}`,
         method: 'GET',
       }),
       onQueryStarted,
     }),
-    getMenteeQuarterlyFeedback: build.query<FeedbackResponse, AnswerFeedbackRequest>({
+    getMentorSessionFeedback: build.query<SessionFeedbackResponse, string | number>({
+      query: (sessionId) => ({
+        url: `session/mentor/feedback/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    getMenteeQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, AnswerFeedbackRequest>({
       query: (quarterlyFeedbackId) => ({
         url: `mentee/mentoring-journey/feedbacks/quarterly/feedback/${quarterlyFeedbackId}`,
         method: 'GET',
       }),
       onQueryStarted,
     }),
-    answerMentorQuarterlyFeedback: build.query<null, string | number>({
-      query: (quarterlyFeedbackId) => ({
-        url: `mentor/mentoring-journey/feedbacks/quarterly/feedback/${quarterlyFeedbackId}`,
+    getMenteeSessionFeedback: build.query<SessionFeedbackResponse, string | number>({
+      query: (sessionId) => ({
+        url: `session/mentee/feedback/${sessionId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    answerMentorQuarterlyFeedback: build.mutation<null, AnswerFeedbackRequest>({
+      query: (body) => ({
+        url: `mentor/mentoring-journey/feedbacks/quarterly/feedback/${body.id}`,
         method: 'PUT',
+        body: body.feedbackAnswers,
       }),
       onQueryStarted,
     }),
-    answerMenteeQuarterlyFeedback: build.query<null, AnswerFeedbackRequest>({
-      query: (quarterlyFeedbackId) => ({
-        url: `mentee/mentoring-journey/feedbacks/quarterly/feedback/${quarterlyFeedbackId}`,
-        method: 'GET',
+    answerMentorSessionFeedback: build.mutation<null, AnswerFeedbackRequest>({
+      query: (body) => ({
+        url: `session/mentor/feedback/${body.id}`,
+        method: 'PUT',
+        body: body.feedbackAnswers,
+      }),
+      onQueryStarted,
+    }),
+    answerMenteeQuarterlyFeedback: build.mutation<null, AnswerFeedbackRequest>({
+      query: (body) => ({
+        url: `mentee/mentoring-journey/feedbacks/quarterly/feedback/${body.id}`,
+        method: 'PUT',
+        body: body.feedbackAnswers,
+      }),
+      onQueryStarted,
+    }),
+    answerMenteeSessionFeedback: build.mutation<null, AnswerFeedbackRequest>({
+      query: (body) => ({
+        url: `session/mentee/feedback/${body.id}`,
+        method: 'PUT',
+        body: body.feedbackAnswers,
       }),
       onQueryStarted,
     }),
@@ -74,4 +107,12 @@ export const {
   useGetAllMentorQuarterlyFeedbackQuery,
   useGetAllMenteeSessionFeedbackQuery,
   useGetAllMenteeQuarterlyFeedbackQuery,
+  useGetMenteeQuarterlyFeedbackQuery,
+  useGetMentorQuarterlyFeedbackQuery,
+  useGetMenteeSessionFeedbackQuery,
+  useGetMentorSessionFeedbackQuery,
+  useAnswerMenteeSessionFeedbackMutation,
+  useAnswerMentorSessionFeedbackMutation,
+  useAnswerMenteeQuarterlyFeedbackMutation,
+  useAnswerMentorQuarterlyFeedbackMutation,
 } = apiFeedbackSlice

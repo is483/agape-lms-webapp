@@ -34,14 +34,22 @@ export interface MenteeQuarterlyFeedbackResponse {
 
 export interface AnswerFeedbackRequest {
   feedbackAnswers: any
-  quarterlyFeedbackId: string | number
+  id: string | number
 }
 
-export interface FeedbackResponse {
-  quarterlyFeedbackId: string | number,
-  feedbackAnswers: string,
-  date: string,
-  role: string,
-  status: string,
+export interface QuarterlyFeedbackResponse {
+  quarterlyFeedbackId: string | number
+  feedbackAnswers: string
+  date: string
+  role: string
+  status: string
   mentoringJourneyId: string | number
+}
+
+export interface SessionFeedbackResponse {
+  sessionFeedbackId: string | number
+  feedbackAnswers: string
+  date: string
+  role: string
+  status: string
 }
