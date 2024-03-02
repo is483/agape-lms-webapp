@@ -1,12 +1,12 @@
 import { Box, Text } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import Feedback from './Feedback'
-import { useGetMentorQuarterlyFeedbackQuery, useGetMentorSessionFeedbackQuery } from '../../app/services/feedback/apiFeedbackSlice'
+import { useGetAllMentorQuarterlyFeedbackQuery, useGetAllMentorSessionFeedbackQuery } from '../../app/services/feedback/apiFeedbackSlice'
 
 function MentorFeedback() {
   const { mentoringJourneyId } = useParams()
-  const { data: mentorSessionFeedbackData } = useGetMentorSessionFeedbackQuery(mentoringJourneyId!)
-  const { data: mentorQuarterlyFeedbackData } = useGetMentorQuarterlyFeedbackQuery(mentoringJourneyId!)
+  const { data: mentorSessionFeedbackData } = useGetAllMentorSessionFeedbackQuery(mentoringJourneyId!)
+  const { data: mentorQuarterlyFeedbackData } = useGetAllMentorQuarterlyFeedbackQuery(mentoringJourneyId!)
   return (
     <Box>
       <Text marginBottom="7" marginTop="2" color="secondary.500">
