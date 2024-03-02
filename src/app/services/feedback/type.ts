@@ -48,6 +48,7 @@ export interface QuarterlyFeedbackResponse {
 
 export interface SessionFeedbackResponse {
   sessionFeedbackId: string | number
+  sessionId: string | number
   feedbackAnswers: string
   date: string
   role: string

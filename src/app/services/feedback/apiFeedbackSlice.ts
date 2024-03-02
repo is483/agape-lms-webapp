@@ -55,7 +55,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
       providesTags: (result) => (result
-        ? [{ type: 'Feedback', id: result.sessionFeedbackId }]
+        ? [{ type: 'Feedback', id: result.sessionId }]
         : ['Feedback']),
     }),
     getMenteeQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, AnswerFeedbackRequest>({
@@ -75,7 +75,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
       providesTags: (result) => (result
-        ? [{ type: 'Feedback', id: result.sessionFeedbackId }]
+        ? [{ type: 'Feedback', id: result.sessionId }]
         : ['Feedback']),
     }),
     answerMentorQuarterlyFeedback: build.mutation<null, AnswerFeedbackRequest>({
