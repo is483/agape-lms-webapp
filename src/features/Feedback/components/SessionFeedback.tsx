@@ -55,12 +55,12 @@ function SessionFeedback(props: SessionFeedbackProps) {
                 <Td>
                   <Flex justify="end" gap="2">
                     {status === 'Not Completed' && (
-                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionFeedbackId}`}>
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionId}`}>
                         <Button size="sm" colorScheme="red">Rate Session</Button>
                       </Link>
                     )}
                     {status === 'Completed' && (
-                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionFeedbackId}`}>
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
                       </Link>
                     )}
