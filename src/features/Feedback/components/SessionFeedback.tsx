@@ -28,7 +28,7 @@ function SessionFeedback(props: SessionFeedbackProps) {
           {data?.map((session) => {
             const {
               fromDateTime, toDateTime, title, sessionType,
-              sessionId, status, sessionFeedbackId,
+              sessionId, status,
             } = session
 
             const fromDateObject = new Date(fromDateTime)

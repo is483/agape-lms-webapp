@@ -57,7 +57,8 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                   <Flex justify="end" gap="5">
                     {status === 'Not Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
-                        <Button size="sm" colorScheme="red" isDisabled={isUnavailable}>Submit Feedback</Button>
+                        {/* isDisabled={isUnavailable} */}
+                        <Button size="sm" colorScheme="red">Submit Feedback</Button>
                       </Link>
                     )}
                     {status === 'Completed' && (

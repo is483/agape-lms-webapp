@@ -16,6 +16,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: ['Feedbacks'],
     }),
     getAllMentorQuarterlyFeedback: build.query<MentorQuarterlyFeedbackResponse, string | number>({
       query: (mentoringJourneyId) => ({
@@ -23,6 +24,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: ['Feedbacks'],
     }),
     getAllMenteeSessionFeedback: build.query<MenteeSessionFeedbackResponse, null>({
       query: () => ({
@@ -30,6 +32,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: ['Feedbacks'],
     }),
     getAllMenteeQuarterlyFeedback: build.query<MenteeQuarterlyFeedbackResponse, null>({
       query: () => ({
@@ -37,6 +40,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: ['Feedbacks'],
     }),
     getMentorQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, string | number>({
       query: (quarterlyFeedbackId) => ({
@@ -84,7 +88,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { feedbackAnswers: body.feedbackAnswers },
       }),
-      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }, 'Feedbacks'],
       onQueryStarted,
     }),
     answerMentorSessionFeedback: build.mutation<null, AnswerFeedbackRequest>({
@@ -93,7 +97,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { feedbackAnswers: body.feedbackAnswers },
       }),
-      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }, 'Feedbacks'],
       onQueryStarted,
     }),
     answerMenteeQuarterlyFeedback: build.mutation<null, AnswerFeedbackRequest>({
@@ -102,7 +106,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { feedbackAnswers: body.feedbackAnswers },
       }),
-      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }, 'Feedbacks'],
       onQueryStarted,
     }),
     answerMenteeSessionFeedback: build.mutation<null, AnswerFeedbackRequest>({
@@ -111,7 +115,7 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { feedbackAnswers: body.feedbackAnswers },
       }),
-      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }, 'Feedbacks'],
       onQueryStarted,
     }),
   }),
