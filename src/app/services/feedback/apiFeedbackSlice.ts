@@ -44,6 +44,9 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: (result) => (result
+        ? [{ type: 'Feedback', id: result.quarterlyFeedbackId }]
+        : ['Feedback']),
     }),
     getMentorSessionFeedback: build.query<SessionFeedbackResponse, string | number>({
       query: (sessionId) => ({
@@ -51,6 +54,9 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: (result) => (result
+        ? [{ type: 'Feedback', id: result.sessionFeedbackId }]
+        : ['Feedback']),
     }),
     getMenteeQuarterlyFeedback: build.query<QuarterlyFeedbackResponse, AnswerFeedbackRequest>({
       query: (quarterlyFeedbackId) => ({
@@ -58,6 +64,9 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: (result) => (result
+        ? [{ type: 'Feedback', id: result.quarterlyFeedbackId }]
+        : ['Feedback']),
     }),
     getMenteeSessionFeedback: build.query<SessionFeedbackResponse, string | number>({
       query: (sessionId) => ({
@@ -65,37 +74,44 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
       onQueryStarted,
+      providesTags: (result) => (result
+        ? [{ type: 'Feedback', id: result.sessionFeedbackId }]
+        : ['Feedback']),
     }),
     answerMentorQuarterlyFeedback: build.mutation<null, AnswerFeedbackRequest>({
       query: (body) => ({
         url: `mentor/mentoring-journey/feedbacks/quarterly/feedback/${body.id}`,
         method: 'PUT',
-        body: body.feedbackAnswers,
+        body: { feedbackAnswers: body.feedbackAnswers },
       }),
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
       onQueryStarted,
     }),
     answerMentorSessionFeedback: build.mutation<null, AnswerFeedbackRequest>({
       query: (body) => ({
         url: `session/mentor/feedback/${body.id}`,
         method: 'PUT',
-        body: body.feedbackAnswers,
+        body: { feedbackAnswers: body.feedbackAnswers },
       }),
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
       onQueryStarted,
     }),
     answerMenteeQuarterlyFeedback: build.mutation<null, AnswerFeedbackRequest>({
       query: (body) => ({
         url: `mentee/mentoring-journey/feedbacks/quarterly/feedback/${body.id}`,
         method: 'PUT',
-        body: body.feedbackAnswers,
+        body: { feedbackAnswers: body.feedbackAnswers },
       }),
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
       onQueryStarted,
     }),
     answerMenteeSessionFeedback: build.mutation<null, AnswerFeedbackRequest>({
       query: (body) => ({
         url: `session/mentee/feedback/${body.id}`,
         method: 'PUT',
-        body: body.feedbackAnswers,
+        body: { feedbackAnswers: body.feedbackAnswers },
       }),
+      invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }],
       onQueryStarted,
     }),
   }),
