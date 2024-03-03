@@ -10,7 +10,6 @@ import {
   setDate, setDescription, setMentee, setTitle,
 } from '../redux/mentoringJourneyFormSlice'
 import useUnassignedMenteesOptions from '../../../../hooks/useUnassignedMenteesOptions'
-import '../../../../../styles/custom-quill-style.css'
 
 interface BasicDetailsProps {
   handleNextStep: (toStep: number) => void
