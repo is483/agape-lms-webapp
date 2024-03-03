@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 import {
   Box, Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent,
-  ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, Textarea, useToast,
+  ModalHeader, ModalOverlay, Radio, RadioGroup, SimpleGrid, Stack, Text, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect } from 'react'
 import { useImmer } from 'use-immer'
+import ReactQuill from 'react-quill'
 import { ControlledTextInput } from '../../../components'
 import { clearErrors, clearValues } from '../../../utils'
 import { useCreateSessionMutation, useEditSessionMutation } from '../../../app/services/session/apiSessionSlice'
@@ -62,8 +63,8 @@ function SessionFormModal(props: SessionModalProps) {
     updateSession((draft) => { draft.title.value = e.target.value })
   }
 
-  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    updateSession((draft) => { draft.description.value = e.target.value })
+  const handleDescriptionChange = (description: string) => {
+    updateSession((draft) => { draft.description.value = description })
   }
 
   const handleFromDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -216,7 +217,12 @@ function SessionFormModal(props: SessionModalProps) {
             />
             <Box>
               <Text marginBottom="2"> Description </Text>
-              <Textarea placeholder="Include your meeting agenda here..." value={session.description.value} onChange={handleDescriptionChange} />
+              <ReactQuill
+                theme="snow"
+                value={session.description.value}
+                onChange={handleDescriptionChange}
+                className="react-quill-update"
+              />
               {!!session.description.error && <Text position="absolute" fontSize="xs" color="red.600">{session.description.error}</Text>}
             </Box>
             <Divider orientation="horizontal" marginTop="4" />

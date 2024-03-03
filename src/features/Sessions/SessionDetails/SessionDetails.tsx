@@ -1,26 +1,58 @@
+/* eslint-disable no-param-reassign */
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Divider, Text, Flex, HStack, Button, useDisclosure,
+  Box, Divider, Text, Flex, HStack, Button, useDisclosure, useToast,
 } from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import ReactQuill from 'react-quill'
 import {
   BackButton, Container, Icon, Link, ProfileIcon,
 } from '../../../components'
 import paths from '../../../paths'
-import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery } from '../../../app/services/session/apiSessionSlice'
+import { useLazyGetSessionDetailsMenteeQuery, useLazyGetSessionDetailsMentorQuery, useUpdateSessionNotesMutation } from '../../../app/services/session/apiSessionSlice'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
+import { UpdateSessionNotesRequest } from '../../../app/services/session/types'
 import { ensureProtocol } from '../../../utils'
+
+function getSessionDuration(startDateObject: Date, endDateObject: Date) {
+  const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
+  const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60))
+  const differenceInHours = Math.floor(differenceInMinutes / 60)
+  const remainingMinutes = differenceInMinutes % 60
+
+  let durationDisplay
+  if (differenceInHours === 0) {
+    durationDisplay = `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`
+  } else if (remainingMinutes === 0) {
+    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''}`
+  } else {
+    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`
+  }
+  return durationDisplay
+}
 
 function SessionDetails() {
   const { sessionId } = useParams()
   const navigate = useNavigate()
   const { role } = useAppSelector(getAuth)
+  const toast = useToast()
   const [getMenteeSessionDetails, menteeSessionDetailsResult] = useLazyGetSessionDetailsMenteeQuery()
   const [getMentorSessionDetails, mentorSessionDetailsResult] = useLazyGetSessionDetailsMentorQuery()
+  const [updateSessionNotesMutation, { isLoading }] = useUpdateSessionNotesMutation()
 
+  const { data } = role === 'Mentor' ? mentorSessionDetailsResult : menteeSessionDetailsResult
+  const {
+    firstName, lastName, profileImgUrl, menteeId,
+  } = data?.mentee ?? {}
+
+  const {
+    title, description, fromDateTime, toDateTime, location, sessionType, notes,
+  } = data?.sessionDetails ?? {}
+
+  const [sessionNotes, updateSessionNotes] = useState(notes)
   useEffect(() => {
     if (role === 'Mentor' && sessionId) {
       getMentorSessionDetails(sessionId)
@@ -29,16 +61,13 @@ function SessionDetails() {
     }
   }, [sessionId, role, getMenteeSessionDetails, getMentorSessionDetails])
 
+  useEffect(() => {
+    if (notes) {
+      updateSessionNotes(notes)
+    }
+  }, [notes])
+
   const { isOpen: isSessionFormModalOpen, onOpen: onOpenSessionFormModal, onClose: onSessionFormModalClose } = useDisclosure()
-
-  const { data } = role === 'Mentor' ? mentorSessionDetailsResult : menteeSessionDetailsResult
-  const {
-    firstName, lastName, profileImgUrl, menteeId,
-  } = data?.mentee ?? {}
-
-  const {
-    title, description, fromDateTime, toDateTime, location, sessionType,
-  } = data?.sessionDetails ?? {}
 
   const { isOpen: isDeleteSessionModalOpen, onOpen: onOpenDeleteSessionModal, onClose: onDeleteSessionModalClose } = useDisclosure()
   const todayDate = new Date()
@@ -50,15 +79,40 @@ function SessionDetails() {
   const endDate = endDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   const endTime = endDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
-  const differenceInHours = (endDateObject.getTime() - startDateObject.getTime()) / (1000 * 60 * 60)
-
   const isPast = endDateObject <= todayDate
 
   const handleViewMentee = () => {
     navigate(`${paths.AssignedMentees.subPath}/${menteeId}`)
   }
+
+  const handleNotesChange = (e: string) => {
+    updateSessionNotes(e)
+  }
+
+  const handleSaveNotes = async () => {
+    try {
+      const updateSessionNotesRequest: UpdateSessionNotesRequest = {
+        sessionId: sessionId!,
+        body: {
+          notes: sessionNotes!,
+        },
+      }
+      await updateSessionNotesMutation(updateSessionNotesRequest).unwrap()
+      toast({
+        title: 'Update Session',
+        description: 'Session notes have been updated!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
-    <Container position="relative" minH="calc(100vh - 34px)">
+    <Container position="relative" minH="calc(100vh - 34px)" overflowY="auto">
       <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} refetchSessions={() => getMentorSessionDetails(sessionId!)} />
       <DeleteSessionModal isModalOpen={isDeleteSessionModalOpen} onModalClose={onDeleteSessionModalClose} sessionId={data?.sessionDetails.sessionId} />
       <BackButton path={paths.Sessions.ViewAll} />
@@ -90,7 +144,7 @@ function SessionDetails() {
 
         <HStack>
           <Icon name="hourglass_top" fontSize="25px" />
-          <Text color="secondary.500"> {differenceInHours} hour</Text>
+          <Text color="secondary.500"> {getSessionDuration(startDateObject, endDateObject)}</Text>
         </HStack>
       </Flex>
 
@@ -104,7 +158,7 @@ function SessionDetails() {
         && (
           <Box mt="10">
             <Text fontWeight="600" fontSize="lg">Mentee</Text>
-            <Flex mt="4">
+            <Flex mt="2">
               <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentee}>
                 <HStack spacing="4">
                   <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
@@ -116,11 +170,43 @@ function SessionDetails() {
         )}
 
       <Box mt="10">
-        <Text fontWeight="600" fontSize="lg">Description </Text>
-        <Text color="secondary.500">
-          {description}
-        </Text>
+        <Text fontWeight="600" fontSize="lg" marginBottom="2">Description </Text>
+        <ReactQuill
+          value={description}
+          readOnly
+          theme="snow"
+          className="react-quill-view"
+        />
       </Box>
+
+      <Divider orientation="horizontal" marginY="10" />
+
+      {role === 'Mentor' && (
+        <Box>
+          <Text fontWeight="600" fontSize="lg" marginBottom="2">Notes </Text>
+          <ReactQuill
+            theme="snow"
+            className="react-quill-update"
+            value={sessionNotes}
+            onChange={handleNotesChange}
+          />
+          <Flex gap="4" justify="flex-end" mt="8">
+            <Button colorScheme="red" size="sm" onClick={handleSaveNotes} isLoading={isLoading}>Save Notes</Button>
+          </Flex>
+        </Box>
+      )}
+
+      {(role === 'Mentee' || role === 'Admin') && (
+        <Box>
+          <Text fontWeight="600" fontSize="lg" marginBottom="2">Notes </Text>
+          <ReactQuill
+            theme="snow"
+            className="react-quill-view"
+            value={sessionNotes}
+            readOnly
+          />
+        </Box>
+      )}
     </Container>
   )
 }

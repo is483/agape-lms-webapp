@@ -78,4 +78,11 @@ export interface UpdateSessionRequest {
   }
 }
 
+export interface UpdateSessionNotesRequest {
+  sessionId: number | string
+  body:{
+    notes: string
+  }
+}
+
 export type SessionResponse = Session[]

@@ -4,6 +4,7 @@ import {
   SkeletonText, Text, Textarea, useDisclosure, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
+import ReactQuill from 'react-quill'
 import { useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import {
   ControlledTextInput, Icon,
@@ -37,7 +38,7 @@ function Overview() {
       <Flex justify="space-between">
         <OverviewModalEditForm data={data} onClose={onClose} isOpen={isOpen} />
         <Text fontWeight="700" fontSize={['lg', null, null, 'xl']}>
-          Career Transformation with {data?.mentee.firstName}
+          {data?.title}
         </Text>
         <Button onClick={onOpen} px="0" rounded="full">
           <Icon name="edit" fontSize="24px" />
@@ -82,8 +83,13 @@ function Overview() {
         <Text color="secondary.400">{formattedStartDate} To {formattedEndDate}</Text>
       </Box>
       <Box mt="10">
-        <Text fontWeight="600" fontSize="lg">Description</Text>
-        <Text color="secondary.400">{data?.description ? data.description : '-'}</Text>
+        <Text fontWeight="600" fontSize="lg" marginBottom="2">Description</Text>
+        <ReactQuill
+          value={data?.description ?? ''}
+          readOnly
+          theme="snow"
+          className="react-quill-view"
+        />
       </Box>
     </>
   )
@@ -139,8 +145,8 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
     setTitle(e.target.value)
   }
 
-  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value)
+  const handleDescriptionChange = (description: string) => {
+    setDescription(description)
   }
 
   const handleSave = () => {
@@ -183,11 +189,11 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
         <ModalBody pb="4" pt="8">
           <ControlledTextInput error={errors.title} label="Title" type="text" inputProps={{ value: title, onChange: handleTitleChange }} />
           <Text mt="6">Description</Text>
-          <Textarea
-            borderColor={errors.description ? 'red.600' : 'inherit'}
-            borderWidth={errors.description ? '2px' : '1px'}
+          <ReactQuill
+            theme="snow"
             value={description}
             onChange={handleDescriptionChange}
+            className="react-quill-update"
           />
           {!!errors.description && <Text position="absolute" fontSize="xs" color="red.600">{errors.description}</Text>}
         </ModalBody>

@@ -5,6 +5,7 @@ import {
   DeclineSessionRequest,
   DeclineReasonResponse,
   UpdateSessionRequest,
+  UpdateSessionNotesRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -105,6 +106,15 @@ const apiSessionSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    updateSessionNotes: build.mutation<null, UpdateSessionNotesRequest>({
+      query: (request) => ({
+        url: `/session/notes/${request.sessionId}`,
+        method: 'PUT',
+        body: request.body,
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -121,4 +131,5 @@ export const {
   useDeleteSessionMutation,
   useGetDeclineReasonQuery,
   useUpdateSessionMutation,
+  useUpdateSessionNotesMutation,
 } = apiSessionSlice
