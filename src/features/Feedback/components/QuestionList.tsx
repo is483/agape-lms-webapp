@@ -75,6 +75,8 @@ function QuestionList(props: QuestionListProps) {
 
             return (
               <Question
+                questionNo={questionIndex + 1}
+                sectionNo={sectionIndex + 1}
                 isView={isView}
                 question={question}
                 value={answer}
