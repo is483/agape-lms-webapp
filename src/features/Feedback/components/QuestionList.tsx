@@ -6,7 +6,7 @@ import {
 import { useEffect } from 'react'
 import Question from './Question'
 import { QuestionState, Section, SectionWithAnswers } from './types'
-import { clearErrors } from '../../../utils'
+import { clearErrors, deepCopy } from '../../../utils'
 
 interface QuestionListProps {
   isView: boolean
@@ -41,9 +41,7 @@ function QuestionList(props: QuestionListProps) {
 
   const handleSubmit = () => {
     let hasError: boolean = false
-    updateQuestionsState((draft) => {
-      clearErrors(draft)
-    })
+    updateQuestionsState((draft) => clearErrors(draft))
 
     questionsState.forEach((section, sectionIndex: number) => {
       section.questions.forEach(({ answer }, questionIndex: number) => {
@@ -58,7 +56,9 @@ function QuestionList(props: QuestionListProps) {
 
     if (hasError) return
 
-    onSubmit(questionsState)
+    const request = deepCopy(questionsState)
+    clearErrors(request)
+    onSubmit(request)
   }
 
   return (
