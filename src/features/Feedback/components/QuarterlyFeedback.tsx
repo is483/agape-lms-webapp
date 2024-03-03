@@ -37,7 +37,8 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
 
             const dateDifference = Math.round((quarterDateObject.getTime() - todayDateObject.getTime()) / (1000 * 60 * 60 * 24))
             const formattedStatus = getStatus(status, dateDifference)
-            const isUnavailable = formattedStatus === 'Unavailable'
+            // TODO: Add this back in after testing
+            // const isUnavailable = formattedStatus === 'Unavailable'
 
             return (
               <Tr>
@@ -57,7 +58,9 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                   <Flex justify="end" gap="5">
                     {status === 'Not Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
-                        <Button size="sm" colorScheme="red" isDisabled={isUnavailable}>Submit Feedback</Button>
+                        {/* TODO: Add this back in after testing */}
+                        {/* isDisabled={isUnavailable} */}
+                        <Button size="sm" colorScheme="red">Submit Feedback</Button>
                       </Link>
                     )}
                     {status === 'Completed' && (

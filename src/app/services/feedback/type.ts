@@ -31,3 +31,26 @@ export interface MentorQuarterlyFeedbackResponse {
 export interface MenteeQuarterlyFeedbackResponse {
   menteeQuarterlyFeedbacks: QuarterlyFeedback[]
 }
+
+export interface AnswerFeedbackRequest {
+  feedbackAnswers: any
+  id: string | number
+}
+
+export interface QuarterlyFeedbackResponse {
+  quarterlyFeedbackId: string | number
+  feedbackAnswers: string
+  date: string
+  role: string
+  status: string
+  mentoringJourneyId: string | number
+}
+
+export interface SessionFeedbackResponse {
+  sessionFeedbackId: string | number
+  sessionId: string | number
+  feedbackAnswers: string
+  date: string
+  role: string
+  status: string
+}

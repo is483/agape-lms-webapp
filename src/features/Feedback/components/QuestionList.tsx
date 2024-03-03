@@ -3,20 +3,14 @@ import { useImmer } from 'use-immer'
 import {
   Box, Button, Flex, Text,
 } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import Question from './Question'
-import { Question as QuestionType, Section } from './types'
-import { clearErrors } from '../../../utils'
+import { QuestionState, Section, SectionWithAnswers } from './types'
+import { clearErrors, deepCopy } from '../../../utils'
 
-type QuestionState = QuestionType & {
-  answer: string
-  error: string
-}
 interface QuestionListProps {
   isView: boolean
-  sectionsWithAnswers?: {
-    sectionTitle: string
-    questions: QuestionState[]
-  }[]
+  sectionsWithAnswers?: SectionWithAnswers
   sections?: Section[]
   onSubmit: (answers: any) => void
 }
@@ -35,6 +29,10 @@ function QuestionList(props: QuestionListProps) {
   } = props
   const [questionsState, updateQuestionsState] = useImmer(isView ? sectionsWithAnswers! : createQuestionsState(sections!))
 
+  useEffect(() => {
+    updateQuestionsState(isView ? sectionsWithAnswers! : createQuestionsState(sections!))
+  }, [isView, sections, sectionsWithAnswers, updateQuestionsState])
+
   const handleAnswerChange = (sectionIndex: number, questionIndex: number, value: string) => {
     updateQuestionsState((draft) => {
       draft[sectionIndex].questions[questionIndex].answer = value
@@ -43,24 +41,24 @@ function QuestionList(props: QuestionListProps) {
 
   const handleSubmit = () => {
     let hasError: boolean = false
-    updateQuestionsState((draft) => {
-      clearErrors(draft)
-    })
+    updateQuestionsState((draft) => clearErrors(draft))
 
     questionsState.forEach((section, sectionIndex: number) => {
       section.questions.forEach(({ answer }, questionIndex: number) => {
-        if (!answer.trim()) {
+        if (!answer.trim().length) {
           updateQuestionsState((draft) => {
             draft[sectionIndex].questions[questionIndex].error = 'Answer is required'
-            hasError = true
           })
+          hasError = true
         }
       })
     })
 
     if (hasError) return
 
-    onSubmit(questionsState)
+    const request = deepCopy(questionsState)
+    clearErrors(request)
+    onSubmit(request)
   }
 
   return (
@@ -77,6 +75,8 @@ function QuestionList(props: QuestionListProps) {
 
             return (
               <Question
+                questionNo={questionIndex + 1}
+                sectionNo={sectionIndex + 1}
                 isView={isView}
                 question={question}
                 value={answer}

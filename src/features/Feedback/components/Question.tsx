@@ -12,6 +12,8 @@ interface QuestionProps {
   type: QuestionType
   options: string[] | undefined
   error: string
+  questionNo: number
+  sectionNo: number
   onChange: (value: string) => void
 }
 
@@ -38,6 +40,7 @@ function Question(questionProps: QuestionProps) {
 function FreeformQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
     isView, question, value, onChange, error,
+    questionNo, sectionNo,
   } = questionProps
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -50,7 +53,7 @@ function FreeformQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 
   return (
     <Box my="8">
-      <Text mb="2" fontSize="sm">{question}</Text>
+      <Text mb="2" fontSize="sm"><b>{sectionNo}.{questionNo})</b> {question}</Text>
       <Textarea isDisabled={isView} value={value} onChange={handleInputChange} {...errorStyling} />
       <Text color="red.500" fontSize="xs">{error}</Text>
     </Box>
@@ -60,6 +63,7 @@ function FreeformQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
     isView, question, value, onChange, error,
+    questionNo, sectionNo,
   } = questionProps
 
   const handleInputChange = (value: number) => {
@@ -71,7 +75,7 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   return (
     <Box my="8">
       <Flex justify="space-between" gap={[2, 4, 8]}>
-        <Text fontSize="sm">{question}</Text>
+        <Text fontSize="sm"><b>{sectionNo}.{questionNo})</b> {question}</Text>
         <Stack direction="row">
           {[1, 2, 3, 4, 5].map((rating) => (
             <Icon
@@ -92,6 +96,7 @@ function RatingQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
   const {
     isView, question, value, onChange, options, error,
+    questionNo, sectionNo,
   } = questionProps
 
   const handleInputChange = (nextValue: string) => {
@@ -100,7 +105,7 @@ function RadioQuestion(questionProps: Omit<QuestionProps, 'type'>) {
 
   return (
     <Box my="6">
-      <Text fontSize="sm" mb="2">{question}</Text>
+      <Text fontSize="sm" mb="2"><b>{sectionNo}.{questionNo})</b> {question}</Text>
       <RadioGroup onChange={handleInputChange} value={value} isDisabled={isView}>
         <Stack direction="column">
           {options!.map((option) => <Radio size="sm" value={option}>{option}</Radio>)}
