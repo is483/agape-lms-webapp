@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   Box, Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton, SkeletonCircle,
-  SkeletonText, Text, Textarea, useDisclosure, useToast,
+  SkeletonText, Text, useDisclosure, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
