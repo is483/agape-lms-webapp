@@ -138,6 +138,9 @@ export const mentoringJourneyFormSlice = createSlice({
       state.objectives.description.error = action.payload
     },
     // Milestones
+    setMilestones: (state: MentoringJourneyFormState, action: PayloadAction<Milestone[]>) => {
+      state.milestones.milestones = action.payload
+    },
     addGoal: (state: MentoringJourneyFormState, action: PayloadAction<{ goal: Goal }>) => {
       const { goal } = action.payload
       const { milestoneIndex } = state.milestones
@@ -187,5 +190,6 @@ export const {
   setMilestoneIndex, setGoalIndex,
   setMilestoneError, clearMentoringJourneyForm,
   setMinDeadlineDate, setMaxDeadlineDate,
+  setMilestones,
 } = mentoringJourneyFormSlice.actions
 export default mentoringJourneyFormSlice.reducer
