@@ -7,6 +7,9 @@ import CompletedMentoringJourneysTable from './CompletedMentoringJourneys.tsx/Co
 import FailedMentoringJourneysTable from './FailedMentoringJourneys.tsx/FailedMentoringJourneysTable'
 
 function AdminMentoringJourneys() {
+  // TO DO: LANCE
+  // 1. call api and pass down to table
+  // 2. update status prop
   return (
     <Container minH="calc(100vh - 34px)">
       <Box marginBottom="10">

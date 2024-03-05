@@ -8,7 +8,7 @@ import Metrics from '../Metrics'
 function FailedMentoringJourneysTable() {
   return (
     <Flex direction="column">
-      <Metrics status="Completed" />
+      <Metrics status="Failed" />
       <Flex justify="flex-end" marginY="5">
         <ControlledSelect options={[]} error="" />
       </Flex>

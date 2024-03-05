@@ -49,21 +49,25 @@ function Overview() {
       </Text>
       <Flex gap="4" mt="4" flexDir={['column', null, 'row']}>
         <InfographicItem
-          border="solid"
-          borderWidth="1px"
-          borderColor="secondary.50"
-          padding="4"
-          rounded="md"
+          containerProps={{
+            border: 'solid',
+            borderWidth: '1px',
+            borderColor: 'secondary.50',
+            padding: 4,
+            rounded: 'md',
+          }}
           title="Total Sessions Completed"
           amount={data?.totalSessionsCompleted ?? 0}
           iconName="handshake"
         />
         <InfographicItem
-          border="solid"
-          borderWidth="1px"
-          borderColor="secondary.50"
-          padding="4"
-          rounded="md"
+          containerProps={{
+            border: 'solid',
+            borderWidth: '1px',
+            borderColor: 'secondary.50',
+            padding: 4,
+            rounded: 'md',
+          }}
           title="Total Hours Completed"
           amount={data?.totalCompletedHours ?? 0}
           iconName="history"
