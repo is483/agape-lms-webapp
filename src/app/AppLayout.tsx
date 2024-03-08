@@ -19,6 +19,7 @@ import {
 } from '../features/Feedback'
 import { AssignedMentors } from '../features/AssignedMentors'
 import { AdminMentoringJourneys } from '../features/AdminMentoringJourneys'
+import { Mentees } from '../features/AllMentees'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -33,6 +34,7 @@ function AppLayout() {
           {role === 'Admin' && (
             <Routes>
               <Route path={paths.AdminMentoringJourneys.ViewAll} element={<AdminMentoringJourneys />} />
+              <Route path={paths.Mentees} element={<Mentees />} />
             </Routes>
           )}
           {role === 'Mentor' && (

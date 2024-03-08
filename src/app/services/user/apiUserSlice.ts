@@ -6,6 +6,7 @@ import {
   MentorMentoringRequest, MentorResponse, RoleResponse, SkillsRequest, TransformedUserResponse,
   UserRequest, UserResponse, ValuesRequest,
   UnassignedMenteesResponse,
+  AllMenteesResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDateInput } from '../../../utils'
@@ -195,6 +196,13 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    getAllMentees: build.query<AllMenteesResponse, null>({
+      query: () => ({
+        url: 'admin/view-mentees',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -209,5 +217,5 @@ export const {
   useUpdateMentorInterestsMutation, useUpdateMenteeInterestsMutation,
   useGetUserInfoQuery, useGetUserRoleQuery,
   useGetAssignedMenteesQuery, useGetAssignedMentorQuery,
-  useGetUnassignedMenteesQuery,
+  useGetUnassignedMenteesQuery, useGetAllMenteesQuery,
 } = apiUserSlice

@@ -139,3 +139,5 @@ export interface UnassignedMenteesResponse {
 export interface MentorResponse {
   assignedMentor: User
 }
+
+export type AllMenteesResponse = User[]
