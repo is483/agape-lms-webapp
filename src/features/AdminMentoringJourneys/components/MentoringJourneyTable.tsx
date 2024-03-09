@@ -1,9 +1,10 @@
 import {
-  Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr,
+  Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure,
 } from '@chakra-ui/react'
 import { Link, ProfileIcon } from '../../../components'
 import paths from '../../../paths'
 import { AdminMentoringJourney } from '../../../app/services/mentoringJourney/types'
+import DeleteMentoringJourneyModal from '../DeleteMentoringJourneyModal'
 
 interface MentoringJourneyTableProps {
   data: AdminMentoringJourney[]
@@ -11,6 +12,7 @@ interface MentoringJourneyTableProps {
 
 function MentoringJourneyTable(props: MentoringJourneyTableProps) {
   const { data } = props
+  const { isOpen: isDeleteMentoringJourneyModalOpen, onOpen: onOpenDeleteMentoringJourneyModal, onClose: onDeleteMentoringJourneyModalClose } = useDisclosure()
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -56,11 +58,12 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
                 </Td>
 
                 <Td>
+                  <DeleteMentoringJourneyModal isModalOpen={isDeleteMentoringJourneyModalOpen} onModalClose={onDeleteMentoringJourneyModalClose} mentoringJourneyId={mentoringJourneyId} />
                   <Flex justify="end" gap="4">
                     <Link to={`${paths.AdminMentoringJourneys.Details.subPath}/${mentoringJourneyId}`}>
                       <Button colorScheme="red">View Details</Button>
                     </Link>
-                    <Button colorScheme="red" variant="outline">
+                    <Button colorScheme="red" variant="outline" onClick={onOpenDeleteMentoringJourneyModal}>
                       Delete
                     </Button>
                   </Flex>
