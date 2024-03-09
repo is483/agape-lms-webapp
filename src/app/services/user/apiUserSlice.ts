@@ -7,6 +7,7 @@ import {
   UserRequest, UserResponse, ValuesRequest,
   UnassignedMenteesResponse,
   AllMenteesResponse,
+  AllMentorsResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDateInput } from '../../../utils'
@@ -203,6 +204,13 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    getAllMentors: build.query<AllMentorsResponse, null>({
+      query: () => ({
+        url: 'admin/view-mentors',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -218,4 +226,5 @@ export const {
   useGetUserInfoQuery, useGetUserRoleQuery,
   useGetAssignedMenteesQuery, useGetAssignedMentorQuery,
   useGetUnassignedMenteesQuery, useGetAllMenteesQuery,
+  useGetAllMentorsQuery,
 } = apiUserSlice

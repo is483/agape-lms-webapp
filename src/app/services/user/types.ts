@@ -141,3 +141,5 @@ export interface MentorResponse {
 }
 
 export type AllMenteesResponse = User[]
+
+export type AllMentorsResponse = User[]

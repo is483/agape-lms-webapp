@@ -5,11 +5,15 @@ import { Container } from '../../components'
 import OngoingMentoringJourneysTable from './OngoingMentoringJourney/OngoingMentoringJourneysTable'
 import CompletedMentoringJourneysTable from './CompletedMentoringJourneys.tsx/CompletedMentoringJourneysTable'
 import FailedMentoringJourneysTable from './FailedMentoringJourneys.tsx/FailedMentoringJourneysTable'
+import { useGetAllMentoringJourneyAdminQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 
 function AdminMentoringJourneys() {
   // TO DO: LANCE
   // 1. call api and pass down to table
   // 2. update status prop
+  const { data } = useGetAllMentoringJourneyAdminQuery(null)
+  const mentoringJourneys = data ?? []
+  const ongoingMentoringJourneys = mentoringJourneys.filter(({ status }) => status === 'in_progress')
   return (
     <Container minH="calc(100vh - 34px)">
       <Box marginBottom="10">
@@ -26,7 +30,7 @@ function AdminMentoringJourneys() {
         </TabList>
         <TabPanels>
           <TabPanel px="0">
-            <OngoingMentoringJourneysTable />
+            <OngoingMentoringJourneysTable data={ongoingMentoringJourneys} />
           </TabPanel>
           <TabPanel px="0">
             <CompletedMentoringJourneysTable />
