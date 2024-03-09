@@ -1,7 +1,7 @@
 import {
   Flex,
 } from '@chakra-ui/react'
-import { InfographicItem } from '../../components'
+import { InfographicItem } from '../../../components'
 
 interface MetricProps {
   status: string

@@ -2,18 +2,18 @@ import {
   Box, Tab, TabList, TabPanel, TabPanels, Tabs, Text,
 } from '@chakra-ui/react'
 import { Container } from '../../components'
-import OngoingMentoringJourneysTable from './OngoingMentoringJourney/OngoingMentoringJourneysTable'
+import OngoingMentoringJourneysTable from './OngoingMentoringJourney/OngoingMentoringJourneys'
 import CompletedMentoringJourneysTable from './CompletedMentoringJourneys.tsx/CompletedMentoringJourneysTable'
-import FailedMentoringJourneysTable from './FailedMentoringJourneys.tsx/FailedMentoringJourneysTable'
+import FailedMentoringJourneysTable from './FailedMentoringJourneys.tsx/FailedMentoringJourneys'
 import { useGetAllMentoringJourneyAdminQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 
 function AdminMentoringJourneys() {
-  // TO DO: LANCE
-  // 1. call api and pass down to table
-  // 2. update status prop
   const { data } = useGetAllMentoringJourneyAdminQuery(null)
   const mentoringJourneys = data ?? []
   const ongoingMentoringJourneys = mentoringJourneys.filter(({ status }) => status === 'in_progress')
+  const completedMentoringJourneys = mentoringJourneys.filter(({ status }) => status === 'completed')
+  const failedMentoringJourneys = mentoringJourneys.filter(({ status }) => status === 'failed')
+
   return (
     <Container minH="calc(100vh - 34px)">
       <Box marginBottom="10">
@@ -33,10 +33,10 @@ function AdminMentoringJourneys() {
             <OngoingMentoringJourneysTable data={ongoingMentoringJourneys} />
           </TabPanel>
           <TabPanel px="0">
-            <CompletedMentoringJourneysTable />
+            <CompletedMentoringJourneysTable data={completedMentoringJourneys} />
           </TabPanel>
           <TabPanel px="0">
-            <FailedMentoringJourneysTable />
+            <FailedMentoringJourneysTable data={failedMentoringJourneys} />
           </TabPanel>
         </TabPanels>
       </Tabs>

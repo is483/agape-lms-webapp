@@ -36,6 +36,7 @@ const paths = {
 
   AdminMentoringJourneys: {
     ViewAll: '/mentoring-journeys',
+    Details: { fullPath: '/mentoring-journeys/:mentoringJourneyId', subPath: '/mentoring-journeys' },
   },
 }
 

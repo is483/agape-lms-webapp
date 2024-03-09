@@ -21,6 +21,7 @@ import { AssignedMentors } from '../features/AssignedMentors'
 import { AdminMentoringJourneys } from '../features/AdminMentoringJourneys'
 import { Mentees } from '../features/AllMentees'
 import Mentors from '../features/AllMentors/Mentors'
+import AdminMentoringJourneyDetails from '../features/AdminMentoringJourneys/AdminMentoringJourneyDetails/AdminMentoringJourneyDetails'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -35,6 +36,7 @@ function AppLayout() {
           {role === 'Admin' && (
             <Routes>
               <Route path={paths.AdminMentoringJourneys.ViewAll} element={<AdminMentoringJourneys />} />
+              <Route path={paths.AdminMentoringJourneys.Details.fullPath} element={<AdminMentoringJourneyDetails />} />
               <Route path={paths.Mentors} element={<Mentors />} />
               <Route path={paths.Mentees} element={<Mentees />} />
             </Routes>

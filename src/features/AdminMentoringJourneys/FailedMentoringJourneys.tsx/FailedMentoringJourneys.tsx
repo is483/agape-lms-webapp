@@ -9,24 +9,24 @@ import useAllMentorOptions from '../../../hooks/useAllMentorOptions'
 import { useGetAllMentoringJourneyByIdAdminQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import MentoringJourneyTable from '../components/MentoringJourneyTable'
 
-interface CompletedMentoringJourneysProps {
+interface FailedMentoringJourneysProps {
   data: AdminMentoringJourney[]
 }
 
-function CompletedMentoringJourneys(props: CompletedMentoringJourneysProps) {
+function FailedMentoringJourneys(props: FailedMentoringJourneysProps) {
   const { options: mentorOptions } = useAllMentorOptions()
   const [mentorId, setMentorId] = useState('0')
   const { data: mentoringJourneysById } = useGetAllMentoringJourneyByIdAdminQuery(mentorId)
-  const completedMentoringJourneysById = mentoringJourneysById?.filter(({ status }) => status === 'completed')
+  const failedMentoringJourneysById = mentoringJourneysById?.filter(({ status }) => status === 'failed')
   const handleMentorChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedMentorId = e.target.value
     setMentorId(selectedMentorId)
   }
   const { data } = props
-  const dataToRender = mentorId === '0' ? data : completedMentoringJourneysById
+  const dataToRender = mentorId === '0' ? data : failedMentoringJourneysById
   return (
     <Flex direction="column">
-      <Metrics status="Completed" />
+      <Metrics status="Failed" />
       <Flex justify="flex-end" marginY="5">
         <ControlledSelect options={mentorOptions} selectProps={{ value: mentorId, onChange: handleMentorChange }} error="" />
       </Flex>
@@ -34,4 +34,4 @@ function CompletedMentoringJourneys(props: CompletedMentoringJourneysProps) {
     </Flex>
   )
 }
-export default CompletedMentoringJourneys
+export default FailedMentoringJourneys
