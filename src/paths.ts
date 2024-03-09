@@ -33,6 +33,11 @@ const paths = {
     Details: { fullPath: '/mentoring-journeys/:mentoringJourneyId', subPath: '/mentoring-journeys' },
     Create: '/mentoring-journeys/create',
   },
+
+  AdminMentoringJourneys: {
+    ViewAll: '/mentoring-journeys',
+    Details: { fullPath: '/mentoring-journeys/:mentoringJourneyId', subPath: '/mentoring-journeys' },
+  },
 }
 
 export default paths

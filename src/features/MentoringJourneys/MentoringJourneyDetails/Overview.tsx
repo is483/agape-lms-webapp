@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   Box, Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Skeleton, SkeletonCircle,
-  SkeletonText, Text, Textarea, useDisclosure, useToast,
+  SkeletonText, Text, useDisclosure, useToast,
 } from '@chakra-ui/react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
@@ -49,21 +49,25 @@ function Overview() {
       </Text>
       <Flex gap="4" mt="4" flexDir={['column', null, 'row']}>
         <InfographicItem
-          border="solid"
-          borderWidth="1px"
-          borderColor="secondary.50"
-          padding="4"
-          rounded="md"
+          containerProps={{
+            border: 'solid',
+            borderWidth: '1px',
+            borderColor: 'secondary.50',
+            padding: 4,
+            rounded: 'md',
+          }}
           title="Total Sessions Completed"
           amount={data?.totalSessionsCompleted ?? 0}
           iconName="handshake"
         />
         <InfographicItem
-          border="solid"
-          borderWidth="1px"
-          borderColor="secondary.50"
-          padding="4"
-          rounded="md"
+          containerProps={{
+            border: 'solid',
+            borderWidth: '1px',
+            borderColor: 'secondary.50',
+            padding: 4,
+            rounded: 'md',
+          }}
           title="Total Hours Completed"
           amount={data?.totalCompletedHours ?? 0}
           iconName="history"

@@ -75,3 +75,20 @@ export interface UpdateActionPlanIsDoneRequest {
     isDone: boolean
   }
 }
+
+export interface AdminMentoringJourney {
+  userMentoringJourneyId: string,
+  mentoringJourneyId: string,
+  menteeId: string,
+  mentorId: string,
+  title: string,
+  mentorImgUrl: string,
+  mentorFirstName: string,
+  mentorLastName: string,
+  menteeImgUrl: string,
+  menteeFirstName: string,
+  menteeLastName: string,
+  status: string,
+}
+
+export type AdminMentoringJourneysResponse = AdminMentoringJourney[]

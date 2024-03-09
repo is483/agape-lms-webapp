@@ -18,6 +18,10 @@ import {
   MenteeFeedback, MentorSessionFeedbackQuestionnaire, MenteeSessionFeedbackQuestionnaire,
 } from '../features/Feedback'
 import { AssignedMentors } from '../features/AssignedMentors'
+import { AdminMentoringJourneys } from '../features/AdminMentoringJourneys'
+import { Mentees } from '../features/AllMentees'
+import Mentors from '../features/AllMentors/Mentors'
+import AdminMentoringJourneyDetails from '../features/AdminMentoringJourneys/AdminMentoringJourneyDetails/AdminMentoringJourneyDetails'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -30,8 +34,12 @@ function AppLayout() {
         </Box>
         <Box width="100%" marginBottom={['48px', null, null, 0]} ml={[0, null, null, 250]}>
           {role === 'Admin' && (
-            <>
-            </>
+            <Routes>
+              <Route path={paths.AdminMentoringJourneys.ViewAll} element={<AdminMentoringJourneys />} />
+              <Route path={paths.AdminMentoringJourneys.Details.fullPath} element={<AdminMentoringJourneyDetails />} />
+              <Route path={paths.Mentors} element={<Mentors />} />
+              <Route path={paths.Mentees} element={<Mentees />} />
+            </Routes>
           )}
           {role === 'Mentor' && (
             <Routes>
