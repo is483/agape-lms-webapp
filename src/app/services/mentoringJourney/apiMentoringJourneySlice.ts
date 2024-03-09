@@ -4,6 +4,7 @@ import {
   UpdateMentoringJourneyRequest, MilestonesResponse, MentoringJourneyMetricsResponse,
   UpdateActionPlanIsDoneRequest,
   AdminMentoringJourneysResponse,
+  AllMentoringJourneyMetricsResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -94,9 +95,9 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
-    getAllMentoringJourneyMetrics: build.query<AdminMentoringJourneysResponse, string | number>({
-      query: () => ({
-        url: 'admin/view-mentoring-journeys/metrics',
+    getAllMentoringJourneyMetrics: build.query<AllMentoringJourneyMetricsResponse, string | number>({
+      query: (status) => ({
+        url: `admin/view-mentoring-journeys/metrics/${status}`,
         method: 'GET',
       }),
       onQueryStarted,
@@ -118,4 +119,5 @@ export const {
   useGetMilestonesQuery, useGetMilestoneQuery, useGetMentoringJourneyMetricsQuery,
   useUpdateActionPlanIsDoneMutation, useGetAllMentoringJourneyAdminQuery,
   useGetAllMentoringJourneyByIdAdminQuery, useDeleteMentoringJourneyMutation,
+  useGetAllMentoringJourneyMetricsQuery,
 } = apiMentoringJourneySlice

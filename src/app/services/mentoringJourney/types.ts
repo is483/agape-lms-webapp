@@ -92,7 +92,6 @@ export interface AdminMentoringJourney {
 }
 
 export interface AllMentoringJourneyMetricsResponse {
-  status: string,
   numberOfMentors: number,
   numberOfMentees: number,
   numberOfMentoringJourneys: number,

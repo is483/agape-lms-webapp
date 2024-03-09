@@ -2,6 +2,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { InfographicItem } from '../../../components'
+import { useGetAllMentoringJourneyMetricsQuery } from '../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 
 interface MetricProps {
   status: string
@@ -19,11 +20,13 @@ const getStatusStyles = (status: string) => {
 function Metrics(props: MetricProps) {
   const { status } = props
   const { bgColor, fontColor, iconColor } = getStatusStyles(status)
+  const { data } = useGetAllMentoringJourneyMetricsQuery(status)
+  console.log(data)
   return (
     <Flex marginTop="5" gap="10">
       <InfographicItem
         title="No. of Mentors"
-        amount={0}
+        amount={data?.numberOfMentors ?? 0}
         iconName="taunt"
         containerProps={{
           border: 'solid',
@@ -44,7 +47,7 @@ function Metrics(props: MetricProps) {
       />
       <InfographicItem
         title="No. of Mentees"
-        amount={0}
+        amount={data?.numberOfMentees ?? 0}
         iconName="group"
         containerProps={{
           border: 'solid',
@@ -65,7 +68,7 @@ function Metrics(props: MetricProps) {
       />
       <InfographicItem
         title="Mentoring Journeys"
-        amount={0}
+        amount={data?.numberOfMentoringJourneys ?? 0}
         iconName="conversion_path"
         containerProps={{
           border: 'solid',
