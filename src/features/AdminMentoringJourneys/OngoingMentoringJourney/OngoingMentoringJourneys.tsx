@@ -30,7 +30,7 @@ function OngoingMentoringJourneys(props: OngoingMentoringJourneysProps) {
       <Flex justify="flex-end" marginY="5">
         <ControlledSelect options={mentorOptions} selectProps={{ value: mentorId, onChange: handleMentorChange }} error="" />
       </Flex>
-      <MentoringJourneyTable data={dataToRender!} />
+      <MentoringJourneyTable data={dataToRender ?? []} />
     </Flex>
   )
 }
