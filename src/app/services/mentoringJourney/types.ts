@@ -91,4 +91,11 @@ export interface AdminMentoringJourney {
   status: string,
 }
 
+export interface AllMentoringJourneyMetricsResponse {
+  status: string,
+  numberOfMentors: number,
+  numberOfMentees: number,
+  numberOfMentoringJourneys: number,
+}
+
 export type AdminMentoringJourneysResponse = AdminMentoringJourney[]

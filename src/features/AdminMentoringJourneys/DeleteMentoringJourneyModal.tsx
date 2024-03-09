@@ -1,5 +1,5 @@
 import {
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Flex, Button, Image,
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Flex, Button, Image, useToast,
 } from '@chakra-ui/react'
 import warningIllustration from '../../assets/warning_illustration.png'
 
@@ -13,15 +13,25 @@ function DeleteMentoringJourneyModal(props: DeleteMentoringJourneyModalProps) {
   const {
     isModalOpen, onModalClose, mentoringJourneyId,
   } = props
+  const toast = useToast()
   const handleModalCancel = () => {
     onModalClose()
   }
   const handleAccept = async () => {
-    // if (!mentoringJourneyId) return
-    // try {
-    // } catch (e) {
-    //   console.error(e)
-    // }
+    if (!mentoringJourneyId) return
+    try {
+      toast({
+        title: 'Delete Mentoring Journey',
+        description: 'Mentoring Journey has been successfully deleted!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      handleModalCancel()
+    } catch (e) {
+      console.error(e)
+    }
   }
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl" isCentered>

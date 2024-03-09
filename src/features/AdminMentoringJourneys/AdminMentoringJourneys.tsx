@@ -3,8 +3,8 @@ import {
 } from '@chakra-ui/react'
 import { Container } from '../../components'
 import OngoingMentoringJourneysTable from './OngoingMentoringJourney/OngoingMentoringJourneys'
-import CompletedMentoringJourneysTable from './CompletedMentoringJourneys.tsx/CompletedMentoringJourneysTable'
-import FailedMentoringJourneysTable from './FailedMentoringJourneys.tsx/FailedMentoringJourneys'
+import CompletedMentoringJourneysTable from './CompletedMentoringJourneys/CompletedMentoringJourneysTable'
+import FailedMentoringJourneysTable from './FailedMentoringJourneys/FailedMentoringJourneys.tsx'
 import { useGetAllMentoringJourneyAdminQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 
 function AdminMentoringJourneys() {

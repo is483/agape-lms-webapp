@@ -94,6 +94,20 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    getAllMentoringJourneyMetrics: build.query<AdminMentoringJourneysResponse, string | number>({
+      query: () => ({
+        url: 'admin/view-mentoring-journeys/metrics',
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    deleteMentoringJourney: build.mutation<null, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `admin/delete-mentoring-journey/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -103,5 +117,5 @@ export const {
   useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation,
   useGetMilestonesQuery, useGetMilestoneQuery, useGetMentoringJourneyMetricsQuery,
   useUpdateActionPlanIsDoneMutation, useGetAllMentoringJourneyAdminQuery,
-  useGetAllMentoringJourneyByIdAdminQuery,
+  useGetAllMentoringJourneyByIdAdminQuery, useDeleteMentoringJourneyMutation,
 } = apiMentoringJourneySlice
