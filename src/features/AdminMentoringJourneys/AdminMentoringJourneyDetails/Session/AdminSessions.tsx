@@ -16,17 +16,21 @@ function AdminSessions() {
   const handleTabsChange = (index: number) => {
     setTabIndex(index)
   }
-  const sessions = data ?? []
+  const sortedSessions = [...(data ?? [])].sort((a, b) => {
+    const dateA = new Date(a.fromDateTime).getTime()
+    const dateB = new Date(b.fromDateTime).getTime()
+    return dateB - dateA
+  })
   const todayDate = new Date()
-  const upcomingSessions = sessions.filter(({ status, toDateTime }) => {
+  const upcomingSessions = sortedSessions.filter(({ status, toDateTime }) => {
     const sessionDate = new Date(toDateTime)
     return status === 'Confirmed' && sessionDate > todayDate
   })
-  const pastSessions = sessions.filter(({ status, toDateTime }) => {
+  const pastSessions = sortedSessions.filter(({ status, toDateTime }) => {
     const sessionDate = new Date(toDateTime)
     return status === 'Confirmed' && sessionDate <= todayDate
   })
-  const pendingSessions = sessions.filter(({ status }) => status !== 'Confirmed')
+  const pendingSessions = sortedSessions.filter(({ status }) => status !== 'Confirmed')
 
   return (
     <Box>
@@ -44,7 +48,7 @@ function AdminSessions() {
         </TabList>
         <TabPanels mt="10">
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable data={sessions} showStatus />
+            <UpcomingAndPastSessionsTable data={sortedSessions} showStatus />
           </TabPanel>
           <TabPanel px="0" pt="0">
             <UpcomingAndPastSessionsTable data={upcomingSessions} showStatus={false} />
