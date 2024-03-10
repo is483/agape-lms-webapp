@@ -7,6 +7,8 @@ import { useEffect } from 'react'
 import Question from './Question'
 import { QuestionState, Section, SectionWithAnswers } from './types'
 import { clearErrors, deepCopy } from '../../../utils'
+import { getAuth } from '../../../app/redux/selectors'
+import { useAppSelector } from '../../../hooks'
 
 interface QuestionListProps {
   isView: boolean
@@ -28,6 +30,7 @@ function QuestionList(props: QuestionListProps) {
     sections, sectionsWithAnswers, isView, onSubmit,
   } = props
   const [questionsState, updateQuestionsState] = useImmer(isView ? sectionsWithAnswers! : createQuestionsState(sections!))
+  const { role } = useAppSelector(getAuth)
 
   useEffect(() => {
     updateQuestionsState(isView ? sectionsWithAnswers! : createQuestionsState(sections!))
@@ -89,7 +92,7 @@ function QuestionList(props: QuestionListProps) {
           })}
         </Box>
       ))}
-      {!isView && (
+      {!isView && role !== 'Admin' && (
         <Flex justify="flex-end" mt="4">
           <Button onClick={handleSubmit} colorScheme="red">Submit</Button>
         </Flex>

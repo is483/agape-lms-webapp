@@ -40,6 +40,7 @@ function AppLayout() {
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
               <Route path={paths.Mentors} element={<Mentors />} />
               <Route path={paths.Mentees} element={<Mentees />} />
+              <Route path={paths.Feedback.QuarterlyFeedbackQuestionnaire.fullPath} element={<MentorQuarterlyFeedbackQuestionnaire />} />
             </Routes>
           )}
           {role === 'Mentor' && (

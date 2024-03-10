@@ -35,7 +35,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((feedback, index) => {
+          {data?.map((feedback: QuarterlyFeedbackType & AllQuarterlyFeedbackByMentoringJourney, index) => {
             const { date, status, quarterlyFeedbackId } = feedback
 
             const quarterDateObject = new Date(date)
@@ -90,11 +90,11 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                               View Feedback
                             </MenuButton>
                             <MenuList>
-                              {/* // QUESTION:
+                              {/* // TODO: question
                         we need to validate if mentor and mentee feedback is done first right?
                         If its not done we can either disable the menu item or when they click inside the feedback, it should mention not done */}
-                              <MenuItem>View Mentor Feedback</MenuItem>
-                              <MenuItem>View Mentee Feedback</MenuItem>
+                              <MenuItem><Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${feedback.mentorFeedbackId}`}>View Mentor Feedback</Link></MenuItem>
+                              <MenuItem><Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${feedback.menteeFeedbackId}`}>View Mentee Feedback</Link></MenuItem>
                             </MenuList>
                           </>
                         )}
