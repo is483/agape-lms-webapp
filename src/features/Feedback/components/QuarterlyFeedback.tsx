@@ -7,6 +7,7 @@ import {
   MenuList,
   Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
+import { useParams } from 'react-router-dom'
 import { AllQuarterlyFeedbackByMentoringJourney, QuarterlyFeedback as QuarterlyFeedbackType } from '../../../app/services/feedback/type'
 import { Icon, Link } from '../../../components'
 import paths from '../../../paths'
@@ -19,6 +20,7 @@ interface QuarterlyFeedbackProps {
 }
 
 function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
+  const { mentoringJourneyId } = useParams()
   const { data } = props
   const { role } = useAppSelector(getAuth)
 
@@ -93,8 +95,10 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                               {/* // TODO: question
                         we need to validate if mentor and mentee feedback is done first right?
                         If its not done we can either disable the menu item or when they click inside the feedback, it should mention not done */}
-                              <MenuItem><Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${feedback.mentorFeedbackId}`}>View Mentor Feedback</Link></MenuItem>
-                              <MenuItem><Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${feedback.menteeFeedbackId}`}>View Mentee Feedback</Link></MenuItem>
+                              {/* mentoring-journey/:mentoringJourneyId/feedback/quarterly/:quarterFeedbackId */}
+                              {/* mentoring-journey/${feedback.mentoringJourneyId}/feedback/quarterly/${feedback.mentorFeedbackId} */}
+                              <Link to={`/mentoring-journey/${mentoringJourneyId}/feedback/${index + 1}/quarterly/${feedback.mentorFeedbackId}`}><MenuItem>View Mentor Feedback</MenuItem></Link>
+                              <Link to={`/mentoring-journey/${mentoringJourneyId}/feedback/${index + 1}/quarterly/${feedback.menteeFeedbackId} `}><MenuItem>View Mentee Feedback</MenuItem></Link>
                             </MenuList>
                           </>
                         )}

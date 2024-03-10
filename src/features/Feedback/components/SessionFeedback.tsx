@@ -29,7 +29,7 @@ function SessionFeedback(props: SessionFeedbackProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((session) => {
+          {data?.map((session: SessionFeedbackType & AllSessionFeedbackByMentoringJourney) => {
             const {
               fromDateTime, toDateTime, title, sessionType,
               sessionId, status,
@@ -85,8 +85,8 @@ function SessionFeedback(props: SessionFeedbackProps) {
                               {/* // QUESTION:
                           we need to validate if mentor and mentee feedback is done first right?
                           If its not done we can either disable the menu item or when they click inside the feedback, it should mention not done */}
-                              <MenuItem>View Mentor Feedback</MenuItem>
-                              <MenuItem>View Mentee Feedback</MenuItem>
+                              <Link to={`/feedback/mentor/${sessionId}`}><MenuItem>View Mentor Feedback</MenuItem></Link>
+                              <Link to={`/feedback/mentee/${sessionId}`}><MenuItem>View Mentee Feedback</MenuItem></Link>
                             </MenuList>
                           </>
                         )}
