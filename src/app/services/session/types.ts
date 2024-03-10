@@ -85,7 +85,7 @@ export interface UpdateSessionNotesRequest {
   }
 }
 
-export interface getAllSessionsByMentoringJourney {
+export interface AllSessionsByMentoringJourney {
   sessionId: string,
   sessionType: string,
   fromDateTime: string,
@@ -94,6 +94,6 @@ export interface getAllSessionsByMentoringJourney {
   status: string,
 }
 
-export type getAllSessionsByMentoringJourneyResponse = getAllSessionsByMentoringJourney[]
+export type AllSessionsByMentoringJourneyResponse = AllSessionsByMentoringJourney[]
 
 export type SessionResponse = Session[]

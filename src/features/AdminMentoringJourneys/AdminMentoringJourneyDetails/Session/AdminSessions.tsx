@@ -4,6 +4,8 @@ import {
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetAllSessionsByMentoringJourneyQuery } from '../../../../app/services/session/apiSessionSlice'
+import UpcomingAndPastSessionsTable from '../../../Sessions/SessionsTable/UpcomingAndPastSessionsTable'
+import PendingSessionsTable from '../../../Sessions/SessionsTable/PendingSessionsTable'
 
 function AdminSessions() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -40,11 +42,19 @@ function AdminSessions() {
           <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
           <Tab py="1" fontSize={['xs', 'sm']}>Pending</Tab>
         </TabList>
-        <TabPanels>
-          <TabPanel px="0" pt="0" />
-          <TabPanel px="0" pt="0" />
-          <TabPanel px="0" pt="0" />
-          <TabPanel px="0" pt="0" />
+        <TabPanels mt="10">
+          <TabPanel px="0" pt="0">
+            <UpcomingAndPastSessionsTable data={sessions} showStatus />
+          </TabPanel>
+          <TabPanel px="0" pt="0">
+            <UpcomingAndPastSessionsTable data={upcomingSessions} showStatus={false} />
+          </TabPanel>
+          <TabPanel px="0" pt="0">
+            <UpcomingAndPastSessionsTable data={pastSessions} showStatus={false} />
+          </TabPanel>
+          <TabPanel px="0" pt="0">
+            <PendingSessionsTable data={pendingSessions} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Box>

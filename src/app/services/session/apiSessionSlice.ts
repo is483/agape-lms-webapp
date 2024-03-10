@@ -6,7 +6,7 @@ import {
   DeclineReasonResponse,
   UpdateSessionRequest,
   UpdateSessionNotesRequest,
-  getAllSessionsByMentoringJourneyResponse,
+  AllSessionsByMentoringJourneyResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -118,7 +118,7 @@ const apiSessionSlice = apiSlice.injectEndpoints({
     }),
 
     // Admin
-    getAllSessionsByMentoringJourney: build.query<getAllSessionsByMentoringJourneyResponse, string | number>({
+    getAllSessionsByMentoringJourney: build.query<AllSessionsByMentoringJourneyResponse, string | number>({
       query: (mentoringJourneyId) => ({
         url: `admin/view-mentoring-journeys/sessions/${mentoringJourneyId}`,
         method: 'GET',

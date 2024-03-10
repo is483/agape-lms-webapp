@@ -5,7 +5,6 @@ import {
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
-import Overview from './Overview'
 import Sessions from './Session/AdminSessions'
 
 function AdminMentoringJourneyDetails() {
@@ -22,9 +21,7 @@ function AdminMentoringJourneyDetails() {
           <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Feedback</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel px="0">
-            <Overview />
-          </TabPanel>
+          <TabPanel px="0" />
           <TabPanel px="0">
             <Box position="relative" maxW="100%" />
           </TabPanel>
