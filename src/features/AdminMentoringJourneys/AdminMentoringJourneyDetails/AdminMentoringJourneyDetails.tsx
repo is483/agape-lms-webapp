@@ -6,7 +6,7 @@ import {
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
 import Overview from './Overview'
-import Feedback from './Feedback/Feedback'
+import Feedback from './AdminFeedback/AdminFeedback'
 
 function AdminMentoringJourneyDetails() {
   return (

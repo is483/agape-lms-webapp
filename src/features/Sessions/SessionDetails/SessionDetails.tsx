@@ -115,7 +115,12 @@ function SessionDetails() {
     <Container position="relative" minH="calc(100vh - 34px)" overflowY="auto">
       <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} refetchSessions={() => getMentorSessionDetails(sessionId!)} />
       <DeleteSessionModal isModalOpen={isDeleteSessionModalOpen} onModalClose={onDeleteSessionModalClose} sessionId={data?.sessionDetails.sessionId} />
-      <BackButton path={paths.Sessions.ViewAll} />
+      {(role === 'Mentor' || role === 'Mentee') && (
+        <BackButton path={paths.Sessions.ViewAll} />
+      )}
+      {role === 'Admin' && (
+        <BackButton path={paths.AdminMentoringJourneys.ViewAll} />
+      )}
       <Divider position="absolute" left="0" mt="6" />
       <Flex justifyContent="space-between" flexDir={['column-reverse', 'column-reverse', 'row']} mt="12">
         <Text fontSize="lg" fontWeight="600"> {title} </Text>
@@ -187,7 +192,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-update"
-            value={sessionNotes}
+            value={sessionNotes!}
             onChange={handleNotesChange}
           />
           <Flex gap="4" justify="flex-end" mt="8">
@@ -202,7 +207,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-view"
-            value={sessionNotes}
+            value={sessionNotes!}
             readOnly
           />
         </Box>

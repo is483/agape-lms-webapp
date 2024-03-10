@@ -1,19 +1,27 @@
 import {
   Button,
   Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
-import { QuarterlyFeedback as QuarterlyFeedbackType } from '../../../app/services/feedback/type'
-import { Link } from '../../../components'
+import { AllQuarterlyFeedbackByMentoringJourney, QuarterlyFeedback as QuarterlyFeedbackType } from '../../../app/services/feedback/type'
+import { Icon, Link } from '../../../components'
 import paths from '../../../paths'
 import { getStatus } from '../utils'
+import { getAuth } from '../../../app/redux/selectors'
+import { useAppSelector } from '../../../hooks'
 
 interface QuarterlyFeedbackProps {
-  data: QuarterlyFeedbackType[] | undefined
+  data: QuarterlyFeedbackType[] & AllQuarterlyFeedbackByMentoringJourney[] | undefined
 }
 
 function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
   const { data } = props
+  const { role } = useAppSelector(getAuth)
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -56,17 +64,41 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                 </Td>
                 <Td>
                   <Flex justify="end" gap="5">
-                    {status === 'Not Completed' && (
+                    {(role === 'Mentor' || 'Mentee') && status === 'Not Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         {/* TODO: Add this back in after testing */}
                         {/* isDisabled={isUnavailable} */}
                         <Button size="sm" colorScheme="red">Submit Feedback</Button>
                       </Link>
                     )}
-                    {status === 'Completed' && (
+                    {(role === 'Mentor' || 'Mentee') && status === 'Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
                       </Link>
+                    )}
+                    {(role === 'Admin') && (
+                      <Menu>
+                        {({ isOpen }) => (
+                          <>
+                            <MenuButton
+                              isActive={isOpen}
+                              as={Button}
+                              colorScheme="red"
+                              rightIcon={<Icon name={isOpen ? 'expand_less' : 'expand_more'} color="white" />}
+                              size="sm"
+                            >
+                              View Feedback
+                            </MenuButton>
+                            <MenuList>
+                              {/* // QUESTION:
+                        we need to validate if mentor and mentee feedback is done first right?
+                        If its not done we can either disable the menu item or when they click inside the feedback, it should mention not done */}
+                              <MenuItem>View Mentor Feedback</MenuItem>
+                              <MenuItem>View Mentee Feedback</MenuItem>
+                            </MenuList>
+                          </>
+                        )}
+                      </Menu>
                     )}
                   </Flex>
                 </Td>

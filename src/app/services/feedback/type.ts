@@ -5,10 +5,10 @@ export interface SessionFeedback {
   toDateTime: string
   title: string
   sessionType: string
-  status: string
+  status?: string
 }
 
-export interface QuarterlyFeedback{
+export interface QuarterlyFeedback {
   quarterlyFeedbackId: string
   feedbackAnswers: string[]
   date: string
@@ -54,3 +54,26 @@ export interface SessionFeedbackResponse {
   role: string
   status: string
 }
+
+export interface AllSessionFeedbackByMentoringJourney {
+  sessionId: string,
+  fromDateTime: string,
+  toDateTime: string,
+  title: string,
+  sessionType: string,
+  mentorFeedbackId: string | number,
+  mentorFeedbackStatus: string,
+  menteeFeedbackId: string | number,
+  menteeFeedbackStatus: string,
+}
+
+export interface AllQuarterlyFeedbackByMentoringJourney {
+  date: string,
+  mentorFeedbackId: string | number,
+  mentorFeedbackStatus: string,
+  menteeFeedbackId: string | number,
+  menteeFeedbackStatus: string,
+}
+
+export type AllSessionFeedbackByMentoringJourneyResponse = AllSessionFeedbackByMentoringJourney[]
+export type AllQuarterlyFeedbackByMentoringJourneyResponse = AllQuarterlyFeedbackByMentoringJourney[]

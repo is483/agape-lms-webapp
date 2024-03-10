@@ -1,18 +1,22 @@
 import {
   Button,
   Flex,
-  Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
+  Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text, Menu, MenuButton, MenuItem, MenuList,
 } from '@chakra-ui/react'
-import { SessionFeedback as SessionFeedbackType } from '../../../app/services/feedback/type'
+import { AllSessionFeedbackByMentoringJourney, SessionFeedback as SessionFeedbackType } from '../../../app/services/feedback/type'
 import paths from '../../../paths'
-import { Link } from '../../../components'
+import { Icon, Link } from '../../../components'
+import { getAuth } from '../../../app/redux/selectors'
+import { useAppSelector } from '../../../hooks'
 
 interface SessionFeedbackProps {
-  data: SessionFeedbackType[] | undefined
+  data: SessionFeedbackType[] & AllSessionFeedbackByMentoringJourney[] | undefined
 }
 
 function SessionFeedback(props: SessionFeedbackProps) {
   const { data } = props
+  const { role } = useAppSelector(getAuth)
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -53,16 +57,40 @@ function SessionFeedback(props: SessionFeedbackProps) {
                   {sessionType}
                 </Td>
                 <Td>
-                  <Flex justify="end" gap="2">
-                    {status === 'Not Completed' && (
+                  <Flex justify="end" gap="3" alignItems="center">
+                    {(role === 'Mentor' || 'Mentee') && status === 'Not Completed' && (
                       <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionId}`}>
                         <Button size="sm" colorScheme="red">Rate Session</Button>
                       </Link>
                     )}
-                    {status === 'Completed' && (
+                    {(role === 'Mentor' || 'Mentee') && status === 'Completed' && (
                       <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
                       </Link>
+                    )}
+                    {role === 'Admin' && (
+                      <Menu>
+                        {({ isOpen }) => (
+                          <>
+                            <MenuButton
+                              isActive={isOpen}
+                              as={Button}
+                              colorScheme="red"
+                              rightIcon={<Icon name={isOpen ? 'expand_less' : 'expand_more'} color="white" />}
+                              size="sm"
+                            >
+                              View Feedback
+                            </MenuButton>
+                            <MenuList>
+                              {/* // QUESTION:
+                          we need to validate if mentor and mentee feedback is done first right?
+                          If its not done we can either disable the menu item or when they click inside the feedback, it should mention not done */}
+                              <MenuItem>View Mentor Feedback</MenuItem>
+                              <MenuItem>View Mentee Feedback</MenuItem>
+                            </MenuList>
+                          </>
+                        )}
+                      </Menu>
                     )}
                     <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
                       <Button size="sm" colorScheme="red" variant="outline">Session Details</Button>
