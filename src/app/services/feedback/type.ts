@@ -75,10 +75,10 @@ export interface AllQuarterlyFeedbackByMentoringJourney {
   menteeFeedbackId: string | number,
   menteeFeedbackStatus: string,
   // kms this is fake
-  quarterlyFeedbackId?: string
-  feedbackAnswers?: string[]
-  status?: string
-  mentoringJourneyId?: string
+  quarterlyFeedbackId: string
+  feedbackAnswers: string[]
+  status: string
+  mentoringJourneyId: string
 }
 
 export type AllSessionFeedbackByMentoringJourneyResponse = AllSessionFeedbackByMentoringJourney[]
