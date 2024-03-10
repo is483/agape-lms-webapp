@@ -80,9 +80,20 @@ export interface UpdateSessionRequest {
 
 export interface UpdateSessionNotesRequest {
   sessionId: number | string
-  body:{
+  body: {
     notes: string
   }
 }
+
+export interface getAllSessionsByMentoringJourney {
+  sessionId: string,
+  sessionType: string,
+  fromDateTime: string,
+  toDateTime: string,
+  title: string,
+  status: string,
+}
+
+export type getAllSessionsByMentoringJourneyResponse = getAllSessionsByMentoringJourney[]
 
 export type SessionResponse = Session[]
