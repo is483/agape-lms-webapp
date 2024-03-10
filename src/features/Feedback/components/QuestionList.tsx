@@ -80,7 +80,7 @@ function QuestionList(props: QuestionListProps) {
               <Question
                 questionNo={questionIndex + 1}
                 sectionNo={sectionIndex + 1}
-                isView={isView}
+                isView={isView || role === 'Admin'}
                 question={question}
                 value={answer}
                 type={type}
