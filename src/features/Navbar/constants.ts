@@ -26,12 +26,12 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         },
         {
           name: 'Mentors',
-          iconName: 'groups',
+          iconName: 'supervisor_account',
           path: paths.Mentors,
         },
         {
           name: 'Mentees',
-          iconName: 'groups_2',
+          iconName: 'person',
           path: paths.Mentees,
         },
         {
