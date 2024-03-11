@@ -34,14 +34,15 @@ function Overview() {
   const formattedStartDate = formatDate(new Date(data?.startDate ?? ''))
   const formattedEndDate = formatDate(new Date(data?.endDate ?? ''))
 
-  // LANCE: DOESN'T WORK
   const handleViewMentee = () => {
-    navigate(`${paths.AssignedMentees.subPath}/${mentee?.menteeId}`)
+    if (role === 'Mentor') {
+      navigate(`${paths.AssignedMentees.subPath}/${mentee?.menteeId}`)
+    } else {
+      navigate(`${paths.Mentees.subPath}/${mentee?.menteeId}`)
+    }
   }
-
-  // LANCE: HOW SHOULD I RENDER THE MENTOR PROFILE?
   const handleViewMentor = () => {
-    navigate(`${paths.Mentors}`)
+    navigate(`${paths.Mentors.subPath}/${mentor?.mentorId}`)
   }
 
   return (

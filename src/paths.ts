@@ -24,8 +24,8 @@ const paths = {
   Training: '/training',
   MyProfile: '/profile',
 
-  Mentors: '/mentors',
-  Mentees: '/mentees',
+  Mentors: { fullPath: '/mentors/:userId', subPath: '/mentors' },
+  Mentees: { fullPath: '/mentees/:userId', subPath: '/mentees' },
   Pairing: '/pairing',
 
   MentoringJourneys: {
