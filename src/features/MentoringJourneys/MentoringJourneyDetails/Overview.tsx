@@ -112,7 +112,7 @@ function Overview() {
             <Text fontWeight="600" fontSize="lg">Mentor</Text>
             <Flex mt="4">
               <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentor}>
-                <ProfileIcon imgUrl={data?.mentee.profileImgUrl} />
+                <ProfileIcon imgUrl={data?.mentor.profileImgUrl} />
                 {mentorFullName}
               </Box>
             </Flex>
