@@ -13,15 +13,20 @@ import {
 import { formatDate } from '../../../utils'
 import paths from '../../../paths'
 import { MentoringJourneyDetailsResponse, UpdateMentoringJourneyRequest } from '../../../app/services/mentoringJourney/types'
+import { getAuth } from '../../../app/redux/selectors'
+import { useAppSelector } from '../../../hooks'
 
 function Overview() {
   const { mentoringJourneyId } = useParams()
+  const { role } = useAppSelector(getAuth)
   const { data, isLoading } = useGetMentoringJourneyOverviewQuery(mentoringJourneyId!)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const navigate = useNavigate()
 
   const mentee = data?.mentee
-  const fullName = `${mentee?.firstName} ${mentee?.lastName}`
+  const mentor = data?.mentor
+  const menteeFullName = `${mentee?.firstName} ${mentee?.lastName}`
+  const mentorFullName = `${mentor?.firstName} ${mentor?.lastName}`
   if (isLoading) {
     return <OverviewSkeleton />
   }
@@ -29,8 +34,14 @@ function Overview() {
   const formattedStartDate = formatDate(new Date(data?.startDate ?? ''))
   const formattedEndDate = formatDate(new Date(data?.endDate ?? ''))
 
+  // LANCE: DOESN'T WORK
   const handleViewMentee = () => {
     navigate(`${paths.AssignedMentees.subPath}/${mentee?.menteeId}`)
+  }
+
+  // LANCE: HOW SHOULD I RENDER THE MENTOR PROFILE?
+  const handleViewMentor = () => {
+    navigate(`${paths.Mentors}`)
   }
 
   return (
@@ -40,48 +51,75 @@ function Overview() {
         <Text fontWeight="700" fontSize={['lg', null, null, 'xl']}>
           {data?.title}
         </Text>
-        <Button onClick={onOpen} px="0" rounded="full">
-          <Icon name="edit" fontSize="24px" />
-        </Button>
+        {role === 'Mentor' && (
+          <Button onClick={onOpen} px="0" rounded="full">
+            <Icon name="edit" fontSize="24px" />
+          </Button>
+        )}
       </Flex>
-      <Text fontSize="sm" color="secondary.400">
-        View all necessary information about your mentoring journey
-      </Text>
-      <Flex gap="4" mt="4" flexDir={['column', null, 'row']}>
-        <InfographicItem
-          containerProps={{
-            border: 'solid',
-            borderWidth: '1px',
-            borderColor: 'secondary.50',
-            padding: 4,
-            rounded: 'md',
-          }}
-          title="Total Sessions Completed"
-          amount={data?.totalSessionsCompleted ?? 0}
-          iconName="handshake"
-        />
-        <InfographicItem
-          containerProps={{
-            border: 'solid',
-            borderWidth: '1px',
-            borderColor: 'secondary.50',
-            padding: 4,
-            rounded: 'md',
-          }}
-          title="Total Hours Completed"
-          amount={data?.totalCompletedHours ?? 0}
-          iconName="history"
-        />
-      </Flex>
-      <Box mt="10">
-        <Text fontWeight="600" fontSize="lg">Mentee</Text>
-        <Flex mt="4">
-          <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentee}>
-            <ProfileIcon imgUrl={data?.mentee.profileImgUrl} />
-            {fullName}
-          </Box>
+      {role === 'Mentor' && (
+        <Text fontSize="sm" color="secondary.400">
+          View all necessary information about your mentoring journey
+        </Text>
+      )}
+      {role === 'Admin' && (
+        <Text fontSize="sm" color="secondary.400">
+          View all necessary information about the mentoring journey between <b> {menteeFullName} and {mentorFullName} </b>.
+        </Text>
+      )}
+
+      {role === 'Mentor' && (
+        <Flex gap="4" mt="4" flexDir={['column', null, 'row']}>
+          <InfographicItem
+            containerProps={{
+              border: 'solid',
+              borderWidth: '1px',
+              borderColor: 'secondary.50',
+              padding: 4,
+              rounded: 'md',
+            }}
+            title="Total Sessions Completed"
+            amount={data?.totalSessionsCompleted ?? 0}
+            iconName="handshake"
+          />
+          <InfographicItem
+            containerProps={{
+              border: 'solid',
+              borderWidth: '1px',
+              borderColor: 'secondary.50',
+              padding: 4,
+              rounded: 'md',
+            }}
+            title="Total Hours Completed"
+            amount={data?.totalCompletedHours ?? 0}
+            iconName="history"
+          />
         </Flex>
-      </Box>
+      )}
+      <Flex gap={role === 'Admin' ? [0, null, 10] : 0} flexDir={role === 'Admin' ? ['column', null, 'row'] : 'row'}>
+        <Box mt="10">
+          <Text fontWeight="600" fontSize="lg">Mentee</Text>
+          <Flex mt="4">
+            <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentee}>
+              <ProfileIcon imgUrl={data?.mentee.profileImgUrl} />
+              {menteeFullName}
+            </Box>
+          </Flex>
+        </Box>
+
+        {role === 'Admin' && (
+          <Box mt="10">
+            <Text fontWeight="600" fontSize="lg">Mentor</Text>
+            <Flex mt="4">
+              <Box padding="6" _hover={{ shadow: 'md', transition: '0.5s', cursor: 'pointer' }} border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2" onClick={handleViewMentor}>
+                <ProfileIcon imgUrl={data?.mentee.profileImgUrl} />
+                {mentorFullName}
+              </Box>
+            </Flex>
+          </Box>
+        )}
+      </Flex>
+
       <Box mt="10">
         <Text fontWeight="600" fontSize="lg">Mentoring Duration</Text>
         <Text color="secondary.400">{formattedStartDate} To {formattedEndDate}</Text>

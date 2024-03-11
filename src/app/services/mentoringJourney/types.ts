@@ -40,6 +40,12 @@ export interface MentoringJourneyDetailsResponse {
     lastName: string,
     profileImgUrl: string
   },
+  mentor: {
+    menteeId: number,
+    firstName: string,
+    lastName: string,
+    profileImgUrl: string
+  },
   mentoringJourneyId: number,
   title: string,
   totalSessionsCompleted: number,

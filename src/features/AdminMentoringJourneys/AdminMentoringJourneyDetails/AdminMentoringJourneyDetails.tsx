@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
-import Overview from './Overview'
+import Overview from '../../MentoringJourneys/MentoringJourneyDetails/Overview'
 
 function AdminMentoringJourneyDetails() {
   return (
