@@ -6,6 +6,7 @@ import {
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
 import Overview from './Overview'
+import Metrics from './Metrics/Metrics'
 
 function AdminMentoringJourneyDetails() {
   return (
@@ -25,7 +26,7 @@ function AdminMentoringJourneyDetails() {
             <Overview />
           </TabPanel>
           <TabPanel px="0">
-            <Box position="relative" maxW="100%" />
+            <Metrics />
           </TabPanel>
           <TabPanel px="0" />
           <TabPanel px="0" />
