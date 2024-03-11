@@ -2,6 +2,8 @@ import {
   Box, Tab, TabList, TabPanel, TabPanels, Tabs, Text,
 } from '@chakra-ui/react'
 import FeedbackMetrics from './FeedbackMetrics'
+import GoalMetrics from './GoalMetrics'
+import SessionMetrics from './SessionMetrics'
 
 function Metrics() {
   return (
@@ -16,8 +18,12 @@ function Metrics() {
           <Tab py="1" px={[2, 4]} fontSize={['xs', 'sm', 'md']}>Feedback</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel px="0" />
-          <TabPanel px="0" />
+          <TabPanel px="0">
+            <GoalMetrics />
+          </TabPanel>
+          <TabPanel px="0">
+            <SessionMetrics />
+          </TabPanel>
           <TabPanel px="0">
             <FeedbackMetrics />
           </TabPanel>

@@ -16,7 +16,6 @@ const calculatePercentage = (count: number, total: number): number => (total > 0
 const getBadgeDetails = (data: SessionMetricsResponse, role: string) => {
   if (!data) return { label: 'No Ratings', colorScheme: 'gray' }
   const scores = role === 'Mentor' ? data?.mentorSatisfactionScores : data?.menteeSatisfactionScores
-
   const satisfactionLevels = [
     { label: 'Very Satisfied', value: scores.verySatisfied ?? 0, colorScheme: 'green' },
     { label: 'Satisfied', value: scores.Satisfied ?? 0, colorScheme: 'green' },
@@ -36,11 +35,9 @@ function FeedbackMetrics() {
   return (
     <SimpleGrid columns={[1, null, 2]} spacing="20px" mt="5">
       <Flex border="solid" borderWidth="1px" borderColor="secondary.50" padding={4} rounded="md" flexDir="column">
-        <Box mb="2">
-          <Circle size="45px" bg="red.100">
-            <Icon color="red.700" fontSize="2xl" name="supervisor_account" />
-          </Circle>
-        </Box>
+        <Circle size="45px" bg="white" borderWidth="1px" mb="2" borderColor="primary.400">
+          <Icon color="red.700" fontSize="2xl" name="supervisor_account" />
+        </Circle>
         <Text fontWeight="bold" mb="2">Mentor&apos;s Overall Satisfaction (Based on {mentorScores?.totalReviews} reviews)</Text>
         <Box display="inline-flex">
           <Badge colorScheme={getBadgeDetails(data!, 'Mentor').colorScheme} mb="4" p="1">{getBadgeDetails(data!, 'Mentor').label}</Badge>
@@ -53,11 +50,9 @@ function FeedbackMetrics() {
       </Flex>
 
       <Flex border="solid" borderWidth="1px" borderColor="secondary.50" padding={4} rounded="md" flexDir="column">
-        <Box mb="2">
-          <Circle size="45px" bg="red.100">
-            <Icon color="red.700" fontSize="2xl" name="person" />
-          </Circle>
-        </Box>
+        <Circle size="45px" bg="white" borderWidth="1px" mb="2" borderColor="primary.200">
+          <Icon color="primary.200" fontSize="2xl" name="person" />
+        </Circle>
         <Text fontWeight="bold" mb="2">Mentee&apos;s Overall Satisfaction (Based on {menteeScores?.totalReviews} reviews)</Text>
         <Box display="inline-flex">
           <Badge colorScheme={getBadgeDetails(data!, 'Mentee').colorScheme} mb="4" p="1">{getBadgeDetails(data!, 'Mentee').label}</Badge>
