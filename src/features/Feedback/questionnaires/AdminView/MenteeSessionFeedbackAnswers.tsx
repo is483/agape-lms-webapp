@@ -1,7 +1,9 @@
 import { useParams } from 'react-router-dom'
-import { Flex, HStack, Text } from '@chakra-ui/react'
+import {
+  Box, Flex, HStack, Text,
+} from '@chakra-ui/react'
 import { useGetMenteeSessionFeedbackQuery } from '../../../../app/services/feedback/apiFeedbackSlice'
-import { Container, Icon } from '../../../../components'
+import { Container, Icon, ProfileIcon } from '../../../../components'
 import QuestionList from '../../components/QuestionList'
 import { MENTOR_SESSION_QUESTIONS } from '../../constants'
 import { SectionWithAnswers } from '../../components/types'
@@ -25,9 +27,8 @@ function MenteeSessionFeedbackAnswers() {
 
   return (
     <>
-      {/* TODO: Add session details */}
       <Container mb="4">
-        <Text fontSize="lg" fontWeight="bold">{sessionData?.sessionDetails.title}</Text>
+        <Text fontSize="lg" fontWeight="600">Mentee Feedback - {sessionData?.sessionDetails.title}</Text>
         <Flex gap={['3', '3', '10']} flexDir={['column', 'column', 'row']} mt={['5', '5', '2']}>
           <HStack>
             <Icon name="calendar_today" fontSize="25px" />
@@ -43,6 +44,30 @@ function MenteeSessionFeedbackAnswers() {
             <Icon name="hourglass_top" fontSize="25px" />
             <Text color="secondary.500"> {getSessionDuration(startDateObject, endDateObject)}</Text>
           </HStack>
+        </Flex>
+        <Flex gap="4" flexWrap="wrap" mt="8">
+          <Box>
+            <Text fontWeight="600" fontSize="lg">Mentee</Text>
+            <Flex mt="2">
+              <Box padding="6" border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2">
+                <HStack spacing="4">
+                  <ProfileIcon imgUrl={sessionData?.mentee?.profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
+                  <Text fontSize="lg">{sessionData?.mentee?.firstName} {sessionData?.mentee?.lastName}</Text>
+                </HStack>
+              </Box>
+            </Flex>
+          </Box>
+          <Box>
+            <Text fontWeight="600" fontSize="lg">Mentor</Text>
+            <Flex mt="2">
+              <Box padding="6" border="solid 1px" borderRadius="md" borderColor="secondary.50" display="flex" alignItems="center" gap="2">
+                <HStack spacing="4">
+                  <ProfileIcon imgUrl={sessionData?.mentor?.profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
+                  <Text fontSize="lg">{sessionData?.mentor?.firstName} {sessionData?.mentor?.lastName}</Text>
+                </HStack>
+              </Box>
+            </Flex>
+          </Box>
         </Flex>
       </Container>
       <Container minHeight="calc(100vh - 32px)">
