@@ -1,6 +1,7 @@
 import {
   Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import { Link, ProfileIcon } from '../../../components'
 import paths from '../../../paths'
 import { AdminMentoringJourney } from '../../../app/services/mentoringJourney/types'
@@ -12,9 +13,15 @@ interface MentoringJourneyTableProps {
 
 function MentoringJourneyTable(props: MentoringJourneyTableProps) {
   const { data } = props
+  const [currentMentoringJourneyId, setCurrentMentoringJourneyId] = useState<number | string | undefined>()
   const { isOpen: isDeleteMentoringJourneyModalOpen, onOpen: onOpenDeleteMentoringJourneyModal, onClose: onDeleteMentoringJourneyModalClose } = useDisclosure()
+  const openDeleteModal = (id: number | string) => {
+    setCurrentMentoringJourneyId(id)
+    onOpenDeleteMentoringJourneyModal()
+  }
   return (
     <TableContainer whiteSpace="unset" width="100%">
+      <DeleteMentoringJourneyModal isModalOpen={isDeleteMentoringJourneyModalOpen} onModalClose={onDeleteMentoringJourneyModalClose} mentoringJourneyId={currentMentoringJourneyId} />
       <Table variant="simple">
         <Thead backgroundColor="gray.100">
           <Tr>
@@ -58,12 +65,11 @@ function MentoringJourneyTable(props: MentoringJourneyTableProps) {
                 </Td>
 
                 <Td>
-                  <DeleteMentoringJourneyModal isModalOpen={isDeleteMentoringJourneyModalOpen} onModalClose={onDeleteMentoringJourneyModalClose} mentoringJourneyId={mentoringJourneyId} />
                   <Flex justify="end" gap="4">
                     <Link to={`${paths.AdminMentoringJourneys.Details.subPath}/${mentoringJourneyId}`}>
                       <Button colorScheme="red">View Details</Button>
                     </Link>
-                    <Button colorScheme="red" variant="outline" onClick={onOpenDeleteMentoringJourneyModal}>
+                    <Button colorScheme="red" variant="outline" onClick={() => openDeleteModal(mentoringJourneyId)}>
                       Delete
                     </Button>
                   </Flex>
