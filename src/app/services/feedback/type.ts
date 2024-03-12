@@ -8,7 +8,7 @@ export interface SessionFeedback {
   status: string
 }
 
-export interface QuarterlyFeedback{
+export interface QuarterlyFeedback {
   quarterlyFeedbackId: string
   feedbackAnswers: string[]
   date: string
@@ -53,4 +53,23 @@ export interface SessionFeedbackResponse {
   date: string
   role: string
   status: string
+}
+
+export interface SessionMetricsResponse {
+  mentorSatisfactionScores: {
+    totalReviews: number
+    veryDissatisfied: number
+    Dissatisfied: number
+    Neutral: number
+    Satisfied: number
+    verySatisfied: number
+  },
+  menteeSatisfactionScores: {
+    totalReviews: number
+    veryDissatisfied: number
+    Dissatisfied: number
+    Neutral: number
+    Satisfied: number
+    verySatisfied: number
+  }
 }
