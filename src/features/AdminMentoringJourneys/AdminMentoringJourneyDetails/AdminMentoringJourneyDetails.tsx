@@ -1,12 +1,11 @@
 import {
-  Box,
   Divider, Tab, TabList, TabPanel,
   TabPanels, Tabs,
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
-import Overview from './Overview'
 import Metrics from './Metrics/Metrics'
+import Overview from '../../MentoringJourneys/MentoringJourneyDetails/Overview'
 
 function AdminMentoringJourneyDetails() {
   return (
