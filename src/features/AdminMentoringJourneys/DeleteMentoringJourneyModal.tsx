@@ -20,22 +20,21 @@ function DeleteMentoringJourneyModal(props: DeleteMentoringJourneyModalProps) {
     onModalClose()
   }
   const handleAccept = async () => {
-    console.log(mentoringJourneyId)
     if (!mentoringJourneyId) return
-    // try {
-    //   await deleteMentoringJourney(mentoringJourneyId).unwrap()
-    //   toast({
-    //     title: 'Delete Mentoring Journey',
-    //     description: 'Mentoring Journey has been successfully deleted!',
-    //     status: 'success',
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: 'bottom-right',
-    //   })
-    //   handleModalCancel()
-    // } catch (e) {
-    //   console.error(e)
-    // }
+    try {
+      await deleteMentoringJourney(mentoringJourneyId).unwrap()
+      toast({
+        title: 'Delete Mentoring Journey',
+        description: 'Mentoring Journey has been successfully deleted!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      })
+      handleModalCancel()
+    } catch (e) {
+      console.error(e)
+    }
   }
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl" isCentered>
