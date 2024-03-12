@@ -41,11 +41,13 @@ function AppLayout() {
               <Route path={paths.AdminMentoringJourneys.ViewAll} element={<AdminMentoringJourneys />} />
               <Route path={paths.AdminMentoringJourneys.Details.fullPath} element={<AdminMentoringJourneyDetails />} />
               <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
-              <Route path={paths.Mentors} element={<Mentors />} />
-              <Route path={paths.Mentees} element={<Mentees />} />
               <Route path={paths.Feedback.Admin.QuarterlyFeedbackAnswers} element={<QuarterlyFeedbackAnswers />} />
               <Route path={paths.Feedback.Admin.SessionFeedbackAnswers.Mentor} element={<MentorSessionFeedbackAnswers />} />
               <Route path={paths.Feedback.Admin.SessionFeedbackAnswers.Mentee} element={<MenteeSessionFeedbackAnswers />} />
+              <Route path={paths.Mentors.subPath} element={<Mentors />} />
+              <Route path={paths.Mentors.fullPath} element={<Mentors />} />
+              <Route path={paths.Mentees.subPath} element={<Mentees />} />
+              <Route path={paths.Mentees.fullPath} element={<Mentees />} />
             </Routes>
           )}
           {role === 'Mentor' && (

@@ -5,7 +5,8 @@ import {
   QuarterlyFeedbackResponse,
   SessionFeedbackResponse,
   MenteeQuarterlyFeedbackResponse, MenteeSessionFeedbackResponse,
-  MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse, getAllSessionFeedbackByMentoringJourneyResponse, AllSessionFeedbackByMentoringJourneyResponse, AllQuarterlyFeedbackByMentoringJourneyResponse,
+  AllSessionFeedbackByMentoringJourneyResponse, AllQuarterlyFeedbackByMentoringJourneyResponse,
+  MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse, SessionMetricsResponse,
 } from './type'
 
 const apiFeedbackSlice = apiSlice.injectEndpoints({
@@ -134,6 +135,13 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+    getSessionMetrics: build.query<SessionMetricsResponse, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `admin/view-mentoring-journeys/key-metrics/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -153,4 +161,5 @@ export const {
   useAnswerMentorQuarterlyFeedbackMutation,
   useGetAllSessionFeedbackByMentoringJourneyQuery,
   useGetAllQuarterlyFeedbackByMentoringJourneyQuery,
+  useGetSessionMetricsQuery,
 } = apiFeedbackSlice

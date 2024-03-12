@@ -83,3 +83,21 @@ export interface AllQuarterlyFeedbackByMentoringJourney {
 
 export type AllSessionFeedbackByMentoringJourneyResponse = AllSessionFeedbackByMentoringJourney[]
 export type AllQuarterlyFeedbackByMentoringJourneyResponse = AllQuarterlyFeedbackByMentoringJourney[]
+export interface SessionMetricsResponse {
+  mentorSatisfactionScores: {
+    totalReviews: number
+    veryDissatisfied: number
+    Dissatisfied: number
+    Neutral: number
+    Satisfied: number
+    verySatisfied: number
+  },
+  menteeSatisfactionScores: {
+    totalReviews: number
+    veryDissatisfied: number
+    Dissatisfied: number
+    Neutral: number
+    Satisfied: number
+    verySatisfied: number
+  }
+}

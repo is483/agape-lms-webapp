@@ -50,7 +50,7 @@ function UsersListDesktop(props: Props) {
   useEffect(() => {
     // TODO: fix logic so this works across different user types
     if (userId) {
-      const user = users.find((user) => user.menteeId === Number(userId))
+      const user = users.find((user) => user.userId === Number(userId) || user.menteeId === Number(userId))
       if (user) {
         setSelectedUser(user)
       }
