@@ -43,6 +43,12 @@ export interface SessionDetailsResponse {
     profileImgUrl: string
     menteeId: number
   }
+  mentor?: {
+    mentorId: number
+    lastName: string
+    firstName: string
+    profileImgUrl: string
+  }
   sessionDetails: {
     sessionId: number | string
     title: string

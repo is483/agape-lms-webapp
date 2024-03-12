@@ -33,7 +33,6 @@ export interface MentoringJourneysResponse {
 }
 
 export interface MentoringJourneyDetailsResponse {
-  mentorId: number,
   mentee: {
     menteeId: number,
     firstName: string,

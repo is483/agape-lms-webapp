@@ -15,24 +15,7 @@ import { getAuth } from '../../../app/redux/selectors'
 import SessionFormModal from '../SessionFormModal/SessionFormModal'
 import DeleteSessionModal from './DeleteSessionModal'
 import { UpdateSessionNotesRequest } from '../../../app/services/session/types'
-import { ensureProtocol } from '../../../utils'
-
-function getSessionDuration(startDateObject: Date, endDateObject: Date) {
-  const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
-  const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60))
-  const differenceInHours = Math.floor(differenceInMinutes / 60)
-  const remainingMinutes = differenceInMinutes % 60
-
-  let durationDisplay
-  if (differenceInHours === 0) {
-    durationDisplay = `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`
-  } else if (remainingMinutes === 0) {
-    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''}`
-  } else {
-    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`
-  }
-  return durationDisplay
-}
+import { ensureProtocol, getSessionDuration } from '../../../utils'
 
 function SessionDetails() {
   const { sessionId } = useParams()
@@ -115,7 +98,12 @@ function SessionDetails() {
     <Container position="relative" minH="calc(100vh - 34px)" overflowY="auto">
       <SessionFormModal isModalOpen={isSessionFormModalOpen} onModalClose={onSessionFormModalClose} sessionDetails={data} refetchSessions={() => getMentorSessionDetails(sessionId!)} />
       <DeleteSessionModal isModalOpen={isDeleteSessionModalOpen} onModalClose={onDeleteSessionModalClose} sessionId={data?.sessionDetails.sessionId} />
-      <BackButton path={paths.Sessions.ViewAll} />
+      {(role === 'Mentor' || role === 'Mentee') && (
+        <BackButton path={paths.Sessions.ViewAll} />
+      )}
+      {role === 'Admin' && (
+        <BackButton path={paths.AdminMentoringJourneys.ViewAll} />
+      )}
       <Divider position="absolute" left="0" mt="6" />
       <Flex justifyContent="space-between" flexDir={['column-reverse', 'column-reverse', 'row']} mt="12">
         <Text fontSize="lg" fontWeight="600"> {title} </Text>
@@ -187,7 +175,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-update"
-            value={sessionNotes}
+            value={sessionNotes!}
             onChange={handleNotesChange}
           />
           <Flex gap="4" justify="flex-end" mt="8">
@@ -202,7 +190,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-view"
-            value={sessionNotes}
+            value={sessionNotes!}
             readOnly
           />
         </Box>

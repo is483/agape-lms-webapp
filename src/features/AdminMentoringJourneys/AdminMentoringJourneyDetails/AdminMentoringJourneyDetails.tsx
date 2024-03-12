@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
+import Feedback from './AdminFeedback/AdminFeedback'
 import Metrics from './Metrics/Metrics'
 import Overview from '../../MentoringJourneys/MentoringJourneyDetails/Overview'
 
@@ -29,7 +30,9 @@ function AdminMentoringJourneyDetails() {
           </TabPanel>
           <TabPanel px="0" />
           <TabPanel px="0" />
-          <TabPanel px="0" />
+          <TabPanel px="0">
+            <Feedback />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Container>

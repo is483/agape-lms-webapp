@@ -7,11 +7,13 @@ import {
 } from '@chakra-ui/react'
 import SessionFeedback from './components/SessionFeedback'
 import QuarterlyFeedback from './components/QuarterlyFeedback'
-import { QuarterlyFeedback as QuarterlyFeedbackType, SessionFeedback as SessionFeedbackType } from '../../app/services/feedback/type'
+import {
+  AllQuarterlyFeedbackByMentoringJourney, AllSessionFeedbackByMentoringJourney, QuarterlyFeedback as QuarterlyFeedbackType, SessionFeedback as SessionFeedbackType,
+} from '../../app/services/feedback/type'
 
 interface FeedbackProps {
-  sessionFeedbackData: SessionFeedbackType[] | undefined
-  quarterlyFeedbackData: QuarterlyFeedbackType[] | undefined
+  sessionFeedbackData: SessionFeedbackType[] & AllSessionFeedbackByMentoringJourney[] | undefined
+  quarterlyFeedbackData: QuarterlyFeedbackType[] & AllQuarterlyFeedbackByMentoringJourney[] | undefined
 }
 
 function Feedback(props: FeedbackProps) {
