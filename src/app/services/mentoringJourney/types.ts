@@ -33,9 +33,14 @@ export interface MentoringJourneysResponse {
 }
 
 export interface MentoringJourneyDetailsResponse {
-  mentorId: number,
   mentee: {
     menteeId: number,
+    firstName: string,
+    lastName: string,
+    profileImgUrl: string
+  },
+  mentor: {
+    mentorId: number,
     firstName: string,
     lastName: string,
     profileImgUrl: string
@@ -75,3 +80,20 @@ export interface UpdateActionPlanIsDoneRequest {
     isDone: boolean
   }
 }
+
+export interface AdminMentoringJourney {
+  userMentoringJourneyId: string,
+  mentoringJourneyId: string,
+  menteeId: string,
+  mentorId: string,
+  title: string,
+  mentorImgUrl: string,
+  mentorFirstName: string,
+  mentorLastName: string,
+  menteeImgUrl: string,
+  menteeFirstName: string,
+  menteeLastName: string,
+  status: string,
+}
+
+export type AdminMentoringJourneysResponse = AdminMentoringJourney[]

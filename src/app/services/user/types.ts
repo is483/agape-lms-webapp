@@ -107,6 +107,7 @@ export interface User {
   userInformationId: number
   // TODO: This is supposed to be for generic user. not just mentee
   menteeId: number
+  userId: number
   firstName: string
   lastName: string
   dateOfBirth: string
@@ -139,3 +140,7 @@ export interface UnassignedMenteesResponse {
 export interface MentorResponse {
   assignedMentor: User
 }
+
+export type AllMenteesResponse = User[]
+
+export type AllMentorsResponse = User[]
