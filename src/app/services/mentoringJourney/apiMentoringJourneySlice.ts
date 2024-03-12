@@ -105,7 +105,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
     deleteMentoringJourney: build.mutation<null, string | number>({
       query: (mentoringJourneyId) => ({
         url: `admin/delete-mentoring-journey/${mentoringJourneyId}`,
-        method: 'GET',
+        method: 'DELETE',
       }),
       onQueryStarted,
     }),
