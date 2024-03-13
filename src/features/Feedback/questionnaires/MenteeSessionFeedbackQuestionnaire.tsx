@@ -7,15 +7,15 @@ import { MENTEE_SESSION_QUESTIONS } from '../constants'
 import { useAnswerMenteeSessionFeedbackMutation, useGetMenteeSessionFeedbackQuery } from '../../../app/services/feedback/apiFeedbackSlice'
 
 function MenteeSessionFeedbackQuestionnaire() {
-  const { sessionFeedbackId } = useParams()
-  const { data } = useGetMenteeSessionFeedbackQuery(sessionFeedbackId!)
+  const { sessionId } = useParams()
+  const { data } = useGetMenteeSessionFeedbackQuery(sessionId!)
   const [answerFeedback] = useAnswerMenteeSessionFeedbackMutation()
   const toast = useToast()
 
   const onSubmit = async (answers: any) => {
     const answerFeedbackRequest = {
       feedbackAnswers: answers,
-      id: sessionFeedbackId!,
+      id: sessionId!,
     }
     await answerFeedback(answerFeedbackRequest).unwrap()
     toast({
