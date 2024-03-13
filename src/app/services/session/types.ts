@@ -1,15 +1,15 @@
 export interface Session {
-  sessionId: number
-  status: string
-  fromDateTime: string
-  toDateTime: string
-  sessionType: string
-  location: string
-  notes: string
-  mentoringJourneyId: number
-  title: string
-  description: string
-  reason: string
+  sessionId: string,
+  sessionType: string,
+  fromDateTime: string,
+  toDateTime: string,
+  title: string,
+  status: string,
+  location?: string
+  notes?: string
+  mentoringJourneyId?: number
+  description?: string
+  reason?: string
 }
 
 export interface CreateSessionRequest {
@@ -94,6 +94,6 @@ export interface AllSessionsByMentoringJourney {
   status: string,
 }
 
-export type AllSessionsByMentoringJourneyResponse = AllSessionsByMentoringJourney[]
+export type AllSessionsByMentoringJourneyResponse = Session[]
 
 export type SessionResponse = Session[]

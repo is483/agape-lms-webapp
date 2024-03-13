@@ -187,7 +187,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-update"
-            value={sessionNotes}
+            value={sessionNotes ?? ''}
             onChange={handleNotesChange}
           />
           <Flex gap="4" justify="flex-end" mt="8">
@@ -202,7 +202,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-view"
-            value={sessionNotes}
+            value={sessionNotes ?? ''}
             readOnly
           />
         </Box>
