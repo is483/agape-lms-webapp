@@ -7,15 +7,15 @@ import { MENTOR_SESSION_QUESTIONS } from '../constants'
 import { SectionWithAnswers } from '../components/types'
 
 function MentorSessionFeedbackQuestionnaire() {
-  const { sessionFeedbackId } = useParams()
-  const { data } = useGetMentorSessionFeedbackQuery(sessionFeedbackId!)
+  const { sessionId } = useParams()
+  const { data } = useGetMentorSessionFeedbackQuery(sessionId!)
   const [answerFeedback] = useAnswerMentorSessionFeedbackMutation()
   const toast = useToast()
 
   const onSubmit = async (answers: any) => {
     const answerFeedbackRequest = {
       feedbackAnswers: answers,
-      id: sessionFeedbackId!,
+      id: sessionId!,
     }
     await answerFeedback(answerFeedbackRequest).unwrap()
     toast({
