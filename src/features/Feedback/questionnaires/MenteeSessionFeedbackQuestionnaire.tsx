@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
-import { Container } from '../../../components'
+import { BackButton, Container } from '../../../components'
 import QuestionList from '../components/QuestionList'
 import { SectionWithAnswers } from '../components/types'
 import { MENTEE_SESSION_QUESTIONS } from '../constants'
@@ -32,6 +32,7 @@ function MenteeSessionFeedbackQuestionnaire() {
 
   return (
     <Container minHeight="calc(100vh - 32px)">
+      <BackButton />
       <QuestionList
         isView={!!data?.feedbackAnswers}
         sections={MENTEE_SESSION_QUESTIONS}

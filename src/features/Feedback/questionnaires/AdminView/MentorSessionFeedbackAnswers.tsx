@@ -1,9 +1,11 @@
 import { useParams } from 'react-router-dom'
 import {
-  Box, Flex, HStack, Text,
+  Box, Divider, Flex, HStack, Text,
 } from '@chakra-ui/react'
 import { useGetMentorSessionFeedbackQuery } from '../../../../app/services/feedback/apiFeedbackSlice'
-import { Container, Icon, ProfileIcon } from '../../../../components'
+import {
+  BackButton, Container, Icon, ProfileIcon,
+} from '../../../../components'
 import QuestionList from '../../components/QuestionList'
 import { MENTOR_SESSION_QUESTIONS } from '../../constants'
 import { SectionWithAnswers } from '../../components/types'
@@ -28,6 +30,8 @@ function MentorSessionFeedbackAnswers() {
   return (
     <>
       <Container mb="4">
+        <BackButton />
+        <Divider my="4" />
         <Text fontSize="lg" fontWeight="600">Mentor feedback - {sessionData?.sessionDetails.title}</Text>
         <Flex gap={['3', '3', '10']} flexDir={['column', 'column', 'row']} mt={['5', '5', '2']}>
           <HStack>

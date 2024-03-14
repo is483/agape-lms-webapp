@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
 import { useAnswerMentorSessionFeedbackMutation, useGetMentorSessionFeedbackQuery } from '../../../app/services/feedback/apiFeedbackSlice'
-import { Container } from '../../../components'
+import { BackButton, Container } from '../../../components'
 import QuestionList from '../components/QuestionList'
 import { MENTOR_SESSION_QUESTIONS } from '../constants'
 import { SectionWithAnswers } from '../components/types'
@@ -32,6 +32,7 @@ function MentorSessionFeedbackQuestionnaire() {
 
   return (
     <Container minHeight="calc(100vh - 32px)">
+      <BackButton />
       <QuestionList
         isView={!!data?.feedbackAnswers}
         sections={MENTOR_SESSION_QUESTIONS}
