@@ -14,7 +14,7 @@ interface ProgressLabelsProps {
 const calculatePercentage = (count: number, total: number): number => (total > 0 ? Math.round((count / total) * 100) : 0)
 
 const getBadgeDetails = (data: SessionMetricsResponse, role: string) => {
-  if (!data) return { label: 'No Ratings', colorScheme: 'gray' }
+  if (!data || data?.menteeSatisfactionScores?.totalReviews === 0 || data?.mentorSatisfactionScores.totalReviews === 0) return { label: 'No Ratings', colorScheme: 'gray' }
   const scores = role === 'Mentor' ? data?.mentorSatisfactionScores : data?.menteeSatisfactionScores
   const satisfactionLevels = [
     { label: 'Very Satisfied', value: scores.verySatisfied ?? 0, colorScheme: 'green' },
