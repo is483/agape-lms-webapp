@@ -1,8 +1,10 @@
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Flex, Button, Image, useToast,
 } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 import warningIllustration from '../../assets/warning_illustration.png'
 import { useDeleteMentoringJourneyMutation } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
+import paths from '../../paths'
 
 interface DeleteMentoringJourneyModalProps {
   isModalOpen: boolean
@@ -14,6 +16,7 @@ function DeleteMentoringJourneyModal(props: DeleteMentoringJourneyModalProps) {
   const {
     isModalOpen, onModalClose, mentoringJourneyId,
   } = props
+  const navigate = useNavigate()
   const [deleteMentoringJourney] = useDeleteMentoringJourneyMutation()
   const toast = useToast()
   const handleModalCancel = () => {
@@ -31,7 +34,7 @@ function DeleteMentoringJourneyModal(props: DeleteMentoringJourneyModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
-      handleModalCancel()
+      navigate(paths.AdminMentoringJourneys.ViewAll)
     } catch (e) {
       console.error(e)
     }
