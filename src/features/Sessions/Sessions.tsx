@@ -95,7 +95,7 @@ function Sessions() {
             <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
             <Tab py="1" fontSize={['xs', 'sm']}>Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size="sm" alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red" onClick={onOpenSessionFormModal}>+ Create Session</Button>}
+          {role === 'Mentor' && <Button size="sm" isDisabled={menteeId === ''} alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red" onClick={onOpenSessionFormModal}>+ Create Session</Button>}
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">
