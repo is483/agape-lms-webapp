@@ -38,13 +38,15 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
               fromDateTime, toDateTime, title, sessionType, sessionId,
             } = session
 
-            const fromDateObject = new Date(fromDateTime)
-            const fromDate = fromDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            const fromTime = fromDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+            const fromDateTimeUTC = new Date(fromDateTime)
+            const fromDateTimeSGT = new Date(fromDateTimeUTC.getTime() + 8 * 60 * 60 * 1000)
+            const fromDate = fromDateTimeSGT.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const fromTime = fromDateTimeSGT.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
-            const toDateObject = new Date(toDateTime)
-            const toDate = toDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-            const toTime = toDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+            const toDateTimeUTC = new Date(toDateTime)
+            const toDateTimeSGT = new Date(toDateTimeUTC.getTime() + 8 * 60 * 60 * 1000)
+            const toDate = toDateTimeSGT.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+            const toTime = toDateTimeSGT.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 
             return (
               <Tr>

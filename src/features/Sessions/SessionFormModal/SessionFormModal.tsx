@@ -48,12 +48,10 @@ function SessionFormModal(props: SessionModalProps) {
     updateSession((draft) => {
       draft.title.value = sessionDetails.sessionDetails.title
       draft.description.value = sessionDetails.sessionDetails.description
-      draft.fromDateTime.value = new Date(sessionDetails.sessionDetails.fromDateTime).toLocaleString('sv-SE', {
-        timeZone: 'Asia/Singapore', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
-      }).replace(' ', 'T')
-      draft.toDateTime.value = new Date(sessionDetails.sessionDetails.toDateTime).toLocaleString('sv-SE', {
-        timeZone: 'Asia/Singapore', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
-      }).replace(' ', 'T')
+      draft.fromDateTime.value = new Date(new Date(sessionDetails.sessionDetails.fromDateTime).getTime() + (8 * 60 * 60 * 1000))
+        .toISOString().slice(0, 16)
+      draft.toDateTime.value = new Date(new Date(sessionDetails.sessionDetails.toDateTime).getTime() + (8 * 60 * 60 * 1000))
+        .toISOString().slice(0, 16)
       draft.sessionType.value = sessionDetails.sessionDetails.sessionType
       draft.location.value = sessionDetails.sessionDetails.location
     })
@@ -142,6 +140,14 @@ function SessionFormModal(props: SessionModalProps) {
     if (hasErrors) {
       return
     }
+    const adjustDateTimeToUTC = (dateString: string) => {
+      const date = new Date(dateString)
+      const utcDate = new Date(date.getTime() - (8 * 60 * 60 * 1000))
+      return utcDate.toISOString()
+    }
+
+    const fromDateTimeUTC = adjustDateTimeToUTC(session.fromDateTime.value)
+    const toDateTimeUTC = adjustDateTimeToUTC(session.toDateTime.value)
 
     if (!isEdit) {
       const createRequest: CreateSessionRequest = {
@@ -149,8 +155,8 @@ function SessionFormModal(props: SessionModalProps) {
         body: {
           title: session.title.value,
           description: session.description.value,
-          fromDateTime: session.fromDateTime.value,
-          toDateTime: session.toDateTime.value,
+          fromDateTime: fromDateTimeUTC,
+          toDateTime: toDateTimeUTC,
           sessionType: session.sessionType.value,
           location: session.location.value,
         },
@@ -165,19 +171,19 @@ function SessionFormModal(props: SessionModalProps) {
           isClosable: true,
           position: 'bottom-right',
         })
-        refetchSessions && refetchSessions()
+        if (refetchSessions) refetchSessions()
         onModalClose()
       } catch (e) {
         console.error(e)
       }
     } else {
-      const editRequest: EditSessionRequest = {
-        sessionId: sessionDetails.sessionDetails.sessionId!,
+      const editRequest = {
+        sessionId: sessionDetails.sessionDetails.sessionId,
         body: {
           title: session.title.value,
           description: session.description.value,
-          fromDateTime: session.fromDateTime.value,
-          toDateTime: session.toDateTime.value,
+          fromDateTime: fromDateTimeUTC,
+          toDateTime: toDateTimeUTC,
           sessionType: session.sessionType.value,
           location: session.location.value,
         },
@@ -192,10 +198,11 @@ function SessionFormModal(props: SessionModalProps) {
           isClosable: true,
           position: 'bottom-right',
         })
-        refetchSessions && refetchSessions()
+        if (refetchSessions) refetchSessions()
         onModalClose()
       } catch (e) {
         console.error(e)
+        // Consider adding error handling/toast notification here
       }
     }
   }
