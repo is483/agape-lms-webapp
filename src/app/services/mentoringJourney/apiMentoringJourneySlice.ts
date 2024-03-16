@@ -107,6 +107,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: `admin/delete-mentoring-journey/${mentoringJourneyId}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
   }),
