@@ -177,7 +177,7 @@ function SessionFormModal(props: SessionModalProps) {
         console.error(e)
       }
     } else {
-      const editRequest = {
+      const editRequest: EditSessionRequest = {
         sessionId: sessionDetails.sessionDetails.sessionId,
         body: {
           title: session.title.value,
@@ -202,7 +202,6 @@ function SessionFormModal(props: SessionModalProps) {
         onModalClose()
       } catch (e) {
         console.error(e)
-        // Consider adding error handling/toast notification here
       }
     }
   }
