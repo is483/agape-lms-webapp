@@ -14,7 +14,7 @@ function SessionMetrics() {
         </Text>
       </Alert>
       <Flex justifyContent="center" mt="10">
-        <iframe width="700" height="600" title="Sessions Dashboard" src="https://lookerstudio.google.com/u/0/reporting/9ef7fcb5-7d29-4d05-968c-a2ed6fe7fb2a/page/fmyrD" style={{ borderRadius: '5px' }} allowFullScreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" />
+        <iframe width="700" height="600" title="Sessions Dashboard" src="https://lookerstudio.google.com/embed/reporting/9ef7fcb5-7d29-4d05-968c-a2ed6fe7fb2a/page/fmyrD" style={{ borderRadius: '5px' }} allowFullScreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" />
       </Flex>
     </Flex>
   )
