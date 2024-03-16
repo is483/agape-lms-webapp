@@ -34,7 +34,7 @@ function DeleteMentoringJourneyModal(props: DeleteMentoringJourneyModalProps) {
         isClosable: true,
         position: 'bottom-right',
       })
-      navigate(paths.AdminMentoringJourneys.ViewAll)
+      handleModalCancel()
     } catch (e) {
       console.error(e)
     }
