@@ -57,7 +57,7 @@ function AdminSessions() {
             <UpcomingAndPastSessionsTable data={pastSessions} showStatus={false} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <PendingSessionsTable data={pendingSessions} />
+            <PendingSessionsTable refetchMenteeSessions={() => null} refetchMentorSessions={() => null} data={pendingSessions} />
           </TabPanel>
         </TabPanels>
       </Tabs>

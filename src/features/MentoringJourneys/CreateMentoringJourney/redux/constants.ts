@@ -62,4 +62,5 @@ export const createDefaultMilestones = (): Milestone[] => MILESTONES.map((_, ind
   milestoneStep: index + 1,
   reflection: '',
   goals: [],
+  milestoneId: 0,
 }))
