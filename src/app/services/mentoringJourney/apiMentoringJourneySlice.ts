@@ -4,6 +4,7 @@ import {
   UpdateMentoringJourneyRequest, MilestonesResponse, MentoringJourneyMetricsResponse,
   UpdateActionPlanIsDoneRequest,
   AdminMentoringJourneysResponse,
+  UpdateMilestoneStatusRequest,
   AllMentoringJourneyMetricsResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
@@ -112,6 +113,17 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
       invalidatesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
+    updateMilestoneStatus: build.mutation<null, UpdateMilestoneStatusRequest>({
+      query: (req) => ({
+        url: `admin/update-milestone-status/${req.milestoneId}`,
+        method: 'PUT',
+        body: {
+          status: req.status,
+        },
+      }),
+      onQueryStarted,
+      invalidatesTags: ['Milestone'],
+    }),
   }),
   overrideExisting: false,
 })
@@ -121,6 +133,7 @@ export const {
   useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation,
   useGetMilestonesQuery, useGetMilestoneQuery, useGetMentoringJourneyMetricsQuery,
   useUpdateActionPlanIsDoneMutation, useGetAllMentoringJourneyAdminQuery,
-  useGetAllMentoringJourneyByIdAdminQuery, useDeleteMentoringJourneyMutation,
+  useGetAllMentoringJourneyByIdAdminQuery, useUpdateMilestoneStatusMutation,
+  useDeleteMentoringJourneyMutation,
   useGetAllMentoringJourneyMetricsQuery,
 } = apiMentoringJourneySlice
