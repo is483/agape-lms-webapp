@@ -99,10 +99,10 @@ function Sessions() {
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable data={upcomingSessions} />
+            <UpcomingAndPastSessionsTable data={upcomingSessions} showStatus={false} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable data={pastSessions} />
+            <UpcomingAndPastSessionsTable data={pastSessions} showStatus={false} />
           </TabPanel>
           <TabPanel px="0" pt="0">
             <PendingSessionsTable

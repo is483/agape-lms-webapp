@@ -1,16 +1,29 @@
 import {
-  Flex, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text,
+  Flex, Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack, Text, Badge,
 } from '@chakra-ui/react'
-import { SessionResponse } from '../../../app/services/session/types'
+import { AllSessionsByMentoringJourneyResponse, SessionResponse } from '../../../app/services/session/types'
 import { Link } from '../../../components'
 import paths from '../../../paths'
 
 interface UpcomingandPastSessionProps {
-  data: SessionResponse
+  data: SessionResponse | AllSessionsByMentoringJourneyResponse
+  showStatus: boolean
+}
+
+function getStatusAndColor(status: string, toDateTime: string) {
+  const todayDate = new Date()
+  const sessionDate = new Date(toDateTime)
+
+  if (status !== 'Confirmed') {
+    return { displayStatus: 'Pending', colorScheme: 'yellow' }
+  } if (sessionDate > todayDate) {
+    return { displayStatus: 'Upcoming', colorScheme: 'green' }
+  }
+  return { displayStatus: 'Completed', colorScheme: 'red' }
 }
 
 function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
-  const { data } = props
+  const { data, showStatus } = props
 
   return (
     <TableContainer whiteSpace="unset" width="100%">
@@ -20,6 +33,7 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
             <Th>Date & Time</Th>
             <Th>Title</Th>
             <Th> Type </Th>
+            {showStatus && <Th> Status </Th>}
             <Th />
           </Tr>
         </Thead>
@@ -35,9 +49,8 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
           )}
           {data.map((session) => {
             const {
-              fromDateTime, toDateTime, title, sessionType, sessionId,
+              fromDateTime, toDateTime, title, sessionType, sessionId, status,
             } = session
-
             const fromDateObject = new Date(fromDateTime)
             const fromDate = fromDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             const fromTime = fromDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
@@ -45,7 +58,7 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
             const toDateObject = new Date(toDateTime)
             const toDate = toDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
             const toTime = toDateObject.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-
+            const { displayStatus, colorScheme } = getStatusAndColor(status, toDateTime)
             return (
               <Tr>
                 <Td>
@@ -60,6 +73,13 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
                 <Td textTransform="capitalize">
                   {sessionType}
                 </Td>
+                {showStatus && (
+                  <Td>
+                    <Badge colorScheme={colorScheme}>
+                      {displayStatus}
+                    </Badge>
+                  </Td>
+                )}
                 <Td>
                   <Flex justify="end">
                     <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
