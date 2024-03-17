@@ -23,4 +23,5 @@ export interface Milestone {
   startDate?: string
   endDate?: string
   status?: string
+  milestoneId: number
 }

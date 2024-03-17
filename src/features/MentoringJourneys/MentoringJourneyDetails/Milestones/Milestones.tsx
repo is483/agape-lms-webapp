@@ -15,7 +15,7 @@ function Milestones(props: MilestonesProps) {
   if (!data) return null
 
   const { milestones, outcome, outcomeDescription } = data
-  const numAchieved = milestones.filter(({ status }) => status === 'complete').length
+  const numAchieved = milestones.filter(({ status }) => status === 'completed').length
 
   return (
     <Box>

@@ -97,3 +97,8 @@ export interface AdminMentoringJourney {
 }
 
 export type AdminMentoringJourneysResponse = AdminMentoringJourney[]
+
+export type UpdateMilestoneStatusRequest = {
+  milestoneId: string | number
+  status: string
+}
