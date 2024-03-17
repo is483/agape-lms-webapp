@@ -26,7 +26,7 @@ function OngoingMentoringJourneys(props: OngoingMentoringJourneysProps) {
   const dataToRender = mentorId === '0' ? data : ongoingMentoringJourneysById
   return (
     <Flex direction="column">
-      <Metrics status="Ongoing" />
+      <Metrics status="in_progress" />
       <Flex justify="flex-end" marginY="5">
         <ControlledSelect options={mentorOptions} selectProps={{ value: mentorId, onChange: handleMentorChange }} error="" />
       </Flex>

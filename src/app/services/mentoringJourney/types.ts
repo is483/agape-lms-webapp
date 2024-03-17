@@ -96,6 +96,12 @@ export interface AdminMentoringJourney {
   status: string,
 }
 
+export interface AllMentoringJourneyMetricsResponse {
+  numberOfMentors: number,
+  numberOfMentees: number,
+  numberOfMentoringJourneys: number,
+}
+
 export type AdminMentoringJourneysResponse = AdminMentoringJourney[]
 
 export type UpdateMilestoneStatusRequest = {
