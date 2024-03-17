@@ -185,6 +185,14 @@ const apiUserSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted,
     }),
+
+    getAssignedMenteesWithJourneys: build.query<AssignedMenteesResponse, null>({
+      query: () => ({
+        url: 'mentor/mentoring-journey/assigned-mentees-with-journeys',
+      }),
+      onQueryStarted,
+    }),
+
     getAssignedMentor: build.query<MentorResponse, null>({
       query: () => ({
         url: 'mentee/mentoring-journey/assigned-mentor',
@@ -226,5 +234,5 @@ export const {
   useGetUserInfoQuery, useGetUserRoleQuery,
   useGetAssignedMenteesQuery, useGetAssignedMentorQuery,
   useGetUnassignedMenteesQuery, useGetAllMenteesQuery,
-  useGetAllMentorsQuery,
+  useGetAllMentorsQuery, useGetAssignedMenteesWithJourneysQuery,
 } = apiUserSlice
