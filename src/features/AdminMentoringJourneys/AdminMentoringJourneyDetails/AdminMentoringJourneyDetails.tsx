@@ -8,6 +8,7 @@ import Sessions from './Session/AdminSessions'
 import Feedback from './AdminFeedback/AdminFeedback'
 import Metrics from './Metrics/Metrics'
 import Overview from '../../MentoringJourneys/MentoringJourneyDetails/Overview'
+import MentorMilestones from '../../MentoringJourneys/MentoringJourneyDetails/Milestones/MentorMilestones'
 
 function AdminMentoringJourneyDetails() {
   return (
@@ -29,7 +30,9 @@ function AdminMentoringJourneyDetails() {
           <TabPanel px="0">
             <Metrics />
           </TabPanel>
-          <TabPanel px="0" />
+          <TabPanel px="0">
+            <MentorMilestones />
+          </TabPanel>
           <TabPanel px="0">
             <Sessions />
           </TabPanel>
