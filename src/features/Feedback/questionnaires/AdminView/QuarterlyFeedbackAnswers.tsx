@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom'
 import {
-  Box, Flex, HStack, Text,
+  Box, Divider, Flex, HStack, Text,
 } from '@chakra-ui/react'
-import { Container, ProfileIcon } from '../../../../components'
+import { BackButton, Container, ProfileIcon } from '../../../../components'
 import QuestionList from '../../components/QuestionList'
 import { MENTOR_QUARTERLY_QUESTIONS } from '../../constants'
 import { useGetMentorQuarterlyFeedbackQuery } from '../../../../app/services/feedback/apiFeedbackSlice'
@@ -18,6 +18,8 @@ function MentorQuarterlyFeedbackQuestionnaire() {
   return (
     <>
       <Container mb="4">
+        <BackButton />
+        <Divider my="4" />
         <Text fontSize="lg" fontWeight="bold">{feedbackData?.role === 'mentor' ? 'Mentor Feedback -' : 'Mentee Feedback -'} {mentoringJourneyData?.title}</Text>
         <Text fontSize="md" fontWeight="semi-bold">Quarter {quarter} Feedback answers</Text>
         <Flex gap="4" flexWrap="wrap" mt="8">

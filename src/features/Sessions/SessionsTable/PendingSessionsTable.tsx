@@ -5,14 +5,14 @@ import {
 import { useState } from 'react'
 import { useAppSelector } from '../../../hooks'
 import { getAuth } from '../../../app/redux/selectors'
-import { SessionResponse } from '../../../app/services/session/types'
+import { AllSessionsByMentoringJourneyResponse, SessionResponse } from '../../../app/services/session/types'
 import { Icon } from '../../../components'
 import AcceptSessionModal from '../SessionResponseModal/AcceptSessionModal'
 import DeclineSessionModal from '../SessionResponseModal/DeclineSessionModal'
 import UpdateSessionModal from '../SessionResponseModal/UpdateSessionModal'
 
 interface PendingSessionsTableProps {
-  data: SessionResponse
+  data: SessionResponse | AllSessionsByMentoringJourneyResponse
   refetchMentorSessions: () => void
   refetchMenteeSessions: () => void
 }
@@ -20,10 +20,10 @@ interface PendingSessionsTableProps {
 function PendingSessionsTable(props: PendingSessionsTableProps) {
   const { data, refetchMentorSessions, refetchMenteeSessions } = props
   const { role } = useAppSelector(getAuth)
-  return role === 'Mentor' ? (
-    <PendingSessionsTableMentor refetchSessions={refetchMentorSessions} data={data} />
-  ) : (
+  return role === 'Mentee' ? (
     <PendingSessionsTableMentee refetchSessions={refetchMenteeSessions} data={data} />
+  ) : (
+    <PendingSessionsTableMentorAdmin refetchSessions={refetchMentorSessions} data={data} />
   )
 }
 
@@ -32,8 +32,9 @@ interface PendingSessionsTableMentorProps {
   refetchSessions: () => void
 }
 
-function PendingSessionsTableMentor(props: PendingSessionsTableMentorProps) {
+function PendingSessionsTableMentorAdmin(props: PendingSessionsTableMentorProps) {
   const { data, refetchSessions } = props
+  const { role } = useAppSelector(getAuth)
   const [sessionId, setSessionId] = useState<number | string>('')
   const { isOpen: isUpdateSessionModalOpen, onOpen: onOpenUpdateSessionModal, onClose: onAcceptUpdateModalClose } = useDisclosure()
   const handleOpenUpdateSessionModal = (sessionId: number | string) => {
@@ -51,7 +52,9 @@ function PendingSessionsTableMentor(props: PendingSessionsTableMentorProps) {
             <Th>Title</Th>
             <Th>Type</Th>
             <Th>Status</Th>
-            <Th> <Flex justifyContent="center">Reason </Flex></Th>
+            {role === 'Mentor' && (
+              <Th> <Flex justifyContent="center">Reason </Flex></Th>
+            )}
           </Tr>
         </Thead>
         <Tbody>
@@ -98,9 +101,11 @@ function PendingSessionsTableMentor(props: PendingSessionsTableMentorProps) {
                     {status === 'Pending' ? 'Awaiting Confirmation' : 'Rejected'}
                   </Badge>
                 </Td>
-                <Td>
-                  {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" _hover={{ cursor: 'pointer' }} onClick={() => handleOpenUpdateSessionModal(sessionId)} /></Flex>}
-                </Td>
+                {role === 'Mentor' && (
+                  <Td>
+                    {status === 'Rejected' && <Flex justifyContent="center"><Icon name="info" _hover={{ cursor: 'pointer' }} onClick={() => handleOpenUpdateSessionModal(sessionId)} /></Flex>}
+                  </Td>
+                )}
               </Tr>
             )
           })}

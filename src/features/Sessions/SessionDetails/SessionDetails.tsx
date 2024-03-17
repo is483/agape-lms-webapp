@@ -77,7 +77,7 @@ function SessionDetails() {
       const updateSessionNotesRequest: UpdateSessionNotesRequest = {
         sessionId: sessionId!,
         body: {
-          notes: sessionNotes!,
+          notes: sessionNotes ?? '',
         },
       }
       await updateSessionNotesMutation(updateSessionNotesRequest).unwrap()
@@ -175,7 +175,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-update"
-            value={sessionNotes!}
+            value={sessionNotes ?? ''}
             onChange={handleNotesChange}
           />
           <Flex gap="4" justify="flex-end" mt="8">
@@ -190,7 +190,7 @@ function SessionDetails() {
           <ReactQuill
             theme="snow"
             className="react-quill-view"
-            value={sessionNotes!}
+            value={sessionNotes ?? ''}
             readOnly
           />
         </Box>

@@ -1,10 +1,15 @@
 import {
-  Box, BoxProps, Button, Flex, Text,
+  Badge,
+  Box, BoxProps, Button, Flex, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Text, useDisclosure,
 } from '@chakra-ui/react'
 import { Milestone } from '../MentoringJourneys/CreateMentoringJourney/redux/types'
 import { Icon } from '../../components'
 import { MILESTONES } from '../MentoringJourneys/CreateMentoringJourney/redux/constants'
 import GoalCard from './GoalCard'
+import { useAppSelector } from '../../hooks'
+import { getAuth } from '../../app/redux/selectors'
+import { useUpdateMilestoneStatusMutation } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
+import { UpdateMilestoneStatusRequest } from '../../app/services/mentoringJourney/types'
 
 interface MilestoneCardProps extends BoxProps {
   milestone: Milestone
@@ -27,7 +32,12 @@ function MilestoneCard(props: MilestoneCardProps) {
   } = props
   const {
     milestoneStep, goals, startDate, endDate,
+    status, milestoneId,
   } = milestone
+
+  const currDatetime = new Date()
+  const isOngoing = new Date(startDate ?? '') < currDatetime && new Date(endDate ?? '') > currDatetime
+  const isEvaluating = new Date(endDate ?? '') < currDatetime
 
   return (
     <Box maxWidth="100%" width="360px" {...boxProps}>
@@ -37,7 +47,10 @@ function MilestoneCard(props: MilestoneCardProps) {
             <Text color="white" fontSize="xs" fontWeight="bold">
               Milestone {milestoneStep}
             </Text>
-            <Icon onClick={() => handleOpenInfoModal(milestoneIndex)} name="info" color="white" fontSize="lg" _hover={{ cursor: 'pointer' }} />
+            <Flex align="center" gap="2" position="relative">
+              <MilestoneStatusPopover isEvaluating={isEvaluating} milestoneId={milestoneId} status={isOngoing ? 'ongoing' : status ?? ''} />
+              <Icon onClick={() => handleOpenInfoModal(milestoneIndex)} name="info" color="white" fontSize="lg" _hover={{ cursor: 'pointer' }} />
+            </Flex>
           </Flex>
           <Text color="white" fontSize="sm">
             {MILESTONES[milestoneIndex].title}
@@ -68,6 +81,96 @@ function MilestoneCard(props: MilestoneCardProps) {
         )}
       </Flex>
     </Box>
+  )
+}
+
+const getStatuses = (): Record<string, { color: string, text: string }> => ({
+  not_completed: {
+    color: 'yellow',
+    text: 'Not Completed',
+  },
+  failed: {
+    color: 'red',
+    text: 'Failed',
+  },
+  completed: {
+    color: 'green',
+    text: 'Completed',
+  },
+  ongoing: {
+    color: 'yellow',
+    text: 'Ongoing',
+  },
+  is_evaluating: {
+    color: 'yellow',
+    text: 'Under Evaluation',
+  },
+})
+
+function MilestoneStatus({ status, onClick, isEvaluating }: { status: string, onClick: () => void, isEvaluating: boolean }) {
+  const statuses = getStatuses()
+  const { role } = useAppSelector(getAuth)
+  const statusAttributes = statuses[isEvaluating && status === 'not_completed' ? 'is_evaluating' : status]
+  const isEditable = role === 'Admin' && isEvaluating
+
+  if (statusAttributes) {
+    return (
+      <Badge _hover={{ cursor: isEditable ? 'pointer' : 'default' }} onClick={onClick} colorScheme={statusAttributes.color} fontSize="10px">
+        {statusAttributes.text}
+        {isEditable && <Icon p="0" fontSize="16" top="4px" marginTop="-4px" position="relative" name="expand_more" />}
+      </Badge>
+    )
+  }
+
+  return null
+}
+
+function MilestoneStatusPopover({
+  status, milestoneId, isEvaluating,
+}: { status: string, milestoneId: number, isEvaluating: boolean }) {
+  const { isOpen, onToggle, onClose } = useDisclosure()
+  const { role } = useAppSelector(getAuth)
+  const [updateMilestoneStatus] = useUpdateMilestoneStatusMutation()
+
+  const handleOpenPopover = () => (role === 'Admin' && isEvaluating ? onToggle() : null)
+  const statuses = getStatuses()
+
+  const statusesArr = Object.keys(statuses)
+  statusesArr.splice(3, 2)
+
+  const handleUpdateMilestoneStatus = (status: string) => {
+    const request: UpdateMilestoneStatusRequest = {
+      milestoneId,
+      status,
+    }
+
+    updateMilestoneStatus(request).unwrap()
+  }
+
+  return (
+    <Popover
+      returnFocusOnClose={false}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <PopoverTrigger>
+        <MilestoneStatus isEvaluating={isEvaluating} onClick={handleOpenPopover} status={status} />
+      </PopoverTrigger>
+      <PopoverContent mt="6">
+        <PopoverHeader fontWeight="semibold" color="gray">Status Options</PopoverHeader>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverBody px="0">
+          <Flex flexDir="column">
+            {statusesArr.map((key) => (
+              <Box _hover={{ backgroundColor: 'gray.200', cursor: 'pointer' }} py="1" px="2" onClick={() => handleUpdateMilestoneStatus(key)}>
+                <Badge w="fit-content" _hover={{ cursor: 'pointer' }} colorScheme={statuses[key].color} fontSize="11px">{statuses[key].text}</Badge>
+              </Box>
+            ))}
+          </Flex>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   )
 }
 

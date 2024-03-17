@@ -77,7 +77,7 @@ function Sessions() {
         <Box>
           <Text fontWeight="700" fontSize="lg">Sessions </Text>
           <Hide below="sm">
-            <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place!</Text>
+            <Text fontWeight="400" fontSize="md" color="secondary.500"> Browse upcoming, past and pending sessions all in one place.  {role === 'Mentor' && <b> Note that sessions can only be created for mentees with an existing Mentoring Journey!</b>}</Text>
           </Hide>
         </Box>
         <Box>
@@ -95,14 +95,14 @@ function Sessions() {
             <Tab py="1" fontSize={['xs', 'sm']}>Completed</Tab>
             <Tab py="1" fontSize={['xs', 'sm']}>Pending</Tab>
           </TabList>
-          {role === 'Mentor' && <Button size="sm" alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red" onClick={onOpenSessionFormModal}>+ Create Session</Button>}
+          {role === 'Mentor' && <Button size="sm" isDisabled={menteeId === ''} alignSelf={{ base: 'flex-end', md: 'center' }} marginBottom={['5', '5', '0']} colorScheme="red" onClick={onOpenSessionFormModal}>+ Create Session</Button>}
         </Stack>
         <TabPanels>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable data={upcomingSessions} />
+            <UpcomingAndPastSessionsTable data={upcomingSessions} showStatus={false} />
           </TabPanel>
           <TabPanel px="0" pt="0">
-            <UpcomingAndPastSessionsTable data={pastSessions} />
+            <UpcomingAndPastSessionsTable data={pastSessions} showStatus={false} />
           </TabPanel>
           <TabPanel px="0" pt="0">
             <PendingSessionsTable
