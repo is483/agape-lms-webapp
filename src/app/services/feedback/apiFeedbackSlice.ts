@@ -5,7 +5,8 @@ import {
   QuarterlyFeedbackResponse,
   SessionFeedbackResponse,
   MenteeQuarterlyFeedbackResponse, MenteeSessionFeedbackResponse,
-  MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse,
+  AllSessionFeedbackByMentoringJourneyResponse, AllQuarterlyFeedbackByMentoringJourneyResponse,
+  MentorQuarterlyFeedbackResponse, MentorSessionFeedbackResponse, SessionMetricsResponse,
 } from './type'
 
 const apiFeedbackSlice = apiSlice.injectEndpoints({
@@ -118,6 +119,29 @@ const apiFeedbackSlice = apiSlice.injectEndpoints({
       invalidatesTags: (_result, _error, request) => [{ type: 'Feedback', id: request.id }, 'Feedbacks'],
       onQueryStarted,
     }),
+
+    // Admin
+    getAllSessionFeedbackByMentoringJourney: build.query<AllSessionFeedbackByMentoringJourneyResponse, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `/admin/view-mentoring-journeys/feedback/sessions/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    getAllQuarterlyFeedbackByMentoringJourney: build.query<AllQuarterlyFeedbackByMentoringJourneyResponse, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `/admin/view-mentoring-journeys/feedback/quarterly/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    getSessionMetrics: build.query<SessionMetricsResponse, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `admin/view-mentoring-journeys/key-metrics/${mentoringJourneyId}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
   }),
   overrideExisting: false,
 })
@@ -135,4 +159,7 @@ export const {
   useAnswerMentorSessionFeedbackMutation,
   useAnswerMenteeQuarterlyFeedbackMutation,
   useAnswerMentorQuarterlyFeedbackMutation,
+  useGetAllSessionFeedbackByMentoringJourneyQuery,
+  useGetAllQuarterlyFeedbackByMentoringJourneyQuery,
+  useGetSessionMetricsQuery,
 } = apiFeedbackSlice

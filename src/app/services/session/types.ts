@@ -1,15 +1,15 @@
 export interface Session {
-  sessionId: number
-  status: string
-  fromDateTime: string
-  toDateTime: string
-  sessionType: string
-  location: string
-  notes: string
-  mentoringJourneyId: number
-  title: string
-  description: string
-  reason: string
+  sessionId: string,
+  sessionType: string,
+  fromDateTime: string,
+  toDateTime: string,
+  title: string,
+  status: string,
+  location?: string
+  notes?: string
+  mentoringJourneyId?: number
+  description?: string
+  reason?: string
 }
 
 export interface CreateSessionRequest {
@@ -42,6 +42,12 @@ export interface SessionDetailsResponse {
     lastName: string
     profileImgUrl: string
     menteeId: number
+  }
+  mentor?: {
+    mentorId: number
+    lastName: string
+    firstName: string
+    profileImgUrl: string
   }
   sessionDetails: {
     sessionId: number | string
@@ -80,9 +86,20 @@ export interface UpdateSessionRequest {
 
 export interface UpdateSessionNotesRequest {
   sessionId: number | string
-  body:{
+  body: {
     notes: string
   }
 }
+
+export interface AllSessionsByMentoringJourney {
+  sessionId: string,
+  sessionType: string,
+  fromDateTime: string,
+  toDateTime: string,
+  title: string,
+  status: string,
+}
+
+export type AllSessionsByMentoringJourneyResponse = Session[]
 
 export type SessionResponse = Session[]

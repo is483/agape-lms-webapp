@@ -48,7 +48,7 @@ function ActionPlanStep(props: ActionPlanStepProps) {
       <Divider />
       <Badge my="2">{byWho}</Badge>
       <Flex align="start" mb="2">
-        <Checkbox isChecked={isDone} m="2" mt="1" ml="0" disabled={role === 'Mentee'} onChange={handleIsDoneChange} />
+        <Checkbox isChecked={isDone} m="2" mt="1" ml="0" disabled={role === 'Mentee' || role === 'Admin'} onChange={handleIsDoneChange} />
         <Box flexGrow="1" px="1">
           <Flex justify="space-between" mb="1">
             <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">Step {stepNumber}</Text>

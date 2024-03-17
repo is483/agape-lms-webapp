@@ -5,10 +5,10 @@ export interface SessionFeedback {
   toDateTime: string
   title: string
   sessionType: string
-  status: string
+  status?: string
 }
 
-export interface QuarterlyFeedback{
+export interface QuarterlyFeedback {
   quarterlyFeedbackId: string
   feedbackAnswers: string[]
   date: string
@@ -53,4 +53,51 @@ export interface SessionFeedbackResponse {
   date: string
   role: string
   status: string
+}
+
+export interface AllSessionFeedbackByMentoringJourney {
+  sessionId: string,
+  sessionFeedbackId: string
+  fromDateTime: string,
+  toDateTime: string,
+  title: string,
+  sessionType: string,
+  mentorFeedbackId: string | number,
+  mentorFeedbackStatus: string,
+  menteeFeedbackId: string | number,
+  menteeFeedbackStatus: string,
+}
+
+export interface AllQuarterlyFeedbackByMentoringJourney {
+  date: string,
+  mentorFeedbackId: string | number,
+  mentorFeedbackStatus: string,
+  menteeFeedbackId: string | number,
+  menteeFeedbackStatus: string,
+  // kms this is fake
+  quarterlyFeedbackId: string
+  feedbackAnswers: string[]
+  status: string
+  mentoringJourneyId: string
+}
+
+export type AllSessionFeedbackByMentoringJourneyResponse = AllSessionFeedbackByMentoringJourney[]
+export type AllQuarterlyFeedbackByMentoringJourneyResponse = AllQuarterlyFeedbackByMentoringJourney[]
+export interface SessionMetricsResponse {
+  mentorSatisfactionScores: {
+    totalReviews: number
+    veryDissatisfied: number
+    Dissatisfied: number
+    Neutral: number
+    Satisfied: number
+    verySatisfied: number
+  },
+  menteeSatisfactionScores: {
+    totalReviews: number
+    veryDissatisfied: number
+    Dissatisfied: number
+    Neutral: number
+    Satisfied: number
+    verySatisfied: number
+  }
 }

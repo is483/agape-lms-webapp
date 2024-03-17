@@ -2,6 +2,9 @@ import { Box, Text } from '@chakra-ui/react'
 import Feedback from './Feedback'
 import { Container } from '../../components'
 import { useGetAllMenteeQuarterlyFeedbackQuery, useGetAllMenteeSessionFeedbackQuery } from '../../app/services/feedback/apiFeedbackSlice'
+import {
+  AllQuarterlyFeedbackByMentoringJourney, AllSessionFeedbackByMentoringJourney, QuarterlyFeedback, SessionFeedback,
+} from '../../app/services/feedback/type'
 
 function MenteeFeedback() {
   const { data: menteeSessionFeedbackData } = useGetAllMenteeSessionFeedbackQuery(null)
@@ -15,7 +18,10 @@ function MenteeFeedback() {
           <b> Note that session feedback is only available for completed sessions.</b>
         </Text>
       </Box>
-      <Feedback sessionFeedbackData={menteeSessionFeedbackData?.menteeSessionFeedbacks} quarterlyFeedbackData={menteeQuarterlyFeedbackData?.menteeQuarterlyFeedbacks} />
+      <Feedback
+        sessionFeedbackData={menteeSessionFeedbackData?.menteeSessionFeedbacks as (SessionFeedback[] & AllSessionFeedbackByMentoringJourney[])}
+        quarterlyFeedbackData={menteeQuarterlyFeedbackData?.menteeQuarterlyFeedbacks as (QuarterlyFeedback[] & AllQuarterlyFeedbackByMentoringJourney[])}
+      />
     </Container>
   )
 }

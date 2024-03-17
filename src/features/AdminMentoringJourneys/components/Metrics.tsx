@@ -21,13 +21,13 @@ function Metrics(props: MetricProps) {
   const { status } = props
   const { bgColor, fontColor, iconColor } = getStatusStyles(status)
   const { data } = useGetAllMentoringJourneyMetricsQuery(status)
-  console.log(data)
+
   return (
     <Flex marginTop="5" gap="10">
       <InfographicItem
         title="No. of Mentors"
         amount={data?.numberOfMentors ?? 0}
-        iconName="taunt"
+        iconName="supervisor_account"
         containerProps={{
           border: 'solid',
           borderWidth: '1px',
@@ -48,7 +48,7 @@ function Metrics(props: MetricProps) {
       <InfographicItem
         title="No. of Mentees"
         amount={data?.numberOfMentees ?? 0}
-        iconName="group"
+        iconName="person"
         containerProps={{
           border: 'solid',
           borderWidth: '1px',

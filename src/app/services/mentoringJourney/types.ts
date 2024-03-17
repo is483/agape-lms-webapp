@@ -33,9 +33,14 @@ export interface MentoringJourneysResponse {
 }
 
 export interface MentoringJourneyDetailsResponse {
-  mentorId: number,
   mentee: {
     menteeId: number,
+    firstName: string,
+    lastName: string,
+    profileImgUrl: string
+  },
+  mentor: {
+    mentorId: number,
     firstName: string,
     lastName: string,
     profileImgUrl: string

@@ -4,7 +4,7 @@ import {
 import { Container } from '../../components'
 import OngoingMentoringJourneysTable from './OngoingMentoringJourney/OngoingMentoringJourneys'
 import CompletedMentoringJourneysTable from './CompletedMentoringJourneys/CompletedMentoringJourneysTable'
-import FailedMentoringJourneysTable from './FailedMentoringJourneys/FailedMentoringJourneys.tsx'
+import FailedMentoringJourneysTable from './FailedMentoringJourneys/FailedMentoringJourneys'
 import { useGetAllMentoringJourneyAdminQuery } from '../../app/services/mentoringJourney/apiMentoringJourneySlice'
 
 function AdminMentoringJourneys() {

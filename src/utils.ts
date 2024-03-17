@@ -43,3 +43,20 @@ export function ensureProtocol(url: string | undefined) {
   }
   return url
 }
+
+export function getSessionDuration(startDateObject: Date, endDateObject: Date) {
+  const differenceInMilliseconds = endDateObject.getTime() - startDateObject.getTime()
+  const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60))
+  const differenceInHours = Math.floor(differenceInMinutes / 60)
+  const remainingMinutes = differenceInMinutes % 60
+
+  let durationDisplay
+  if (differenceInHours === 0) {
+    durationDisplay = `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`
+  } else if (remainingMinutes === 0) {
+    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''}`
+  } else {
+    durationDisplay = `${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`
+  }
+  return durationDisplay
+}
