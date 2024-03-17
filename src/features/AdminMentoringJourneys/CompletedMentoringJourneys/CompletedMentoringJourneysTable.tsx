@@ -26,7 +26,7 @@ function CompletedMentoringJourneys(props: CompletedMentoringJourneysProps) {
   const dataToRender = mentorId === '0' ? data : completedMentoringJourneysById
   return (
     <Flex direction="column">
-      <Metrics status="Completed" />
+      <Metrics status="completed" />
       <Flex justify="flex-end" marginY="5">
         <ControlledSelect options={mentorOptions} selectProps={{ value: mentorId, onChange: handleMentorChange }} error="" />
       </Flex>

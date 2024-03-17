@@ -4,6 +4,7 @@ import {
   UpdateMentoringJourneyRequest, MilestonesResponse, MentoringJourneyMetricsResponse,
   UpdateActionPlanIsDoneRequest,
   AdminMentoringJourneysResponse,
+  AllMentoringJourneyMetricsResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 
@@ -85,6 +86,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: 'admin/view-mentoring-journeys',
         method: 'GET',
       }),
+      providesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
     getAllMentoringJourneyByIdAdmin: build.query<AdminMentoringJourneysResponse, string | number>({
@@ -92,6 +94,22 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: `admin/view-mentoring-journeys/${mentorId}`,
         method: 'GET',
       }),
+      providesTags: ['MentoringJourney'],
+      onQueryStarted,
+    }),
+    getAllMentoringJourneyMetrics: build.query<AllMentoringJourneyMetricsResponse, string | number>({
+      query: (status) => ({
+        url: `admin/view-mentoring-journeys/metrics/${status}`,
+        method: 'GET',
+      }),
+      onQueryStarted,
+    }),
+    deleteMentoringJourney: build.mutation<null, string | number>({
+      query: (mentoringJourneyId) => ({
+        url: `admin/delete-mentoring-journey/${mentoringJourneyId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
   }),
@@ -103,5 +121,6 @@ export const {
   useGetMentoringJourneyOverviewQuery, useUpdateMentoringJourneyOverviewMutation,
   useGetMilestonesQuery, useGetMilestoneQuery, useGetMentoringJourneyMetricsQuery,
   useUpdateActionPlanIsDoneMutation, useGetAllMentoringJourneyAdminQuery,
-  useGetAllMentoringJourneyByIdAdminQuery,
+  useGetAllMentoringJourneyByIdAdminQuery, useDeleteMentoringJourneyMutation,
+  useGetAllMentoringJourneyMetricsQuery,
 } = apiMentoringJourneySlice
