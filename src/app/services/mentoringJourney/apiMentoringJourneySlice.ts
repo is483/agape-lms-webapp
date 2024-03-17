@@ -86,6 +86,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: 'admin/view-mentoring-journeys',
         method: 'GET',
       }),
+      providesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
     getAllMentoringJourneyByIdAdmin: build.query<AdminMentoringJourneysResponse, string | number>({
@@ -93,6 +94,7 @@ const apiMentoringJourneySlice = apiSlice.injectEndpoints({
         url: `admin/view-mentoring-journeys/${mentorId}`,
         method: 'GET',
       }),
+      providesTags: ['MentoringJourney'],
       onQueryStarted,
     }),
     getAllMentoringJourneyMetrics: build.query<AllMentoringJourneyMetricsResponse, string | number>({
