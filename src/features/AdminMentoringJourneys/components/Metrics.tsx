@@ -24,7 +24,7 @@ function Metrics(props: MetricProps) {
       <InfographicItem
         title="No. of Mentors"
         amount={0}
-        iconName="taunt"
+        iconName="supervisor_account"
         containerProps={{
           border: 'solid',
           borderWidth: '1px',
@@ -45,7 +45,7 @@ function Metrics(props: MetricProps) {
       <InfographicItem
         title="No. of Mentees"
         amount={0}
-        iconName="group"
+        iconName="person"
         containerProps={{
           border: 'solid',
           borderWidth: '1px',

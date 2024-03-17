@@ -22,6 +22,9 @@ import { AdminMentoringJourneys } from '../features/AdminMentoringJourneys'
 import { Mentees } from '../features/AllMentees'
 import Mentors from '../features/AllMentors/Mentors'
 import AdminMentoringJourneyDetails from '../features/AdminMentoringJourneys/AdminMentoringJourneyDetails/AdminMentoringJourneyDetails'
+import QuarterlyFeedbackAnswers from '../features/Feedback/questionnaires/AdminView/QuarterlyFeedbackAnswers'
+import MentorSessionFeedbackAnswers from '../features/Feedback/questionnaires/AdminView/MentorSessionFeedbackAnswers'
+import MenteeSessionFeedbackAnswers from '../features/Feedback/questionnaires/AdminView/MenteeSessionFeedbackAnswers'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -37,8 +40,14 @@ function AppLayout() {
             <Routes>
               <Route path={paths.AdminMentoringJourneys.ViewAll} element={<AdminMentoringJourneys />} />
               <Route path={paths.AdminMentoringJourneys.Details.fullPath} element={<AdminMentoringJourneyDetails />} />
-              <Route path={paths.Mentors} element={<Mentors />} />
-              <Route path={paths.Mentees} element={<Mentees />} />
+              <Route path={paths.Sessions.Details.fullPath} element={<SessionDetails />} />
+              <Route path={paths.Feedback.Admin.QuarterlyFeedbackAnswers} element={<QuarterlyFeedbackAnswers />} />
+              <Route path={paths.Feedback.Admin.SessionFeedbackAnswers.Mentor} element={<MentorSessionFeedbackAnswers />} />
+              <Route path={paths.Feedback.Admin.SessionFeedbackAnswers.Mentee} element={<MenteeSessionFeedbackAnswers />} />
+              <Route path={paths.Mentors.subPath} element={<Mentors />} />
+              <Route path={paths.Mentors.fullPath} element={<Mentors />} />
+              <Route path={paths.Mentees.subPath} element={<Mentees />} />
+              <Route path={paths.Mentees.fullPath} element={<Mentees />} />
             </Routes>
           )}
           {role === 'Mentor' && (

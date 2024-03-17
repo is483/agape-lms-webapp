@@ -10,7 +10,15 @@ const paths = {
   Feedback: {
     ViewAll: '/feedback',
     QuarterlyFeedbackQuestionnaire: { fullPath: '/feedback/quarterly/:quarterFeedbackId', subPath: '/feedback/quarterly' },
-    SessionFeedbackQuestionnaire: { fullPath: '/feedback/session/:sessionFeedbackId', subPath: '/feedback/session' },
+    SessionFeedbackQuestionnaire: { fullPath: '/feedback/session/:sessionId', subPath: '/feedback/session' },
+
+    Admin: {
+      QuarterlyFeedbackAnswers: 'mentoring-journey/:mentoringJourneyId/feedback/:quarter/quarterly/:quarterFeedbackId',
+      SessionFeedbackAnswers: {
+        Mentor: '/feedback/mentor/:sessionId',
+        Mentee: '/feedback/mentee/:sessionId',
+      },
+    },
   },
 
   MentorProfile: '/mentor-profile',
@@ -24,8 +32,8 @@ const paths = {
   Training: '/training',
   MyProfile: '/profile',
 
-  Mentors: '/mentors',
-  Mentees: '/mentees',
+  Mentors: { fullPath: '/mentors/:userId', subPath: '/mentors' },
+  Mentees: { fullPath: '/mentees/:userId', subPath: '/mentees' },
   Pairing: '/pairing',
 
   MentoringJourneys: {

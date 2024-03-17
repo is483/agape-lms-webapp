@@ -1,19 +1,29 @@
 import {
   Button,
   Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Table, TableContainer, Tbody, Td, Th, Thead, Tr,
 } from '@chakra-ui/react'
-import { QuarterlyFeedback as QuarterlyFeedbackType } from '../../../app/services/feedback/type'
-import { Link } from '../../../components'
+import { useParams } from 'react-router-dom'
+import { AllQuarterlyFeedbackByMentoringJourney, QuarterlyFeedback as QuarterlyFeedbackType } from '../../../app/services/feedback/type'
+import { Icon, Link } from '../../../components'
 import paths from '../../../paths'
 import { getStatus } from '../utils'
+import { getAuth } from '../../../app/redux/selectors'
+import { useAppSelector } from '../../../hooks'
 
 interface QuarterlyFeedbackProps {
-  data: QuarterlyFeedbackType[] | undefined
+  data: QuarterlyFeedbackType[] & AllQuarterlyFeedbackByMentoringJourney[] | undefined
 }
 
 function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
+  const { mentoringJourneyId } = useParams()
   const { data } = props
+  const { role } = useAppSelector(getAuth)
+
   return (
     <TableContainer whiteSpace="unset" width="100%">
       <Table variant="simple">
@@ -27,7 +37,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((feedback, index) => {
+          {data?.map((feedback: QuarterlyFeedbackType & AllQuarterlyFeedbackByMentoringJourney, index) => {
             const { date, status, quarterlyFeedbackId } = feedback
 
             const quarterDateObject = new Date(date)
@@ -56,17 +66,43 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
                 </Td>
                 <Td>
                   <Flex justify="end" gap="5">
-                    {status === 'Not Completed' && (
+                    {(role === 'Mentor' || 'Mentee') && status === 'Not Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         {/* TODO: Add this back in after testing */}
                         {/* isDisabled={isUnavailable} */}
                         <Button size="sm" colorScheme="red">Submit Feedback</Button>
                       </Link>
                     )}
-                    {status === 'Completed' && (
+                    {(role === 'Mentor' || 'Mentee') && status === 'Completed' && (
                       <Link to={`${paths.Feedback.QuarterlyFeedbackQuestionnaire.subPath}/${quarterlyFeedbackId}`}>
                         <Button size="sm" colorScheme="red">View Feedback</Button>
                       </Link>
+                    )}
+                    {(role === 'Admin') && (
+                      <Menu>
+                        {({ isOpen }) => (
+                          <>
+                            <MenuButton
+                              isActive={isOpen}
+                              as={Button}
+                              colorScheme="red"
+                              rightIcon={<Icon name={isOpen ? 'expand_less' : 'expand_more'} color="white" />}
+                              size="sm"
+                            >
+                              View Feedback
+                            </MenuButton>
+                            <MenuList>
+                              {/* // TODO: question
+                        we need to validate if mentor and mentee feedback is done first right?
+                        If its not done we can either disable the menu item or when they click inside the feedback, it should mention not done */}
+                              {/* mentoring-journey/:mentoringJourneyId/feedback/quarterly/:quarterFeedbackId */}
+                              {/* mentoring-journey/${feedback.mentoringJourneyId}/feedback/quarterly/${feedback.mentorFeedbackId} */}
+                              <Link to={`/mentoring-journey/${mentoringJourneyId}/feedback/${index + 1}/quarterly/${feedback.mentorFeedbackId}`}><MenuItem>View Mentor Feedback</MenuItem></Link>
+                              <Link to={`/mentoring-journey/${mentoringJourneyId}/feedback/${index + 1}/quarterly/${feedback.menteeFeedbackId} `}><MenuItem>View Mentee Feedback</MenuItem></Link>
+                            </MenuList>
+                          </>
+                        )}
+                      </Menu>
                     )}
                   </Flex>
                 </Td>

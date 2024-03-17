@@ -1,11 +1,13 @@
 import {
-  Box,
   Divider, Tab, TabList, TabPanel,
   TabPanels, Tabs,
 } from '@chakra-ui/react'
 import { BackButton, Container } from '../../../components'
 import paths from '../../../paths'
 import Sessions from './Session/AdminSessions'
+import Feedback from './AdminFeedback/AdminFeedback'
+import Metrics from './Metrics/Metrics'
+import Overview from '../../MentoringJourneys/MentoringJourneyDetails/Overview'
 
 function AdminMentoringJourneyDetails() {
   return (
@@ -21,15 +23,19 @@ function AdminMentoringJourneyDetails() {
           <Tab py="1" px={['1', '2', '4']} fontSize={['xs', 'sm', 'md']}>Feedback</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel px="0" />
           <TabPanel px="0">
-            <Box position="relative" maxW="100%" />
+            <Overview />
+          </TabPanel>
+          <TabPanel px="0">
+            <Metrics />
           </TabPanel>
           <TabPanel px="0" />
           <TabPanel px="0">
             <Sessions />
           </TabPanel>
-          <TabPanel px="0" />
+          <TabPanel px="0">
+            <Feedback />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Container>

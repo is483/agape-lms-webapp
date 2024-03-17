@@ -136,6 +136,8 @@ export const {
   useDeclineSessionMutation,
   useLazyGetSessionDetailsMentorQuery,
   useLazyGetSessionDetailsMenteeQuery,
+  useGetSessionDetailsMenteeQuery,
+  useGetSessionDetailsMentorQuery,
   useLazyGetSessionsQuery,
   useEditSessionMutation,
   useDeleteSessionMutation,

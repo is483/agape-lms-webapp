@@ -7,7 +7,7 @@ import { RootState } from '../store'
 */
 
 const apiVersion = 1
-// const baseUrl = 'https://agape-lms-hmwzd56c5a-as.a.run.app'
+// const baseUrl = 'https://agape-lms-staging-hmwzd56c5a-as.a.run.app'
 const baseUrl = 'http://localhost:8080'
 export const apiUrl = `${baseUrl}/api/v${apiVersion}/`
 
