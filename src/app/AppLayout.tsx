@@ -25,6 +25,7 @@ import AdminMentoringJourneyDetails from '../features/AdminMentoringJourneys/Adm
 import QuarterlyFeedbackAnswers from '../features/Feedback/questionnaires/AdminView/QuarterlyFeedbackAnswers'
 import MentorSessionFeedbackAnswers from '../features/Feedback/questionnaires/AdminView/MentorSessionFeedbackAnswers'
 import MenteeSessionFeedbackAnswers from '../features/Feedback/questionnaires/AdminView/MenteeSessionFeedbackAnswers'
+import { Pairing } from '../features/AdminPairing'
 
 function AppLayout() {
   const { role } = useAppSelector(getAuth)
@@ -48,6 +49,7 @@ function AppLayout() {
               <Route path={paths.Mentors.fullPath} element={<Mentors />} />
               <Route path={paths.Mentees.subPath} element={<Mentees />} />
               <Route path={paths.Mentees.fullPath} element={<Mentees />} />
+              <Route path={paths.Pairing} element={<Pairing />} />
             </Routes>
           )}
           {role === 'Mentor' && (
