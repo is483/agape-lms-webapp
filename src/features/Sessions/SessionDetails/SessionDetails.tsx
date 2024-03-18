@@ -75,7 +75,8 @@ function SessionDetails() {
 
   const handleSaveNotes = async () => {
     if (sessionNotes && sessionNotes.length > 1000) {
-      setNotesError(`Session notes must not exceed 1000 characters (${sessionNotes.length / 1000})`)
+      setNotesError(`Session notes must not exceed 1000 characters (${sessionNotes.length} / 1000)`)
+      return
     }
     try {
       const updateSessionNotesRequest: UpdateSessionNotesRequest = {
@@ -93,6 +94,7 @@ function SessionDetails() {
         isClosable: true,
         position: 'bottom-right',
       })
+      setNotesError('')
     } catch (e) {
       console.error(e)
     }
