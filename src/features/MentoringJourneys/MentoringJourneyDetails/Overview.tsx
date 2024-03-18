@@ -200,10 +200,20 @@ function OverviewModalEditForm(props: OverviewModalEditFormProps) {
       hasErrors = true
       newErrors.title = 'Title required'
     }
+    if (title.length > 50) {
+      hasErrors = true
+      newErrors.description = `Title must not exceed 50 characters (${title.length} / 50)`
+    }
     if (!description.trim().length) {
       hasErrors = true
       newErrors.description = 'Description required'
     }
+
+    if (description.length > 2000) {
+      hasErrors = true
+      newErrors.description = `Description must not exceed 2000 characters (${description.length} / 2000)`
+    }
+
     setErrors(newErrors)
     if (hasErrors) return
     const mentoringJourneyDetails: UpdateMentoringJourneyRequest = {
