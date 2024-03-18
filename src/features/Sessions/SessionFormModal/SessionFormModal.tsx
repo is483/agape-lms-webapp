@@ -97,7 +97,7 @@ function SessionFormModal(props: SessionModalProps) {
       hasErrors = true
     }
     if (session.title.value.length > 500) {
-      updateSession((draft) => { draft.title.error = `Title must not exceed 500 characters (${session.title.value.length} / 500)`})
+      updateSession((draft) => { draft.title.error = `Title must not exceed 500 characters (${session.title.value.length} / 500)` })
       hasErrors = true
     }
 
