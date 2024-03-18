@@ -137,11 +137,16 @@ function MentoringStyle(props: Props) {
           hasErrors = true
         }
       })
-    } else
+    } else {
       if (!expectations.trim()) {
         (newErrors as MenteeErrors).expectations = 'Expectations required'
         hasErrors = true
       }
+      if (!(expectations.length > 500)) {
+        (newErrors as MenteeErrors).expectations = 'Description must not exceed 500 characters'
+        hasErrors = true
+      }
+    }
 
     if (hasErrors) {
       setErrors(newErrors)
