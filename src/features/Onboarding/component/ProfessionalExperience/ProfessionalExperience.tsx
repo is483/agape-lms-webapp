@@ -120,7 +120,7 @@ function ProfessionalExperience(props: Props) {
           hasErrors = true
         }
         if (description.length > 2000) {
-          newErrors.workExperience[i].description = 'Description must not exceed 2000 characters'
+          newErrors.workExperience[i].description = `Description must not exceed 2000 characters (${description.length} / 2000)`
           hasErrors = true
         }
         if (!jobTitle.trim()) {

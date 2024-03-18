@@ -124,8 +124,16 @@ function PersonalInformation(props: Props) {
       newErrors.firstName = 'First name is required'
     }
 
+    if (firstName.length > 50) {
+      newErrors.firstName = `First name must not exceed 50 characters (${firstName.length} / 50)`
+    }
+
     if (!lastName.trim()) {
       newErrors.lastName = 'Last name is required'
+    }
+
+    if (lastName.length > 50) {
+      newErrors.lastName = `Last name must not exceed 50 characters (${lastName.length} / 50)`
     }
     if (!dateOfBirth) {
       newErrors.dateOfBirth = 'Date of birth is required'
