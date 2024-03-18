@@ -142,7 +142,7 @@ function MentoringStyle(props: Props) {
         (newErrors as MenteeErrors).expectations = 'Expectations required'
         hasErrors = true
       }
-      if (!(expectations.length > 500)) {
+      if (expectations.length > 500) {
         (newErrors as MenteeErrors).expectations = 'Description must not exceed 500 characters'
         hasErrors = true
       }

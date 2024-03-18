@@ -119,7 +119,7 @@ function ProfessionalExperience(props: Props) {
           newErrors.workExperience[i].description = 'Description is required'
           hasErrors = true
         }
-        if (!(description.length > 2000)) {
+        if (description.length > 2000) {
           newErrors.workExperience[i].description = 'Description must not exceed 2000 characters'
           hasErrors = true
         }
