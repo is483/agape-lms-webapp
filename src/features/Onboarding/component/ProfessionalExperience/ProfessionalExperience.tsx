@@ -115,12 +115,26 @@ function ProfessionalExperience(props: Props) {
           newErrors.workExperience[i].company = 'Company is required'
           hasErrors = true
         }
+
+        if (company.length > 150) {
+          newErrors.workExperience[i].company = `Company name must not exceed 150 characters (${company.length} / 150)`
+          hasErrors = true
+        }
         if (!description.trim()) {
           newErrors.workExperience[i].description = 'Description is required'
           hasErrors = true
         }
+        if (description.length > 1700) {
+          newErrors.workExperience[i].description = `Description must not exceed 1700 characters (${description.length} / 1700)`
+          hasErrors = true
+        }
         if (!jobTitle.trim()) {
           newErrors.workExperience[i].jobTitle = 'Job title is required'
+          hasErrors = true
+        }
+
+        if (jobTitle.length > 150) {
+          newErrors.workExperience[i].jobTitle = `Title must not exceed 150 characters (${jobTitle.length} / 150)`
           hasErrors = true
         }
       })

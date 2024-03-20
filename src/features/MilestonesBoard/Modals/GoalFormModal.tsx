@@ -146,8 +146,18 @@ function GoalFormModal(props: GoalFormModalProps) {
         updateGoal((draft) => { draft.actionPlans[index].progressIndicator.error = 'Progress indicator is required' })
         hasErrors = true
       }
+
+      if (progressIndicator.value.length > 100) {
+        updateGoal((draft) => { draft.actionPlans[index].progressIndicator.error = `Description must not exceed 100 characters (${progressIndicator.value.length} / 100)` })
+        hasErrors = true
+      }
+
       if (!resourcesRequired.value.trim()) {
         updateGoal((draft) => { draft.actionPlans[index].resourcesRequired.error = 'Resources required is required' })
+        hasErrors = true
+      }
+      if (resourcesRequired.value.length > 100) {
+        updateGoal((draft) => { draft.actionPlans[index].resourcesRequired.error = `Description must not exceed 100 characters (${progressIndicator.value.length} / 100)` })
         hasErrors = true
       }
     })
