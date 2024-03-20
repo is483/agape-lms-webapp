@@ -1,4 +1,4 @@
-import { Text, Box } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { useGetMilestoneQuery } from '../../../../app/services/mentoringJourney/apiMentoringJourneySlice'
 import { Container } from '../../../../components'
 import Milestones from './Milestones'

@@ -1,5 +1,5 @@
 import {
-  Box, Hide, Text, Divider, Flex,
+  Box, Hide, Text, Divider,
 } from '@chakra-ui/react'
 import { useGetAssignedMentorQuery } from '../../app/services/user/apiUserSlice'
 import { Container } from '../../components'
