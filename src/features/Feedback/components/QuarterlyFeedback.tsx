@@ -37,6 +37,15 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
           </Tr>
         </Thead>
         <Tbody>
+        {data?.length === 0 && (
+            <Tr>
+              <Td colSpan={5}>
+                <Flex height="40px" justify="center" align="center">
+                  Quarterly feedback will only be visible once a mentoring journey has been created
+                </Flex>
+              </Td>
+            </Tr>
+          )}
           {data?.map((feedback: QuarterlyFeedbackType & AllQuarterlyFeedbackByMentoringJourney, index) => {
             const { date, status, quarterlyFeedbackId } = feedback
 

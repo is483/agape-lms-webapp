@@ -1,5 +1,5 @@
 import {
-  Box, Hide, Text, Divider,
+  Box, Hide, Text, Divider, Flex,
 } from '@chakra-ui/react'
 import { useGetAssignedMentorQuery } from '../../app/services/user/apiUserSlice'
 import { Container } from '../../components'
@@ -8,7 +8,7 @@ import UserDetails from '../UsersList/UserDetails'
 function Mentor() {
   const { data } = useGetAssignedMentorQuery(null)
   return (
-    <Container>
+    <Container minHeight="calc(100vh - 32px)">
       <Box marginBottom="5">
         <Box padding="5">
           <Text fontSize="2xl" fontWeight="600"> Mentor Profile </Text>
@@ -18,6 +18,11 @@ function Mentor() {
           <Divider orientation="horizontal" />
         </Hide>
       </Box>
+      {!data && (
+        <Box padding="5">
+          <Text> Oops, you do not have an assigned mentor at the moment. Check back again or contact Agape!</Text>
+        </Box>
+      )}
       {data && <UserDetails user={data.assignedMentor} userRole="Mentor" />}
     </Container>
   )

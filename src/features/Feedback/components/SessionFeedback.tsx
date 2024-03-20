@@ -29,6 +29,15 @@ function SessionFeedback(props: SessionFeedbackProps) {
           </Tr>
         </Thead>
         <Tbody>
+        {data?.length === 0 && (
+            <Tr>
+              <Td colSpan={5}>
+                <Flex height="40px" justify="center" align="center">
+                  Session feedback will only be visible once a session has been completed
+                </Flex>
+              </Td>
+            </Tr>
+          )}
           {data?.map((session: SessionFeedbackType & AllSessionFeedbackByMentoringJourney) => {
             const {
               fromDateTime, toDateTime, title, sessionType,

@@ -8,7 +8,7 @@ function AssignedMentees() {
   const isMdUp = useBreakpoint('md')
   if (isMdUp) {
     return (
-      <Container>
+      <Container minHeight="calc(100vh - 32px)">
         <UsersList
           title="Assigned Mentees"
           description="Get to know more about your assigned mentees"
