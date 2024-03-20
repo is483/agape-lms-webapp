@@ -1,0 +1,34 @@
+name: Deploy to Cloud Run Staging
+on:
+  push:
+    branches:
+      - agape-test-env
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  APP_ID: agape-mentoring-staging
+  RUN_REGION: asia-southeast1
+  SA_KEY_JSON: ${{ secrets.GCP_CREDENTIALS }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          export_default_credentials: true
+
+      # Build and push image to Google Container Registry
+      - name: Build
+        run: |
+          echo $PROJECT_ID
+          gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
+
+      - name: Deploy
+        run: |
+          gcloud run deploy $APP_ID \
+            --image gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated --port 80
