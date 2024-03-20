@@ -18,4 +18,4 @@ RUN npm run build
 FROM nginx
 
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/src/app/build /usr/shared/nginx/html
+COPY --from=build /usr/src/app/dist /usr/shared/nginx/html
