@@ -41,7 +41,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
             <Tr>
               <Td colSpan={5}>
                 <Flex height="40px" justify="center" align="center">
-                  Quarterly feedback will only be visible once a mentoring journey has been created.
+                  Quarterly feedback will only be visible once a mentoring journey has been created
                 </Flex>
               </Td>
             </Tr>
