@@ -96,9 +96,18 @@ function SessionFormModal(props: SessionModalProps) {
       updateSession((draft) => { draft.title.error = 'Session title is required' })
       hasErrors = true
     }
+    if (session.title.value.length > 500) {
+      updateSession((draft) => { draft.title.error = `Title must not exceed 500 characters (${session.title.value.length} / 500)` })
+      hasErrors = true
+    }
 
     if (!session.description.value.trim()) {
       updateSession((draft) => { draft.description.error = 'Session description is required' })
+      hasErrors = true
+    }
+
+    if (session.description.value.length > 2000) {
+      updateSession((draft) => { draft.description.error = `Description must not exceed 2000 characters (${session.description.value.length} / 2000)` })
       hasErrors = true
     }
     if (!session.sessionType.value.trim()) {

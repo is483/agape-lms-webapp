@@ -8,7 +8,6 @@ import {
 function useValidateObjectives() {
   const dispatch = useAppDispatch()
   const { outcome, description } = useAppSelector(getObjectives)
-
   return useCallback(() => {
     let hasErrors: boolean = false
     dispatch(clearObjectiveErrors())
@@ -16,8 +15,19 @@ function useValidateObjectives() {
       dispatch(setMentoringOutcomeError('Mentoring Outcome is required'))
       hasErrors = true
     }
+
+    if (outcome.value.length > 100) {
+      dispatch(setMentoringOutcomeError(`Title must not exceed 100 characters (${outcome.value.length} / 100)`))
+      hasErrors = true
+    }
+
     if (!description.value.trim()) {
       dispatch(setOutcomeDescriptionError('Outcome description is required'))
+      hasErrors = true
+    }
+
+    if (description.value.length > 500) {
+      dispatch(setOutcomeDescriptionError(`Description must not exceed 500 characters (${outcome.value.length} / 500)`))
       hasErrors = true
     }
     return hasErrors

@@ -22,7 +22,9 @@ interface Props {
 }
 
 function UsersList(props: UsersListProps) {
-  const { title, description, users, userRole } = props
+  const {
+    title, description, users, userRole,
+  } = props
   const isMdUp = useBreakpoint('md')
   const UsersListComponent = isMdUp ? UsersListDesktop : UsersListMobile
   return (
@@ -35,6 +37,11 @@ function UsersList(props: UsersListProps) {
         <Divider orientation="horizontal" />
       </Hide>
       {users.length > 0 && <UsersListComponent users={users} userRole={userRole} />}
+      {users.length === 0 && (
+      <Box padding="5">
+        <Text> Oops, you do not have any assigned mentees at the moment. Check back again or contact Agape!</Text>
+      </Box>
+      )}
     </Box>
   )
 }
