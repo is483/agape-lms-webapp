@@ -24,6 +24,7 @@ function getStatusAndColor(status: string, toDateTime: string) {
 
 function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
   const { data, showStatus } = props
+  console.log(data)
 
   return (
     <TableContainer whiteSpace="unset" width="100%">

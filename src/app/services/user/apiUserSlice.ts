@@ -8,6 +8,7 @@ import {
   UnassignedMenteesResponse,
   AllMenteesResponse,
   AllMentorsResponse,
+  UnAssignedMenteesAdminResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDateInput } from '../../../utils'
@@ -206,6 +207,14 @@ const apiUserSlice = apiSlice.injectEndpoints({
       onQueryStarted,
     }),
 
+    // ADMIN
+    getUnAssignedMenteesAdmin: build.query<UnAssignedMenteesAdminResponse, null>({
+      query: () => ({
+        url: 'admin/pairing/retrieve-unassigned-mentees',
+      }),
+      onQueryStarted,
+    }),
+
     getAllMentees: build.query<AllMenteesResponse, null>({
       query: () => ({
         url: 'admin/view-mentees',
@@ -235,4 +244,5 @@ export const {
   useGetAssignedMenteesQuery, useGetAssignedMentorQuery,
   useGetUnassignedMenteesQuery, useGetAllMenteesQuery,
   useGetAllMentorsQuery, useGetAssignedMenteesWithJourneysQuery,
+  useGetUnAssignedMenteesAdminQuery,
 } = apiUserSlice

@@ -142,5 +142,5 @@ export interface MentorResponse {
 }
 
 export type AllMenteesResponse = User[]
-
+export type UnAssignedMenteesAdminResponse = User[]
 export type AllMentorsResponse = User[]
