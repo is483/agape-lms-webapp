@@ -1,5 +1,5 @@
 import {
-  Box, Circle, Image, Flex, Text, Divider, HStack,
+  Box, Circle, Image, Flex, Text, Divider, HStack, Button,
 } from '@chakra-ui/react'
 import { MentorsAdminResponse } from '../../../app/services/user/types'
 import { useGetMenteesWithNoMentoringJourneyByMentorQuery } from '../../../app/services/user/apiUserSlice'
@@ -7,17 +7,18 @@ import { Icon } from '../../../components'
 
 interface MentorMenteePairingProps {
   mentorInfo: MentorsAdminResponse
+  isUnassignedMenteesEmpty: boolean
 }
 
 function MentorPairingCard(props: MentorMenteePairingProps) {
-  const { mentorInfo } = props
+  const { mentorInfo, isUnassignedMenteesEmpty } = props
   const assignedMentees = mentorInfo?.assignedMentees
   const mentorId = mentorInfo.mentor.userId
   const { data } = useGetMenteesWithNoMentoringJourneyByMentorQuery(mentorId)
 
   return (
-    <Box maxW="md" marginY="10" padding="5" border="1px" borderColor="gray.200" borderRadius="5px">
-      <Flex>
+    <Box maxW="lg" marginY="10" padding="5" border="1px" borderColor="gray.200" borderRadius="5px">
+      <Flex gap="2">
         <Box flex="1">
           {
             mentorInfo?.mentor?.profileImgURL
@@ -29,7 +30,7 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
               )
           }
         </Box>
-        <Flex flex="4" justifyContent="flex-start" flexDir="column">
+        <Flex flex="5" justifyContent="flex-start" flexDir="column">
           <Box>
             <Text fontSize="lg" fontWeight="semibold">
               {mentorInfo?.mentor?.firstName} {mentorInfo?.mentor?.lastName}
@@ -38,22 +39,30 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
           </Box>
 
           <Divider marginY="3" />
-          <Box maxHeight="400px" overflow="scroll">
-            <Text fontWeight="semibold"> Assigned Mentees: </Text>
+          <Box maxHeight="350px" overflow="scroll" paddingRight="2">
+            <Flex justifyContent="space-between" alignItems="center" mb="7">
+              <Text fontWeight="semibold"> Assigned Mentees: </Text>
+              <Button size="xs" colorScheme="red" isDisabled={isUnassignedMenteesEmpty}>+ Add Mentee</Button>
+            </Flex>
             {assignedMentees.length === 0 && (<Text color="secondary.500"> No assigned mentees at the moment</Text>)}
             {assignedMentees.map((mentee, index) => (
               <Flex marginY="3" flexDir="column">
-                <HStack spacing="10px">
-                  {
-                    mentee?.profileImgURL
-                      ? <Image src={mentee?.profileImgURL} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
-                      : (
-                        <Circle size="50px" bg="secondary.100">
-                          <Icon name="person" color="secondary.300" fontSize="30px" />
-                        </Circle>
-                      )
-                  }
-                  <Text> {mentee?.firstName} {mentee?.lastName}</Text>
+                <HStack spacing="10px" justifyContent="space-between">
+                  <Flex alignItems="center" gap={3}>
+                    {
+                      mentee?.profileImgURL
+                        ? <Image src={mentee?.profileImgURL} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
+                        : (
+                          <Circle size="50px" bg="secondary.100">
+                            <Icon name="person" color="secondary.300" fontSize="30px" />
+                          </Circle>
+                        )
+                    }
+                    <Text> {mentee?.firstName} {mentee?.lastName}</Text>
+                  </Flex>
+                  <Button px="0" rounded="full" isDisabled={data && (data.unassignedMentees[index]?.menteeId === mentee?.menteeId)}>
+                    <Icon name="delete" fontSize="25px" />
+                  </Button>
                 </HStack>
                 {index !== assignedMentees.length - 1 && <Divider marginY="4" />}
               </Flex>

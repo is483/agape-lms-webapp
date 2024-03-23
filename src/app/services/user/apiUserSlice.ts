@@ -230,7 +230,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
       onQueryStarted,
     }),
 
-    getMenteesWithNoMentoringJourneyByMentor: build.query<AllMenteesResponse, string | number>({
+    getMenteesWithNoMentoringJourneyByMentor: build.query<UnassignedMenteesResponse, string | number>({
       query: (mentoringJourneyId) => ({
         url: `admin/pairing/assigned-mentees-without-journey/${mentoringJourneyId}`,
       }),

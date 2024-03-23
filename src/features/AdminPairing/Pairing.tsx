@@ -9,6 +9,7 @@ import { MentorsAdminResponse } from '../../app/services/user/types'
 function Pairing() {
   const { data: unAssignedMenteesData } = useGetUnAssignedMenteesAdminQuery(null)
   const { data: allMentorData } = useGetAllMentorsAdminQuery(null)
+  const isUnassignedMenteesEmpty = !unAssignedMenteesData || unAssignedMenteesData.length === 0
 
   // useState for search value
   return (
@@ -19,10 +20,10 @@ function Pairing() {
       </Box>
       <Divider />
       <Flex padding="5">
-        <Box flex="3">
+        <Box flex="4">
           <Text mt="5" fontWeight="bold" fontSize="xl"> Mentors ({allMentorData?.length})</Text>
           {allMentorData?.map((mentorData: MentorsAdminResponse) => (
-            <MentorPairingCard mentorInfo={mentorData} />
+            <MentorPairingCard mentorInfo={mentorData} isUnassignedMenteesEmpty={isUnassignedMenteesEmpty} />
           ))}
         </Box>
         <Hide below="md">
