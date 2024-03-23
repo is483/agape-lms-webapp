@@ -22,6 +22,7 @@ function SessionDetails() {
   const navigate = useNavigate()
   const { role } = useAppSelector(getAuth)
   const toast = useToast()
+  const [notesError, setNotesError] = useState('')
   const [getMenteeSessionDetails, menteeSessionDetailsResult] = useLazyGetSessionDetailsMenteeQuery()
   const [getMentorSessionDetails, mentorSessionDetailsResult] = useLazyGetSessionDetailsMentorQuery()
   const [updateSessionNotesMutation, { isLoading }] = useUpdateSessionNotesMutation()
@@ -73,6 +74,10 @@ function SessionDetails() {
   }
 
   const handleSaveNotes = async () => {
+    if (sessionNotes && sessionNotes.length > 1000) {
+      setNotesError(`Session notes must not exceed 1000 characters (${sessionNotes.length} / 1000)`)
+      return
+    }
     try {
       const updateSessionNotesRequest: UpdateSessionNotesRequest = {
         sessionId: sessionId!,
@@ -89,6 +94,7 @@ function SessionDetails() {
         isClosable: true,
         position: 'bottom-right',
       })
+      setNotesError('')
     } catch (e) {
       console.error(e)
     }
@@ -178,6 +184,7 @@ function SessionDetails() {
             value={sessionNotes ?? ''}
             onChange={handleNotesChange}
           />
+          {notesError.length > 0 && <Text fontSize="xs" color="red.600"> {notesError}</Text>}
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" onClick={handleSaveNotes} isLoading={isLoading}>Save Notes</Button>
           </Flex>

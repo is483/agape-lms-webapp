@@ -48,6 +48,12 @@ function QuestionList(props: QuestionListProps) {
 
     questionsState.forEach((section, sectionIndex: number) => {
       section.questions.forEach(({ answer }, questionIndex: number) => {
+        if (section.questions[questionIndex].type === 'freeform' && answer.length > 1000) {
+          updateQuestionsState((draft) => {
+            draft[sectionIndex].questions[questionIndex].error = `Feedback must not exceed 1000 characters (${section.questions[questionIndex].answer.length} / 1000)`
+          })
+          hasError = true
+        }
         if (!answer.trim().length) {
           updateQuestionsState((draft) => {
             draft[sectionIndex].questions[questionIndex].error = 'Answer is required'

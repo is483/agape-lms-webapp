@@ -20,6 +20,11 @@ function useValidateBasicDetails() {
       dispatch(setTitleError('Title is required'))
       hasErrors = true
     }
+
+    if (title.value.length > 50) {
+      dispatch(setTitleError(`Title must not exceed 50 characters (${title.value.length} / 50)`))
+      hasErrors = true
+    }
     if (!date.value.trim()) {
       dispatch(setDateError('Date is required'))
       hasErrors = true
