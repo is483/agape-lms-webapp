@@ -237,6 +237,14 @@ const apiUserSlice = apiSlice.injectEndpoints({
       onQueryStarted,
     }),
 
+    unAssginMenteeFromMentor: build.mutation<null, string | number>({
+      query: (menteeId) => ({
+        url: `admin/pairing/unassign-mentee/${menteeId}`,
+        method: 'PUT',
+      }),
+      onQueryStarted,
+    }),
+
     getAllMentors: build.query<AllMentorsResponse, null>({
       query: () => ({
         url: 'admin/view-mentors',
@@ -260,5 +268,5 @@ export const {
   useGetUnassignedMenteesQuery, useGetAllMenteesQuery,
   useGetAllMentorsQuery, useGetAssignedMenteesWithJourneysQuery,
   useGetUnAssignedMenteesAdminQuery, useGetAllMentorsAdminQuery,
-  useGetMenteesWithNoMentoringJourneyByMentorQuery,
+  useGetMenteesWithNoMentoringJourneyByMentorQuery, useUnAssginMenteeFromMentorMutation,
 } = apiUserSlice

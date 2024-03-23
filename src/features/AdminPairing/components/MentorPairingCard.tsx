@@ -1,9 +1,11 @@
 import {
-  Box, Circle, Image, Flex, Text, Divider, HStack, Button,
+  Box, Circle, Image, Flex, Text, Divider, HStack, Button, useDisclosure,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import { MentorsAdminResponse } from '../../../app/services/user/types'
 import { useGetMenteesWithNoMentoringJourneyByMentorQuery } from '../../../app/services/user/apiUserSlice'
 import { Icon } from '../../../components'
+import UnAssignMenteeModal from './UnAssignMenteeModal'
 
 interface MentorMenteePairingProps {
   mentorInfo: MentorsAdminResponse
@@ -14,10 +16,18 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
   const { mentorInfo, isUnassignedMenteesEmpty } = props
   const assignedMentees = mentorInfo?.assignedMentees
   const mentorId = mentorInfo.mentor.userId
+  const { isOpen: isUnAssignModalOpen, onOpen: onUnAssignModalOpen, onClose: onUnAssignModalModalClose } = useDisclosure()
   const { data } = useGetMenteesWithNoMentoringJourneyByMentorQuery(mentorId)
+  const [menteeId, setMenteeId] = useState<number | string | undefined>()
 
+  const openDeleteModal = (id: number | string) => {
+    setMenteeId(id)
+    onUnAssignModalOpen()
+  }
+  console.log(data)
   return (
     <Box maxW="lg" marginY="10" padding="5" border="1px" borderColor="gray.200" borderRadius="5px">
+      <UnAssignMenteeModal isModalOpen={isUnAssignModalOpen} onModalClose={onUnAssignModalModalClose} menteeId={menteeId ?? ''} />
       <Flex gap="2">
         <Box flex="1">
           {
@@ -60,7 +70,7 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
                     }
                     <Text> {mentee?.firstName} {mentee?.lastName}</Text>
                   </Flex>
-                  <Button px="0" rounded="full" isDisabled={data && (data.unassignedMentees[index]?.menteeId === mentee?.menteeId)}>
+                  <Button px="0" rounded="full" isDisabled={data && !data?.unassignedMentees.some((unassignedMentee) => unassignedMentee.menteeId === mentee.userId)} onClick={() => openDeleteModal(mentee?.userId)}>
                     <Icon name="delete" fontSize="25px" />
                   </Button>
                 </HStack>
