@@ -26,12 +26,12 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         },
         {
           name: 'Mentors',
-          iconName: 'groups',
+          iconName: 'supervisor_account',
           path: paths.Mentors.subPath,
         },
         {
           name: 'Mentees',
-          iconName: 'groups_2',
+          iconName: 'person',
           path: paths.Mentees.subPath,
         },
         {
@@ -41,17 +41,17 @@ export const navbarLinksRecord: Record<Role, NavbarLinkSection[]> = {
         },
       ],
     },
-    {
-      title: 'Account Settings',
-      links: [
-        {
-          name: 'My Profile',
-          mobileName: 'Profile',
-          iconName: 'account_circle',
-          path: paths.MyProfile,
-        },
-      ],
-    },
+    // {
+    //   title: 'Account Settings',
+    //   links: [
+    //     {
+    //       name: 'My Profile',
+    //       mobileName: 'Profile',
+    //       iconName: 'account_circle',
+    //       path: paths.MyProfile,
+    //     },
+    //   ],
+    // },
   ],
   Mentor: [
     {
