@@ -1,43 +1,58 @@
 import {
-  Text, Flex, HStack, Box, SimpleGrid, Divider, Hide, Badge,
+  Text, Flex, HStack, Box, SimpleGrid, Divider, Hide, Badge, Button, useDisclosure,
 } from '@chakra-ui/react'
 import { User } from '../../app/services/user/types'
 import { Icon, ProfileIcon } from '../../components'
 import { Role } from '../../app/types'
+import DeleteUserModal from '../AdminPairing/components/DeleteUserModal'
 
 interface UserDetailsProps {
   user: User
   userRole: Role
+  toHide?: boolean
 }
 
 function UserDetails(props: UserDetailsProps) {
   const {
     user: {
-      firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
+      userId, firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
     },
     userRole,
+    toHide,
   } = props
 
   function mapUserDetails(userDetails: string) {
     const stringArr = userDetails?.split(',').map((detail: string) => detail.trim())
     return stringArr
   }
-
   const formattedDateOfBirth = new Date(dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-
   const validWorkExperiences = JSON.parse(workExperience)?.filter(
     (work: { company: string; jobTitle: string; description: string }) => (work.company.length && work.jobTitle.length && work.description.length),
   ) ?? []
 
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure()
+
   return (
     <Flex flexDirection="column" minHeight="100vh" wrap="wrap" maxWidth="100%">
+      <DeleteUserModal isModalOpen={isDeleteModalOpen} onModalClose={onDeleteModalClose} userId={userId} />
       <Hide below="lg">
-        <HStack spacing={[4, null, null, 8]} marginBottom="10">
-          <ProfileIcon imgUrl={profileImgURL} width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} iconProps={{ fontSize: ['50px', null, null, '80px'] }} />
-          <Text fontSize={['lg', null, 'xl']}>
-            {firstName} {lastName}
-          </Text>
-        </HStack>
+        <Flex justifyContent="space-between" alignItems="center">
+          <HStack spacing={[4, null, null, 8]} marginBottom="10">
+            <ProfileIcon imgUrl={profileImgURL} width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} iconProps={{ fontSize: ['50px', null, null, '80px'] }} />
+            <Text fontSize={['lg', null, 'xl']}>
+              {firstName} {lastName}
+            </Text>
+          </HStack>
+          {
+            (toHide && userRole === 'Admin') && (
+              <Button px="0" rounded="full" size="lg" onClick={onDeleteModalOpen}>
+                <Icon name="delete" fontSize="30px" />
+              </Button>
+            )
+          }
+
+        </Flex>
+
       </Hide>
       <Flex
         direction={['column', 'column', 'column', 'row']}
@@ -189,5 +204,9 @@ function UserDetails(props: UserDetailsProps) {
       </SimpleGrid>
     </Flex>
   )
+}
+// To edit again
+UserDetails.defaultProps = {
+  toHide: true,
 }
 export default UserDetails

@@ -6,6 +6,7 @@ import { MentorsAdminResponse } from '../../../app/services/user/types'
 import { useGetMenteesWithNoMentoringJourneyByMentorQuery } from '../../../app/services/user/apiUserSlice'
 import { Icon } from '../../../components'
 import UnAssignMenteeModal from './UnAssignMenteeModal'
+import AssignMenteeModal from './AssignMenteeModal'
 
 interface MentorMenteePairingProps {
   mentorInfo: MentorsAdminResponse
@@ -16,7 +17,8 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
   const { mentorInfo, isUnassignedMenteesEmpty } = props
   const assignedMentees = mentorInfo?.assignedMentees
   const mentorId = mentorInfo.mentor.userId
-  const { isOpen: isUnAssignModalOpen, onOpen: onUnAssignModalOpen, onClose: onUnAssignModalModalClose } = useDisclosure()
+  const { isOpen: isUnAssignModalOpen, onOpen: onUnAssignModalOpen, onClose: onUnAssignModalClose } = useDisclosure()
+  const { isOpen: isAssignModalOpen, onOpen: onAssignModalOpen, onClose: onAssignModalModalClose } = useDisclosure()
   const { data } = useGetMenteesWithNoMentoringJourneyByMentorQuery(mentorId)
   const [menteeId, setMenteeId] = useState<number | string | undefined>()
 
@@ -24,10 +26,10 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
     setMenteeId(id)
     onUnAssignModalOpen()
   }
-  console.log(data)
   return (
     <Box maxW="lg" marginY="10" padding="5" border="1px" borderColor="gray.200" borderRadius="5px">
-      <UnAssignMenteeModal isModalOpen={isUnAssignModalOpen} onModalClose={onUnAssignModalModalClose} menteeId={menteeId ?? ''} />
+      <UnAssignMenteeModal isModalOpen={isUnAssignModalOpen} onModalClose={onUnAssignModalClose} menteeId={menteeId ?? ''} />
+      <AssignMenteeModal isModalOpen={isAssignModalOpen} onModalClose={onAssignModalModalClose} mentorId={mentorId ?? ''} />
       <Flex gap="2">
         <Box flex="1">
           {
@@ -52,7 +54,7 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
           <Box maxHeight="350px" overflow="scroll" paddingRight="2">
             <Flex justifyContent="space-between" alignItems="center" mb="7">
               <Text fontWeight="semibold"> Assigned Mentees: </Text>
-              <Button size="xs" colorScheme="red" isDisabled={isUnassignedMenteesEmpty}>+ Add Mentee</Button>
+              <Button size="xs" colorScheme="red" isDisabled={isUnassignedMenteesEmpty} onClick={onAssignModalOpen}>+ Add Mentee</Button>
             </Flex>
             {assignedMentees.length === 0 && (<Text color="secondary.500"> No assigned mentees at the moment</Text>)}
             {assignedMentees.map((mentee, index) => (
