@@ -9,7 +9,7 @@ import {
   AllMenteesResponse,
   AllMentorsResponse,
   UnAssignedMenteesAdminResponse,
-  AllMentorsAdminResponse,
+  AllMentorAdminResponse,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDateInput } from '../../../utils'
@@ -213,6 +213,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: 'admin/pairing/retrieve-unassigned-mentees',
       }),
+      providesTags: ['Pairing'],
       onQueryStarted,
     }),
 
@@ -223,10 +224,11 @@ const apiUserSlice = apiSlice.injectEndpoints({
       onQueryStarted,
     }),
 
-    getAllMentorsAdmin: build.query<AllMentorsAdminResponse, null>({
+    getAllMentorsAdmin: build.query<AllMentorAdminResponse, null>({
       query: () => ({
         url: 'admin/pairing/retrieve-mentor-assigned-mentees',
       }),
+      providesTags: ['Pairing'],
       onQueryStarted,
     }),
 
@@ -234,6 +236,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
       query: (mentoringJourneyId) => ({
         url: `admin/pairing/assigned-mentees-without-journey/${mentoringJourneyId}`,
       }),
+      providesTags: ['Pairing'],
       onQueryStarted,
     }),
 
@@ -242,6 +245,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
         url: `admin/pairing/unassign-mentee/${menteeId}`,
         method: 'PUT',
       }),
+      invalidatesTags: ['Pairing'],
       onQueryStarted,
     }),
 
