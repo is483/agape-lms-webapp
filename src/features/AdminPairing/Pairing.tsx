@@ -2,12 +2,15 @@ import {
   Box, Divider, Flex, Text, HStack, Circle, Image, Hide,
 } from '@chakra-ui/react'
 import { Container, Icon } from '../../components'
-import { useGetUnAssignedMenteesAdminQuery } from '../../app/services/user/apiUserSlice'
-import MentorMenteePairings from './components/MentorPairings'
+import { useGetAllMentorsAdminQuery, useGetUnAssignedMenteesAdminQuery } from '../../app/services/user/apiUserSlice'
+import MentorPairingCard from './components/MentorPairingCard'
+import { MentorsAdminResponse } from '../../app/services/user/types'
 
 function Pairing() {
   const { data: unAssignedMenteesData } = useGetUnAssignedMenteesAdminQuery(null)
+  const { data: allMentorData } = useGetAllMentorsAdminQuery(null)
 
+  // useState for search value
   return (
     <Container minHeight="calc(100vh - 32px)">
       <Box padding="5">
@@ -15,12 +18,15 @@ function Pairing() {
         <Text color="secondary.500"> Utilize this section to assign mentees to mentors, crafting the ideal pairing</Text>
       </Box>
       <Divider />
-      <Flex>
+      <Flex padding="5">
         <Box flex="3">
-          <MentorMenteePairings />
+          <Text mt="5" fontWeight="bold" fontSize="xl"> Mentors ({allMentorData?.length})</Text>
+          {allMentorData?.map((mentorData: MentorsAdminResponse) => (
+            <MentorPairingCard mentorInfo={mentorData} />
+          ))}
         </Box>
         <Hide below="md">
-          <Box flex="2">
+          <Box flex="2" maxHeight="600px" overflow="scroll">
             <Text mt="5" fontWeight="bold" fontSize="xl"> Unassigned Mentees ({unAssignedMenteesData?.length})</Text>
             {unAssignedMenteesData?.length === 0 && (
               <Text> All mentees have been assigned a mentor!</Text>

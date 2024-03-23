@@ -141,6 +141,12 @@ export interface MentorResponse {
   assignedMentor: User
 }
 
+export interface MentorsAdminResponse {
+  mentor: User
+  assignedMentees: User[]
+}
+
+export type AllMentorAdminResponse = MentorsAdminResponse[]
 export type AllMenteesResponse = User[]
 export type UnAssignedMenteesAdminResponse = User[]
 export type AllMentorsResponse = User[]
