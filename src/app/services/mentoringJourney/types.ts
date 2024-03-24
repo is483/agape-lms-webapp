@@ -71,6 +71,8 @@ export interface MentoringJourneyMetricsResponse {
   totalAssignedMentees: number
   totalCompletedSessions: number
   totalCompletedHours: number
+  totalCompletedMinutes: number
+
 }
 
 export interface UpdateActionPlanIsDoneRequest {

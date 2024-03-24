@@ -76,12 +76,12 @@ function MentoringJourneys() {
 
 function MentoringJourneyMetrics() {
   const { data } = useGetMentoringJourneyMetricsQuery(null)
-
+  const totalHoursAndMinutes = `${data?.totalCompletedHours ?? 0}h ${data?.totalCompletedMinutes ?? 0}m`
   return (
     <>
       <InfographicItem title="Assigned Mentees" amount={data?.totalAssignedMentees ?? 0} iconName="group" />
       <InfographicItem title="Total Sessions Completed" amount={data?.totalCompletedSessions ?? 0} iconName="handshake" />
-      <InfographicItem title="Total Hours Completed" amount={data?.totalCompletedHours ?? 0} iconName="history" />
+      <InfographicItem title="Total Hours Completed" amount={totalHoursAndMinutes} iconName="history" />
     </>
   )
 }

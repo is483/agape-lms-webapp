@@ -48,7 +48,6 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
       menteeId,
     }
     try {
-      console.log(PairingRequest)
       await Pairing(PairingRequest).unwrap()
       toast({
         title: 'Pairing of Mentor and Mentee',

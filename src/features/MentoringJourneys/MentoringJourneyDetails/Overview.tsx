@@ -44,7 +44,6 @@ function Overview() {
   const handleViewMentor = () => {
     navigate(`${paths.Mentors.subPath}/${mentor?.mentorId}`)
   }
-
   return (
     <>
       <Flex justify="space-between">
