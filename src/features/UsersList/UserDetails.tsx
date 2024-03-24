@@ -15,7 +15,7 @@ interface UserDetailsProps {
 function UserDetails(props: UserDetailsProps) {
   const {
     user: {
-      userId, firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgURL, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
+      userId, firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgUrl, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
     },
     userRole,
     toHide,
@@ -38,13 +38,13 @@ function UserDetails(props: UserDetailsProps) {
       <Hide below="lg">
         <Flex justifyContent="space-between" alignItems="center">
           <HStack spacing={[4, null, null, 8]} marginBottom="10">
-            <ProfileIcon imgUrl={profileImgURL} width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} iconProps={{ fontSize: ['50px', null, null, '80px'] }} />
+            <ProfileIcon imgUrl={profileImgUrl} width={['70px', null, null, '120px']} height={['70px', null, null, '120px']} iconProps={{ fontSize: ['50px', null, null, '80px'] }} />
             <Text fontSize={['lg', null, 'xl']}>
               {firstName} {lastName}
             </Text>
           </HStack>
           {
-            (toHide && userRole === 'Admin') && (
+            (!toHide && userRole === 'Admin') && (
               <Button px="0" rounded="full" size="lg" onClick={onDeleteModalOpen}>
                 <Icon name="delete" fontSize="30px" />
               </Button>
@@ -205,8 +205,7 @@ function UserDetails(props: UserDetailsProps) {
     </Flex>
   )
 }
-// To edit again
 UserDetails.defaultProps = {
-  toHide: true,
+  toHide: false,
 }
 export default UserDetails

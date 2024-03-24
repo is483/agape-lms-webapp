@@ -29,12 +29,12 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
   return (
     <Box maxW="lg" marginY="10" padding="5" border="1px" borderColor="gray.200" borderRadius="5px">
       <UnAssignMenteeModal isModalOpen={isUnAssignModalOpen} onModalClose={onUnAssignModalClose} menteeId={menteeId ?? ''} />
-      <AssignMenteeModal isModalOpen={isAssignModalOpen} onModalClose={onAssignModalModalClose} mentorId={mentorId ?? ''} />
-      <Flex gap="2">
+      <AssignMenteeModal isModalOpen={isAssignModalOpen} onModalClose={onAssignModalModalClose} mentorId={mentorId} />
+      <Flex gap="4">
         <Box flex="1">
           {
-            mentorInfo?.mentor?.profileImgURL
-              ? <Image src={mentorInfo?.mentor?.profileImgURL} borderRadius="100%" maxWidth="100%" width="60px" height="60px" />
+            mentorInfo?.mentor?.profileImgUrl
+              ? <Image src={mentorInfo?.mentor?.profileImgUrl} borderRadius="100%" maxWidth="100%" width="60px" height="60px" />
               : (
                 <Circle size="60px" bg="secondary.100">
                   <Icon name="person" color="secondary.300" fontSize="40px" />
@@ -62,8 +62,8 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
                 <HStack spacing="10px" justifyContent="space-between">
                   <Flex alignItems="center" gap={3}>
                     {
-                      mentee?.profileImgURL
-                        ? <Image src={mentee?.profileImgURL} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
+                      mentee?.profileImgUrl
+                        ? <Image src={mentee?.profileImgUrl} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
                         : (
                           <Circle size="50px" bg="secondary.100">
                             <Icon name="person" color="secondary.300" fontSize="30px" />

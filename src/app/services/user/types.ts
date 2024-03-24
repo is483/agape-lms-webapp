@@ -4,46 +4,6 @@ export interface UserRequest {
   role: string
 }
 
-export interface UserResponse {
-  role: string
-  firstName: string
-  lastName: string
-  dateOfBirth: string
-  phoneNumber: string
-  gender: string
-  profileImgURL: string
-  skills: string
-  personalValues: string
-  preferredCommunication: string
-  preferredMeetingDays: string
-  challenges: string
-  interests: string
-  workExperience: string
-
-  // Only Mentor
-  preferredMentoringApproach?: string
-  // Only Mentee
-  expectations?: string
-  careerAspirations?: string
-}
-
-export type TransformedUserResponse = UserResponse & {
-  skills: string[]
-  personalValues: string[]
-  preferredMeetingDays: string[]
-  preferredMentoringApproach: string[]
-  challenges: string[]
-  interests: string[]
-  workExperience: {
-    jobTitle: string
-    company: string
-    description: string
-  }[]
-  // Only Mentee
-  expectations: string
-  careerAspiration: string
-}
-
 export interface InfoRequest {
   profileImg: string
   firstName: string
@@ -105,6 +65,7 @@ export interface OnboardingResponse {
 
 export interface User {
   userInformationId: number
+  role? : string
   // TODO: This is supposed to be for generic user. not just mentee
   menteeId: number
   userId: number
@@ -114,7 +75,7 @@ export interface User {
   phoneNumber: string
   gender: string
   email: string
-  profileImgURL: string
+  profileImgUrl: string
   skills: string
   personalValues: string
   preferredCommunication: string
@@ -127,6 +88,24 @@ export interface User {
   // Only Mentee
   expectations?: string
   careerAspiration?: string
+}
+export type UserResponse = User
+
+export type TransformedUserResponse = UserResponse & {
+  skills: string[]
+  personalValues: string[]
+  preferredMeetingDays: string[]
+  preferredMentoringApproach: string[]
+  challenges: string[]
+  interests: string[]
+  workExperience: {
+    jobTitle: string
+    company: string
+    description: string
+  }[]
+  // Only Mentee
+  expectations: string
+  careerAspiration: string
 }
 
 export interface AssignedMenteesResponse {
@@ -146,6 +125,10 @@ export interface MentorsAdminResponse {
   assignedMentees: User[]
 }
 
+export interface PairingRequest {
+  mentorId: string | number
+  menteeId: string | number
+}
 export type AllMentorAdminResponse = MentorsAdminResponse[]
 export type AllMenteesResponse = User[]
 export type UnAssignedMenteesAdminResponse = User[]

@@ -10,6 +10,8 @@ import {
   AllMentorsResponse,
   UnAssignedMenteesAdminResponse,
   AllMentorAdminResponse,
+  UserDetailsAdminResponse,
+  PairingRequest,
 } from './types'
 import { defaultOnQueryStarted as onQueryStarted } from '../utils'
 import { formatDateInput } from '../../../utils'
@@ -26,7 +28,7 @@ const apiUserSlice = apiSlice.injectEndpoints({
       transformResponse: (response: { profile: UserResponse }): TransformedUserResponse => {
         const transformedResponse: any = { ...response?.profile }
         transformedResponse.gender = transformGender(response.profile.gender) ?? ''
-        transformedResponse.profileImgURL = response.profile.profileImgURL ?? ''
+        transformedResponse.profileImgURL = response.profile.profileImgUrl ?? ''
         transformedResponse.dateOfBirth = formatDateInput(response.profile.dateOfBirth) ?? ''
         transformedResponse.workExperience = JSON.parse(response.profile?.workExperience) ?? [{
           jobTitle: '',
@@ -209,6 +211,14 @@ const apiUserSlice = apiSlice.injectEndpoints({
     }),
 
     // ADMIN
+    getUserDetailsAdmin: build.query<UserResponse, string | number>({
+      query: (userId) => ({
+        url: `admin/pairing/retrieve-user-information/${userId}`,
+      }),
+      providesTags: ['Pairing'],
+      onQueryStarted,
+    }),
+
     getUnAssignedMenteesAdmin: build.query<UnAssignedMenteesAdminResponse, null>({
       query: () => ({
         url: 'admin/pairing/retrieve-unassigned-mentees',
@@ -239,7 +249,6 @@ const apiUserSlice = apiSlice.injectEndpoints({
       providesTags: ['Pairing'],
       onQueryStarted,
     }),
-
     unAssginMenteeFromMentor: build.mutation<null, string | number>({
       query: (menteeId) => ({
         url: `admin/pairing/unassign-mentee/${menteeId}`,
@@ -253,6 +262,15 @@ const apiUserSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: 'admin/view-mentors',
       }),
+      onQueryStarted,
+    }),
+
+    updateMentorMenteePairing: build.mutation<null, PairingRequest>({
+      query: (request) => ({
+        url: `admin/pairing/mentor/${request.mentorId}/assign-mentee/${request.menteeId}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['Pairing'],
       onQueryStarted,
     }),
   }),
@@ -273,4 +291,5 @@ export const {
   useGetAllMentorsQuery, useGetAssignedMenteesWithJourneysQuery,
   useGetUnAssignedMenteesAdminQuery, useGetAllMentorsAdminQuery,
   useGetMenteesWithNoMentoringJourneyByMentorQuery, useUnAssginMenteeFromMentorMutation,
+  useGetUserDetailsAdminQuery, useUpdateMentorMenteePairingMutation,
 } = apiUserSlice

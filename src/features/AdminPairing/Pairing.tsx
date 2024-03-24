@@ -49,13 +49,13 @@ function Pairing() {
               <Text> All mentees have been assigned a mentor!</Text>
             )}
             {unAssignedMenteesData?.map((mentee) => {
-              const { profileImgURL, firstName, lastName } = mentee
+              const { profileImgUrl, firstName, lastName } = mentee
               return (
                 <Box>
                   <HStack marginY="5" spacing="10px">
                     {
-                      profileImgURL
-                        ? <Image src={profileImgURL} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
+                      profileImgUrl
+                        ? <Image src={profileImgUrl} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
                         : (
                           <Circle size="50px" bg="secondary.100">
                             <Icon name="person" color="secondary.300" fontSize="30px" />

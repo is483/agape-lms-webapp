@@ -93,13 +93,13 @@ function UsersListDesktop(props: Props) {
       <Box width="280px">
         {filteredUsers?.map((user: User) => {
           const {
-            firstName, lastName, profileImgURL, userInformationId,
+            firstName, lastName, profileImgUrl, userInformationId,
           } = user
           const isActive = userInformationId === selectedUser?.userInformationId
           return (
             <Card m="2" ml="0" padding="3" rounded="0" border="1px solid" borderColor="secondary.100" shadow="none" onClick={() => handleSelectedUser(user)} _hover={{ cursor: 'pointer' }} background={isActive ? 'primary.800' : 'white'} color={isActive ? 'white' : 'black'}>
               <HStack spacing="4">
-                <ProfileIcon imgUrl={profileImgURL} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
+                <ProfileIcon imgUrl={profileImgUrl} width="55px" height="55px" iconProps={{ fontSize: '30px' }} />
                 <Text fontSize="lg">{firstName} {lastName}</Text>
               </HStack>
             </Card>
@@ -131,8 +131,8 @@ function UsersListMobile(props: Props) {
                     <Flex justifyContent="space-between" alignItems="center" width="100%">
                       <HStack spacing="5">
                         {
-                          user.profileImgURL
-                            ? <Image src={user.profileImgURL} borderRadius="100%" maxWidth="100%" width="60px" height="60px" />
+                          user.profileImgUrl
+                            ? <Image src={user.profileImgUrl} borderRadius="100%" maxWidth="100%" width="60px" height="60px" />
                             : (
                               <Circle size="60px" bg="secondary.100">
                                 <Icon name="person" color="secondary.300" fontSize="40px" />
