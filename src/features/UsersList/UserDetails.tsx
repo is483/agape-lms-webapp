@@ -10,15 +10,20 @@ interface UserDetailsProps {
   user: User
   userRole: Role
   toHide?: boolean
+  isMobile?: boolean
 }
 
 function UserDetails(props: UserDetailsProps) {
   const {
     user: {
-      userId, firstName, lastName, dateOfBirth, gender, phoneNumber, email, profileImgUrl, workExperience, careerAspiration, skills, personalValues, preferredCommunication, preferredMeetingDays, challenges, interests, expectations, preferredMentoringApproach,
+      userId, firstName, lastName, dateOfBirth, gender,
+      phoneNumber, email, profileImgUrl, workExperience, careerAspiration,
+      skills, personalValues, preferredCommunication, preferredMeetingDays,
+      challenges, interests, expectations, preferredMentoringApproach,
     },
     userRole,
     toHide,
+    isMobile,
   } = props
 
   function mapUserDetails(userDetails: string) {
@@ -55,39 +60,39 @@ function UserDetails(props: UserDetailsProps) {
 
       </Hide>
       <Flex
-        direction={['column', 'column', 'column', 'row']}
-        marginBottom="10"
+        direction={isMobile ? 'column' : ['column', 'column', 'column', 'row']}
+        marginBottom="4"
         marginTop={['10', null, '0']}
-        justifyContent="space-between"
+        // justifyContent="space-between"
         wrap="wrap"
       >
         <HStack marginBottom={['4', null, null, '0']} marginRight="5">
-          <Icon name="calendar_month" color="secondary.300" fontSize="30px" />
+          <Icon name="calendar_month" color="secondary.300" fontSize="20px" />
           <Text color="secondary.300" fontSize="md" isTruncated>
             {formattedDateOfBirth}
           </Text>
         </HStack>
         <HStack marginBottom={['4', null, null, '0']} marginRight="5">
-          <Icon name={gender === 'M' ? 'man' : 'woman'} color="secondary.300" fontSize="30px" />
+          <Icon name={gender === 'M' ? 'man' : 'woman'} color="secondary.300" fontSize="20px" />
           <Text color="secondary.300" fontSize="md" isTruncated>
             {gender === 'M' ? 'Male' : 'Female'}
           </Text>
         </HStack>
         <HStack marginBottom={['4', null, null, '0']} marginRight="5">
-          <Icon name="email" color="secondary.300" fontSize="30px" />
+          <Icon name="email" color="secondary.300" fontSize="20px" />
           <Text color="secondary.300" fontSize="md" isTruncated>
             {email}
           </Text>
         </HStack>
         <HStack>
-          <Icon name="phone_iphone" color="secondary.300" fontSize="30px" />
+          <Icon name="phone_iphone" color="secondary.300" fontSize="20px" />
           <Text color="secondary.300" fontSize="md" isTruncated>
             {phoneNumber}
           </Text>
         </HStack>
       </Flex>
       <Divider orientation="horizontal" marginBottom="4" />
-      <Box marginBottom="10">
+      <Box marginBottom="4">
         <Text fontWeight="600" fontSize="xl" marginBottom="3"> Work Experience </Text>
         {validWorkExperiences.length ? validWorkExperiences.map((work: { company: string; jobTitle: string; description: string }, index: number) => (
           <Box>
@@ -99,7 +104,7 @@ function UserDetails(props: UserDetailsProps) {
         )) : <Text>No work experience</Text>}
       </Box>
       <Divider orientation="horizontal" marginBottom="4" />
-      <SimpleGrid columns={[1, 1, 1, 2, 3]} spacing="8">
+      <SimpleGrid columns={isMobile ? 1 : [1, 1, 1, 2, 3]} spacing="8">
         {userRole === 'Mentee'
           && (
             <Box>
@@ -207,5 +212,6 @@ function UserDetails(props: UserDetailsProps) {
 }
 UserDetails.defaultProps = {
   toHide: false,
+  isMobile: false,
 }
 export default UserDetails

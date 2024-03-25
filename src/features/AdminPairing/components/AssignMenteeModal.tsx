@@ -16,7 +16,7 @@ interface AssignMenteeModalProps {
 
 function AssignMenteeModal(props: AssignMenteeModalProps) {
   const { isModalOpen, onModalClose, mentorId } = props
-  const [Pairing] = useUpdateMentorMenteePairingMutation()
+  const [pairing] = useUpdateMentorMenteePairingMutation()
   const { options: unAssignedMenteeAdminOptions } = useAdminUnassignedMenteesOptions()
   const [menteeId, setMenteeId] = useState('')
   const toast = useToast()
@@ -48,7 +48,7 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
       menteeId,
     }
     try {
-      await Pairing(PairingRequest).unwrap()
+      await pairing(PairingRequest).unwrap()
       toast({
         title: 'Pairing of Mentor and Mentee',
         description: 'Mentee has been successfully assigned to new mentor!',
@@ -63,25 +63,28 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
     }
   }
   return (
-    <Modal isOpen={isModalOpen} onClose={onModalClose} size="2xl" isCentered>
+    <Modal isOpen={isModalOpen} onClose={onModalClose} size="3xl" isCentered>
       <ModalOverlay />
       <ModalContent p="4" m="4" maxHeight="90vh">
         <ModalHeader> Pairing of Mentee to Mentor</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid columns={2} spacing="4" maxHeight="650px" overflowY="auto">
+          <Flex justify="end" mb="4">
+            <Box w="50%">
+              <ControlledSelect options={unAssignedMenteeAdminOptions} selectProps={{ value: menteeId, onChange: handleMenteeChange }} error="" />
+            </Box>
+          </Flex>
+          <SimpleGrid columns={2} spacing="8" maxHeight="600px" overflowY="auto">
             <Flex flexDir="column">
-              <Text fontWeight="semibold" fontSize="lg" mb="10"> Current Mentor: </Text>
-              {mentorDetails && <UserDetails user={mentorDetails} userRole="Admin" toHide />}
+              <Text fontWeight="semibold" fontSize="lg" mb="4"> Current Mentor: </Text>
+              {mentorDetails && <UserDetails user={mentorDetails} isMobile userRole="Admin" toHide />}
             </Flex>
 
             <Flex flexDir="column">
-              <Box mb="5">
-                <ControlledSelect options={unAssignedMenteeAdminOptions} selectProps={{ value: menteeId, onChange: handleMenteeChange }} error="" />
-              </Box>
-              {menteeDetails && <UserDetails user={menteeDetails} userRole="Admin" toHide />}
+              <Text fontWeight="semibold" fontSize="lg" mb="4"> Current Mentee: </Text>
+              {menteeDetails && <UserDetails user={menteeDetails} isMobile userRole="Admin" toHide />}
+              {!menteeDetails && <Text fontSize="sm" color="gray.500">Please select a mentee</Text>}
             </Flex>
-
           </SimpleGrid>
           <Flex gap="4" justify="flex-end" mt="8">
             <Button colorScheme="red" size="sm" variant="outline" onClick={handleModalCancel}>Cancel</Button>
@@ -93,7 +96,3 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
   )
 }
 export default AssignMenteeModal
-function toast(arg0: { title: string; description: string; status: string; duration: number; isClosable: boolean; position: string }) {
-  throw new Error('Function not implemented.')
-}
-

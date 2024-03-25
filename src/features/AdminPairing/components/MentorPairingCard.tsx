@@ -33,8 +33,8 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
       <Flex gap="4">
         <Box flex="1">
           {
-            mentorInfo?.mentor?.profileImgUrl
-              ? <Image src={mentorInfo?.mentor?.profileImgUrl} borderRadius="100%" maxWidth="100%" width="60px" height="60px" />
+            mentorInfo?.mentor?.profileImgURL
+              ? <Image src={mentorInfo?.mentor?.profileImgURL} borderRadius="100%" maxWidth="100%" width="60px" height="60px" />
               : (
                 <Circle size="60px" bg="secondary.100">
                   <Icon name="person" color="secondary.300" fontSize="40px" />
@@ -62,8 +62,8 @@ function MentorPairingCard(props: MentorMenteePairingProps) {
                 <HStack spacing="10px" justifyContent="space-between">
                   <Flex alignItems="center" gap={3}>
                     {
-                      mentee?.profileImgUrl
-                        ? <Image src={mentee?.profileImgUrl} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
+                      mentee?.profileImgURL
+                        ? <Image src={mentee?.profileImgURL} borderRadius="100%" maxWidth="100%" width="50px" height="50px" />
                         : (
                           <Circle size="50px" bg="secondary.100">
                             <Icon name="person" color="secondary.300" fontSize="30px" />

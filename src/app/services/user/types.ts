@@ -76,6 +76,7 @@ export interface User {
   gender: string
   email: string
   profileImgUrl: string
+  profileImgURL: string
   skills: string
   personalValues: string
   preferredCommunication: string
