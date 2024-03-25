@@ -77,12 +77,12 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
           <SimpleGrid columns={2} spacing="8" maxHeight="600px" overflowY="auto">
             <Flex flexDir="column">
               <Text fontWeight="semibold" fontSize="lg" mb="4"> Current Mentor: </Text>
-              {mentorDetails && <UserDetails user={mentorDetails} isMobile userRole="Admin" toHide />}
+              {mentorDetails && <UserDetails user={mentorDetails} isMobile userRole="Mentor" toHide />}
             </Flex>
 
             <Flex flexDir="column">
               <Text fontWeight="semibold" fontSize="lg" mb="4"> Current Mentee: </Text>
-              {menteeDetails && <UserDetails user={menteeDetails} isMobile userRole="Admin" toHide />}
+              {menteeDetails && <UserDetails user={menteeDetails} isMobile userRole="Mentee" toHide />}
               {!menteeDetails && <Text fontSize="sm" color="gray.500">Please select a mentee</Text>}
             </Flex>
           </SimpleGrid>
