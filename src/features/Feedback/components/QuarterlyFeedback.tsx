@@ -37,7 +37,7 @@ function QuarterlyFeedback(props: QuarterlyFeedbackProps) {
           </Tr>
         </Thead>
         <Tbody>
-        {data?.length === 0 && (
+          {data?.length === 0 && (
             <Tr>
               <Td colSpan={5}>
                 <Flex height="40px" justify="center" align="center">

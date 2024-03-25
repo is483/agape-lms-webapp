@@ -4,6 +4,8 @@ import {
 import { AllSessionsByMentoringJourneyResponse, SessionResponse } from '../../../app/services/session/types'
 import { Link } from '../../../components'
 import paths from '../../../paths'
+import { getAuth } from '../../../app/redux/selectors'
+import { useAppSelector } from '../../../hooks'
 
 interface UpcomingandPastSessionProps {
   data: SessionResponse | AllSessionsByMentoringJourneyResponse
@@ -13,7 +15,6 @@ interface UpcomingandPastSessionProps {
 function getStatusAndColor(status: string, toDateTime: string) {
   const todayDate = new Date()
   const sessionDate = new Date(toDateTime)
-
   if (status !== 'Confirmed') {
     return { displayStatus: 'Pending', colorScheme: 'yellow' }
   } if (sessionDate > todayDate) {
@@ -24,7 +25,7 @@ function getStatusAndColor(status: string, toDateTime: string) {
 
 function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
   const { data, showStatus } = props
-  console.log(data)
+  const { role } = useAppSelector(getAuth)
 
   return (
     <TableContainer whiteSpace="unset" width="100%">
@@ -50,7 +51,7 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
           )}
           {data.map((session) => {
             const {
-              fromDateTime, toDateTime, title, sessionType, sessionId, status,
+              fromDateTime, toDateTime, title, sessionType, sessionId, status, sessionFeedback,
             } = session
             const fromDateObject = new Date(fromDateTime)
             const fromDate = fromDateObject.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -82,10 +83,20 @@ function UpcomingAndPastSessionsTable(props: UpcomingandPastSessionProps) {
                   </Td>
                 )}
                 <Td>
-                  <Flex justify="end">
+                  <Flex gap="4" justify="flex-end">
                     <Link to={`${paths.Sessions.Details.subPath}/${sessionId}`}>
-                      <Button>View Details</Button>
+                      <Button size="sm">View Details</Button>
                     </Link>
+                    {(displayStatus === 'Completed' && role === 'Mentor' && sessionFeedback?.status === 'Completed') && (
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionId}`}>
+                        <Button size="sm" colorScheme="red" variant="outline">View Feedback</Button>
+                      </Link>
+                    )}
+                    {(displayStatus === 'Completed' && role === 'Mentor' && sessionFeedback?.status === 'Not Completed') && (
+                      <Link to={`${paths.Feedback.SessionFeedbackQuestionnaire.subPath}/${sessionId}`}>
+                        <Button size="sm" colorScheme="red" variant="outline">Rate Feedback</Button>
+                      </Link>
+                    )}
                   </Flex>
                 </Td>
               </Tr>

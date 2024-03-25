@@ -10,6 +10,10 @@ export interface Session {
   mentoringJourneyId?: number
   description?: string
   reason?: string
+  sessionFeedback?:{
+    sessionFeedbackId?: string
+    status?: string
+  }
 }
 
 export interface CreateSessionRequest {
