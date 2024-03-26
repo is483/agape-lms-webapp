@@ -28,6 +28,7 @@ function Pairing() {
       <Divider />
       <Flex padding="5">
         <Box flex="4">
+          <Text>Note: You cannot unpair mentor-mentee pairs that already have a mentoring journey created.</Text>
           <Text marginY="5" fontWeight="bold" fontSize="xl"> Mentors ({allMentorData?.length})</Text>
           <Box maxW="lg">
             <InputGroup>

@@ -7,6 +7,7 @@ import useAdminUnassignedMenteesOptions from '../../../hooks/useAdminUnassignedM
 import { useGetUserDetailsAdminQuery, useUpdateMentorMenteePairingMutation } from '../../../app/services/user/apiUserSlice'
 import UserDetails from '../../UsersList/UserDetails'
 import { PairingRequest } from '../../../app/services/user/types'
+import MenteeDetails from './MenteeDetails'
 
 interface AssignMenteeModalProps {
   isModalOpen: boolean
@@ -18,19 +19,19 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
   const { isModalOpen, onModalClose, mentorId } = props
   const [pairing] = useUpdateMentorMenteePairingMutation()
   const { options: unAssignedMenteeAdminOptions } = useAdminUnassignedMenteesOptions()
-  const [menteeId, setMenteeId] = useState('')
+  const [menteeId, setMenteeId] = useState<string | undefined>()
   const toast = useToast()
   const { data: mentorDetails } = useGetUserDetailsAdminQuery(mentorId ?? '')
-  const { data: menteeDetails } = useGetUserDetailsAdminQuery(menteeId ?? '')
-
   const handleMenteeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedMenteeId = e.target.value
     setMenteeId(selectedMenteeId)
   }
 
   const handleModalCancel = () => {
+    setMenteeId(undefined)
     onModalClose()
   }
+
   const handleAccept = async () => {
     if (!menteeId || !mentorId) {
       toast({
@@ -82,8 +83,8 @@ function AssignMenteeModal(props: AssignMenteeModalProps) {
 
             <Flex flexDir="column">
               <Text fontWeight="semibold" fontSize="lg" mb="4"> Current Mentee: </Text>
-              {menteeDetails && <UserDetails user={menteeDetails} isMobile userRole="Mentee" toHide />}
-              {!menteeDetails && <Text fontSize="sm" color="gray.500">Please select a mentee</Text>}
+              {menteeId && <MenteeDetails menteeId={menteeId} />}
+              {!menteeId && <Text fontSize="sm" color="gray.500">Please select a mentee</Text>}
             </Flex>
           </SimpleGrid>
           <Flex gap="4" justify="flex-end" mt="8">
