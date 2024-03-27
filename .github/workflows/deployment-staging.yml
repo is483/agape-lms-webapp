@@ -2,10 +2,10 @@ name: Deploy to Cloud Run Staging
 on:
   push:
     branches:
-      - deploy/test-cloud-run
+      - main
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  APP_ID: agape-mentoring-staging
+  APP_ID: agape-mentoring-platform
   RUN_REGION: asia-southeast1
   SA_KEY_JSON: ${{ secrets.GCP_CREDENTIALS }}
 
@@ -25,10 +25,8 @@ jobs:
       # Build and push image to Google Container Registry
       - name: Build
         run: |
-          echo $PROJECT_ID
           gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
-
       - name: Deploy
         run: |
           gcloud run deploy $APP_ID \
-            --image gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated --port 5173
+            --image gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated --port 80

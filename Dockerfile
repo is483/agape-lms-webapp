@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20 as build
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -13,5 +13,9 @@ RUN npm install
 
 # Bundle app source
 COPY . .
+RUN npm run build
 
-CMD [ "npm", "run", "dev" ]
+FROM nginx
+
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/app/dist /usr/shared/nginx/html
